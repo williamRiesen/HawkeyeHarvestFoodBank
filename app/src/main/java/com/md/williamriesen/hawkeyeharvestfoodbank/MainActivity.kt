@@ -64,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         recyclerview.layoutManager = LinearLayoutManager(this)
         recyclerview.adapter = adapter
     }
+    //
 
     override fun onStart() {
         super.onStart()
