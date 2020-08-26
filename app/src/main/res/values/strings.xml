@@ -3,4 +3,7 @@
     <string name="hawkeye_harvest">Hawkeye Harvest</string>
     <string name="account_number">Account Number</string>
     <string name="start">Start</string>
+    <string name="family_size">Family Size</string>
+    <string name="textview">TextView</string>
+    <string name="item_name">Item Name</string>
 </resources>
