@@ -3,28 +3,71 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="#B5FFFFFF">
+
+    <ImageButton
+        android:id="@+id/imageButtonAdd"
+        android:layout_width="70dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="70dp"
+        android:background="#3F51B5"
+        android:bottomLeftRadius="8dip"
+        android:bottomRightRadius="8dip"
+        android:onClick="onAddItem"
+        android:scaleType="fitCenter"
+        android:topLeftRadius="8dip"
+        android:topRightRadius="8dip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textView_count"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_plus_add" />
 
     <TextView
         android:id="@+id/text_view_item_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="right|left|center_vertical"
         android:text="@string/item_name"
+        android:textColor="#630293"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/text_view_item_name"
+    <ImageButton
+        android:id="@+id/imageButtonRemove"
+        android:layout_width="70dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="70dp"
+        android:background="#3F51B5"
+        android:onClick="onRemoveItem"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toStartOf="@+id/textView_count"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_shopping_cart"
-        android:contentDescription="TODO" />
+        app:srcCompat="@drawable/ic_minus_remove" />
+
+    <TextView
+        android:id="@+id/textView_count"
+        android:inputType="number"
+        android:layout_width="70dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="70dp"
+        android:background="#A6BEBEBE"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/design_default_color_on_secondary"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonAdd"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonRemove"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

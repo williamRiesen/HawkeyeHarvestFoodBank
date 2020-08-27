@@ -2,11 +2,13 @@ package com.md.williamriesen.hawkeyeharvestfoodbank
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.core.View
 
 class MainActivity : AppCompatActivity() {
     private val db = FirebaseFirestore.getInstance()
@@ -76,5 +78,18 @@ class MainActivity : AppCompatActivity() {
         adapter.stopListening()
     }
 
+
+    fun onAddItem(view: android.view.View) {
+        val textViewCount = findViewById<TextView>(R.id.textView_count)
+        var count = textViewCount.text.toString().toInt()
+        count += 1
+        textViewCount.text = count.toString()
+    }
+    fun onRemoveItem(view: android.view.View) {
+        val textViewCount = findViewById<TextView>(R.id.textView_count)
+        var count = textViewCount.text.toString().toInt()
+        count -= 1
+        textViewCount.text = count.toString()
+    }
 }
 
