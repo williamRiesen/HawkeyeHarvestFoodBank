@@ -2,58 +2,30 @@ package com.md.williamriesen.hawkeyeharvestfoodbank
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.core.View
+import kotlinx.android.synthetic.main.item.view.*
 
 class MainActivity : AppCompatActivity() {
     private val db = FirebaseFirestore.getInstance()
     private val catalog = db.collection("items")
     private lateinit var adapter: ItemAdapter
+    private lateinit var viewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         setUpRecyclerView()
-
-
-//        val db = Firebase.firestore
-//        val accounts = db.collection("accounts")
-//        val items = db.collection("items")
-//        val myItems = items.get().toString()
-////        myItems.result?.documents
-//        val docRef = accounts.document("00tTuTdG9uGGBYQFTfrm")
-//        docRef.get().addOnSuccessListener { document ->
-//            if (document != null) {
-//                val accountTextView = findViewById<TextView>(R.id.textView2)
-//                val familySizeTextView = findViewById<TextView>(R.id.familySize)
-//
-//                // test conversion JSON to data class here
-//                val json = """{"itemID": "12345", "itemName" : "Pork chop", "limit": "2", "countInStock":"24"}"""
-//                val gson = Gson()
-//
-//                val item1: Item = gson.fromJson(json, Item::class.java)
-//                val account2: Account = gson.fromJson(document.data.toString(), Account::class.java)
-//                Log.d("JSON conversion test",account2.accountID.toString())
-//                // end of JSON experiment
-//
-//                val familySize = document.data?.get("familySize")
-//                val accountID = document.data?.get("accountID")
-////                 account2.accountID.toString()
-//                accountTextView.text = myItems
-//                familySizeTextView.text = "Family Size: $familySize"
-//            } else {
-//                Log.d("TAG", "No such document")
-//            }
-//        }
-//            .addOnFailureListener { exception ->
-//                Log.d("TAG", "get failed with ", exception)
-//            }
+        viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
+        Log.d("TAG", "onCreate called.")
     }
 
     private fun setUpRecyclerView() {
@@ -66,7 +38,6 @@ class MainActivity : AppCompatActivity() {
         recyclerview.layoutManager = LinearLayoutManager(this)
         recyclerview.adapter = adapter
     }
-    //
 
     override fun onStart() {
         super.onStart()
@@ -78,18 +49,20 @@ class MainActivity : AppCompatActivity() {
         adapter.stopListening()
     }
 
-
     fun onAddItem(view: android.view.View) {
+
+        val itemName = findViewById<TextView>(R.id.text_view_item_name).text.toString()
+        val updatedCount = viewModel.addItem(itemName)
         val textViewCount = findViewById<TextView>(R.id.textView_count)
-        var count = textViewCount.text.toString().toInt()
-        count += 1
-        textViewCount.text = count.toString()
+        textViewCount.text = updatedCount.toString()
     }
+
     fun onRemoveItem(view: android.view.View) {
+        val itemName = findViewById<TextView>(R.id.text_view_item_name).text.toString()
+        val updatedCount = viewModel.removeItem(itemName)
         val textViewCount = findViewById<TextView>(R.id.textView_count)
-        var count = textViewCount.text.toString().toInt()
-        count -= 1
-        textViewCount.text = count.toString()
+        textViewCount.text = updatedCount.toString()
     }
+
 }
 
