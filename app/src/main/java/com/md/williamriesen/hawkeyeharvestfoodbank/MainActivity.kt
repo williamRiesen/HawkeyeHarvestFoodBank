@@ -17,7 +17,6 @@ import kotlinx.android.synthetic.main.item.view.*
 
 class MainActivity : AppCompatActivity() {
     private val db = FirebaseFirestore.getInstance()
-    private val catalog = db.collection("items")
     private lateinit var adapter: ItemListAdapter
     private lateinit var viewModel: MainActivityViewModel
     private var retrievedCatalog: Catalog? = null
@@ -26,34 +25,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
-//        val cities = db.collection("cities")
-//        val data1 = mapOf(
-//            "name" to "San Francisco",
-//            "state" to "CA",
-//            "capital" to false,
-//            "population" to 860000
-//        )
-//        cities.document("SF").set(data1)
-//        val data3 = mapOf(
-//            "name" to "Washington, D.C.",
-//            "state" to null,
-//            "capital" to true,
-//            "population" to 680000
-//        )
-//        cities.document("DC").set(data3)
-
-        val city = City("Des Moines", "Iowa", true, 250000)
-        db.collection("cities").document("DM").set(city)
-        val docRefDM = db.collection("cities").document("DM")
-        docRefDM.get().addOnSuccessListener { documentSnapshot ->
-            val cityDM = documentSnapshot.toObject<City>()
-            Log.d("TAG", "City name  ${cityDM?.name}")
-        }
 
         val catalog = Catalog(
             mutableListOf(
                 "Ground Beef 1lb",
-                "Port & Bacon Sausage 1.5lb",
+                "Pork & Bacon Sausage 1.5lb",
                 "Pork Chops 1lb"
             )
         )
@@ -71,29 +47,19 @@ class MainActivity : AppCompatActivity() {
                 Log.d("TAG", "Catalog get failed with ", exception)
             }
 
-        val docRef = db.collection("items").document("Pork & Bacon Sausage 1.5lb")
-        docRef.get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    Log.d("TAG", "DocumentSnapshot data ${document.data}")
-                } else {
-                    Log.d("TAG", "No such document")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.d("TAG", "get failed with ", exception)
-            }
-        setUpRecyclerView(catalog)
+
+        val orderBlank = OrderBlank(catalog)
+        setUpRecyclerView(orderBlank)
     }
 
-    private fun setUpRecyclerView(retrievedCatalog: Catalog?) {
+    private fun setUpRecyclerView(orderBlank: OrderBlank) {
 //        val query = catalog.orderBy("itemName", Query.Direction.ASCENDING)
         val options = FirestoreRecyclerOptions.Builder<Item>()
 //            .setQuery(query, Item::class.java)
 //            .build()
 //        adapter = ItemAdapter(options)
-        if (retrievedCatalog != null) {
-            adapter = ItemListAdapter(retrievedCatalog.itemList)
+        if (orderBlank != null) {
+            adapter = ItemListAdapter(orderBlank.mapItemToCount)
         } else {
             Log.d("TAG", "catalog was null: adapter not initialize")
         }
