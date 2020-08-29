@@ -24,8 +24,8 @@ class ItemAdapter(options: FirestoreRecyclerOptions<Item>) :
     }
 
     override fun onBindViewHolder(holder: ItemHolder, position: Int, model: Item) {
-        holder.textViewItemName.text = model.itemName
-        holder.textViewCount.text = position.toString()
+//        holder.textViewItemName.text = model.itemName
+//        holder.textViewCount.text = position.toString()
     }
 
 
