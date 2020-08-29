@@ -20,5 +20,9 @@ class MainActivityViewModel : ViewModel() {
         return order.remove(itemName)
     }
 
+    fun count(itemName: String):Int{
+        return order.count(itemName)
+    }
+
 
 }

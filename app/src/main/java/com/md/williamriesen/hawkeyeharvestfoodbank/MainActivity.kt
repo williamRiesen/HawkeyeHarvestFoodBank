@@ -25,7 +25,34 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setUpRecyclerView()
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
-        Log.d("TAG", "onCreate called.")
+//        val cities = db.collection("cities")
+//        val data1 = mapOf(
+//            "name" to "San Francisco",
+//            "state" to "CA",
+//            "capital" to false,
+//            "population" to 860000
+//        )
+//        cities.document("SF").set(data1)
+//        val data3 = mapOf(
+//            "name" to "Washington, D.C.",
+//            "state" to null,
+//            "capital" to true,
+//            "population" to 680000
+//        )
+//        cities.document("DC").set(data3)
+
+        val docRef = db.collection("cities").document("SF")
+        docRef.get()
+            .addOnSuccessListener { document->
+                if (document != null){
+                    Log.d("TAG","DocumentSnapshot data ${document.data}")
+                } else{
+                    Log.d("TAG", "No such document")
+                }
+            }
+            .addOnFailureListener{ exception ->
+                Log.d("TAG", "get failed with ", exception)
+            }
     }
 
     private fun setUpRecyclerView() {
@@ -54,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         val itemName = findViewById<TextView>(R.id.text_view_item_name).text.toString()
         val updatedCount = viewModel.addItem(itemName)
         val textViewCount = findViewById<TextView>(R.id.textView_count)
-        textViewCount.text = updatedCount.toString()
+//        textViewCount.text = updatedCount.toString()
     }
 
     fun onRemoveItem(view: android.view.View) {

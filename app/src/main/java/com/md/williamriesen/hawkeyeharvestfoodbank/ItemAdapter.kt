@@ -12,8 +12,10 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 class ItemAdapter(options: FirestoreRecyclerOptions<Item>) :
     FirestoreRecyclerAdapter<Item, ItemAdapter.ItemHolder>(options) {
 
+
     class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
         var textViewItemName: TextView = view.findViewById<TextView>(R.id.text_view_item_name)
+        var textViewCount: TextView = view.findViewById(R.id.textView_count)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
@@ -23,6 +25,7 @@ class ItemAdapter(options: FirestoreRecyclerOptions<Item>) :
 
     override fun onBindViewHolder(holder: ItemHolder, position: Int, model: Item) {
         holder.textViewItemName.text = model.itemName
+        holder.textViewCount.text = position.toString()
     }
 
 
