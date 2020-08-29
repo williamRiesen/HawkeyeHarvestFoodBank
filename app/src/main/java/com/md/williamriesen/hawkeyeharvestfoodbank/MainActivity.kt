@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     private val db = FirebaseFirestore.getInstance()
     private lateinit var adapter: ItemListAdapter
     private lateinit var viewModel: MainActivityViewModel
-    private var retrievedCatalog: Catalog? = null
+    private lateinit var retrievedCatalog: Catalog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -35,19 +35,17 @@ class MainActivity : AppCompatActivity() {
         )
         db.collection("catalogs").document("catalog").set(catalog)
         val docRefCatalog = db.collection("catalogs").document("catalog")
+        Log.d("TAG", "docReference: $docRefCatalog")
         docRefCatalog.get().addOnSuccessListener { documentSnapshot ->
-            retrievedCatalog = documentSnapshot.toObject<Catalog>()
-            if (retrievedCatalog != null) {
-                Log.d("TAG", "Catalog retrieved not null.")
-                Log.d("TAG", "Retrieved Catalog ${retrievedCatalog!!.itemList.toString()}")
-            } else
-                Log.d("TAG", "Retrieved Catalog is null.")
+            retrievedCatalog = documentSnapshot.toObject<Catalog>()!!
+            Log.d("TAG", "Catalog retrieved not null.")
+            Log.d("TAG", "Retrieved Catalog ${retrievedCatalog.itemList.toString()}")
         }
             .addOnFailureListener { exception ->
                 Log.d("TAG", "Catalog get failed with ", exception)
             }
 
-
+//        Log.d("TAG", "Retrieved Catalog second reference ${retrievedCatalog.itemList.toString()}")
         val orderBlank = OrderBlank(catalog)
         setUpRecyclerView(orderBlank)
     }
@@ -58,11 +56,7 @@ class MainActivity : AppCompatActivity() {
 //            .setQuery(query, Item::class.java)
 //            .build()
 //        adapter = ItemAdapter(options)
-        if (orderBlank != null) {
-            adapter = ItemListAdapter(orderBlank.mapItemToCount)
-        } else {
-            Log.d("TAG", "catalog was null: adapter not initialize")
-        }
+        adapter = ItemListAdapter(orderBlank.mapItemToCount)
         val recyclerview = findViewById<RecyclerView>(R.id.view)
         recyclerview.layoutManager = LinearLayoutManager(this)
         recyclerview.adapter = adapter
