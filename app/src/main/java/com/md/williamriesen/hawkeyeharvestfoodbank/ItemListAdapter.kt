@@ -6,12 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 
-class ItemListAdapter(private val itemList: List<Pair<String,Int>>) :
+class ItemListAdapter(private var foodCountMap: MutableLiveData<MutableMap<String, Int>>) :
     RecyclerView.Adapter<ItemListAdapter.MyViewHolder>() {
     class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view){
-        var textViewItemName: TextView = view.findViewById<TextView>(R.id.text_view_item_name)
+        var textViewItemName: TextView = view.findViewById(R.id.text_view_item_name)
         var textViewCount: TextView = view.findViewById(R.id.textView_count)
         var imageButtonAdd: ImageButton = view.findViewById(R.id.imageButtonAdd)
     }
@@ -23,13 +24,18 @@ class ItemListAdapter(private val itemList: List<Pair<String,Int>>) :
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.textViewItemName.text = itemList[position].first
-        holder.textViewCount.text = itemList[position].second.toString()
-        holder.imageButtonAdd.setOnClickListener {
-            Log.d("TAG", "AddButton Pressed on position ${holder.adapterPosition}")
-        }
+        val selectedItemName = holder.textViewItemName.text
+        holder.textViewItemName.text = foodCountMap.value!!.toList()[position].first
+//        if (itemList != null) {
+//            holder.textViewItemName.text = itemList!!.itemNameAt(position)
+//            holder.textViewCount.text = itemList!!.itemCountAt(position).toString()
+//            holder.imageButtonAdd.setOnClickListener {
+//                Log.d("TAG", "AddButton Pressed on position ${holder.adapterPosition}")
+//            }
+//        }
     }
 
-    override fun getItemCount() = itemList.size
-
+    override fun getItemCount(): Int {
+       return foodCountMap.value!!.size
+    }
 }

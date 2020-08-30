@@ -1,8 +1,6 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
-import java.util.*
-
-class Order(val accountID: Int) {
+class Order {
     private val itemMap = mutableMapOf<String, Int>()
 
     fun add(item: String): Int {

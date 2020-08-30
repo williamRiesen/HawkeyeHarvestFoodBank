@@ -1,5 +1,5 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
-data class Catalog (
-    val itemList: MutableList<String> = mutableListOf<String>()
+data class Catalog(
+    val itemList: MutableMap<String, Int> = mutableMapOf()
 )
