@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
         viewModel.populateFoodCountMapFromCode()
 
-        viewModel.foodCountMap.observe(this, Observer { adapter.notifyDataSetChanged() } )
+        viewModel.foodCountMap.observe(this, Observer { adapter.notifyDataSetChanged() })
 
         setUpRecyclerView(viewModel.foodCountMap)
 
@@ -48,25 +48,28 @@ class MainActivity : AppCompatActivity() {
 //        db.collection("catalogs").document("catalog").set(catalog)
 
     }
-        private fun setUpRecyclerView(foodCountMap: MutableLiveData<MutableMap<String, Int>>) {
-            FirestoreRecyclerOptions.Builder<Item>()
-            adapter = ItemListAdapter(foodCountMap)
-            val recyclerview = findViewById<RecyclerView>(R.id.view)
-            recyclerview.layoutManager = LinearLayoutManager(this)
-            recyclerview.adapter = adapter
-        }
+
+    private fun setUpRecyclerView(foodCountMap: MutableLiveData<MutableMap<String, Int>>) {
+        FirestoreRecyclerOptions.Builder<Item>()
+        adapter = ItemListAdapter(foodCountMap)
+        val recyclerview = findViewById<RecyclerView>(R.id.view)
+        recyclerview.layoutManager = LinearLayoutManager(this)
+        recyclerview.adapter = adapter
+    }
 
     fun onAddItem(view: android.view.View) {
-            val itemName = findViewById<TextView>(R.id.text_view_item_name).text.toString()
-            viewModel.addItem(itemName)
-        }
-
-        fun onRemoveItem(view: android.view.View) {
-            val itemName = findViewById<TextView>(R.id.text_view_item_name).text.toString()
-            val updatedCount = viewModel.removeItem(itemName)
-            val textViewCount = findViewById<TextView>(R.id.textView_count)
-            textViewCount.text = updatedCount.toString()
-        }
-
+        val itemName = findViewById<TextView>(R.id.text_view_item_name).text.toString()
+        viewModel.addItem(itemName)
+        adapter.notifyDataSetChanged()
     }
+
+    fun onRemoveItem(view: android.view.View) {
+        val itemName = findViewById<TextView>(R.id.text_view_item_name).text.toString()
+        val updatedCount = viewModel.removeItem(itemName)
+        val textViewCount = findViewById<TextView>(R.id.textView_count)
+        textViewCount.text = updatedCount.toString()
+    }
+
+
+}
 

@@ -9,13 +9,28 @@ import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 
-class ItemListAdapter(private var foodCountMap: MutableLiveData<MutableMap<String, Int>>) :
+class ItemListAdapter(var foodCountMap: MutableLiveData<MutableMap<String, Int>>) :
     RecyclerView.Adapter<ItemListAdapter.MyViewHolder>() {
-    class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view){
+    inner class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         var textViewItemName: TextView = view.findViewById(R.id.text_view_item_name)
         var textViewCount: TextView = view.findViewById(R.id.textView_count)
         var imageButtonAdd: ImageButton = view.findViewById(R.id.imageButtonAdd)
+
+        init {
+            imageButtonAdd.setOnClickListener{
+                incrementCountOfItem(adapterPosition)
+            }
+        }
     }
+
+    fun incrementCountOfItem(position: Int){
+        val myMap = foodCountMap.value
+        val itemName = myMap!!.toList()[position].first
+        Log.d("TAG", "Position $position, Item Name $itemName")
+        myMap[itemName] = myMap[itemName]!! + 1
+        foodCountMap.value = myMap
+    }
+
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -26,16 +41,10 @@ class ItemListAdapter(private var foodCountMap: MutableLiveData<MutableMap<Strin
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val selectedItemName = holder.textViewItemName.text
         holder.textViewItemName.text = foodCountMap.value!!.toList()[position].first
-//        if (itemList != null) {
-//            holder.textViewItemName.text = itemList!!.itemNameAt(position)
-//            holder.textViewCount.text = itemList!!.itemCountAt(position).toString()
-//            holder.imageButtonAdd.setOnClickListener {
-//                Log.d("TAG", "AddButton Pressed on position ${holder.adapterPosition}")
-//            }
-//        }
+        holder.textViewCount.text = foodCountMap.value!!.toList()[position].second.toString()
     }
 
     override fun getItemCount(): Int {
-       return foodCountMap.value!!.size
+        return foodCountMap.value!!.size
     }
 }

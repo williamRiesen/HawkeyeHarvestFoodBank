@@ -63,7 +63,8 @@ class MainActivityViewModel() : ViewModel() {
 //        db.collection("catalogs").document("catalog").set(catalog)
 
     fun addItem(itemName: String) {
-//        orderBlank?.add(itemName)
+        val myMap = foodCountMap.value
+        myMap!![itemName] = myMap[itemName]!! +1
     }
 
     fun removeItem(itemName: String) {
