@@ -40,14 +40,15 @@ class MainActivity : AppCompatActivity() {
             retrievedCatalog = documentSnapshot.toObject<Catalog>()!!
             Log.d("TAG", "Catalog retrieved not null.")
             Log.d("TAG", "Retrieved Catalog ${retrievedCatalog.itemList.toString()}")
+            val orderBlank = OrderBlank(catalog)
+            setUpRecyclerView(orderBlank)
         }
             .addOnFailureListener { exception ->
                 Log.d("TAG", "Catalog get failed with ", exception)
             }
 
 //        Log.d("TAG", "Retrieved Catalog second reference ${retrievedCatalog.itemList.toString()}")
-        val orderBlank = OrderBlank(catalog)
-        setUpRecyclerView(orderBlank)
+
     }
 
     private fun setUpRecyclerView(orderBlank: OrderBlank) {
