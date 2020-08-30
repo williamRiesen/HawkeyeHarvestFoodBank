@@ -59,6 +59,10 @@ class ItemListAdapter(var foodCountMap: MutableLiveData<MutableMap<String, Int>>
     }
 
     override fun getItemCount(): Int {
-        return foodCountMap.value!!.size
+        var size = 0
+        if (foodCountMap.value != null) {
+            size = foodCountMap.value!!.size
+        }
+        return size
     }
 }

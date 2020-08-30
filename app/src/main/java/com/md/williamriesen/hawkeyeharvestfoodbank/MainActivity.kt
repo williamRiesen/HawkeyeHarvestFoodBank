@@ -21,7 +21,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
-        viewModel.populateFoodCountMapFromCode()
+        viewModel.sendCatalogToFireStore()
+        viewModel.populateFoodCountMapFromFireStore()
 
         viewModel.foodCountMap.observe(this, Observer { adapter.notifyDataSetChanged() })
 
