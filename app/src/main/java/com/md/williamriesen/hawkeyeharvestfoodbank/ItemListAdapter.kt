@@ -15,10 +15,14 @@ class ItemListAdapter(var foodCountMap: MutableLiveData<MutableMap<String, Int>>
         var textViewItemName: TextView = view.findViewById(R.id.text_view_item_name)
         var textViewCount: TextView = view.findViewById(R.id.textView_count)
         var imageButtonAdd: ImageButton = view.findViewById(R.id.imageButtonAdd)
+        var imageButtonRemove: ImageButton=view.findViewById(R.id.imageButtonRemove)
 
         init {
             imageButtonAdd.setOnClickListener{
                 incrementCountOfItem(adapterPosition)
+            }
+            imageButtonRemove.setOnClickListener {
+                decrementCountOfItem(adapterPosition)
             }
         }
     }
@@ -29,6 +33,16 @@ class ItemListAdapter(var foodCountMap: MutableLiveData<MutableMap<String, Int>>
         Log.d("TAG", "Position $position, Item Name $itemName")
         myMap[itemName] = myMap[itemName]!! + 1
         foodCountMap.value = myMap
+    }
+
+    fun decrementCountOfItem(position: Int){
+        val myMap = foodCountMap.value
+        val itemName = myMap!!.toList()[position].first
+        Log.d("TAG", "Position $position, Item Name $itemName")
+        if (myMap[itemName]!! > 0) {
+            myMap[itemName] = myMap[itemName]!! - 1
+            foodCountMap.value = myMap
+        }
     }
 
 

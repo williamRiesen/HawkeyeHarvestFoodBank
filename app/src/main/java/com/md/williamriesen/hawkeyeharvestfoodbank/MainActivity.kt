@@ -27,24 +27,6 @@ class MainActivity : AppCompatActivity() {
 
         setUpRecyclerView(viewModel.foodCountMap)
 
-//        val catalog = Catalog(
-//            mutableMapOf(
-//                "Pork Chops 1lb" to 0,
-//                "Pork & Bacon Sausage 1.5lb" to 0,
-//                "Ground Beef 1lb" to 0,
-//                "Sliced Cooked Ham 2lb" to 0,
-//                "Sliced Cotto Salami 2lb" to 0,
-//                "Whole Chicken 3lb" to 0,
-//                "Chicken Legs 5lb" to 0,
-//                "Whole Ham" to 0,
-//                "Catfish Fillets 2lb" to 0,
-//                "Pork Loin 4lb" to 0,
-//                "Chicken Thighs 5lb" to 0,
-//                "Pork Shoulder Roast 6lb" to 0,
-//                "Cooked Chicken Fajita 5lb" to 0,
-//                "Cooked Chicken Fillets 5lb" to 0
-//            )
-//        )
 //        db.collection("catalogs").document("catalog").set(catalog)
 
     }
