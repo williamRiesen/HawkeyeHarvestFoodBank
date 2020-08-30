@@ -28,9 +28,20 @@ class MainActivity : AppCompatActivity() {
 
         val catalog = Catalog(
             mutableListOf(
-                "Ground Beef 1lb",
+                "Pork Chops 1lb",
                 "Pork & Bacon Sausage 1.5lb",
-                "Pork Chops 1lb"
+                "Ground Beef 1lb",
+                "Sliced Cooked Ham 2lb",
+                "Sliced Cotto Salami 2lb",
+                "Whole Chicken 3lb",
+                "Chicken Legs 5lb",
+                "Whole Ham",
+                "Catfish Fillets 2lb",
+                "Pork Loin 4lb",
+                "Chicken Thighs 5lb",
+                "Pork Shoulder Roast 6lb",
+                "Cooked Chicken Fajita 5lb",
+                "Cooked Chicken Fillets 5lb"
             )
         )
         db.collection("catalogs").document("catalog").set(catalog)
@@ -40,7 +51,7 @@ class MainActivity : AppCompatActivity() {
             retrievedCatalog = documentSnapshot.toObject<Catalog>()!!
             Log.d("TAG", "Catalog retrieved not null.")
             Log.d("TAG", "Retrieved Catalog ${retrievedCatalog.itemList.toString()}")
-            val orderBlank = OrderBlank(catalog)
+            val orderBlank = OrderBlank(retrievedCatalog)
             setUpRecyclerView(orderBlank)
         }
             .addOnFailureListener { exception ->
