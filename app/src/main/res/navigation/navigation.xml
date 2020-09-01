@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/selectionFragment">
+
+    <fragment
+        android:id="@+id/selectionFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.SelectionFragment"
+        android:label="SelectionFragment" >
+        <action
+            android:id="@+id/action_selectionFragment_to_checkAndSubmitFragment"
+            app:destination="@id/checkAndSubmitFragment" />
+        <action
+            android:id="@+id/action_selectionFragment_to_checkAndSubmitFragment2"
+            app:destination="@id/checkAndSubmitFragment" />
+        <action
+            android:id="@+id/action_selectionFragment_to_checkAndSubmitFragment3"
+            app:destination="@id/checkAndSubmitFragment" />
+        <action
+            android:id="@+id/action_selectionFragment_to_checkAndSubmitFragment4"
+            app:destination="@id/checkAndSubmitFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkAndSubmitFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.CheckAndSubmitFragment"
+        android:label="fragment_check_and_submit"
+        tools:layout="@layout/fragment_check_and_submit" />
+</navigation>

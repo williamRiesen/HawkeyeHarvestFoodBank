@@ -30,6 +30,7 @@ class SelectionFragment : Fragment() {
         viewModel.foodCountMap.observe(this, Observer { adapter.notifyDataSetChanged() })
 
         setUpRecyclerView(viewModel.foodCountMap)
+        viewModel.foodCountMap.observe(this, Observer { adapter.notifyDataSetChanged() })
 
 
     }
@@ -38,6 +39,7 @@ class SelectionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        setUpRecyclerView(viewModel.foodCountMap)
         return inflater.inflate(R.layout.fragment_selection, container, false)
     }
 
@@ -62,6 +64,5 @@ class SelectionFragment : Fragment() {
         val textViewCount = view?.findViewById<TextView>(R.id.textView_count)
         textViewCount.text = updatedCount.toString()
     }
-
 
 }
