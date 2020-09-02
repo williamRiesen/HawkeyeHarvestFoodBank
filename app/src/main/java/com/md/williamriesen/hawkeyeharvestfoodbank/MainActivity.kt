@@ -36,13 +36,17 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-//    private fun setUpRecyclerView(foodCountMap: MutableLiveData<MutableMap<String, Int>>) {
+//    fun setUpRecyclerView(foodCountMap: MutableLiveData<MutableMap<String, Int>>) {
 //        FirestoreRecyclerOptions.Builder<Item>()
 //        adapter = ItemListAdapter(foodCountMap)
 //        val recyclerview = findViewById<RecyclerView>(R.id.view)
 //        recyclerview.layoutManager = LinearLayoutManager(this)
 //        recyclerview.adapter = adapter
 //    }
+
+    fun retrieveRecyclerView(): RecyclerView{
+        return findViewById<RecyclerView>(R.id.recyclerviewChoices)
+    }
 
     fun onAddItem(view: android.view.View) {
         val itemName = findViewById<TextView>(R.id.text_view_item_name).text.toString()

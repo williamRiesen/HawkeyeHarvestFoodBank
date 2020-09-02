@@ -1,11 +1,11 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import kotlinx.android.synthetic.main.fragment_selection.*
 
 class SelectionFragment : Fragment() {
 
@@ -28,8 +29,8 @@ class SelectionFragment : Fragment() {
         viewModel.populateFoodCountMapFromFireStore()
 
         viewModel.foodCountMap.observe(this, Observer { adapter.notifyDataSetChanged() })
-
-        setUpRecyclerView(viewModel.foodCountMap)
+//        setUpRecyclerView(viewModel.foodCountMap)
+        Log.d("TAG", "Calling setUpRecyclerView from onCreate")
         viewModel.foodCountMap.observe(this, Observer { adapter.notifyDataSetChanged() })
 
 
@@ -39,17 +40,21 @@ class SelectionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        setUpRecyclerView(viewModel.foodCountMap)
-        return inflater.inflate(R.layout.fragment_selection, container, false)
+        val selectionView = inflater.inflate(R.layout.fragment_selection, container, false)
+        val recyclerView = selectionView.findViewById<RecyclerView>(R.id.recyclerviewChoices)
+        setUpRecyclerView(viewModel.foodCountMap, recyclerView)
+
+//        Log.d("TAG", "Calling setUpRecyclerView from onCreateVIEW")
+
+        return selectionView
     }
 
-    private fun setUpRecyclerView(foodCountMap: MutableLiveData<MutableMap<String, Int>>) {
+    private fun setUpRecyclerView(foodCountMap: MutableLiveData<MutableMap<String, Int>>, recyclerView: RecyclerView ) {
         FirestoreRecyclerOptions.Builder<Item>()
         adapter = ItemListAdapter(foodCountMap)
-        val recyclerview = view?.findViewById<RecyclerView>(R.id.view)
-//        val recyclerview = findViewById<RecyclerView>(R.id.view)
-        recyclerview?.layoutManager = LinearLayoutManager(this.activity)
-        recyclerview?.adapter = adapter
+        Log.d("TAG", "recyclerView.toString $recyclerView")
+        recyclerView.layoutManager = LinearLayoutManager(this.activity)
+        recyclerView.adapter = adapter
     }
 
     fun onAddItem(view: android.view.View) {
