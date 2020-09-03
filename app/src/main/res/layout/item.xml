@@ -25,7 +25,7 @@
         app:srcCompat="@drawable/ic_plus_add" />
 
     <TextView
-        android:id="@+id/text_view_item_name"
+        android:id="@+id/textview_item_name"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="8dp"

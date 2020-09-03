@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 class ItemListAdapter(var foodCountMap: MutableLiveData<MutableMap<String, Int>>) :
     RecyclerView.Adapter<ItemListAdapter.MyViewHolder>() {
     inner class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        var textViewItemName: TextView = view.findViewById(R.id.text_view_item_name)
+        var textViewItemName: TextView = view.findViewById(R.id.textview_item_name)
         var textViewCount: TextView = view.findViewById(R.id.textView_count)
         var imageButtonAdd: ImageButton = view.findViewById(R.id.imageButtonAdd)
         var imageButtonRemove: ImageButton=view.findViewById(R.id.imageButtonRemove)

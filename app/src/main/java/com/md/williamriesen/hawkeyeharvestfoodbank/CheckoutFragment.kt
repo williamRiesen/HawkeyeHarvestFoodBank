@@ -1,48 +1,49 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
 import android.os.Bundle
-import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
+import android.view.animation.Transformation
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import kotlinx.android.synthetic.main.fragment_selection.*
 
-class SelectionFragment : Fragment() {
+class CheckoutFragment : Fragment() {
 
-    private lateinit var adapter: ItemListAdapter
-    private lateinit var viewModel: MainActivityViewModel
+    lateinit var viewModel: MainActivityViewModel
+    private lateinit var adapter: CheckoutAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this.requireActivity()).get(MainActivityViewModel::class.java)
-//        viewModel.sendCatalogToFireStore()
-        viewModel.populateFoodCountMapFromFireStore()
-        viewModel.foodCountMap.observe(this, Observer { adapter.notifyDataSetChanged() })
-        Log.d("TAG", "Calling setUpRecyclerView from onCreate")
-        viewModel.foodCountMap.observe(this, Observer { adapter.notifyDataSetChanged() })
+//        viewModel.populateFoodCountMapFromFireStore()
+        viewModel.foodCountMap.observe(this, Observer {adapter.notifyDataSetChanged() })
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val selectionView = inflater.inflate(R.layout.fragment_selection, container, false)
-        val recyclerView = selectionView.findViewById<RecyclerView>(R.id.recyclerviewChoices)
+        val checkoutView = inflater.inflate(R.layout.fragment_checkout, container, false)
+        val recyclerView = checkoutView.findViewById<RecyclerView>(R.id.recyclerviewChoices)
         setUpRecyclerView(viewModel.foodCountMap, recyclerView)
-        return selectionView
+        // Inflate the layout for this fragment
+        return checkoutView
     }
 
-    private fun setUpRecyclerView(foodCountMap: MutableLiveData<MutableMap<String, Int>>, recyclerView: RecyclerView ) {
+    private fun setUpRecyclerView(foodCountMap:MutableLiveData<MutableMap<String, Int>> , recyclerView:RecyclerView) {
         FirestoreRecyclerOptions.Builder<Item>()
-        adapter = ItemListAdapter(foodCountMap)
+//        val order = viewModel.foodCountMap.value!!.toMutableMap()
+        adapter = CheckoutAdapter(foodCountMap)
         recyclerView.layoutManager = LinearLayoutManager(this.activity)
         recyclerView.adapter = adapter
     }
