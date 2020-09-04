@@ -4,13 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#BDB9A7">
+    android:background="@color/design_default_color_background">
 
     <ImageButton
         android:id="@+id/imageButtonAdd"
         android:layout_width="64dp"
         android:layout_height="48dp"
-        android:layout_marginTop="70dp"
         android:background="@drawable/custom_rounded_corners"
         android:bottomLeftRadius="8dip"
         android:bottomRightRadius="8dip"
@@ -21,16 +20,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textView_count"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview_item_name"
         app:srcCompat="@drawable/ic_plus_add" />
 
     <TextView
         android:id="@+id/textview_item_name"
         android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_height="wrap_content"
         android:background="@color/design_default_color_background"
         android:gravity="right|left|center_vertical"
         android:text="@string/item_name"
@@ -44,14 +40,13 @@
         android:id="@+id/imageButtonRemove"
         android:layout_width="64dp"
         android:layout_height="48dp"
-        android:layout_marginTop="70dp"
         android:background="@drawable/custom_rounded_corners"
         android:onClick="onRemoveItem"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toStartOf="@+id/textView_count"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview_item_name"
         app:srcCompat="@drawable/ic_minus_remove" />
 
     <TextView
@@ -59,7 +54,6 @@
         android:layout_width="64dp"
         android:layout_height="48dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="70dp"
         android:layout_marginEnd="8dp"
         android:background="#A6BEBEBE"
         android:gravity="center"
@@ -70,7 +64,18 @@
         app:layout_constraintEnd_toStartOf="@+id/imageButtonAdd"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/imageButtonRemove"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textview_item_name" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonRemove" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
