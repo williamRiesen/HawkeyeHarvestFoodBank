@@ -5,12 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Transformation
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
+import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -35,15 +30,15 @@ class CheckoutFragment : Fragment() {
     ): View? {
         val checkoutView = inflater.inflate(R.layout.fragment_checkout, container, false)
         val recyclerView = checkoutView.findViewById<RecyclerView>(R.id.recyclerviewChoices)
-        setUpRecyclerView(viewModel.foodCountMap, recyclerView)
+        setUpRecyclerView(viewModel.order, recyclerView)
         // Inflate the layout for this fragment
         return checkoutView
     }
 
-    private fun setUpRecyclerView(foodCountMap:MutableLiveData<MutableMap<String, Int>> , recyclerView:RecyclerView) {
+    private fun setUpRecyclerView(myMap: MutableLiveData<MutableMap<String, Int>>, recyclerView:RecyclerView) {
         FirestoreRecyclerOptions.Builder<Item>()
 //        val order = viewModel.foodCountMap.value!!.toMutableMap()
-        adapter = CheckoutAdapter(foodCountMap)
+        adapter = CheckoutAdapter(myMap)
         recyclerView.layoutManager = LinearLayoutManager(this.activity)
         recyclerView.adapter = adapter
     }

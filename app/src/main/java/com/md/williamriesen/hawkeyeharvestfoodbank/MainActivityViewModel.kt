@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
@@ -13,7 +14,15 @@ class MainActivityViewModel() : ViewModel() {
     private lateinit var retrievedCatalog: Catalog
     val orderBlank: MutableLiveData<OrderBlank?>? = null
     val foodCountMap = MutableLiveData<MutableMap<String, Int>>()
-    val order = Transformations.map(foodCountMap) { something -> something.filterValues { it !=0 } }
+
+
+//    val order: LiveData<Map<String, Int>>? = map(foodCountMap){
+//        something -> something.filterValues { it != 0 }
+//    }
+
+    val order = foodCountMap
+
+
 
     fun populateFoodCountMapFromCode() {
         if (foodCountMap.value == null) {
