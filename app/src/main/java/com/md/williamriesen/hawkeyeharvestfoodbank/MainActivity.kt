@@ -63,6 +63,11 @@ class MainActivity : AppCompatActivity() {
          val accountID = editTextAccountID.text.toString()
         Log.d ("TAG", "accountID: $accountID")
         viewModel.signIn(accountID)
+        Navigation.findNavController(view).navigate(R.id.action_signInFragment_to_selectionFragment)
+    }
+
+    fun onSubmitButtonClick(view: View){
+        viewModel.submitOrder()
     }
 
 

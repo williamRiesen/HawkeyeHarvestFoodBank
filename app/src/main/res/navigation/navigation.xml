@@ -20,5 +20,9 @@
     <fragment
         android:id="@+id/signInFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.SignInFragment"
-        android:label="SignInFragment" />
+        android:label="SignInFragment" >
+        <action
+            android:id="@+id/action_signInFragment_to_selectionFragment"
+            app:destination="@id/selectionFragment" />
+    </fragment>
 </navigation>

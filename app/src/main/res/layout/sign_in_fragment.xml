@@ -28,7 +28,7 @@
         android:fontFamily="@font/goblin_one"
         android:gravity="center"
         android:text="@string/hawkeye_harvest"
-        android:textColor="#6897BB"
+        android:textColor="#AFCC7A"
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"

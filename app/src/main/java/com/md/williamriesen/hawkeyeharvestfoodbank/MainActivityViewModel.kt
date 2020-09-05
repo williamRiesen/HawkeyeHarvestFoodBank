@@ -11,7 +11,8 @@ class MainActivityViewModel() : ViewModel() {
     private lateinit var retrievedCatalog: Catalog
     val orderBlank: MutableLiveData<OrderBlank?>? = null
     val foodCountMap = MutableLiveData<MutableMap<String, Int>>()
-    var familySize: Any?= 0
+    var familySize: Any? = 0
+    lateinit var accountID: String
 
 
 //    val order: LiveData<Map<String, Int>>? = map(foodCountMap){
@@ -19,7 +20,6 @@ class MainActivityViewModel() : ViewModel() {
 //    }
 
     val order = foodCountMap
-
 
 
     fun populateFoodCountMapFromCode() {
@@ -92,9 +92,10 @@ class MainActivityViewModel() : ViewModel() {
 //        orderBlank?.remove(itemName)
     }
 
-    fun signIn(accountID: String){
+    fun signIn(enteredAccountID: String) {
+        accountID = enteredAccountID
         val db = FirebaseFirestore.getInstance()
-        val docRef = db.collection("accounts").document(accountID)
+        val docRef = db.collection("accounts").document(enteredAccountID)
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
                 familySize = documentSnapshot["familySize"]
@@ -103,6 +104,12 @@ class MainActivityViewModel() : ViewModel() {
             .addOnFailureListener {
                 Log.d("TAG", "Retrieve family size from database failed.")
             }
-        }
     }
+
+    fun submitOrder() {
+        val thisOrder = Order(accountID, foodCountMap.value!!)
+        val db = FirebaseFirestore.getInstance()
+        db.collection("orders").document().set(thisOrder)
+    }
+}
 
