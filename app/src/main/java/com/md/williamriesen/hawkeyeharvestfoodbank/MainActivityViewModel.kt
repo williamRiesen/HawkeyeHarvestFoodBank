@@ -1,10 +1,7 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
@@ -14,6 +11,7 @@ class MainActivityViewModel() : ViewModel() {
     private lateinit var retrievedCatalog: Catalog
     val orderBlank: MutableLiveData<OrderBlank?>? = null
     val foodCountMap = MutableLiveData<MutableMap<String, Int>>()
+    var familySize: Any?= 0
 
 
 //    val order: LiveData<Map<String, Int>>? = map(foodCountMap){
@@ -94,4 +92,17 @@ class MainActivityViewModel() : ViewModel() {
 //        orderBlank?.remove(itemName)
     }
 
-}
+    fun signIn(accountID: String){
+        val db = FirebaseFirestore.getInstance()
+        val docRef = db.collection("accounts").document(accountID)
+        docRef.get()
+            .addOnSuccessListener { documentSnapshot ->
+                familySize = documentSnapshot["familySize"]
+                Log.d("TAG", "family size: $familySize")
+            }
+            .addOnFailureListener {
+                Log.d("TAG", "Retrieve family size from database failed.")
+            }
+        }
+    }
+

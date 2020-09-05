@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
@@ -56,8 +57,14 @@ class MainActivity : AppCompatActivity() {
         Log.d ("TAG", "order = ${viewModel.order}")
     }
 
-    fun onBackButton(view: View) {
-        Navigation.findNavController(view).navigate(R.id.action_checkoutFragment_to_selectionFragment)
+    fun onShopButtonClick(view: View){
+
+        val editTextAccountID = findViewById<EditText>(R.id.editTextAccountID)
+         val accountID = editTextAccountID.text.toString()
+        Log.d ("TAG", "accountID: $accountID")
+        viewModel.signIn(accountID)
     }
+
+
 }
 

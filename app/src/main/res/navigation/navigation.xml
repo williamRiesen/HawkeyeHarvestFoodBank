@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/selectionFragment">
+    app:startDestination="@id/signInFragment">
 
     <fragment
         android:id="@+id/selectionFragment"
@@ -16,9 +16,9 @@
     <fragment
         android:id="@+id/checkoutFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.CheckoutFragment"
-        android:label="CheckoutFragment" >
-        <action
-            android:id="@+id/action_checkoutFragment_to_selectionFragment"
-            app:destination="@id/selectionFragment" />
-    </fragment>
+        android:label="CheckoutFragment" />
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.SignInFragment"
+        android:label="SignInFragment" />
 </navigation>
