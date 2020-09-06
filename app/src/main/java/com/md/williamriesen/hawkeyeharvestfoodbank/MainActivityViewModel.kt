@@ -1,8 +1,12 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
+import android.content.Context
 import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.Navigation
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 
@@ -57,8 +61,6 @@ class MainActivityViewModel() : ViewModel() {
                     Log.d("TAG", "Retrieve from database failed.")
                 }
         }
-
-
     }
 
     fun sendCatalogToFireStore() {
@@ -92,24 +94,43 @@ class MainActivityViewModel() : ViewModel() {
 //        orderBlank?.remove(itemName)
     }
 
-    fun signIn(enteredAccountID: String) {
+    fun signIn(enteredAccountID: String, context: Context, view: View): String {
         accountID = enteredAccountID
+        familySize = null
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection("accounts").document(enteredAccountID)
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
                 familySize = documentSnapshot["familySize"]
                 Log.d("TAG", "family size: $familySize")
+                Toast.makeText(context, familySize.toString(), Toast.LENGTH_LONG).show()
+
+                if (familySize != null) {
+                    Navigation.findNavController(view)
+                        .navigate(R.id.action_signInFragment_to_selectionFragment)
+                    Toast.makeText(context, "Sign In OK. $familySize", Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(
+                        context,
+                        "Sorry, Not a valid account. $familySize",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
             .addOnFailureListener {
                 Log.d("TAG", "Retrieve family size from database failed.")
             }
+        return familySize.toString()
     }
 
-    fun submitOrder() {
+    fun submitOrder(view: View) {
         val thisOrder = Order(accountID, foodCountMap.value!!)
         val db = FirebaseFirestore.getInstance()
         db.collection("orders").document().set(thisOrder)
+            .addOnSuccessListener {
+                Navigation.findNavController(view)
+                    .navigate(R.id.action_checkoutFragment_to_doneFragment)
+            }
     }
 }
 

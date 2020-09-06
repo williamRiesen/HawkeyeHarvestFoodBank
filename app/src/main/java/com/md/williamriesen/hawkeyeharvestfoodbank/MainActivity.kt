@@ -1,11 +1,15 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
@@ -27,10 +31,26 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
+
 //        db.collection("catalogs").document("catalog").set(catalog)
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val menuInflater = menuInflater
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId){
+            R.id.menu_item_volunteer_sign_in -> startActivity(Intent(this,VolunteerActivity::class.java))
+            R.id.menu_item_manager_sign_in -> startActivity(Intent(this,ManagerActivity::class.java))
+            R.id.menu_item_director_sign_in -> startActivity(Intent(this,DirectorActivity::class.java))
+        }
+        return true
+    }
 
     fun retrieveRecyclerView(): RecyclerView{
         return findViewById<RecyclerView>(R.id.recyclerviewChoices)
@@ -62,14 +82,19 @@ class MainActivity : AppCompatActivity() {
         val editTextAccountID = findViewById<EditText>(R.id.editTextAccountID)
          val accountID = editTextAccountID.text.toString()
         Log.d ("TAG", "accountID: $accountID")
-        viewModel.signIn(accountID)
-        Navigation.findNavController(view).navigate(R.id.action_signInFragment_to_selectionFragment)
+        val signInResult = viewModel.signIn(accountID, applicationContext, view)
+        Log.d("TAG", "signInResult $signInResult")
+
+
     }
 
     fun onSubmitButtonClick(view: View){
-        viewModel.submitOrder()
+        viewModel.submitOrder(view)
+    }
+    fun onDoneButtonClick(view: View){
+        Navigation.findNavController(view).navigate(R.id.action_doneFragment_to_signInFragment)
+        }
     }
 
 
-}
 

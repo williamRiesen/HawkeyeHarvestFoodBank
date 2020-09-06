@@ -16,7 +16,12 @@
     <fragment
         android:id="@+id/checkoutFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.CheckoutFragment"
-        android:label="CheckoutFragment" />
+        android:label="CheckoutFragment" >
+        <action
+            android:id="@+id/action_checkoutFragment_to_doneFragment"
+            app:destination="@id/doneFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/signInFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.SignInFragment"
@@ -24,5 +29,15 @@
         <action
             android:id="@+id/action_signInFragment_to_selectionFragment"
             app:destination="@id/selectionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/doneFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.DoneFragment"
+        android:label="DoneFragment" >
+        <action
+            android:id="@+id/action_doneFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:popUpTo="@id/signInFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

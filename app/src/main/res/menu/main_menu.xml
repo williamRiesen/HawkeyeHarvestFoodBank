@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_item_volunteer_sign_in"
+        android:title="Volunteer Sign In" />
+    <item
+        android:id="@+id/menu_item_manager_sign_in"
+        android:title="Manager Sign In" />
+    <item
+        android:id="@+id/menu_item_director_sign_in"
+        android:title="Director Sign In" />
+</menu>

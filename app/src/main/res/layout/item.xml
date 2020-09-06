@@ -8,8 +8,8 @@
 
     <ImageButton
         android:id="@+id/imageButtonAdd"
-        android:layout_width="64dp"
-        android:layout_height="48dp"
+        android:layout_width="56dp"
+        android:layout_height="42dp"
         android:background="@drawable/custom_rounded_corners"
         android:bottomLeftRadius="8dip"
         android:bottomRightRadius="8dip"
@@ -28,6 +28,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/design_default_color_background"
+        android:fontFamily="sans-serif-medium"
         android:gravity="right|left|center_vertical"
         android:text="@string/item_name"
         android:textColor="#630293"
@@ -38,8 +39,8 @@
 
     <ImageButton
         android:id="@+id/imageButtonRemove"
-        android:layout_width="64dp"
-        android:layout_height="48dp"
+        android:layout_width="56dp"
+        android:layout_height="42dp"
         android:background="@drawable/custom_rounded_corners"
         android:onClick="onRemoveItem"
         android:scaleType="fitCenter"
@@ -51,8 +52,8 @@
 
     <TextView
         android:id="@+id/textView_count"
-        android:layout_width="64dp"
-        android:layout_height="48dp"
+        android:layout_width="56dp"
+        android:layout_height="42dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:background="#A6BEBEBE"
