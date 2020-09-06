@@ -9,10 +9,6 @@ import android.view.ViewGroup
 
 class SignInFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = SignInFragment()
-    }
-
     private lateinit var viewModel: SignInViewModel
 
     override fun onCreateView(
@@ -25,7 +21,5 @@ class SignInFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(SignInViewModel::class.java)
-        // TODO: Use the ViewModel
     }
-
 }

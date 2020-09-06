@@ -70,22 +70,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onCartButtonClick(view: View) {
-//        Navigation.findNavController(view).navigate(R.id.action_selectionFragment_to_titleFragment)
-        Log.d("TAG", "onCartButtonClick triggered.")
         Navigation.findNavController(view)
             .navigate(R.id.action_selectionFragment_to_checkoutFragment)
-        Log.d ("TAG", "order = ${viewModel.order}")
     }
 
     fun onShopButtonClick(view: View){
 
         val editTextAccountID = findViewById<EditText>(R.id.editTextAccountID)
          val accountID = editTextAccountID.text.toString()
-        Log.d ("TAG", "accountID: $accountID")
         val signInResult = viewModel.signIn(accountID, applicationContext, view)
-        Log.d("TAG", "signInResult $signInResult")
-
-
     }
 
     fun onSubmitButtonClick(view: View){

@@ -31,9 +31,6 @@ class CheckoutAdapter(var order: MutableLiveData<MutableMap<String, Int>>) :
 
         holder.textViewItemName.text = filteredOrder?.toList()?.get(position)?.first
         holder.textViewCount.text = filteredOrder?.toList()?.get(position)?.second.toString()
-
-//        holder.textViewItemName.text = order?.value?.toList()?.get(position)?.first
-//        holder.textViewCount.text = order?.value?.toList()?.get(position)?.second.toString()
     }
 
     override fun getItemCount(): Int {

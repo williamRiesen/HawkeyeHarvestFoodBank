@@ -23,13 +23,7 @@ class OrdersAdapter(var orders: List<Order>) : RecyclerView.Adapter<OrdersAdapte
         }
 
         override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-
-//            val filteredOrder = order.value?.filterValues { it != 0 }
-//            holder.textViewItemName.text = filteredOrder?.toList()?.get(position)?.first
-//            holder.textViewCount.text = filteredOrder?.toList()?.get(position)?.second.toString()
-//
         }
 
         override fun getItemCount() = 1
-
     }

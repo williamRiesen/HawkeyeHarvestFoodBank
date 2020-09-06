@@ -31,13 +31,11 @@ class CheckoutFragment : Fragment() {
         val checkoutView = inflater.inflate(R.layout.fragment_checkout, container, false)
         val recyclerView = checkoutView.findViewById<RecyclerView>(R.id.recyclerviewChoices)
         setUpRecyclerView(viewModel.order, recyclerView)
-        // Inflate the layout for this fragment
         return checkoutView
     }
 
     private fun setUpRecyclerView(myMap: MutableLiveData<MutableMap<String, Int>>, recyclerView:RecyclerView) {
         FirestoreRecyclerOptions.Builder<Item>()
-//        val order = viewModel.foodCountMap.value!!.toMutableMap()
         adapter = CheckoutAdapter(myMap)
         recyclerView.layoutManager = LinearLayoutManager(this.activity)
         recyclerView.adapter = adapter

@@ -10,7 +10,6 @@ import androidx.navigation.Navigation
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 
-
 class MainActivityViewModel() : ViewModel() {
     private lateinit var retrievedCatalog: Catalog
     val orderBlank: MutableLiveData<OrderBlank?>? = null
@@ -18,13 +17,7 @@ class MainActivityViewModel() : ViewModel() {
     var familySize: Any? = 0
     lateinit var accountID: String
 
-
-//    val order: LiveData<Map<String, Int>>? = map(foodCountMap){
-//        something -> something.filterValues { it != 0 }
-//    }
-
     val order = foodCountMap
-
 
     fun populateFoodCountMapFromCode() {
         if (foodCountMap.value == null) {
@@ -81,9 +74,7 @@ class MainActivityViewModel() : ViewModel() {
         val catalog = Catalog(myMap)
         val db = FirebaseFirestore.getInstance()
         db.collection("catalogs").document("catalog").set(catalog)
-
     }
-
 
     fun addItem(itemName: String) {
         val myMap = foodCountMap.value
@@ -91,7 +82,6 @@ class MainActivityViewModel() : ViewModel() {
     }
 
     fun removeItem(itemName: String) {
-//        orderBlank?.remove(itemName)
     }
 
     fun signIn(enteredAccountID: String, context: Context, view: View): String {
@@ -102,17 +92,13 @@ class MainActivityViewModel() : ViewModel() {
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
                 familySize = documentSnapshot["familySize"]
-                Log.d("TAG", "family size: $familySize")
-                Toast.makeText(context, familySize.toString(), Toast.LENGTH_LONG).show()
-
                 if (familySize != null) {
                     Navigation.findNavController(view)
                         .navigate(R.id.action_signInFragment_to_selectionFragment)
-                    Toast.makeText(context, "Sign In OK. $familySize", Toast.LENGTH_LONG).show()
                 } else {
                     Toast.makeText(
                         context,
-                        "Sorry, Not a valid account. $familySize",
+                        "Sorry, Not a valid account.",
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -133,4 +119,3 @@ class MainActivityViewModel() : ViewModel() {
             }
     }
 }
-

@@ -24,14 +24,12 @@ class CheckAndSubmitFragment : Fragment() {
         //        viewModel.sendCatalogToFireStore()
         viewModel.populateFoodCountMapFromFireStore()
         viewModel.foodCountMap.observe(this, Observer { adapter.notifyDataSetChanged() })
-        Log.d("TAG", "viewModel reference completed.")
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val viewCheckAndConfirm =
             inflater.inflate(R.layout.fragment_check_and_submit, container, false)
         val recyclerView = viewCheckAndConfirm.findViewById<RecyclerView>(R.id.recyclerviewConfirm)
