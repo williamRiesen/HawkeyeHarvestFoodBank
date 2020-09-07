@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navigation_volunteer"
-    app:startDestination="@id/ordersFragment">
-
+    app:startDestination="@id/volunteerSignInFragment">
     <fragment
-        android:id="@+id/ordersFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.OrdersFragment"
-        android:label="OrdersFragment" />
+        android:id="@+id/volunteerSignInFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.VolunteerSignInFragment"
+        android:label="VolunteerSignInFragment" >
+        <action
+            android:id="@+id/action_volunteerSignInFragment_to_packOrderFragment"
+            app:destination="@id/packOrderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/packOrderFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.PackOrderFragment"
+        android:label="PackOrderFragment" />
 </navigation>

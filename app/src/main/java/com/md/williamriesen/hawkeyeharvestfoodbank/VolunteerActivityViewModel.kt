@@ -5,21 +5,21 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 
-class VolunteerActivityViewModel : ViewModel(){
+class VolunteerActivityViewModel : ViewModel() {
 
-    var orders : String? = null
+    var nextOrder: Order? = null
 
-    fun populateOrdersFromFireStore(){
-            val db = FirebaseFirestore.getInstance()
-            val docRef = db.collection("orderSets").document("currentOrderSet")
+    fun getNextOrderFromFireStore() {
+        val db = FirebaseFirestore.getInstance()
+        val docRef = db.collection("orders").document("nextOrder")
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
-                orders = documentSnapshot.get("orderList").toString()
-                Log.d("TAG", "orders: $orders")
+                nextOrder = documentSnapshot.toObject<Order>()
+                Log.d("TAG", "nextorder: ${nextOrder.toString()}.")
             }
             .addOnFailureListener {
                 Log.d("TAG", "Retrieve orders from database failed.")
             }
-
     }
+
 }

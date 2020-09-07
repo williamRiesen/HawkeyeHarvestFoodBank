@@ -18,8 +18,7 @@ class OrdersFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this.requireActivity()).get(VolunteerActivityViewModel::class.java)
-
-        viewModel.populateOrdersFromFireStore()
+//        viewModel.populateOrdersFromFireStore()
     }
 
 

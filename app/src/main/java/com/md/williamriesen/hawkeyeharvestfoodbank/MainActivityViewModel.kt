@@ -110,9 +110,9 @@ class MainActivityViewModel() : ViewModel() {
     }
 
     fun submitOrder(view: View) {
-        val thisOrder = Order(accountID, foodCountMap.value!!)
+        val thisOrder = Order( foodCountMap.value!!)
         val db = FirebaseFirestore.getInstance()
-        db.collection("orders").document().set(thisOrder)
+        db.collection("orders").document("nextOrder").set(thisOrder)
             .addOnSuccessListener {
                 Navigation.findNavController(view)
                     .navigate(R.id.action_checkoutFragment_to_doneFragment)
