@@ -1,7 +1,9 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
-
-import androidx.lifecycle.MutableLiveData
-
-data class Order(
-    val itemMap: MutableMap<String, Int> = mutableMapOf()
-)
+class Order(){
+    constructor(
+        itemMap: MutableMap<String, Int> = mutableMapOf(),
+        accountID: String
+    ) : this()
+    var itemMap: MutableMap<String, Int> = mutableMapOf()
+    var accountID = ""
+}

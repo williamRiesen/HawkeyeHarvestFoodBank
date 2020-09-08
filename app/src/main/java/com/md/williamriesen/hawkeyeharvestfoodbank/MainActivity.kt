@@ -25,14 +25,10 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
 //        viewModel.sendCatalogToFireStore()
+        viewModel.sendObjectCatalogToFireStore()
         viewModel.populateFoodCountMapFromFireStore()
-
-
-
-
-
-
-
+        viewModel.retrieveObjectCatalogFromFireStore()
+        viewModel.generateChoices()
 //        db.collection("catalogs").document("catalog").set(catalog)
 
     }

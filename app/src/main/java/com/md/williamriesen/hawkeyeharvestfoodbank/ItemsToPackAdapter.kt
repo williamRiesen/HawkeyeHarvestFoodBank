@@ -39,16 +39,17 @@ class ItemsToPackAdapter(val itemsToPackMap: MutableLiveData<MutableMap<String, 
         )
         Log.d("TAG", "textViewItemToPackName ${holder.textViewItemToPackName}")
         Log.d("TAG", "holder.view $holder.view")
+        val filteredItemsToPack = itemsToPackMap.value?.filterValues { it!=0 }
         holder.textViewItemToPackName.text =
-            itemsToPackMap.value?.toList()!![position].first
+            filteredItemsToPack?.toList()!![position].first
         holder.textViewItemToPackCount.text =
-            itemsToPackMap.value?.toList()?.get(position)?.second.toString()
+            filteredItemsToPack?.toList()?.get(position)?.second.toString()
     }
 
     override fun getItemCount(): Int {
         var size = 0
         if (itemsToPackMap.value != null) {
-            size = itemsToPackMap.value!!.size
+            size = itemsToPackMap.value?.filterValues { it!=0 }!!.size
         }
         return size
     }
