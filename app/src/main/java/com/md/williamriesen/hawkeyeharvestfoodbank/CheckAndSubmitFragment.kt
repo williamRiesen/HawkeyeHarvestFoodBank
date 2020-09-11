@@ -41,7 +41,7 @@ class CheckAndSubmitFragment : Fragment() {
         foodCountMap: MutableLiveData<MutableMap<String, Int>>,
         recyclerView: RecyclerView) {
         FirestoreRecyclerOptions.Builder<Item>()
-        adapter = ItemListAdapter(foodCountMap)
+        adapter = ItemListAdapter(foodCountMap, viewModel)
         Log.d("TAG", "recyclerView.toString $recyclerView")
         recyclerView.layoutManager = LinearLayoutManager(this.activity)
         recyclerView.adapter = adapter

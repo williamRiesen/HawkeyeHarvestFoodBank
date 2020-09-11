@@ -9,7 +9,10 @@ import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 
-class ItemListAdapter(var foodCountMap: MutableLiveData<MutableMap<String, Int>>) :
+class ItemListAdapter(
+    var foodCountMap: MutableLiveData<MutableMap<String, Int>>,
+    var viewModel: MainActivityViewModel
+) :
     RecyclerView.Adapter<ItemListAdapter.MyViewHolder>() {
     inner class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         var textViewItemName: TextView = view.findViewById(R.id.textview_item_name)
@@ -45,6 +48,13 @@ class ItemListAdapter(var foodCountMap: MutableLiveData<MutableMap<String, Int>>
         }
     }
 
+    fun checkIfOption(position: Int): Boolean{
+        val myMap = foodCountMap.value
+        val itemName = myMap!!.toList()[position].first
+        val count = myMap[itemName]
+        return viewModel.points!! > count!!
+    }
+
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -54,8 +64,22 @@ class ItemListAdapter(var foodCountMap: MutableLiveData<MutableMap<String, Int>>
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val selectedItemName = holder.textViewItemName.text
+        if (foodCountMap.value!!.toList()[position].second == 0){
+            holder.imageButtonRemove.visibility = View.INVISIBLE
+        }
+        else{
+            holder.imageButtonRemove.visibility = View.VISIBLE
+        }
         holder.textViewItemName.text = foodCountMap.value!!.toList()[position].first
         holder.textViewCount.text = foodCountMap.value!!.toList()[position].second.toString()
+        if (checkIfOption(position)){
+            holder.imageButtonAdd.visibility = View.VISIBLE
+        }
+        else{
+            holder.imageButtonAdd.visibility = View.INVISIBLE
+        }
+
+
     }
 
     override fun getItemCount(): Int {

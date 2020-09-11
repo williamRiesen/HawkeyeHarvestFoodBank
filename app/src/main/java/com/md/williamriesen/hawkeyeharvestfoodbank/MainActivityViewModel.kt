@@ -15,8 +15,9 @@ class MainActivityViewModel() : ViewModel() {
     val orderBlank: MutableLiveData<OrderBlank?>? = null
     val foodCountMap = MutableLiveData<MutableMap<String, Int>>()
     var objectCatalog: MutableMap<String, Any>? = null
-    var familySize: Any? = 0
+    var familySize: Long = 10
     lateinit var accountID: String
+    var points = familySize?.times(2)
 
     val order = foodCountMap
 
@@ -79,32 +80,32 @@ class MainActivityViewModel() : ViewModel() {
 
     fun sendObjectCatalogToFireStore() {
         val myObjectCatalog = mutableMapOf<String, Item>()
-        myObjectCatalog["1"] = Item("Pork Chops 1lb", "Meat", 1, 100, 100)
-        myObjectCatalog["2"] = Item("Pork & Bacon Sausage 1.5lb", "Meat", 1, 100, 100)
-        myObjectCatalog["3"] = Item("Ground Beef 1lb", "Meat", 1, 2, 100)
-        myObjectCatalog["4"] = Item("Sliced Cooked Ham 2lb", "Meat", 1, 1, 100)
-        myObjectCatalog["5"] = Item("Sliced Cotto Salami 2lb", "Meat", 1, 1, 100)
-        myObjectCatalog["6"] = Item("Whole Chicken 3lb", "Meat", 1, 1, 100)
-        myObjectCatalog["7"] = Item("Chicken Legs 5lb", "Meat", 1, 100, 100)
-        myObjectCatalog["8"] = Item("Whole Ham", "Meat", 2, 1, 100)
-        myObjectCatalog["9"] = Item("Catfish Fillets 2lb", "Meat", 2, 100, 100)
-        myObjectCatalog["10"] = Item("Pork Loin 4lb", "Meat", 2, 100, 100)
-        myObjectCatalog["11"] = Item("Chicken Thighs 5lb", "Meat", 2, 100, 100)
-        myObjectCatalog["12"] = Item("Pork Shoulder Roast 6lb", "Meat", 2, 100, 100)
-        myObjectCatalog["13"] = Item("Cooked Chicken Fajita 5lb", "Meat", 4, 100, 100)
-        myObjectCatalog["14"] = Item("Cooked Chicken Fillets 5lb", "Meat", 4, 100, 100)
+        myObjectCatalog["1"] = Item("Pork Chops 1lb", "Meat", 1, 100, 100, true)
+        myObjectCatalog["2"] = Item("Pork & Bacon Sausage 1.5lb", "Meat", 1, 100, 100, true)
+        myObjectCatalog["3"] = Item("Ground Beef 1lb", "Meat", 1, 2, 100, true)
+        myObjectCatalog["4"] = Item("Sliced Cooked Ham 2lb", "Meat", 1, 1, 100, true)
+        myObjectCatalog["5"] = Item("Sliced Cotto Salami 2lb", "Meat", 1, 1, 100, true)
+        myObjectCatalog["6"] = Item("Whole Chicken 3lb", "Meat", 1, 1, 100, true)
+        myObjectCatalog["7"] = Item("Chicken Legs 5lb", "Meat", 1, 100, 100, true)
+        myObjectCatalog["8"] = Item("Whole Ham", "Meat", 2, 1, 100, true)
+        myObjectCatalog["9"] = Item("Catfish Fillets 2lb", "Meat", 2, 100, 100, true)
+        myObjectCatalog["10"] = Item("Pork Loin 4lb", "Meat", 2, 100, 100, true)
+        myObjectCatalog["11"] = Item("Chicken Thighs 5lb", "Meat", 2, 100, 100, true)
+        myObjectCatalog["12"] = Item("Pork Shoulder Roast 6lb", "Meat", 2, 100, 100, true)
+        myObjectCatalog["13"] = Item("Cooked Chicken Fajita 5lb", "Meat", 4, 100, 100, true)
+        myObjectCatalog["14"] = Item("Cooked Chicken Fillets 5lb", "Meat", 4, 100, 100, true)
 
-        myObjectCatalog["15"] = Item("Spaghetti / Meatballs", "Protein", 1, 100, 100)
-        myObjectCatalog["16"] = Item("Tuna", "Protein", 1, 100, 100)
-        myObjectCatalog["17"] = Item("Beef Ravioli", "Protein", 1, 100, 100)
-        myObjectCatalog["18"] = Item("Chicken", "Protein", 1, 100, 100)
-        myObjectCatalog["19"] = Item("Peanut Butter", "Protein", 1, 100, 100)
-        myObjectCatalog["20"] = Item("Beef Stew", "Protein", 1, 100, 100)
+        myObjectCatalog["15"] = Item("Spaghetti / Meatballs", "Protein", 1, 100, 100, true)
+        myObjectCatalog["16"] = Item("Tuna", "Protein", 1, 100, 100, true)
+        myObjectCatalog["17"] = Item("Beef Ravioli", "Protein", 1, 100, 100, true)
+        myObjectCatalog["18"] = Item("Chicken", "Protein", 1, 100, 100, true)
+        myObjectCatalog["19"] = Item("Peanut Butter", "Protein", 1, 100, 100, true)
+        myObjectCatalog["20"] = Item("Beef Stew", "Protein", 1, 100, 100, true)
 
-        myObjectCatalog["21"] = Item("Carrots", "Vegetables", 1, 100, 100)
-        myObjectCatalog["22"] = Item("Potatoes", "Vegetables", 1, 100, 100)
-        myObjectCatalog["23"] = Item("Corn", "Vegetables", 1, 100, 100)
-        myObjectCatalog["24"] = Item("Green Beans", "Vegetables", 1, 100, 100)
+        myObjectCatalog["21"] = Item("Carrots", "Vegetables", 1, 100, 100, true)
+        myObjectCatalog["22"] = Item("Potatoes", "Vegetables", 1, 100, 100, true)
+        myObjectCatalog["23"] = Item("Corn", "Vegetables", 1, 100, 100, true)
+        myObjectCatalog["24"] = Item("Green Beans", "Vegetables", 1, 100, 100, true)
 
 
         val db = FirebaseFirestore.getInstance()
@@ -116,9 +117,13 @@ class MainActivityViewModel() : ViewModel() {
         val docRef = db.collection("catalogs").document("objectCatalog")
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
-                Log.d("TAG", "documentSnapshot: $documentSnapshot")
-                objectCatalog = documentSnapshot.data?.toMutableMap()
-                Log.d("TAG", "objectCatalog: $objectCatalog")
+                if (documentSnapshot.exists()) {
+                    objectCatalog = documentSnapshot.data?.toMutableMap()
+                    Log.d("TAG", "objectCatalog: $objectCatalog")
+                }
+                else{
+                    Log.d("TAG", "objectCatalog does not exist.")
+                }
             }
             .addOnFailureListener {
                 Log.d("TAG", "Retrieve objectCatalog from database failed.")
@@ -142,14 +147,19 @@ class MainActivityViewModel() : ViewModel() {
         fun removeItem(itemName: String) {
         }
 
-        fun signIn(enteredAccountID: String, context: Context, view: View): String {
+        fun isOption(itemName: String): Boolean{
+            val myMap = foodCountMap.value
+            return (points!! > myMap!![itemName]!!)
+        }
+
+        fun signIn(enteredAccountID: String, context: Context, view: View): Long? {
             accountID = enteredAccountID
-            familySize = null
+            familySize = 10
             val db = FirebaseFirestore.getInstance()
             val docRef = db.collection("accounts").document(enteredAccountID)
             docRef.get()
                 .addOnSuccessListener { documentSnapshot ->
-                    familySize = documentSnapshot["familySize"]
+                    familySize = documentSnapshot["familySize"] as Long
                     if (familySize != null) {
                         Navigation.findNavController(view)
                             .navigate(R.id.action_signInFragment_to_selectionFragment)
@@ -164,11 +174,11 @@ class MainActivityViewModel() : ViewModel() {
                 .addOnFailureListener {
                     Log.d("TAG", "Retrieve family size from database failed.")
                 }
-            return familySize.toString()
+            return familySize
         }
 
         fun submitOrder(view: View) {
-            val thisOrder = Order(foodCountMap.value!!, accountID)
+            val thisOrder = Order(foodCountMap.value!!)
             val db = FirebaseFirestore.getInstance()
             db.collection("orders").document("nextOrder").set(thisOrder)
                 .addOnSuccessListener {

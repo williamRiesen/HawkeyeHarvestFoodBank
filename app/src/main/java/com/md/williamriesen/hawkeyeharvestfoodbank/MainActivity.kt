@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_checkout.view.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
 //        viewModel.sendCatalogToFireStore()
-        viewModel.sendObjectCatalogToFireStore()
+//        viewModel.sendObjectCatalogToFireStore()
         viewModel.populateFoodCountMapFromFireStore()
         viewModel.retrieveObjectCatalogFromFireStore()
         viewModel.generateChoices()
@@ -55,14 +56,17 @@ class MainActivity : AppCompatActivity() {
     fun onAddItem(view: android.view.View) {
         val itemName = findViewById<TextView>(R.id.textview_item_name).text.toString()
         viewModel.addItem(itemName)
-//        adapter.notifyDataSetChanged()
+        view.recyclerviewChoices.adapter?.notifyDataSetChanged()
     }
+
+
 
     fun onRemoveItem(view: android.view.View) {
         val itemName = findViewById<TextView>(R.id.textview_item_name).text.toString()
         val updatedCount = viewModel.removeItem(itemName)
         val textViewCount = findViewById<TextView>(R.id.textView_count)
         textViewCount.text = updatedCount.toString()
+        view.recyclerviewChoices.adapter?.notifyDataSetChanged()
     }
 
     fun onCartButtonClick(view: View) {
@@ -74,7 +78,7 @@ class MainActivity : AppCompatActivity() {
 
         val editTextAccountID = findViewById<EditText>(R.id.editTextAccountID)
          val accountID = editTextAccountID.text.toString()
-        val signInResult = viewModel.signIn(accountID, applicationContext, view)
+        viewModel.familySize = viewModel.signIn(accountID, applicationContext, view)!!
     }
 
     fun onSubmitButtonClick(view: View){

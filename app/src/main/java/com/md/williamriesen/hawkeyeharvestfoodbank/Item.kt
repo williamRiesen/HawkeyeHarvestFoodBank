@@ -5,4 +5,5 @@ class Item (
     var category: String,
     var pointValue: Int,
     var limit: Int,
-    var numberAvailable: Int)
+    var numberAvailable: Int,
+    var isOption: Boolean)
