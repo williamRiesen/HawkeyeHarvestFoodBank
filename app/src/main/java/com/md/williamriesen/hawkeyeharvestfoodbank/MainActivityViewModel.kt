@@ -14,10 +14,13 @@ class MainActivityViewModel() : ViewModel() {
     private lateinit var retrievedCatalog: Catalog
     val orderBlank: MutableLiveData<OrderBlank?>? = null
     val foodCountMap = MutableLiveData<MutableMap<String, Int>>()
+    val foodCountMap2 = MutableLiveData<MutableMap<String, Int>>()
     var objectCatalog: MutableMap<String, Any>? = null
-    var familySize: Long = 10
+    var familySize: Long? = null
     lateinit var accountID: String
-    var points = familySize?.times(2)
+
+    var points: Int? = null
+
 
     val order = foodCountMap
 
@@ -79,34 +82,36 @@ class MainActivityViewModel() : ViewModel() {
     }
 
     fun sendObjectCatalogToFireStore() {
-        val myObjectCatalog = mutableMapOf<String, Item>()
-        myObjectCatalog["1"] = Item("Pork Chops 1lb", "Meat", 1, 100, 100, true)
-        myObjectCatalog["2"] = Item("Pork & Bacon Sausage 1.5lb", "Meat", 1, 100, 100, true)
-        myObjectCatalog["3"] = Item("Ground Beef 1lb", "Meat", 1, 2, 100, true)
-        myObjectCatalog["4"] = Item("Sliced Cooked Ham 2lb", "Meat", 1, 1, 100, true)
-        myObjectCatalog["5"] = Item("Sliced Cotto Salami 2lb", "Meat", 1, 1, 100, true)
-        myObjectCatalog["6"] = Item("Whole Chicken 3lb", "Meat", 1, 1, 100, true)
-        myObjectCatalog["7"] = Item("Chicken Legs 5lb", "Meat", 1, 100, 100, true)
-        myObjectCatalog["8"] = Item("Whole Ham", "Meat", 2, 1, 100, true)
-        myObjectCatalog["9"] = Item("Catfish Fillets 2lb", "Meat", 2, 100, 100, true)
-        myObjectCatalog["10"] = Item("Pork Loin 4lb", "Meat", 2, 100, 100, true)
-        myObjectCatalog["11"] = Item("Chicken Thighs 5lb", "Meat", 2, 100, 100, true)
-        myObjectCatalog["12"] = Item("Pork Shoulder Roast 6lb", "Meat", 2, 100, 100, true)
-        myObjectCatalog["13"] = Item("Cooked Chicken Fajita 5lb", "Meat", 4, 100, 100, true)
-        myObjectCatalog["14"] = Item("Cooked Chicken Fillets 5lb", "Meat", 4, 100, 100, true)
+        val myObjectCatalog = ObjectCatalog()
+        myObjectCatalog.catalogName = "myCatalog"
+        myObjectCatalog.itemList = listOf(
+            Item(1, "Pork Chops 1lb", "Meat", 1, 100, 100, true),
+            Item(2, "Pork & Bacon Sausage 1.5lb", "Meat", 1, 100, 100, true),
+            Item(3, "Ground Beef 1lb", "Meat", 1, 2, 100, true),
+            Item(4, "Sliced Cooked Ham 2lb", "Meat", 1, 1, 100, true),
+            Item(5, "Sliced Cotto Salami 2lb", "Meat", 1, 1, 100, true),
+            Item(6, "Whole Chicken 3lb", "Meat", 1, 1, 100, true),
+            Item(7, "Chicken Legs 5lb", "Meat", 1, 100, 100, true),
+            Item(8, "Whole Ham", "Meat", 2, 1, 100, true),
+            Item(9, "Catfish Fillets 2lb", "Meat", 2, 100, 100, true),
+            Item(10, "Pork Loin 4lb", "Meat", 2, 100, 100, true),
+            Item(11, "Chicken Thighs 5lb", "Meat", 2, 100, 100, true),
+            Item(12, "Pork Shoulder Roast 6lb", "Meat", 2, 100, 100, true),
+            Item(13, "Cooked Chicken Fajita 5lb", "Meat", 4, 100, 100, true),
+            Item(14, "Cooked Chicken Fillets 5lb", "Meat", 4, 100, 100, true),
 
-        myObjectCatalog["15"] = Item("Spaghetti / Meatballs", "Protein", 1, 100, 100, true)
-        myObjectCatalog["16"] = Item("Tuna", "Protein", 1, 100, 100, true)
-        myObjectCatalog["17"] = Item("Beef Ravioli", "Protein", 1, 100, 100, true)
-        myObjectCatalog["18"] = Item("Chicken", "Protein", 1, 100, 100, true)
-        myObjectCatalog["19"] = Item("Peanut Butter", "Protein", 1, 100, 100, true)
-        myObjectCatalog["20"] = Item("Beef Stew", "Protein", 1, 100, 100, true)
+            Item(15, "Spaghetti / Meatballs", "Protein", 1, 100, 100, true),
+            Item(16, "Tuna", "Protein", 1, 100, 100, true),
+            Item(17, "Beef Ravioli", "Protein", 1, 100, 100, true),
+            Item(18, "Chicken", "Protein", 1, 100, 100, true),
+            Item(19, "Peanut Butter", "Protein", 1, 100, 100, true),
+            Item(20, "Beef Stew", "Protein", 1, 100, 100, true),
 
-        myObjectCatalog["21"] = Item("Carrots", "Vegetables", 1, 100, 100, true)
-        myObjectCatalog["22"] = Item("Potatoes", "Vegetables", 1, 100, 100, true)
-        myObjectCatalog["23"] = Item("Corn", "Vegetables", 1, 100, 100, true)
-        myObjectCatalog["24"] = Item("Green Beans", "Vegetables", 1, 100, 100, true)
-
+            Item(21, "Carrots", "Vegetables", 1, 100, 100, true),
+            Item(22, "Potatoes", "Vegetables", 1, 100, 100, true),
+            Item(23, "Corn", "Vegetables", 1, 100, 100, true),
+            Item(24, "Green Beans", "Vegetables", 1, 100, 100, true)
+        )
 
         val db = FirebaseFirestore.getInstance()
         db.collection("catalogs").document("objectCatalog").set(myObjectCatalog)
@@ -117,13 +122,11 @@ class MainActivityViewModel() : ViewModel() {
         val docRef = db.collection("catalogs").document("objectCatalog")
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
-                if (documentSnapshot.exists()) {
-                    objectCatalog = documentSnapshot.data?.toMutableMap()
-                    Log.d("TAG", "objectCatalog: $objectCatalog")
+                val myObjectCatalog = documentSnapshot.toObject<ObjectCatalog>()
+                myObjectCatalog?.itemList?.forEach {
+                    foodCountMap.value?.set(it.name!!, 0)
                 }
-                else{
-                    Log.d("TAG", "objectCatalog does not exist.")
-                }
+                Log.d("TAG", "myFoodCountMap ${foodCountMap.value}")
             }
             .addOnFailureListener {
                 Log.d("TAG", "Retrieve objectCatalog from database failed.")
@@ -139,51 +142,51 @@ class MainActivityViewModel() : ViewModel() {
         }
     }
 
-        fun addItem(itemName: String) {
-            val myMap = foodCountMap.value
-            myMap!![itemName] = myMap[itemName]!! + 1
-        }
-
-        fun removeItem(itemName: String) {
-        }
-
-        fun isOption(itemName: String): Boolean{
-            val myMap = foodCountMap.value
-            return (points!! > myMap!![itemName]!!)
-        }
-
-        fun signIn(enteredAccountID: String, context: Context, view: View): Long? {
-            accountID = enteredAccountID
-            familySize = 10
-            val db = FirebaseFirestore.getInstance()
-            val docRef = db.collection("accounts").document(enteredAccountID)
-            docRef.get()
-                .addOnSuccessListener { documentSnapshot ->
-                    familySize = documentSnapshot["familySize"] as Long
-                    if (familySize != null) {
-                        Navigation.findNavController(view)
-                            .navigate(R.id.action_signInFragment_to_selectionFragment)
-                    } else {
-                        Toast.makeText(
-                            context,
-                            "Sorry, Not a valid account.",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                }
-                .addOnFailureListener {
-                    Log.d("TAG", "Retrieve family size from database failed.")
-                }
-            return familySize
-        }
-
-        fun submitOrder(view: View) {
-            val thisOrder = Order(foodCountMap.value!!)
-            val db = FirebaseFirestore.getInstance()
-            db.collection("orders").document("nextOrder").set(thisOrder)
-                .addOnSuccessListener {
-                    Navigation.findNavController(view)
-                        .navigate(R.id.action_checkoutFragment_to_doneFragment)
-                }
-        }
+    fun addItem(itemName: String) {
+        val myMap = foodCountMap.value
+        myMap!![itemName] = myMap[itemName]!! + 1
     }
+
+    fun removeItem(itemName: String) {
+    }
+
+    fun isOption(itemName: String): Boolean {
+        val myMap = foodCountMap.value
+        return (points!! > myMap!![itemName]!!)
+    }
+
+    fun signIn(enteredAccountID: String, context: Context, view: View) {
+        accountID = enteredAccountID
+        familySize = null
+        val db = FirebaseFirestore.getInstance()
+        val docRef = db.collection("accounts").document(enteredAccountID)
+        docRef.get()
+            .addOnSuccessListener { documentSnapshot ->
+                familySize = documentSnapshot["familySize"] as Long
+                if (familySize != null) {
+                    points = (familySize!! * 2).toInt()
+                    Navigation.findNavController(view)
+                        .navigate(R.id.action_signInFragment_to_selectionFragment)
+                } else {
+                    Toast.makeText(
+                        context,
+                        "Sorry, Not a valid account.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+            .addOnFailureListener {
+                Log.d("TAG", "Retrieve family size from database failed.")
+            }
+    }
+
+    fun submitOrder(view: View) {
+        val thisOrder = Order(foodCountMap.value!!)
+        val db = FirebaseFirestore.getInstance()
+        db.collection("orders").document("nextOrder").set(thisOrder)
+            .addOnSuccessListener {
+                Navigation.findNavController(view)
+                    .navigate(R.id.action_checkoutFragment_to_doneFragment)
+            }
+    }
+}

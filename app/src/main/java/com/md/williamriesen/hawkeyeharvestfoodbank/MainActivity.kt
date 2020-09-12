@@ -27,11 +27,10 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
 //        viewModel.sendCatalogToFireStore()
 //        viewModel.sendObjectCatalogToFireStore()
-        viewModel.populateFoodCountMapFromFireStore()
+//        viewModel.populateFoodCountMapFromFireStore()
         viewModel.retrieveObjectCatalogFromFireStore()
         viewModel.generateChoices()
 //        db.collection("catalogs").document("catalog").set(catalog)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -59,8 +58,6 @@ class MainActivity : AppCompatActivity() {
         view.recyclerviewChoices.adapter?.notifyDataSetChanged()
     }
 
-
-
     fun onRemoveItem(view: android.view.View) {
         val itemName = findViewById<TextView>(R.id.textview_item_name).text.toString()
         val updatedCount = viewModel.removeItem(itemName)
@@ -78,12 +75,13 @@ class MainActivity : AppCompatActivity() {
 
         val editTextAccountID = findViewById<EditText>(R.id.editTextAccountID)
          val accountID = editTextAccountID.text.toString()
-        viewModel.familySize = viewModel.signIn(accountID, applicationContext, view)!!
+        viewModel.signIn(accountID, applicationContext, view)!!
     }
 
     fun onSubmitButtonClick(view: View){
         viewModel.submitOrder(view)
     }
+
     fun onDoneButtonClick(view: View){
         Navigation.findNavController(view).navigate(R.id.action_doneFragment_to_signInFragment)
         }

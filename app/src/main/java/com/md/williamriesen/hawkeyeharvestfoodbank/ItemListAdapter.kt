@@ -18,10 +18,10 @@ class ItemListAdapter(
         var textViewItemName: TextView = view.findViewById(R.id.textview_item_name)
         var textViewCount: TextView = view.findViewById(R.id.textView_count)
         var imageButtonAdd: ImageButton = view.findViewById(R.id.imageButtonAdd)
-        var imageButtonRemove: ImageButton=view.findViewById(R.id.imageButtonRemove)
+        var imageButtonRemove: ImageButton = view.findViewById(R.id.imageButtonRemove)
 
         init {
-            imageButtonAdd.setOnClickListener{
+            imageButtonAdd.setOnClickListener {
                 incrementCountOfItem(adapterPosition)
             }
             imageButtonRemove.setOnClickListener {
@@ -30,31 +30,34 @@ class ItemListAdapter(
         }
     }
 
-    fun incrementCountOfItem(position: Int){
+    fun incrementCountOfItem(position: Int) {
         val myMap = foodCountMap.value
         val itemName = myMap!!.toList()[position].first
         Log.d("TAG", "Position $position, Item Name $itemName")
         myMap[itemName] = myMap[itemName]!! + 1
         foodCountMap.value = myMap
+        viewModel.points = viewModel.points?.minus(1)
     }
 
-    fun decrementCountOfItem(position: Int){
+    fun decrementCountOfItem(position: Int) {
         val myMap = foodCountMap.value
         val itemName = myMap!!.toList()[position].first
         Log.d("TAG", "Position $position, Item Name $itemName")
         if (myMap[itemName]!! > 0) {
             myMap[itemName] = myMap[itemName]!! - 1
             foodCountMap.value = myMap
+            viewModel.points = viewModel.points?.plus(1)
         }
     }
 
-    fun checkIfOption(position: Int): Boolean{
+    fun checkIfOption(position: Int): Boolean {
         val myMap = foodCountMap.value
         val itemName = myMap!!.toList()[position].first
-        val count = myMap[itemName]
-        return viewModel.points!! > count!!
+        val pointsNeeded = 1
+        return if (viewModel.points != null) {
+            viewModel.points!! >= pointsNeeded
+        } else false
     }
-
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -64,18 +67,16 @@ class ItemListAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val selectedItemName = holder.textViewItemName.text
-        if (foodCountMap.value!!.toList()[position].second == 0){
+        if (foodCountMap.value!!.toList()[position].second == 0) {
             holder.imageButtonRemove.visibility = View.INVISIBLE
-        }
-        else{
+        } else {
             holder.imageButtonRemove.visibility = View.VISIBLE
         }
         holder.textViewItemName.text = foodCountMap.value!!.toList()[position].first
         holder.textViewCount.text = foodCountMap.value!!.toList()[position].second.toString()
-        if (checkIfOption(position)){
+        if (checkIfOption(position)) {
             holder.imageButtonAdd.visibility = View.VISIBLE
-        }
-        else{
+        } else {
             holder.imageButtonAdd.visibility = View.INVISIBLE
         }
 
