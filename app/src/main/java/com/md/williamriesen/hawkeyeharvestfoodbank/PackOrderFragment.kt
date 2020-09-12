@@ -25,7 +25,8 @@ class PackOrderFragment : Fragment() {
         viewModel = ViewModelProviders.of(this.requireActivity())
             .get(VolunteerActivityViewModel::class.java)
         viewModel.getNextOrderFromFireStore()
-        viewModel.itemsToPackMap.observe(this, Observer { adapter.notifyDataSetChanged() })
+        viewModel.itemsToPackList.observe(this, Observer { adapter.notifyDataSetChanged() })
+//        viewModel.itemsToPackMap.observe(this, Observer { adapter.notifyDataSetChanged() })
     }
 
 
@@ -36,14 +37,14 @@ class PackOrderFragment : Fragment() {
         Log.d("TAG", "onCreateView called.")
         val packOrderView = inflater.inflate(R.layout.fragment_pack_order, container, false)
         val recyclerView = packOrderView.findViewById<RecyclerView>(R.id.recyclerviewItemsToPack)
-        setUpRecyclerView(viewModel.itemsToPackMap, recyclerView)
+        setUpRecyclerView(viewModel.itemsToPackList, recyclerView)
         Log.d("TAG", "onCreateView Complete")
         return packOrderView
     }
 
-    private fun setUpRecyclerView(itemsToPackMap: MutableLiveData<MutableMap<String, Int>>, recyclerView: RecyclerView) {
+    private fun setUpRecyclerView(itemsToPackList: MutableLiveData<MutableList<Item>>, recyclerView: RecyclerView) {
         FirestoreRecyclerOptions.Builder<Item>()
-        adapter = ItemsToPackAdapter(itemsToPackMap)
+        adapter = ItemsToPackAdapter(itemsToPackList)
         recyclerView.layoutManager = LinearLayoutManager(this.activity)
         recyclerView.adapter = adapter
     }

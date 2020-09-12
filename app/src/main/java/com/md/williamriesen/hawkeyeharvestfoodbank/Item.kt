@@ -8,6 +8,7 @@ class Item() {
     var limit: Int? = null
     var numberAvailable: Int? = null
     var isOption: Boolean? = null
+    var qtyOrdered: Int = 0
 
     constructor(a: Int, b: String, c: String, d: Int, e: Int, f: Int, g: Boolean) : this() {
         this.itemID = a

@@ -20,7 +20,8 @@ class CheckoutFragment : Fragment() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this.requireActivity()).get(MainActivityViewModel::class.java)
 //        viewModel.populateFoodCountMapFromFireStore()
-        viewModel.foodCountMap.observe(this, Observer {adapter.notifyDataSetChanged() })
+        viewModel.itemList.observe(this, Observer { adapter.notifyDataSetChanged() })
+//        viewModel.foodCountMap.observe(this, Observer {adapter.notifyDataSetChanged() })
     }
 
 
@@ -30,13 +31,13 @@ class CheckoutFragment : Fragment() {
     ): View? {
         val checkoutView = inflater.inflate(R.layout.fragment_checkout, container, false)
         val recyclerView = checkoutView.findViewById<RecyclerView>(R.id.recyclerviewChoices)
-        setUpRecyclerView(viewModel.order, recyclerView)
+        setUpRecyclerView(viewModel.itemList, recyclerView)
         return checkoutView
     }
 
-    private fun setUpRecyclerView(myMap: MutableLiveData<MutableMap<String, Int>>, recyclerView:RecyclerView) {
+    private fun setUpRecyclerView(myList: MutableLiveData<MutableList<Item>>, recyclerView:RecyclerView) {
         FirestoreRecyclerOptions.Builder<Item>()
-        adapter = CheckoutAdapter(myMap)
+        adapter = CheckoutAdapter(myList)
         recyclerView.layoutManager = LinearLayoutManager(this.activity)
         recyclerView.adapter = adapter
     }

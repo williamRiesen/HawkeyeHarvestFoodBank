@@ -9,7 +9,7 @@ import com.google.firebase.firestore.ktx.toObject
 class VolunteerActivityViewModel : ViewModel() {
 
     var nextOrder: MutableLiveData<Order>? = null
-    var itemsToPackMap = MutableLiveData<MutableMap<String, Int>>()
+    var itemsToPackList = MutableLiveData<MutableList<Item>>()
 
     fun getNextOrderFromFireStore() {
         val db = FirebaseFirestore.getInstance()
@@ -17,13 +17,12 @@ class VolunteerActivityViewModel : ViewModel() {
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
                 val nextOrder = documentSnapshot.toObject<Order>()
-                val myMap = nextOrder?.itemMap
-                itemsToPackMap.value = myMap
-                Log.d("TAG", "nextorder: ${nextOrder.toString()}.")
+                val myList = nextOrder?.itemList
+                itemsToPackList.value = myList
+                Log.d("TAG", "nextOrder: ${nextOrder.toString()}.")
             }
             .addOnFailureListener {
                 Log.d("TAG", "Retrieve orders from database failed.")
             }
     }
-
 }

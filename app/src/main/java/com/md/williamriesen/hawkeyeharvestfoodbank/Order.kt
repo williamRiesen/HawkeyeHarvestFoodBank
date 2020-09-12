@@ -1,8 +1,8 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 class Order() {
-    var itemMap =  mutableMapOf<String, Int>()
+    var itemList =  mutableListOf<Item>()
 
-    constructor(itemMapArg: MutableMap<String, Int>) : this() {
-        itemMap = itemMapArg
+    constructor(itemListArg: MutableList<Item> ) : this() {
+        itemList = itemListArg
     }
 }

@@ -13,8 +13,8 @@ import com.google.firebase.firestore.ktx.toObject
 class MainActivityViewModel() : ViewModel() {
     private lateinit var retrievedCatalog: Catalog
     val orderBlank: MutableLiveData<OrderBlank?>? = null
-    val foodCountMap = MutableLiveData<MutableMap<String, Int>>()
-    val foodCountMap2 = MutableLiveData<MutableMap<String, Int>>()
+//    val foodCountMap = MutableLiveData<MutableMap<String, Int>>()
+    val itemList = MutableLiveData<MutableList<Item>>()
     var objectCatalog: MutableMap<String, Any>? = null
     var familySize: Long? = null
     lateinit var accountID: String
@@ -22,44 +22,44 @@ class MainActivityViewModel() : ViewModel() {
     var points: Int? = null
 
 
-    val order = foodCountMap
+//    val order = foodCountMap
 
-    fun populateFoodCountMapFromCode() {
-        if (foodCountMap.value == null) {
-            val myMap = mutableMapOf<String, Int>(
-                "Ground Beef 1lb" to 0,
-                "Sliced Cooked Ham 2lb" to 0,
-                "Sliced Cotto Salami 2lb" to 0,
-                "Whole Chicken 3lb" to 0,
-                "Chicken Legs 5lb" to 0,
-                "Whole Ham" to 0,
-                "Catfish Fillets 2lb" to 0,
-                "Pork Loin 4lb" to 0,
-                "Chicken Thighs 5lb" to 0,
-                "Pork Shoulder Roast 6lb" to 0,
-                "Cooked Chicken Fajita 5lb" to 0,
-                "Cooked Chicken Fillets 5lb" to 0
-            )
-            foodCountMap.value = myMap
-        }
-    }
+//    fun populateFoodCountMapFromCode() {
+//        if (foodCountMap.value == null) {
+//            val myMap = mutableMapOf<String, Int>(
+//                "Ground Beef 1lb" to 0,
+//                "Sliced Cooked Ham 2lb" to 0,
+//                "Sliced Cotto Salami 2lb" to 0,
+//                "Whole Chicken 3lb" to 0,
+//                "Chicken Legs 5lb" to 0,
+//                "Whole Ham" to 0,
+//                "Catfish Fillets 2lb" to 0,
+//                "Pork Loin 4lb" to 0,
+//                "Chicken Thighs 5lb" to 0,
+//                "Pork Shoulder Roast 6lb" to 0,
+//                "Cooked Chicken Fajita 5lb" to 0,
+//                "Cooked Chicken Fillets 5lb" to 0
+//            )
+//            foodCountMap.value = myMap
+//        }
+//    }
 
-    fun populateFoodCountMapFromFireStore() {
-        if (foodCountMap.value == null) {
-            val db = FirebaseFirestore.getInstance()
-            val docRef = db.collection("catalogs").document("catalog")
-            docRef.get()
-                .addOnSuccessListener { documentSnapshot ->
-                    val catalog = documentSnapshot.toObject<Catalog>()
-                    Log.d("TAG", "catalog successfully retrieved.")
-                    val myMap = catalog?.itemList
-                    foodCountMap.value = myMap
-                }
-                .addOnFailureListener {
-                    Log.d("TAG", "Retrieve from database failed.")
-                }
-        }
-    }
+//    fun populateFoodCountMapFromFireStore() {
+//        if (foodCountMap.value == null) {
+//            val db = FirebaseFirestore.getInstance()
+//            val docRef = db.collection("catalogs").document("catalog")
+//            docRef.get()
+//                .addOnSuccessListener { documentSnapshot ->
+//                    val catalog = documentSnapshot.toObject<Catalog>()
+//                    Log.d("TAG", "catalog successfully retrieved.")
+//                    val myMap = catalog?.itemList
+//                    foodCountMap.value = myMap
+//                }
+//                .addOnFailureListener {
+//                    Log.d("TAG", "Retrieve from database failed.")
+//                }
+//        }
+//    }
 
     fun sendCatalogToFireStore() {
         val myMap = mutableMapOf<String, Int>(
@@ -123,10 +123,11 @@ class MainActivityViewModel() : ViewModel() {
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
                 val myObjectCatalog = documentSnapshot.toObject<ObjectCatalog>()
-                myObjectCatalog?.itemList?.forEach {
-                    foodCountMap.value?.set(it.name!!, 0)
-                }
-                Log.d("TAG", "myFoodCountMap ${foodCountMap.value}")
+//                myObjectCatalog?.itemList?.forEach {
+//                    foodCountMap.value?.set(it.name!!, 0)
+//                }
+                itemList.value = myObjectCatalog?.itemList as MutableList<Item>?
+                Log.d("TAG", "myFoodCountMap ${itemList.value}")
             }
             .addOnFailureListener {
                 Log.d("TAG", "Retrieve objectCatalog from database failed.")
@@ -143,16 +144,29 @@ class MainActivityViewModel() : ViewModel() {
     }
 
     fun addItem(itemName: String) {
-        val myMap = foodCountMap.value
-        myMap!![itemName] = myMap[itemName]!! + 1
+        val myList = itemList.value
+        val selectedItem = myList?.find {
+            it.name == itemName
+        }
+        selectedItem?.qtyOrdered = selectedItem?.qtyOrdered?.plus(1)!!
+
+
+//
+//        val myMap = foodCountMap.value
+//        myMap!![itemName] = myMap[itemName]!! + 1
     }
 
     fun removeItem(itemName: String) {
     }
 
     fun isOption(itemName: String): Boolean {
-        val myMap = foodCountMap.value
-        return (points!! > myMap!![itemName]!!)
+        val myList = itemList.value
+        val selectedItem = myList?.find {
+            it.name == itemName
+        }
+        return points!! > selectedItem?.qtyOrdered!!
+
+//        return (points!! > myMap!![itemName]!!)
     }
 
     fun signIn(enteredAccountID: String, context: Context, view: View) {
@@ -181,7 +195,7 @@ class MainActivityViewModel() : ViewModel() {
     }
 
     fun submitOrder(view: View) {
-        val thisOrder = Order(foodCountMap.value!!)
+        val thisOrder = Order(itemList.value!!)
         val db = FirebaseFirestore.getInstance()
         db.collection("orders").document("nextOrder").set(thisOrder)
             .addOnSuccessListener {
