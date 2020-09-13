@@ -25,12 +25,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
-//        viewModel.sendCatalogToFireStore()
-//        viewModel.sendObjectCatalogToFireStore()
-//        viewModel.populateFoodCountMapFromFireStore()
         viewModel.retrieveObjectCatalogFromFireStore()
         viewModel.generateChoices()
-//        db.collection("catalogs").document("catalog").set(catalog)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

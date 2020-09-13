@@ -1,13 +1,20 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.annotation.ColorInt
+import androidx.core.content.res.ResourcesCompat.getColor
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.google.rpc.context.AttributeContext
+import com.md.williamriesen.hawkeyeharvestfoodbank.R.*
+import com.md.williamriesen.hawkeyeharvestfoodbank.R.color.*
+import io.grpc.internal.SharedResourceHolder
 
 class ItemListAdapter(
     var itemList: MutableLiveData<MutableList<Item>>,
@@ -15,10 +22,10 @@ class ItemListAdapter(
 ) :
     RecyclerView.Adapter<ItemListAdapter.MyViewHolder>() {
     inner class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        var textViewItemName: TextView = view.findViewById(R.id.textview_item_name)
-        var textViewCount: TextView = view.findViewById(R.id.textView_count)
-        var imageButtonAdd: ImageButton = view.findViewById(R.id.imageButtonAdd)
-        var imageButtonRemove: ImageButton = view.findViewById(R.id.imageButtonRemove)
+        var textViewItemName: TextView = view.findViewById(id.textview_item_name)
+        var textViewCount: TextView = view.findViewById(id.textView_count)
+        var imageButtonAdd: ImageButton = view.findViewById(id.imageButtonAdd)
+        var imageButtonRemove: ImageButton = view.findViewById(id.imageButtonRemove)
 
         init {
             imageButtonAdd.setOnClickListener {
@@ -60,28 +67,50 @@ class ItemListAdapter(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val v: View = LayoutInflater.from(parent.context).inflate(R.layout.item, parent, false)
+        val v: View = LayoutInflater.from(parent.context).inflate(layout.item, parent, false)
         return MyViewHolder(v)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
-        if (itemList.value?.get(position)!!.qtyOrdered == 0) {
-
-            holder.imageButtonRemove.visibility = View.INVISIBLE
+        val isCategory =
+            itemList.value!![position].name == itemList.value!![position].category
+        if (isCategory) {
+            formatAsCategory(holder, position)
         } else {
-            holder.imageButtonRemove.visibility = View.VISIBLE
+            formatAsItem(holder)
+            if (itemList.value?.get(position)!!.qtyOrdered == 0) {
+                holder.imageButtonRemove.visibility = View.INVISIBLE
+            } else {
+                holder.imageButtonRemove.visibility = View.VISIBLE
+            }
+            holder.textViewItemName.text = itemList.value!![position].name
+            holder.textViewCount.text = itemList.value!![position].qtyOrdered.toString()
+            if (checkIfOption(position)) {
+                holder.imageButtonAdd.visibility = View.VISIBLE
+            } else {
+                holder.imageButtonAdd.visibility = View.INVISIBLE
+            }
         }
+    }
+
+    private fun formatAsCategory(holder: MyViewHolder, position: Int) {
+        holder.imageButtonRemove.visibility = View.INVISIBLE
+        holder.imageButtonAdd.visibility = View.INVISIBLE
+        holder.textViewCount.visibility = View.INVISIBLE
+        holder.textViewItemName.textSize = 32F
+        holder.textViewItemName.setTextColor(Color.BLACK)
+        holder.textViewItemName.setBackgroundColor(Color.GRAY)
         holder.textViewItemName.text = itemList.value!![position].name
+    }
 
-        holder.textViewCount.text = itemList.value!![position].qtyOrdered.toString()
-        Log.d("TAG", "position: $position, name: ${itemList.value!![position].name}")
-
-        if (checkIfOption(position)) {
-            holder.imageButtonAdd.visibility = View.VISIBLE
-        } else {
-            holder.imageButtonAdd.visibility = View.INVISIBLE
-        }
+    private fun formatAsItem(holder: MyViewHolder) {
+//        holder.imageButtonRemove.visibility = View.VISIBLE
+//        holder.imageButtonAdd.visibility = View.VISIBLE
+        holder.textViewCount.visibility = View.VISIBLE
+        holder.textViewItemName.textSize = 20F
+        holder.textViewItemName.setTextColor(Color.parseColor("#630293"))
+        holder.textViewItemName.setBackgroundColor(Color.WHITE)
     }
 
     override fun getItemCount(): Int {

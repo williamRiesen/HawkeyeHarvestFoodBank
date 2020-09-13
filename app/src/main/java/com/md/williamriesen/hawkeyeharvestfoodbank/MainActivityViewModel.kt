@@ -123,15 +123,24 @@ class MainActivityViewModel() : ViewModel() {
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
                 val myObjectCatalog = documentSnapshot.toObject<ObjectCatalog>()
-//                myObjectCatalog?.itemList?.forEach {
-//                    foodCountMap.value?.set(it.name!!, 0)
-//                }
                 itemList.value = myObjectCatalog?.itemList as MutableList<Item>?
-                Log.d("TAG", "myFoodCountMap ${itemList.value}")
+                determineCategories()
+                itemList.value?.sortWith(
+                    compareBy<Item>{it.category}.thenBy{it.itemID}
+                )
             }
             .addOnFailureListener {
                 Log.d("TAG", "Retrieve objectCatalog from database failed.")
             }
+    }
+
+    fun determineCategories() {
+        val categories = itemList.value?.distinctBy { it.category }
+        categories?.forEach {item ->
+            Log.d("TAG", "categories: ${item.category}")
+            val newCategoryItem = Item(0, item.category!!, item.category!!, 0, 0, 0, true)
+            itemList.value?.add(newCategoryItem)
+        }
     }
 
     fun generateChoices() {
