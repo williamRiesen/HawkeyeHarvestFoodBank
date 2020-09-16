@@ -46,6 +46,10 @@ class ItemListAdapter(
         itemList.value = myList
         viewModel.points = viewModel.points?.minus(1)
         val selectedCategory = myList[position].category
+        val viewModelCategory = viewModel.categoriesList.value!!.find {
+            it.name == selectedCategory
+        }
+        viewModelCategory!!.pointsUsed = viewModelCategory.pointsUsed + 1
         val categoryHeading = myList.find {
             it.name == selectedCategory
         }
@@ -66,13 +70,12 @@ class ItemListAdapter(
         }
     }
 
-        fun checkIfOption(position: Int): Boolean {
-            val pointsNeeded = 1
-            return if (viewModel.points != null) {
-                viewModel.points!! >= pointsNeeded
-            } else false
-        }
-
+    fun checkIfOption(position: Int): Boolean {
+        val pointsNeeded = 1
+        return if (viewModel.points != null) {
+            viewModel.points!! >= pointsNeeded
+        } else false
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -86,11 +89,14 @@ class ItemListAdapter(
             itemList.value!![position].name == itemList.value!![position].category
         if (isCategory) {
             formatAsCategory(holder, position)
-            holder.textViewItemName.text = itemList.value!![position].name
+            val thisCategory = itemList.value!![position].name
+            holder.textViewItemName.text = thisCategory
             holder.textViewPointsAllocated.text =
                 itemList.value!![position].categoryPointsAllocated.toString()
-            holder.textViewPointsUsed.text =
-                itemList.value!![position].categoryPointsUsed.toString()
+            holder.textViewPointsUsed.text = itemList.value!!.find { item ->
+                    item.name == thisCategory
+                }!!.categoryPointsUsed.toString()
+//                itemList.value!![position].categoryPointsUsed.toString()
         } else {
             formatAsItem(holder)
             if (itemList.value?.get(position)!!.qtyOrdered == 0) {
