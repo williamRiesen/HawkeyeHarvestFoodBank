@@ -13,53 +13,17 @@ import com.google.firebase.firestore.ktx.toObject
 class MainActivityViewModel() : ViewModel() {
     private lateinit var retrievedCatalog: Catalog
     val orderBlank: MutableLiveData<OrderBlank?>? = null
-//    val foodCountMap = MutableLiveData<MutableMap<String, Int>>()
     val itemList = MutableLiveData<MutableList<Item>>()
+    val categoriesList = MutableLiveData<MutableList<Category>>()
     var objectCatalog: MutableMap<String, Any>? = null
-    var familySize: Long? = null
+    private var familySizeFromFireStore: Long? = null
+    var familySize = 0
     lateinit var accountID: String
 
     var points: Int? = null
+    var categories: MutableLiveData<MutableList<Category>> =
+        MutableLiveData(mutableListOf<Category>())
 
-
-//    val order = foodCountMap
-
-//    fun populateFoodCountMapFromCode() {
-//        if (foodCountMap.value == null) {
-//            val myMap = mutableMapOf<String, Int>(
-//                "Ground Beef 1lb" to 0,
-//                "Sliced Cooked Ham 2lb" to 0,
-//                "Sliced Cotto Salami 2lb" to 0,
-//                "Whole Chicken 3lb" to 0,
-//                "Chicken Legs 5lb" to 0,
-//                "Whole Ham" to 0,
-//                "Catfish Fillets 2lb" to 0,
-//                "Pork Loin 4lb" to 0,
-//                "Chicken Thighs 5lb" to 0,
-//                "Pork Shoulder Roast 6lb" to 0,
-//                "Cooked Chicken Fajita 5lb" to 0,
-//                "Cooked Chicken Fillets 5lb" to 0
-//            )
-//            foodCountMap.value = myMap
-//        }
-//    }
-
-//    fun populateFoodCountMapFromFireStore() {
-//        if (foodCountMap.value == null) {
-//            val db = FirebaseFirestore.getInstance()
-//            val docRef = db.collection("catalogs").document("catalog")
-//            docRef.get()
-//                .addOnSuccessListener { documentSnapshot ->
-//                    val catalog = documentSnapshot.toObject<Catalog>()
-//                    Log.d("TAG", "catalog successfully retrieved.")
-//                    val myMap = catalog?.itemList
-//                    foodCountMap.value = myMap
-//                }
-//                .addOnFailureListener {
-//                    Log.d("TAG", "Retrieve from database failed.")
-//                }
-//        }
-//    }
 
     fun sendCatalogToFireStore() {
         val myMap = mutableMapOf<String, Int>(
@@ -117,30 +81,98 @@ class MainActivityViewModel() : ViewModel() {
         db.collection("catalogs").document("objectCatalog").set(myObjectCatalog)
     }
 
-    fun retrieveObjectCatalogFromFireStore() {
+    fun sendCategoriesListToFireStore() {
+        val categoriesListing = CategoriesListing()
+        categoriesListing.categoriesListingName = "myCategories"
+        categoriesListing.categories = listOf(
+            Category("Meat", 2, 0),
+            Category("Protein", 2, 1),
+            Category("Vegetables", 3, 0)
+        )
+        val db = FirebaseFirestore.getInstance()
+        db.collection("categories").document("categories").set(categoriesListing)
+    }
+
+    fun retrieveCategoriesFromFireStore(view: View) {
+        val db = FirebaseFirestore.getInstance()
+        val docRef = db.collection("categories").document("categories")
+        docRef.get()
+            .addOnSuccessListener { documentSnapshot ->
+                val categoriesListing = documentSnapshot.toObject<CategoriesListing>()
+                categoriesList.value = categoriesListing?.categories as MutableList<Category>
+                Log.d("TAG", "Retrieve categories from database succeeded.")
+                generateHeadings()
+                itemList.value?.sortWith(
+                    compareBy<Item> { it.category }.thenBy { it.itemID })
+                Navigation.findNavController(view)
+                    .navigate(R.id.action_signInFragment_to_selectionFragment)
+            }
+            .addOnFailureListener {
+                Log.d("TAG", "Retrieve categories from database failed.")
+            }
+    }
+
+    fun retrieveObjectCatalogFromFireStore(view: View) {
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection("catalogs").document("objectCatalog")
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
                 val myObjectCatalog = documentSnapshot.toObject<ObjectCatalog>()
                 itemList.value = myObjectCatalog?.itemList as MutableList<Item>?
-                determineCategories()
-                itemList.value?.sortWith(
-                    compareBy<Item>{it.category}.thenBy{it.itemID}
-                )
+                retrieveCategoriesFromFireStore(view)
             }
             .addOnFailureListener {
                 Log.d("TAG", "Retrieve objectCatalog from database failed.")
             }
     }
 
-    fun determineCategories() {
-        val categories = itemList.value?.distinctBy { it.category }
-        categories?.forEach {item ->
-            Log.d("TAG", "categories: ${item.category}")
-            val newCategoryItem = Item(0, item.category!!, item.category!!, 0, 0, 0, true)
-            itemList.value?.add(newCategoryItem)
+    //    fun determineCategories() {
+//        val categoryNames = itemList.value?.distinctBy { it.category }
+//        categoryNames?.forEach { item ->
+//            val newCategoryItem = Item(0, item.category!!, item.category!!, 0, 0, 0, true )
+//            itemList.value?.add(newCategoryItem)
+//            val newCategory = Category(
+//                name = newCategoryItem.name!!,
+//                familySize = familySize
+//            )
+//            categories.value!!.add(newCategory)
+//            Log.d("TAG", "newCategory ${newCategory.name}")
+//        }
+//        categories.value?.forEach { category ->
+//            Log.d("TAG", "categories:  ${category.name}, ${category.pointsAllocated}, ${category.pointsUsed}")
+//        }
+//        updatePointValues()
+//        itemList.value?.sortWith(
+//            compareBy<Item> { it.category }.thenBy { it.itemID })
+//    }
+    fun generateHeadings() {
+        categoriesList.value?.forEach() { category ->
+            Log.d("TAG", "familySize $familySize")
+            val heading = Item(
+                0,
+                category.name,
+                category.name,
+                0,
+                0,
+                0,
+                true,
+                category.calculatePoints(familySize)
+            )
+            Log.d("TAG", "heading.name: ${heading.name}, heading.PointsA  ${heading.categoryPointsAllocated}, " +
+                        "heading.pointsUsed ${heading.categoryPointsUsed}")
+            itemList.value!!.add(heading)
         }
+    }
+
+    fun updatePointValues() {
+        itemList.value?.forEach() { item ->
+            item.categoryPointsAllocated = lookUpPointsAllocated(item.category!!)
+        }
+    }
+
+    fun lookUpPointsAllocated(category: String): Int {
+        val thisCategory = categories.value?.find { it.name == category }
+        return thisCategory!!.calculatePoints(familySize)
     }
 
     fun generateChoices() {
@@ -158,7 +190,11 @@ class MainActivityViewModel() : ViewModel() {
             it.name == itemName
         }
         selectedItem?.qtyOrdered = selectedItem?.qtyOrdered?.plus(1)!!
-
+        val selectedCategoryHeading = myList.find {
+            it.name == selectedItem?.category
+        }
+        Log.d("TAG", "selectedCategoryHeading.name: ${selectedCategoryHeading?.name}")
+        selectedCategoryHeading?.categoryPointsUsed!!.plus(1)
 
 //
 //        val myMap = foodCountMap.value
@@ -180,16 +216,20 @@ class MainActivityViewModel() : ViewModel() {
 
     fun signIn(enteredAccountID: String, context: Context, view: View) {
         accountID = enteredAccountID
-        familySize = null
+        familySizeFromFireStore = null
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection("accounts").document(enteredAccountID)
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
-                familySize = documentSnapshot["familySize"] as Long
-                if (familySize != null) {
-                    points = (familySize!! * 2).toInt()
-                    Navigation.findNavController(view)
-                        .navigate(R.id.action_signInFragment_to_selectionFragment)
+                familySizeFromFireStore = documentSnapshot["familySize"] as Long
+                if (familySizeFromFireStore != null) {
+                    points = (familySizeFromFireStore!! * 2).toInt()
+                    familySize = familySizeFromFireStore!!.toInt()
+//                    determineCategories()
+
+                    retrieveObjectCatalogFromFireStore(view)
+
+
                 } else {
                     Toast.makeText(
                         context,

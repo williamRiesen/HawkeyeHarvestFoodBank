@@ -9,14 +9,21 @@ class Item() {
     var numberAvailable: Int? = null
     var isOption: Boolean? = null
     var qtyOrdered: Int = 0
+    var categoryPointsAllocated: Int = 0
+    var categoryPointsUsed: Int = 0
 
-    constructor(a: Int, b: String, c: String, d: Int, e: Int, f: Int, g: Boolean) : this() {
-        this.itemID = a
-        this.name = b
-        this.category = c
-        this.pointValue = d
-        this.limit = e
-        this.numberAvailable = f
-        this.isOption = g
+    constructor(itemID: Int, name: String, category: String, pointValue: Int,
+                limit: Int, numberAvailable: Int, isOption: Boolean,
+                categoryPointsAllocated: Int =0 , categoryPointsUsed: Int = 0
+    ) : this() {
+        this.itemID = itemID
+        this.name = name
+        this.category = category
+        this.pointValue = pointValue
+        this.limit = limit
+        this.numberAvailable = numberAvailable
+        this.isOption = isOption
+        this.categoryPointsAllocated = categoryPointsAllocated
+        this.categoryPointsUsed = categoryPointsUsed
     }
 }

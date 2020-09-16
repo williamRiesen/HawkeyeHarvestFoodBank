@@ -25,8 +25,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
-        viewModel.retrieveObjectCatalogFromFireStore()
-        viewModel.generateChoices()
+
+//        viewModel.sendCategoriesListToFireStore()
+
+//        viewModel.generateChoices()
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -71,7 +75,7 @@ class MainActivity : AppCompatActivity() {
 
         val editTextAccountID = findViewById<EditText>(R.id.editTextAccountID)
          val accountID = editTextAccountID.text.toString()
-        viewModel.signIn(accountID, applicationContext, view)!!
+        viewModel.signIn(accountID, applicationContext, view)
     }
 
     fun onSubmitButtonClick(view: View){
