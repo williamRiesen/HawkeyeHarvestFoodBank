@@ -75,6 +75,9 @@ class ItemListAdapter(
     }
 
     fun checkIfOption(position: Int): Boolean {
+        val limit = itemList.value!![position].limit
+        val qtyOrderedSoFar = itemList.value!![position].qtyOrdered
+        val atLimit = qtyOrderedSoFar==limit
         val pointsNeeded = itemList.value!![position].pointValue!!.toInt()
         val thisCategory = itemList.value!![position].category
         val pointsUsed = itemList.value!!.find { item ->
@@ -83,7 +86,8 @@ class ItemListAdapter(
             item.name == thisCategory }!!.categoryPointsAllocated
         Log.d("TAG", "category: $thisCategory pointsAllocated: $pointsAllocated, pointsUsed: $pointsUsed")
         val pointsAvailable = pointsAllocated - pointsUsed
-        return (pointsAvailable >= pointsNeeded)
+        val enoughPoints = (pointsAvailable >= pointsNeeded)
+        return    enoughPoints && !atLimit
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
