@@ -210,7 +210,7 @@ class MainActivityViewModel() : ViewModel() {
             }
     }
 
-    fun generateHeadings() {
+    private fun generateHeadings() {
         categoriesList.value?.forEach() { category ->
             Log.d("TAG", "familySize $familySize")
             val heading = Item(

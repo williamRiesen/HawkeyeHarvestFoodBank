@@ -49,11 +49,11 @@ class ItemListAdapter(
         val viewModelCategory = viewModel.categoriesList.value!!.find {
             it.name == selectedCategory
         }
-        viewModelCategory!!.pointsUsed = viewModelCategory.pointsUsed + 1
+        viewModelCategory!!.pointsUsed = viewModelCategory.pointsUsed + myList[position].pointValue!!
         val categoryHeading = myList.find {
             it.name == selectedCategory
         }
-        categoryHeading!!.categoryPointsUsed = categoryHeading.categoryPointsUsed + 1
+        categoryHeading!!.categoryPointsUsed = categoryHeading.categoryPointsUsed + myList[position].pointValue!!
     }
 
     fun decrementCountOfItem(position: Int) {
@@ -63,10 +63,14 @@ class ItemListAdapter(
             itemList.value = myList
             viewModel.points = viewModel.points?.plus(1)
             val selectedCategory = myList[position].category
+            val viewModelCategory = viewModel.categoriesList.value!!.find {
+                it.name == selectedCategory
+            }
+            viewModelCategory!!.pointsUsed = viewModelCategory.pointsUsed + myList[position].pointValue!!
             val categoryHeading = myList.find {
                 it.name == selectedCategory
             }
-            categoryHeading!!.categoryPointsUsed = categoryHeading.categoryPointsUsed - 1
+            categoryHeading!!.categoryPointsUsed = categoryHeading.categoryPointsUsed - myList[position].pointValue!!
         }
     }
 
