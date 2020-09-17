@@ -72,11 +72,15 @@ class ItemListAdapter(
 
     fun checkIfOption(position: Int): Boolean {
         val pointsNeeded = 1
-        return if (viewModel.points != null) {
-            viewModel.points!! >= pointsNeeded
-        } else false
+        val thisCategory = itemList.value!![position].category
+        val pointsUsed = itemList.value!!.find { item ->
+            item.name == thisCategory }!!.categoryPointsUsed
+        val pointsAllocated = itemList.value!!.find { item ->
+            item.name == thisCategory }!!.categoryPointsAllocated
+        Log.d("TAG", "category: $thisCategory pointsAllocated: $pointsAllocated, pointsUsed: $pointsUsed")
+        val pointsAvailable = pointsAllocated - pointsUsed
+        return (pointsAvailable >= pointsNeeded)
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val v: View = LayoutInflater.from(parent.context).inflate(layout.item, parent, false)
