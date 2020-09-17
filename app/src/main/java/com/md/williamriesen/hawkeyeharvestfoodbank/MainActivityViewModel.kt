@@ -49,32 +49,106 @@ class MainActivityViewModel() : ViewModel() {
         val myObjectCatalog = ObjectCatalog()
         myObjectCatalog.catalogName = "myCatalog"
         myObjectCatalog.itemList = listOf(
-            Item(1, "Pork Chops 1lb", "Meat", 1, 100, 100, true),
-            Item(2, "Pork & Bacon Sausage 1.5lb", "Meat", 1, 100, 100, true),
-            Item(3, "Ground Beef 1lb", "Meat", 1, 2, 100, true),
-            Item(4, "Sliced Cooked Ham 2lb", "Meat", 1, 1, 100, true),
-            Item(5, "Sliced Cotto Salami 2lb", "Meat", 1, 1, 100, true),
-            Item(6, "Whole Chicken 3lb", "Meat", 1, 1, 100, true),
-            Item(7, "Chicken Legs 5lb", "Meat", 1, 100, 100, true),
-            Item(8, "Whole Ham", "Meat", 2, 1, 100, true),
-            Item(9, "Catfish Fillets 2lb", "Meat", 2, 100, 100, true),
-            Item(10, "Pork Loin 4lb", "Meat", 2, 100, 100, true),
-            Item(11, "Chicken Thighs 5lb", "Meat", 2, 100, 100, true),
-            Item(12, "Pork Shoulder Roast 6lb", "Meat", 2, 100, 100, true),
-            Item(13, "Cooked Chicken Fajita 5lb", "Meat", 4, 100, 100, true),
-            Item(14, "Cooked Chicken Fillets 5lb", "Meat", 4, 100, 100, true),
+            Item(1, "Pork Chops 1lb", "Meat", 1, 100, 100, true,1),
+            Item(2, "Pork & Bacon Sausage 1.5lb", "Meat", 1, 100, 100, true,1),
+            Item(3, "Ground Beef 1lb", "Meat", 1, 2, 100, true,1),
+            Item(4, "Sliced Cooked Ham 2lb", "Meat", 1, 1, 100, true,1),
+            Item(5, "Sliced Cotto Salami 2lb", "Meat", 1, 1, 100, true,1),
+            Item(6, "Whole Chicken 3lb", "Meat", 1, 1, 100, true,1),
+            Item(7, "Chicken Legs 5lb", "Meat", 1, 100, 100, true,1),
+            Item(8, "Whole Ham", "Meat", 2, 1, 100, true,1),
+            Item(9, "Catfish Fillets 2lb", "Meat", 2, 100, 100, true,1),
+            Item(10, "Pork Loin 4lb", "Meat", 2, 100, 100, true,1),
+            Item(11, "Chicken Thighs 5lb", "Meat", 2, 100, 100, true,1),
+            Item(12, "Pork Shoulder Roast 6lb", "Meat", 2, 100, 100, true,1),
+            Item(13, "Cooked Chicken Fajita 5lb", "Meat", 4, 100, 100, true,1),
+            Item(14, "Cooked Chicken Fillets 5lb", "Meat", 4, 100, 100, true,1),
 
-            Item(15, "Spaghetti / Meatballs", "Protein", 1, 100, 100, true),
-            Item(16, "Tuna", "Protein", 1, 100, 100, true),
-            Item(17, "Beef Ravioli", "Protein", 1, 100, 100, true),
-            Item(18, "Chicken", "Protein", 1, 100, 100, true),
-            Item(19, "Peanut Butter", "Protein", 1, 100, 100, true),
-            Item(20, "Beef Stew", "Protein", 1, 100, 100, true),
+            Item(15, "Spaghetti / Meatballs", "Protein", 1, 100, 100, true,2),
+            Item(16, "Tuna", "Protein", 1, 100, 100, true,2),
+            Item(17, "Beef Ravioli", "Protein", 1, 100, 100, true,2),
+            Item(18, "Chicken", "Protein", 1, 100, 100, true,2),
+            Item(19, "Peanut Butter", "Protein", 1, 100, 100, true,2),
+            Item(20, "Beef Stew", "Protein", 1, 100, 100, true,2),
 
-            Item(21, "Carrots", "Vegetables", 1, 100, 100, true),
-            Item(22, "Potatoes", "Vegetables", 1, 100, 100, true),
-            Item(23, "Corn", "Vegetables", 1, 100, 100, true),
-            Item(24, "Green Beans", "Vegetables", 1, 100, 100, true)
+            Item(21, "Carrots", "Vegetables", 1, 100, 100, true,3),
+            Item(22, "Potatoes", "Vegetables", 1, 100, 100, true,3),
+            Item(23, "Corn", "Vegetables", 1, 100, 100, true,3),
+            Item(24, "Green Beans", "Vegetables", 1, 100, 100, true,3),
+
+            Item(25, "Peaches", "Fruits",1,100,100, true,4),
+            Item(26, "Pears", "Fruits",1,100,100, true,4),
+            Item(27, "Cranberry Juice", "Fruits",1,100,100, true,4),
+            Item(28, "Dried Cranberries", "Fruits",1,100,100, true,4),
+            Item(29, "Raisins", "Fruits",1,100,100, true,4),
+            Item(30, "Apricots", "Fruits",1,100,100, true,4),
+            Item(31, "Mandarin Oranges", "Fruits",1,100,100, true,4),
+            Item(32, "Applesauce", "Fruits",1,100,100, true,4),
+            Item(33, "Pineapple", "Fruits",1,100,100, true,4),
+            Item(34, "Juice", "Fruits",1,100,100, true,4),
+
+            Item(35, "Pinto","Beans",1,100,100,true,5),
+            Item(36, "Refried","Beans",1,100,100,true,5),
+            Item(37, "Chili","Beans",1,100,100,true,5),
+            Item(38, "Pork & Beans","Beans",1,100,100,true,5),
+            Item(39, "Kidney","Beans",1,100,100,true,5),
+            Item(40, "Black","Beans",1,100,100,true,5),
+            Item(41, "Dried Lentils","Beans",1,100,100,true,5),
+            Item(42, "Dried Red Beans","Beans",1,100,100,true,5),
+            Item(43, "Dried Black Beans","Beans",1,100,100,true,5),
+            Item(44, "Dried Pinto Beans","Beans",1,100,100,true,5),
+
+            Item(45, "Chicken Broth","Soups",1,100,100,true,6),
+            Item(46, "Vegetarian","Soups",1,100,100,true,6),
+            Item(47, "Tomato","Soups",1,100,100,true,6),
+            Item(48, "Cream of Chicken","Soups",1,100,100,true,6),
+            Item(49, "Cream of Mushroom","Soups",1,100,100,true,6),
+            Item(50, "Chicken Noodle","Soups",1,100,100,true,6),
+            Item(51, "Chicken/Dumpling","Soups",1,100,100,true,6),
+
+            Item(52, "Sloppy Joe Mix","Tomato",1,100,100,true,7),
+            Item(53, "Tomato Sauce","Tomato",1,100,100,true,7),
+            Item(54, "Diced Tomatoes","Tomato",1,100,100,true,7),
+            Item(55, "Pasta Sauce","Tomato",1,100,100,true,7),
+
+            Item(56, "Oatmeal","Cereals",1,100,100,true,8),
+            Item(57, "Oatmeal Packets","Cereals",1,100,100,true,8),
+            Item(58, "Toasted Oats","Cereals",1,100,100,true,8),
+            Item(59, "Corn Flakes","Cereals",1,100,100,true,8),
+            Item(60, "Crisp Rice","Cereals",1,100,100,true,8),
+
+            Item(61, "Stuffing","Sides",1,100,100,true,9),
+            Item(62, "Instant Potatoes","Sides",1,100,100,true,9),
+            Item(63, "White Rice","Sides",1,100,100,true,9),
+            Item(64, "Brown Rice","Sides",1,100,100,true,9),
+
+            Item(65, "Spaghetti","Pasta",1,100,100,true,10),
+            Item(66, "Rotini/Cellentani","Pasta",1,100,100,true,10),
+            Item(67, "Elbow Macaroni","Pasta",1,100,100,true,10),
+            Item(68, "Spaghetti","Pasta",1,100,100,true,10),
+            Item(69, "Egg Noodles","Pasta",1,100,100,true,10),
+
+            Item(70, "Mac & Cheese","Meal Helper",1,100,100,true,11),
+            Item(71, "Spaghetti Rings","Meal Helper",1,100,100,true,11),
+            Item(72, "Lasagna Helper","Meal Helper",1,100,100,true,11),
+            Item(73, "Cheeseburger Helper","Meal Helper",1,100,100,true,11),
+            Item(74, "Beef Pasta Helper","Meal Helper",1,100,100,true,11),
+            Item(75, "Alfredo Chicken Helper","Meal Helper",1,100,100,true,11),
+            Item(76, "Strognaff Helper","Meal Helper",1,100,100,true,11),
+            Item(77, "Tuna Helper","Meal Helper",1,100,100,true,11),
+
+            Item(78, "Whole Wheat Flour","Extra",1,100,100,true,12),
+            Item(79, "Dry Milk","Extra",1,100,100,true,12),
+            Item(80, "Boxed Milk","Extra",1,100,100,true,12),
+            Item(81, "Vegetable Oil","Extra",1,100,100,true,12),
+            Item(82, "Mini Pies (Cherry/Apple)","Extra",1,100,100,true,12),
+            Item(83, "Cheese Balls","Extra",1,100,100,true,12),
+
+            Item(84, "Toothbrush","Nonedibles",1,100,100,true,13),
+            Item(85, "Toothpaste","Nonedibles",1,100,100,true,13),
+            Item(84, "Bar of Soap","Nonedibles",1,100,100,true,13),
+            Item(84, "Toilet Paper","Nonedibles",1,100,100,true,13),
+            Item(84, "Laundry Soap (Homemade- Limit 1)","Nonedibles",1,1,100,true,13)
         )
 
         val db = FirebaseFirestore.getInstance()
@@ -85,9 +159,19 @@ class MainActivityViewModel() : ViewModel() {
         val categoriesListing = CategoriesListing()
         categoriesListing.categoriesListingName = "myCategories"
         categoriesListing.categories = listOf(
-            Category("Meat", 2, 0),
-            Category("Protein", 2, 1),
-            Category("Vegetables", 3, 0)
+            Category(1,  "Meat", 2, 0),
+            Category(2,"Protein", 1, 1),
+            Category(3,"Vegetables", 2, 0),
+            Category(4,"Fruits", 2, 0),
+            Category(5,"Beans", 2, 0),
+            Category(6,"Soups", 2, 0),
+            Category(7,"Tomato", 1, 0),
+            Category(8,"Cereals", 1, 0),
+            Category(9,"Sides", 1, 0),
+            Category(10,"Pasta", 1, 0),
+            Category(11,"Meal Helper", 1, 0),
+            Category(12,"Extra", 1, 0),
+            Category(13,"Nonedibles", 1, 1)
         )
         val db = FirebaseFirestore.getInstance()
         db.collection("categories").document("categories").set(categoriesListing)
@@ -103,7 +187,7 @@ class MainActivityViewModel() : ViewModel() {
                 Log.d("TAG", "Retrieve categories from database succeeded.")
                 generateHeadings()
                 itemList.value?.sortWith(
-                    compareBy<Item> { it.category }.thenBy { it.itemID })
+                    compareBy<Item> { it.categoryId }.thenBy { it.itemID })
                 Navigation.findNavController(view)
                     .navigate(R.id.action_signInFragment_to_selectionFragment)
             }
@@ -126,25 +210,6 @@ class MainActivityViewModel() : ViewModel() {
             }
     }
 
-    //    fun determineCategories() {
-//        val categoryNames = itemList.value?.distinctBy { it.category }
-//        categoryNames?.forEach { item ->
-//            val newCategoryItem = Item(0, item.category!!, item.category!!, 0, 0, 0, true )
-//            itemList.value?.add(newCategoryItem)
-//            val newCategory = Category(
-//                name = newCategoryItem.name!!,
-//                familySize = familySize
-//            )
-//            categories.value!!.add(newCategory)
-//            Log.d("TAG", "newCategory ${newCategory.name}")
-//        }
-//        categories.value?.forEach { category ->
-//            Log.d("TAG", "categories:  ${category.name}, ${category.pointsAllocated}, ${category.pointsUsed}")
-//        }
-//        updatePointValues()
-//        itemList.value?.sortWith(
-//            compareBy<Item> { it.category }.thenBy { it.itemID })
-//    }
     fun generateHeadings() {
         categoriesList.value?.forEach() { category ->
             Log.d("TAG", "familySize $familySize")
@@ -156,6 +221,7 @@ class MainActivityViewModel() : ViewModel() {
                 0,
                 0,
                 true,
+                category.id,
                 category.calculatePoints(familySize)
             )
             Log.d("TAG", "heading.name: ${heading.name}, heading.PointsA  ${heading.categoryPointsAllocated}, " +
@@ -196,9 +262,6 @@ class MainActivityViewModel() : ViewModel() {
         Log.d("TAG", "selectedCategoryHeading.name: ${selectedCategoryHeading?.name}")
         selectedCategoryHeading?.categoryPointsUsed!!.plus(1)
 
-//
-//        val myMap = foodCountMap.value
-//        myMap!![itemName] = myMap[itemName]!! + 1
     }
 
     fun removeItem(itemName: String) {
@@ -211,7 +274,6 @@ class MainActivityViewModel() : ViewModel() {
         }
         return points!! > selectedItem?.qtyOrdered!!
 
-//        return (points!! > myMap!![itemName]!!)
     }
 
     fun signIn(enteredAccountID: String, context: Context, view: View) {
@@ -225,11 +287,7 @@ class MainActivityViewModel() : ViewModel() {
                 if (familySizeFromFireStore != null) {
                     points = (familySizeFromFireStore!! * 2).toInt()
                     familySize = familySizeFromFireStore!!.toInt()
-//                    determineCategories()
-
                     retrieveObjectCatalogFromFireStore(view)
-
-
                 } else {
                     Toast.makeText(
                         context,

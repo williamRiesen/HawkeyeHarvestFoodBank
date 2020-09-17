@@ -71,7 +71,7 @@ class ItemListAdapter(
     }
 
     fun checkIfOption(position: Int): Boolean {
-        val pointsNeeded = 1
+        val pointsNeeded = itemList.value!![position].pointValue!!.toInt()
         val thisCategory = itemList.value!![position].category
         val pointsUsed = itemList.value!!.find { item ->
             item.name == thisCategory }!!.categoryPointsUsed

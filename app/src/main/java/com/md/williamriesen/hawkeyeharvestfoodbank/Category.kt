@@ -6,8 +6,10 @@ class Category() {
     var name: String = ""
     var pointsPerFamilyMember: Int =0
     var additionalPointsPerFamily: Int = 0
+    var id: Int = 0
 
-   constructor (name: String,pointsPerFamilyMember: Int, additionalPointsPerFamily: Int) : this() {
+   constructor (id: Int, name: String,pointsPerFamilyMember: Int, additionalPointsPerFamily: Int) : this() {
+       this.id = id
        this.name = name
        this.pointsPerFamilyMember = pointsPerFamilyMember
        this.additionalPointsPerFamily = additionalPointsPerFamily

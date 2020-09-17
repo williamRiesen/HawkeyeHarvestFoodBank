@@ -21,6 +21,8 @@ class SelectionFragment : Fragment() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this.requireActivity()).get(MainActivityViewModel::class.java)
 //        viewModel.sendCatalogToFireStore()
+        viewModel.sendObjectCatalogToFireStore()
+        viewModel.sendCategoriesListToFireStore()
 //        viewModel.populateFoodCountMapFromFireStore()
         viewModel.itemList.observe(this, Observer { adapter.notifyDataSetChanged() })
 //        viewModel.foodCountMap.observe(this, Observer { adapter.notifyDataSetChanged() })
