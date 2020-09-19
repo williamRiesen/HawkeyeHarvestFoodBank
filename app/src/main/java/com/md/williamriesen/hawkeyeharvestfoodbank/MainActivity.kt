@@ -1,6 +1,10 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -23,8 +27,24 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
+
+
+
+         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val myNotificationManager =  MyNotificationManager(applicationContext)
+            val mNotificationManager = myNotificationManager.getInstance(applicationContext)
+            val mChannel =  NotificationChannel("myChannelId","myChannelName", NotificationManager.IMPORTANCE_HIGH )
+             mChannel.description = "myChannelDescription"
+             mChannel.enableLights(true)
+             mChannel.lightColor = Color.GREEN
+             mChannel.enableVibration(true)
+             val myVibrationPattern: LongArray = longArrayOf(100L, 200L, 300L, 400L, 500L, 400L, 300L, 200L, 400L)
+             mChannel.vibrationPattern = myVibrationPattern
+            Log.d ("TAG", "Oreo or higher branch used.")
+        } else {
+            Log.d ("TAG", "Below Oreo branch used.")
+        }
 
 //        viewModel.sendCategoriesListToFireStore()
 

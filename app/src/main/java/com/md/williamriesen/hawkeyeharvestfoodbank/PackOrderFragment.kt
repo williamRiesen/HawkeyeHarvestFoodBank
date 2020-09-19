@@ -48,4 +48,6 @@ class PackOrderFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(this.activity)
         recyclerView.adapter = adapter
     }
+
+
 }

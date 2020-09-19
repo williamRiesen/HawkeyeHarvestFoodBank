@@ -20,14 +20,10 @@ class SelectionFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this.requireActivity()).get(MainActivityViewModel::class.java)
-//        viewModel.sendCatalogToFireStore()
-        viewModel.sendObjectCatalogToFireStore()
-        viewModel.sendCategoriesListToFireStore()
-//        viewModel.populateFoodCountMapFromFireStore()
+
+//        viewModel.sendObjectCatalogToFireStore()
+//        viewModel.sendCategoriesListToFireStore()
         viewModel.itemList.observe(this, Observer { adapter.notifyDataSetChanged() })
-//        viewModel.foodCountMap.observe(this, Observer { adapter.notifyDataSetChanged() })
-//        Log.d("TAG", "Calling setUpRecyclerView from onCreate")
-//        viewModel.foodCountMap.observe(this, Observer { adapter.notifyDataSetChanged() })
     }
 
     override fun onCreateView(

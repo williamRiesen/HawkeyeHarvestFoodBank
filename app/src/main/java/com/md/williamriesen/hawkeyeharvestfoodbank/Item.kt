@@ -12,6 +12,7 @@ class Item() {
     var qtyOrdered: Int = 0
     var categoryPointsAllocated: Int = 0
     var categoryPointsUsed: Int = 0
+    var packed: Boolean = false
 
     constructor(itemID: Int, name: String, category: String, pointValue: Int,
                 limit: Int, numberAvailable: Int, isOption: Boolean, categoryId: Int,
