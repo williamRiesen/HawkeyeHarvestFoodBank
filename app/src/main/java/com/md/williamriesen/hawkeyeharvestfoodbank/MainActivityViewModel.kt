@@ -308,11 +308,24 @@ class MainActivityViewModel() : ViewModel() {
 
     fun submitOrder(view: View) {
         val thisOrder = Order(itemList.value!!)
+        val filteredOrder = filterOutZeros(thisOrder)
+
         val db = FirebaseFirestore.getInstance()
-        db.collection("orders").document("nextOrder").set(thisOrder)
+        db.collection("orders").document("nextOrder").set(filteredOrder)
             .addOnSuccessListener {
                 Navigation.findNavController(view)
                     .navigate(R.id.action_checkoutFragment_to_doneFragment)
             }
+    }
+
+    fun filterOutZeros(order: Order): Order{
+        val itemList = order.itemList
+        val filteredList = itemList.filter {
+            item->
+            item.qtyOrdered != 0
+        }
+        val filteredOrder = Order()
+        filteredOrder.itemList = filteredList as MutableList<Item>
+        return filteredOrder
     }
 }

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navigation_volunteer"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_volunteer"
     app:startDestination="@id/volunteerSignInFragment">
     <fragment
         android:id="@+id/volunteerSignInFragment"
@@ -13,5 +15,14 @@
     <fragment
         android:id="@+id/packOrderFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.PackOrderFragment"
-        android:label="PackOrderFragment" />
+        android:label="PackOrderFragment" >
+        <action
+            android:id="@+id/action_packOrderFragment_to_confirmPacked"
+            app:destination="@id/confirmPacked" />
+    </fragment>
+    <fragment
+        android:id="@+id/confirmPacked"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.ConfirmPacked"
+        android:label="fragment_confirm_packed"
+        tools:layout="@layout/fragment_confirm_packed" />
 </navigation>

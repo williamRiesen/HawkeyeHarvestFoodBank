@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class PackOrderFragment : Fragment() {
@@ -44,10 +45,12 @@ class PackOrderFragment : Fragment() {
 
     private fun setUpRecyclerView(itemsToPackList: MutableLiveData<MutableList<Item>>, recyclerView: RecyclerView) {
         FirestoreRecyclerOptions.Builder<Item>()
-        adapter = ItemsToPackAdapter(itemsToPackList)
+        adapter = ItemsToPackAdapter(itemsToPackList, viewModel)
         recyclerView.layoutManager = LinearLayoutManager(this.activity)
         recyclerView.adapter = adapter
     }
+
+
 
 
 }
