@@ -8,14 +8,14 @@ class Item() {
     var pointValue: Int? = null
     var limit: Int? = null
     var numberAvailable: Int? = null
-    var isOption: Boolean? = null
+    var isAvailable: Boolean? = null
     var qtyOrdered: Int = 0
     var categoryPointsAllocated: Int = 0
     var categoryPointsUsed: Int = 0
     var packed: Boolean = false
 
     constructor(itemID: Int, name: String, category: String, pointValue: Int,
-                limit: Int, numberAvailable: Int, isOption: Boolean, categoryId: Int,
+                limit: Int, numberAvailable: Int, isAvailable: Boolean, categoryId: Int,
                 categoryPointsAllocated: Int =0 , categoryPointsUsed: Int = 0
     ) : this() {
         this.itemID = itemID
@@ -24,7 +24,7 @@ class Item() {
         this.pointValue = pointValue
         this.limit = limit
         this.numberAvailable = numberAvailable
-        this.isOption = isOption
+        this.isAvailable = isAvailable
         this.categoryId = categoryId
         this.categoryPointsAllocated = categoryPointsAllocated
         this.categoryPointsUsed = categoryPointsUsed

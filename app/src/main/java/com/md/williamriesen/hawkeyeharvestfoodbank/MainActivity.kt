@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_checkout.view.*
 
 class MainActivity : AppCompatActivity() {
 
-//    private lateinit var adapter: ItemListAdapter
+
     private lateinit var viewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,15 +41,12 @@ class MainActivity : AppCompatActivity() {
              mChannel.enableVibration(true)
              val myVibrationPattern: LongArray = longArrayOf(100L, 200L, 300L, 400L, 500L, 400L, 300L, 200L, 400L)
              mChannel.vibrationPattern = myVibrationPattern
-            Log.d ("TAG", "Oreo or higher branch used.")
+
         } else {
             Log.d ("TAG", "Below Oreo branch used.")
         }
 
 //        viewModel.sendCategoriesListToFireStore()
-
-//        viewModel.generateChoices()
-
 
     }
 
@@ -66,10 +63,6 @@ class MainActivity : AppCompatActivity() {
             R.id.menu_item_director_sign_in -> startActivity(Intent(this,DirectorActivity::class.java))
         }
         return true
-    }
-
-    fun retrieveRecyclerView(): RecyclerView{
-        return findViewById<RecyclerView>(R.id.recyclerviewChoices)
     }
 
     fun onAddItem(view: android.view.View) {

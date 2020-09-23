@@ -22,19 +22,13 @@ class CheckoutAdapter(var itemList: MutableLiveData<MutableList<Item>>) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val filteredList = itemList.value?.filter { it.qtyOrdered != 0 }
-//        val filteredOrder = order.value?.filterValues { it != 0 }
         holder.textViewItemName.text = filteredList?.get(position)?.name
         holder.textViewCount.text = filteredList?.get(position)?.qtyOrdered.toString()
-
-//
-//        holder.textViewItemName.text = filteredOrder?.toList()?.get(position)?.first
-//        holder.textViewCount.text = filteredOrder?.toList()?.get(position)?.second.toString()
     }
 
     override fun getItemCount(): Int {
         var size = 0
         val filteredList = itemList.value?.filter { it.qtyOrdered != 0 }
-//        val filteredOrder = order.value?.filterValues { it != 0 }
         if (filteredList != null) {
             size = filteredList.size
         }

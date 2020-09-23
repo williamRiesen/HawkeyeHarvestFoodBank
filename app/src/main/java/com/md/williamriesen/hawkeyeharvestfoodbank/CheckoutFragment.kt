@@ -19,9 +19,7 @@ class CheckoutFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this.requireActivity()).get(MainActivityViewModel::class.java)
-//        viewModel.populateFoodCountMapFromFireStore()
         viewModel.itemList.observe(this, Observer { adapter.notifyDataSetChanged() })
-//        viewModel.foodCountMap.observe(this, Observer {adapter.notifyDataSetChanged() })
     }
 
 

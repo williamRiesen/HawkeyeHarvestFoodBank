@@ -84,7 +84,6 @@ class ItemListAdapter(
             item.name == thisCategory }!!.categoryPointsUsed
         val pointsAllocated = itemList.value!!.find { item ->
             item.name == thisCategory }!!.categoryPointsAllocated
-        Log.d("TAG", "category: $thisCategory pointsAllocated: $pointsAllocated, pointsUsed: $pointsUsed")
         val pointsAvailable = pointsAllocated - pointsUsed
         val enoughPoints = (pointsAvailable >= pointsNeeded)
         return    enoughPoints && !atLimit

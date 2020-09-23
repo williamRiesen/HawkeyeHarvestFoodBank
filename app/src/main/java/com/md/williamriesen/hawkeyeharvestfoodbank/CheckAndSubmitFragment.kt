@@ -21,9 +21,6 @@ class CheckAndSubmitFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
-        //        viewModel.sendCatalogToFireStore()
-//        viewModel.populateFoodCountMapFromFireStore()
-//        viewModel.foodCountMap.observe(this, Observer { adapter.notifyDataSetChanged() })
         viewModel.itemList.observe(this, Observer { adapter.notifyDataSetChanged() })
     }
 
@@ -43,7 +40,6 @@ class CheckAndSubmitFragment : Fragment() {
         recyclerView: RecyclerView) {
         FirestoreRecyclerOptions.Builder<Item>()
         adapter = ItemListAdapter(foodCountMap, viewModel)
-        Log.d("TAG", "recyclerView.toString $recyclerView")
         recyclerView.layoutManager = LinearLayoutManager(this.activity)
         recyclerView.adapter = adapter
     }

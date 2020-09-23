@@ -9,7 +9,6 @@ import com.google.firebase.firestore.ktx.toObject
 
 class VolunteerActivityViewModel : ViewModel() {
 
-    var nextOrder: MutableLiveData<Order>? = null
     var itemsToPackList = MutableLiveData<MutableList<Item>>()
 
 
@@ -34,13 +33,11 @@ class VolunteerActivityViewModel : ViewModel() {
         }
         if (thisItem != null) {
             thisItem.packed = !thisItem.packed
-            Log.d("TAG", "itemName: ${thisItem.name}")
-            Log.d("TAG","thisItem.Packed:  ${thisItem.packed}")
         }
     }
 
     fun checkIfAllItemsPacked(): Boolean {
-        val myList = itemsToPackList.value
+        itemsToPackList.value
         val itemsOrderedList = itemsToPackList.value!!.filter { item ->
             item.qtyOrdered != 0
         }
@@ -50,31 +47,4 @@ class VolunteerActivityViewModel : ViewModel() {
         return allItemsChecked
     }
 
-    fun upDatePackedStatus(position: Int): Boolean {
-
-        val myList = itemsToPackList.value
-        Log.d(
-            "TAG",
-            "position $position, myList[position].packed before ${myList!![position].packed} "
-        )
-        myList!![position].packed = !myList[position].packed
-        itemsToPackList.value = myList
-        Log.d(
-            "TAG",
-            "position $position, myList[position].packed after ${myList!![position].packed} "
-        )
-
-        val itemsOrderedList = itemsToPackList.value!!.filter { item ->
-            item.qtyOrdered != 0
-        }
-
-        val allItemsChecked = itemsOrderedList.all { item ->
-            (item.packed)
-        }
-        Log.d("TAG", "All items checked: $allItemsChecked")
-        itemsOrderedList.forEach { item ->
-            Log.d("TAG", "name: ${item.name}, packed: ${item.packed}")
-        }
-        return allItemsChecked
-    }
 }

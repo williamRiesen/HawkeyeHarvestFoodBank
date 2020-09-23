@@ -30,11 +30,8 @@ class VolunteerActivity : AppCompatActivity() {
 
     fun onCheckBoxClicked(view: View){
         val itemName = findViewById<TextView>(R.id.textview_item_to_pack_name).text.toString()
-        Log.d("TAG","itemName: $itemName")
-
         viewModel.togglePackedState(itemName)
         view.recyclerviewChoices.adapter?.notifyDataSetChanged()
-        Log.d("TAG","all packed: ${viewModel.checkIfAllItemsPacked()}")
         if (viewModel.checkIfAllItemsPacked()){
             Navigation.findNavController(view).navigate(R.id.action_packOrderFragment_to_confirmPacked)
         }

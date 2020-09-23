@@ -15,18 +15,18 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
-class PackOrderFragment : Fragment() {
+class UpdateInventoryFragment : Fragment() {
 
-    private lateinit var adapter: ItemsToPackAdapter
-    private lateinit var viewModel: VolunteerActivityViewModel
+    private lateinit var adapter: ItemsToInventoryAdapter
+    private lateinit var viewModel: ManagerActivityViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this.requireActivity())
-            .get(VolunteerActivityViewModel::class.java)
-        viewModel.getNextOrderFromFireStore()
-        viewModel.itemsToPackList.observe(this, Observer { adapter.notifyDataSetChanged() })
+            .get(ManagerActivityViewModel::class.java)
+        viewModel.getInventoryFromFirestore()
+        viewModel.itemsToInventoryList.observe(this, Observer { adapter.notifyDataSetChanged() })
     }
 
 
@@ -34,15 +34,15 @@ class PackOrderFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val packOrderView = inflater.inflate(R.layout.fragment_pack_order, container, false)
-        val recyclerView = packOrderView.findViewById<RecyclerView>(R.id.recyclerviewInventoryForUpdate)
-        setUpRecyclerView(viewModel.itemsToPackList, recyclerView)
-        return packOrderView
+        val updateInventoryView = inflater.inflate(R.layout.fragment_update_inventory, container, false)
+        val recyclerView = updateInventoryView.findViewById<RecyclerView>(R.id.recyclerviewInventoryForUpdate)
+        setUpRecyclerView(viewModel.itemsToInventoryList, recyclerView)
+        return updateInventoryView
     }
 
-    private fun setUpRecyclerView(itemsToPackList: MutableLiveData<MutableList<Item>>, recyclerView: RecyclerView) {
+    private fun setUpRecyclerView(itemsToInventoryList: MutableLiveData<MutableList<Item>>, recyclerView: RecyclerView) {
         FirestoreRecyclerOptions.Builder<Item>()
-        adapter = ItemsToPackAdapter(itemsToPackList, viewModel)
+        adapter = ItemsToInventoryAdapter(itemsToInventoryList, viewModel)
         recyclerView.layoutManager = LinearLayoutManager(this.activity)
         recyclerView.adapter = adapter
     }

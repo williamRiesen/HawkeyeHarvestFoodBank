@@ -26,18 +26,12 @@ class ItemsToPackAdapter(
 
         init {
             checkBoxPacked.setOnClickListener { view ->
-                Log.d("TAG", "onClickListener Fired.")
                 val item = textViewItemToPackName.text
                 viewModel.togglePackedState(item.toString())
-                Log.d ("TAG", "all packed?: ${viewModel.checkIfAllItemsPacked()}")
                 if (viewModel.checkIfAllItemsPacked()) {
                     Navigation.findNavController(view)
                         .navigate(R.id.action_packOrderFragment_to_confirmPacked)
                 }
-//                var allItemsPacked = onClickCheckBoxPacked(adapterPosition)
-//                if (allItemsPacked) {
-//                    navigateToConfirmPacked(view)
-//                }
             }
         }
     }
@@ -69,14 +63,5 @@ class ItemsToPackAdapter(
         return size
     }
 
-    fun onClickCheckBoxPacked(position: Int): Boolean {
-
-        return viewModel.upDatePackedStatus(position)
-    }
-
-    fun navigateToConfirmPacked(view: View) {
-        Navigation.findNavController(view)
-            .navigate(R.id.action_packOrderFragment_to_confirmPacked)
-    }
 }
 

@@ -11,8 +11,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 
 class MainActivityViewModel() : ViewModel() {
-    private lateinit var retrievedCatalog: Catalog
-    val orderBlank: MutableLiveData<OrderBlank?>? = null
     val itemList = MutableLiveData<MutableList<Item>>()
     val categoriesList = MutableLiveData<MutableList<Category>>()
     var objectCatalog: MutableMap<String, Any>? = null
@@ -22,28 +20,8 @@ class MainActivityViewModel() : ViewModel() {
 
     var points: Int? = null
     var categories: MutableLiveData<MutableList<Category>> =
-        MutableLiveData(mutableListOf<Category>())
+        MutableLiveData(mutableListOf())
 
-
-    fun sendCatalogToFireStore() {
-        val myMap = mutableMapOf<String, Int>(
-            "Ground Beef 1lb" to 0,
-            "Sliced Cooked Ham 2lb" to 0,
-            "Sliced Cotto Salami 2lb" to 0,
-            "Whole Chicken 3lb" to 0,
-            "Chicken Legs 5lb" to 0,
-            "Whole Ham" to 0,
-            "Catfish Fillets 2lb" to 0,
-            "Pork Loin 4lb" to 0,
-            "Chicken Thighs 5lb" to 0,
-            "Pork Shoulder Roast 6lb" to 0,
-            "Cooked Chicken Fajita 5lb" to 0,
-            "Cooked Chicken Fillets 5lb" to 0
-        )
-        val catalog = Catalog(myMap)
-        val db = FirebaseFirestore.getInstance()
-        db.collection("catalogs").document("catalog").set(catalog)
-    }
 
     fun sendObjectCatalogToFireStore() {
         val myObjectCatalog = ObjectCatalog()
@@ -212,7 +190,6 @@ class MainActivityViewModel() : ViewModel() {
 
     private fun generateHeadings() {
         categoriesList.value?.forEach() { category ->
-            Log.d("TAG", "familySize $familySize")
             val heading = Item(
                 0,
                 category.name,
@@ -224,33 +201,13 @@ class MainActivityViewModel() : ViewModel() {
                 category.id,
                 category.calculatePoints(familySize)
             )
-            Log.d(
-                "TAG",
-                "heading.name: ${heading.name}, heading.PointsA  ${heading.categoryPointsAllocated}, " +
-                        "heading.pointsUsed ${heading.categoryPointsUsed}"
-            )
             itemList.value!!.add(heading)
-        }
-    }
-
-    fun updatePointValues() {
-        itemList.value?.forEach() { item ->
-            item.categoryPointsAllocated = lookUpPointsAllocated(item.category!!)
         }
     }
 
     fun lookUpPointsAllocated(category: String): Int {
         val thisCategory = categories.value?.find { it.name == category }
         return thisCategory!!.calculatePoints(familySize)
-    }
-
-    fun generateChoices() {
-        if (objectCatalog != null) {
-            val nonNullObjectCatalog: MutableMap<String, Any> = objectCatalog!!
-            for (element in nonNullObjectCatalog) {
-                Log.d("TAG", "element: $element")
-            }
-        }
     }
 
     fun addItem(itemName: String) {
@@ -268,15 +225,6 @@ class MainActivityViewModel() : ViewModel() {
     }
 
     fun removeItem(itemName: String) {
-    }
-
-    fun isOption(itemName: String): Boolean {
-        val myList = itemList.value
-        val selectedItem = myList?.find {
-            it.name == itemName
-        }
-        return points!! > selectedItem?.qtyOrdered!!
-
     }
 
     fun signIn(enteredAccountID: String, context: Context, view: View) {

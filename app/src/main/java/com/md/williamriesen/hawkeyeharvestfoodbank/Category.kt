@@ -1,7 +1,6 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
 class Category() {
-    var pointsAllocated: Int = 0
     var pointsUsed: Int = 0
     var name: String = ""
     var pointsPerFamilyMember: Int =0
