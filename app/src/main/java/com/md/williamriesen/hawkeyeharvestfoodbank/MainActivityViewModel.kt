@@ -27,20 +27,20 @@ class MainActivityViewModel() : ViewModel() {
         val myObjectCatalog = ObjectCatalog()
         myObjectCatalog.catalogName = "myCatalog"
         myObjectCatalog.itemList = listOf(
-            Item(1, "Pork Chops 1lb", "Meat", 1, 100, 100, true, 1),
-            Item(2, "Pork & Bacon Sausage 1.5lb", "Meat", 1, 100, 100, true, 1),
-            Item(3, "Ground Beef 1lb (Limit 2)", "Meat", 1, 2, 100, true, 1),
-            Item(4, "Sliced Cooked Ham 2lb (Limit 1)", "Meat", 1, 1, 100, true, 1),
-            Item(5, "Sliced Cotto Salami 2lb (Limit 1)", "Meat", 1, 1, 100, true, 1),
-            Item(6, "Whole Chicken 3lb (Limit 1)", "Meat", 1, 1, 100, true, 1),
-            Item(7, "Chicken Legs 5lb", "Meat", 1, 100, 100, true, 1),
-            Item(8, "Whole Ham(2pts, Limit 1)", "Meat", 2, 1, 100, true, 1),
-            Item(9, "Catfish Fillets 2lb (2pts)", "Meat", 2, 100, 100, true, 1),
-            Item(10, "Pork Loin 4lb (2pts)", "Meat", 2, 100, 100, true, 1),
-            Item(11, "Chicken Thighs 5lb (2pts)", "Meat", 2, 100, 100, true, 1),
-            Item(12, "Pork Shoulder Roast 6lb (2pts)", "Meat", 2, 100, 100, true, 1),
-            Item(13, "Cooked Chicken Fajita 5lb (4pts)", "Meat", 4, 100, 100, true, 1),
-            Item(14, "Cooked Chicken Fillets 5lb (4pts)", "Meat", 4, 100, 100, true, 1),
+            Item(8, "Pork Chops 1lb", "Meat", 1, 100, 100, true, 1),
+            Item(9, "Pork & Bacon Sausage 1.5lb", "Meat", 1, 100, 100, true, 1),
+            Item(10, "Ground Beef 1lb (Limit 2)", "Meat", 1, 2, 100, true, 1),
+            Item(11, "Sliced Cooked Ham 2lb (Limit 1)", "Meat", 1, 1, 100, true, 1),
+            Item(12, "Sliced Cotto Salami 2lb (Limit 1)", "Meat", 1, 1, 100, true, 1),
+            Item(13, "Whole Chicken 3lb (Limit 1)", "Meat", 1, 1, 100, true, 1),
+            Item(14, "Chicken Legs 5lb", "Meat", 1, 100, 100, true, 1),
+            Item(3, "Whole Ham(2pts, Limit 1)", "Meat", 2, 1, 100, true, 1),
+            Item(4, "Catfish Fillets 2lb (2pts)", "Meat", 2, 100, 100, true, 1),
+            Item(5, "Pork Loin 4lb (2pts)", "Meat", 2, 100, 100, true, 1),
+            Item(6, "Chicken Thighs 5lb (2pts)", "Meat", 2, 100, 100, true, 1),
+            Item(7, "Pork Shoulder Roast 6lb (2pts)", "Meat", 2, 100, 100, true, 1),
+            Item(2, "Cooked Chicken Fajita 5lb (4pts)", "Meat", 4, 100, 100, true, 1),
+            Item(1, "Cooked Chicken Fillets 5lb (4pts)", "Meat", 4, 100, 100, true, 1),
 
             Item(15, "Spaghetti / Meatballs", "Protein", 1, 100, 100, true, 2),
             Item(16, "Tuna", "Protein", 1, 100, 100, true, 2),
@@ -84,10 +84,10 @@ class MainActivityViewModel() : ViewModel() {
             Item(50, "Chicken Noodle", "Soups", 1, 100, 100, true, 6),
             Item(51, "Chicken/Dumpling", "Soups", 1, 100, 100, true, 6),
 
-            Item(52, "Sloppy Joe Mix", "Tomato", 1, 100, 100, true, 7),
-            Item(53, "Tomato Sauce", "Tomato", 1, 100, 100, true, 7),
-            Item(54, "Diced Tomatoes", "Tomato", 1, 100, 100, true, 7),
-            Item(55, "Pasta Sauce", "Tomato", 1, 100, 100, true, 7),
+            Item(52, "Sloppy Joe Mix", "Processed Tomato", 1, 100, 100, true, 7),
+            Item(53, "Tomato Sauce", "Processed Tomato", 1, 100, 100, true, 7),
+            Item(54, "Diced Tomatoes", "Processed Tomato", 1, 100, 100, true, 7),
+            Item(55, "Pasta Sauce", "Processed Tomato", 1, 100, 100, true, 7),
 
             Item(56, "Oatmeal", "Cereals", 1, 100, 100, true, 8),
             Item(57, "Oatmeal Packets", "Cereals", 1, 100, 100, true, 8),
@@ -103,7 +103,7 @@ class MainActivityViewModel() : ViewModel() {
             Item(65, "Spaghetti", "Pasta", 1, 100, 100, true, 10),
             Item(66, "Rotini/Cellentani", "Pasta", 1, 100, 100, true, 10),
             Item(67, "Elbow Macaroni", "Pasta", 1, 100, 100, true, 10),
-            Item(68, "Spaghetti", "Pasta", 1, 100, 100, true, 10),
+//            Item(68, "Spaghetti", "Pasta", 1, 100, 100, true, 10),
             Item(69, "Egg Noodles", "Pasta", 1, 100, 100, true, 10),
 
             Item(70, "Mac & Cheese", "Meal Helper", 1, 100, 100, true, 11),
@@ -124,9 +124,9 @@ class MainActivityViewModel() : ViewModel() {
 
             Item(84, "Toothbrush", "Nonedibles", 1, 100, 100, true, 13),
             Item(85, "Toothpaste", "Nonedibles", 1, 100, 100, true, 13),
-            Item(84, "Bar of Soap", "Nonedibles", 1, 100, 100, true, 13),
-            Item(84, "Toilet Paper", "Nonedibles", 1, 100, 100, true, 13),
-            Item(84, "Laundry Soap (Homemade- Limit 1)", "Nonedibles", 1, 1, 100, true, 13)
+            Item(86, "Bar of Soap", "Nonedibles", 1, 100, 100, true, 13),
+            Item(87, "Toilet Paper", "Nonedibles", 1, 100, 100, true, 13),
+            Item(88, "Laundry Soap (Homemade- Limit 1)", "Nonedibles", 1, 1, 100, true, 13)
         )
 
         val db = FirebaseFirestore.getInstance()
@@ -138,18 +138,19 @@ class MainActivityViewModel() : ViewModel() {
         categoriesListing.categoriesListingName = "myCategories"
         categoriesListing.categories = listOf(
             Category(1, "Meat", 2, 0),
-            Category(2, "Protein", 1, 1),
+            Category(2, "Protein", 1, 2),
             Category(3, "Vegetables", 2, 0),
             Category(4, "Fruits", 2, 0),
             Category(5, "Beans", 2, 0),
             Category(6, "Soups", 2, 0),
-            Category(7, "Tomato", 1, 0),
+            Category(7, "Processed Tomato", 2, 1),
             Category(8, "Cereals", 1, 0),
             Category(9, "Sides", 1, 0),
             Category(10, "Pasta", 1, 0),
             Category(11, "Meal Helper", 1, 0),
             Category(12, "Extra", 1, 0),
-            Category(13, "Nonedibles", 1, 1)
+            Category(13, "Nonedibles", 1, 2),
+            Category(14, "Bottom Bar",0,0)
         )
         val db = FirebaseFirestore.getInstance()
         db.collection("categories").document("categories").set(categoriesListing)
@@ -236,8 +237,11 @@ class MainActivityViewModel() : ViewModel() {
         val docRef = db.collection("accounts").document(enteredAccountID)
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
-                familySizeFromFireStore = documentSnapshot["familySize"] as Long
-                if (familySizeFromFireStore != null) {
+
+
+
+                if (documentSnapshot["familySize"] != null) {
+                    familySizeFromFireStore = documentSnapshot["familySize"] as Long?
                     points = (familySizeFromFireStore!! * 2).toInt()
                     familySize = familySizeFromFireStore!!.toInt()
                     retrieveObjectCatalogFromFireStore(view)

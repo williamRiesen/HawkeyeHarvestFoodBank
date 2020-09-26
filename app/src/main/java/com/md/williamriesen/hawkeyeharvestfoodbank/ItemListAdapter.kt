@@ -49,11 +49,13 @@ class ItemListAdapter(
         val viewModelCategory = viewModel.categoriesList.value!!.find {
             it.name == selectedCategory
         }
-        viewModelCategory!!.pointsUsed = viewModelCategory.pointsUsed + myList[position].pointValue!!
+        viewModelCategory!!.pointsUsed =
+            viewModelCategory.pointsUsed + myList[position].pointValue!!
         val categoryHeading = myList.find {
             it.name == selectedCategory
         }
-        categoryHeading!!.categoryPointsUsed = categoryHeading.categoryPointsUsed + myList[position].pointValue!!
+        categoryHeading!!.categoryPointsUsed =
+            categoryHeading.categoryPointsUsed + myList[position].pointValue!!
     }
 
     fun decrementCountOfItem(position: Int) {
@@ -66,27 +68,31 @@ class ItemListAdapter(
             val viewModelCategory = viewModel.categoriesList.value!!.find {
                 it.name == selectedCategory
             }
-            viewModelCategory!!.pointsUsed = viewModelCategory.pointsUsed + myList[position].pointValue!!
+            viewModelCategory!!.pointsUsed =
+                viewModelCategory.pointsUsed + myList[position].pointValue!!
             val categoryHeading = myList.find {
                 it.name == selectedCategory
             }
-            categoryHeading!!.categoryPointsUsed = categoryHeading.categoryPointsUsed - myList[position].pointValue!!
+            categoryHeading!!.categoryPointsUsed =
+                categoryHeading.categoryPointsUsed - myList[position].pointValue!!
         }
     }
 
     fun checkIfOption(position: Int): Boolean {
         val limit = itemList.value!![position].limit
         val qtyOrderedSoFar = itemList.value!![position].qtyOrdered
-        val atLimit = qtyOrderedSoFar==limit
+        val atLimit = qtyOrderedSoFar == limit
         val pointsNeeded = itemList.value!![position].pointValue!!.toInt()
         val thisCategory = itemList.value!![position].category
         val pointsUsed = itemList.value!!.find { item ->
-            item.name == thisCategory }!!.categoryPointsUsed
+            item.name == thisCategory
+        }!!.categoryPointsUsed
         val pointsAllocated = itemList.value!!.find { item ->
-            item.name == thisCategory }!!.categoryPointsAllocated
+            item.name == thisCategory
+        }!!.categoryPointsAllocated
         val pointsAvailable = pointsAllocated - pointsUsed
         val enoughPoints = (pointsAvailable >= pointsNeeded)
-        return    enoughPoints && !atLimit
+        return enoughPoints && !atLimit
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -98,33 +104,43 @@ class ItemListAdapter(
 
         val isCategory =
             itemList.value!![position].name == itemList.value!![position].category
-        if (isCategory) {
-            formatAsCategory(holder, position)
-            val thisCategory = itemList.value!![position].name
-            holder.textViewItemName.text = thisCategory
-            holder.textViewPointsAllocated.text =
-                itemList.value!![position].categoryPointsAllocated.toString()
-            holder.textViewPointsUsed.text = itemList.value!!.find { item ->
+        val isBottomBar =
+            itemList.value!![position].name == "Bottom Bar"
+
+        when {
+            (isBottomBar) -> {
+                formatAsBottomBar(holder, position)
+            }
+            (isCategory) -> {
+                formatAsCategory(holder, position)
+                val thisCategory = itemList.value!![position].name
+                holder.textViewItemName.text = thisCategory
+                holder.textViewPointsAllocated.text =
+                    itemList.value!![position].categoryPointsAllocated.toString()
+                holder.textViewPointsUsed.text = itemList.value!!.find { item ->
                     item.name == thisCategory
                 }!!.categoryPointsUsed.toString()
 //                itemList.value!![position].categoryPointsUsed.toString()
-        } else {
-            formatAsItem(holder)
-            if (itemList.value?.get(position)!!.qtyOrdered == 0) {
-                holder.imageButtonRemove.visibility = View.INVISIBLE
-            } else {
-                holder.imageButtonRemove.visibility = View.VISIBLE
             }
-            holder.textViewItemName.text = itemList.value!![position].name
-            holder.textViewCount.text = itemList.value!![position].qtyOrdered.toString()
+            else -> {
+                formatAsItem(holder)
+                if (itemList.value?.get(position)!!.qtyOrdered == 0) {
+                    holder.imageButtonRemove.visibility = View.INVISIBLE
+                } else {
+                    holder.imageButtonRemove.visibility = View.VISIBLE
+                }
+                holder.textViewItemName.text = itemList.value!![position].name
+                holder.textViewCount.text = itemList.value!![position].qtyOrdered.toString()
 
-            if (checkIfOption(position)) {
-                holder.imageButtonAdd.visibility = View.VISIBLE
-            } else {
-                holder.imageButtonAdd.visibility = View.INVISIBLE
+                if (checkIfOption(position)) {
+                    holder.imageButtonAdd.visibility = View.VISIBLE
+                } else {
+                    holder.imageButtonAdd.visibility = View.INVISIBLE
+                }
             }
         }
     }
+
 
     private fun formatAsCategory(holder: MyViewHolder, position: Int) {
         holder.imageButtonRemove.visibility = View.GONE
@@ -132,11 +148,12 @@ class ItemListAdapter(
         holder.textViewCount.visibility = View.GONE
         holder.textViewPointsUsed.visibility = View.VISIBLE
         holder.textViewSelectedOf.visibility = View.VISIBLE
+        holder.textViewSelectedOf.text = "Selected of"
         holder.textViewPointsAllocated.visibility = View.VISIBLE
+        holder.textViewItemName.visibility =View.VISIBLE
         holder.textViewItemName.textSize = 32F
         holder.textViewItemName.setTextColor(Color.BLACK)
         holder.textViewItemName.setBackgroundColor(Color.parseColor("#008577"))
-
     }
 
     private fun formatAsItem(holder: MyViewHolder) {
@@ -149,7 +166,24 @@ class ItemListAdapter(
         holder.textViewPointsAllocated.visibility = View.GONE
     }
 
-    override fun getItemCount(): Int {
+    private fun formatAsBottomBar(holder: MyViewHolder, position: Int) {
+        holder.imageButtonRemove.visibility = View.GONE
+        holder.imageButtonAdd.visibility = View.GONE
+        holder.textViewCount.visibility = View.GONE
+        holder.textViewItemName.visibility = View.GONE
+        holder.textViewSelectedOf.visibility - View.VISIBLE
+        holder.textViewPointsUsed.visibility = View.VISIBLE
+        holder.textViewPointsUsed.text = "--"
+        holder.textViewSelectedOf.visibility = View.VISIBLE
+        holder.textViewSelectedOf.text = " End "
+        holder.textViewPointsAllocated.visibility = View.VISIBLE
+        holder.textViewPointsAllocated.text = "--"
+        holder.textViewItemName.setBackgroundColor(Color.parseColor("#008577"))
+        holder.textViewCount.setTextColor(Color.parseColor("#000000"))
+    }
+
+    override fun getItemCount()
+            : Int {
 
         var size = 0
         if (itemList.value != null) {

@@ -35,7 +35,7 @@ class ItemsToInventoryAdapter(
         viewType: Int
     ): ItemsToInventoryAdapter.MyViewHolder {
         val v: View =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_to_pack, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_to_update_inventory, parent, false)
         return MyViewHolder(v)
     }
 

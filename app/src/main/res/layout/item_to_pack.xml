@@ -7,7 +7,7 @@
     android:background="@android:color/background_light">
 
     <TextView
-        android:id="@+id/textview_item_to_inventory_name"
+        android:id="@+id/textview_item_to_pack_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView_item_to_inventory_count"
+        android:id="@+id/textView_item_to_pack_count"
         android:layout_width="20dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -42,7 +42,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
-        android:id="@+id/checkBoxIsAvailable"
+        android:id="@+id/checkBoxPacked"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

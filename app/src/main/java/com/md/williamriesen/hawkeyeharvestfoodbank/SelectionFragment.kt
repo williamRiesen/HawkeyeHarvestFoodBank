@@ -22,7 +22,7 @@ class SelectionFragment : Fragment() {
         viewModel = ViewModelProviders.of(this.requireActivity()).get(MainActivityViewModel::class.java)
 
         viewModel.sendObjectCatalogToFireStore()
-//        viewModel.sendCategoriesListToFireStore()
+        viewModel.sendCategoriesListToFireStore()
         viewModel.itemList.observe(this, Observer { adapter.notifyDataSetChanged() })
     }
 
