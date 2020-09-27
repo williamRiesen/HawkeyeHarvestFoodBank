@@ -31,22 +31,28 @@ class MainActivity : AppCompatActivity() {
 
 
 
-         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val myNotificationManager =  MyNotificationManager(applicationContext)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val myNotificationManager = MyNotificationManager(applicationContext)
             val mNotificationManager = myNotificationManager.getInstance(applicationContext)
-            val mChannel =  NotificationChannel("myChannelId","myChannelName", NotificationManager.IMPORTANCE_HIGH )
-             mChannel.description = "myChannelDescription"
-             mChannel.enableLights(true)
-             mChannel.lightColor = Color.GREEN
-             mChannel.enableVibration(true)
-             val myVibrationPattern: LongArray = longArrayOf(100L, 200L, 300L, 400L, 500L, 400L, 300L, 200L, 400L)
-             mChannel.vibrationPattern = myVibrationPattern
+            val mChannel = NotificationChannel(
+                "myChannelId",
+                "myChannelName",
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            mChannel.description = "myChannelDescription"
+            mChannel.enableLights(true)
+            mChannel.lightColor = Color.GREEN
+            mChannel.enableVibration(true)
+            val myVibrationPattern: LongArray =
+                longArrayOf(100L, 200L, 300L, 400L, 500L, 400L, 300L, 200L, 400L)
+            mChannel.vibrationPattern = myVibrationPattern
 
         } else {
-            Log.d ("TAG", "Below Oreo branch used.")
+            Log.d("TAG", "Below Oreo branch used.")
         }
 
 //        viewModel.sendCategoriesListToFireStore()
+
 
     }
 
@@ -57,10 +63,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId){
-            R.id.menu_item_volunteer_sign_in -> startActivity(Intent(this,VolunteerActivity::class.java))
-            R.id.menu_item_manager_sign_in -> startActivity(Intent(this,ManagerActivity::class.java))
-            R.id.menu_item_director_sign_in -> startActivity(Intent(this,DirectorActivity::class.java))
+        when (item?.itemId) {
+            R.id.menu_item_volunteer_sign_in -> startActivity(
+                Intent(
+                    this,
+                    VolunteerActivity::class.java
+                )
+            )
+            R.id.menu_item_manager_sign_in -> startActivity(
+                Intent(
+                    this,
+                    ManagerActivity::class.java
+                )
+            )
+            R.id.menu_item_director_sign_in -> startActivity(
+                Intent(
+                    this,
+                    DirectorActivity::class.java
+                )
+            )
         }
         return true
     }
@@ -84,21 +105,27 @@ class MainActivity : AppCompatActivity() {
             .navigate(R.id.action_selectionFragment_to_checkoutFragment)
     }
 
-    fun onShopButtonClick(view: View){
+    fun onShopButtonClick(view: View) {
 
         val editTextAccountID = findViewById<EditText>(R.id.editTextAccountID)
-         val accountID = editTextAccountID.text.toString()
+        val accountID = editTextAccountID.text.toString()
         viewModel.signIn(accountID, applicationContext, view)
     }
 
-    fun onSubmitButtonClick(view: View){
+    fun onSubmitButtonClick(view: View) {
         viewModel.submitOrder(view)
     }
 
-    fun onDoneButtonClick(view: View){
+    fun onDoneButtonClick(view: View) {
         Navigation.findNavController(view).navigate(R.id.action_doneFragment_to_signInFragment)
-        }
     }
+
+    fun onExitButtonClick(view: View){
+        startActivity(Intent(this, LoginActivity::class.java))
+    }
+}
+
+
 
 
 

@@ -164,6 +164,7 @@ class ItemListAdapter(
         holder.textViewPointsUsed.visibility = View.GONE
         holder.textViewSelectedOf.visibility = View.GONE
         holder.textViewPointsAllocated.visibility = View.GONE
+        holder.textViewItemName.visibility = View.VISIBLE
     }
 
     private fun formatAsBottomBar(holder: MyViewHolder, position: Int) {

@@ -237,13 +237,12 @@ class MainActivityViewModel() : ViewModel() {
         val docRef = db.collection("accounts").document(enteredAccountID)
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
-
-
-
                 if (documentSnapshot["familySize"] != null) {
                     familySizeFromFireStore = documentSnapshot["familySize"] as Long?
                     points = (familySizeFromFireStore!! * 2).toInt()
                     familySize = familySizeFromFireStore!!.toInt()
+                    val name = documentSnapshot["name"]
+                    Log.d("Tag","name: $name")
                     retrieveObjectCatalogFromFireStore(view)
                 } else {
                     Toast.makeText(
