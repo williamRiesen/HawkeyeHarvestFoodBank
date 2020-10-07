@@ -1,6 +1,7 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -9,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
+import java.util.*
 
 class MainActivityViewModel() : ViewModel() {
     val itemList = MutableLiveData<MutableList<Item>>()
@@ -150,13 +152,13 @@ class MainActivityViewModel() : ViewModel() {
             Category(11, "Meal Helper", 1, 0),
             Category(12, "Extra", 1, 0),
             Category(13, "Nonedibles", 1, 2),
-            Category(14, "Bottom Bar",0,0)
+            Category(14, "Bottom Bar", 0, 0)
         )
         val db = FirebaseFirestore.getInstance()
         db.collection("categories").document("categories").set(categoriesListing)
     }
 
-    fun retrieveCategoriesFromFireStore(view: View) {
+    fun retrieveCategoriesFromFireStore(context: Context) {
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection("categories").document("categories")
         docRef.get()
@@ -167,22 +169,22 @@ class MainActivityViewModel() : ViewModel() {
                 generateHeadings()
                 itemList.value?.sortWith(
                     compareBy<Item> { it.categoryId }.thenBy { it.itemID })
-                Navigation.findNavController(view)
-                    .navigate(R.id.action_signInFragment_to_selectionFragment)
             }
             .addOnFailureListener {
                 Log.d("TAG", "Retrieve categories from database failed.")
             }
     }
 
-    fun retrieveObjectCatalogFromFireStore(view: View) {
+    fun retrieveObjectCatalogFromFireStore(context: Context) {
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection("catalogs").document("objectCatalog")
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
+                Log.d("TAG", "Retrieve objectCatalog from database successful.")
                 val myObjectCatalog = documentSnapshot.toObject<ObjectCatalog>()
                 itemList.value = myObjectCatalog?.itemList as MutableList<Item>?
-                retrieveCategoriesFromFireStore(view)
+                retrieveCategoriesFromFireStore(context)
+                Log.d("TAG", "retrievedObject itemList: ${itemList.value}")
             }
             .addOnFailureListener {
                 Log.d("TAG", "Retrieve objectCatalog from database failed.")
@@ -206,10 +208,10 @@ class MainActivityViewModel() : ViewModel() {
         }
     }
 
-    fun lookUpPointsAllocated(category: String): Int {
-        val thisCategory = categories.value?.find { it.name == category }
-        return thisCategory!!.calculatePoints(familySize)
-    }
+//    fun lookUpPointsAllocated(category: String): Int {
+//        val thisCategory = categories.value?.find { it.name == category }
+//        return thisCategory!!.calculatePoints(familySize)
+//    }
 
     fun addItem(itemName: String) {
         val myList = itemList.value
@@ -237,46 +239,62 @@ class MainActivityViewModel() : ViewModel() {
         val docRef = db.collection("accounts").document(enteredAccountID)
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
-                if (documentSnapshot["familySize"] != null) {
-                    familySizeFromFireStore = documentSnapshot["familySize"] as Long?
-                    points = (familySizeFromFireStore!! * 2).toInt()
-                    familySize = familySizeFromFireStore!!.toInt()
-                    val name = documentSnapshot["name"]
-                    Log.d("Tag","name: $name")
-                    retrieveObjectCatalogFromFireStore(view)
-                } else {
-                    Toast.makeText(
-                        context,
-                        "Sorry, Not a valid account.",
-                        Toast.LENGTH_LONG
-                    ).show()
+                when (documentSnapshot["role"]) {
+                    "client" -> {
+                        val intent = Intent(context, MainActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        intent.putExtra("ACCOUNT_ID", accountID)
+                        familySizeFromFireStore = documentSnapshot["familySize"] as Long
+                        familySize = familySizeFromFireStore!!.toInt()
+                        intent.putExtra("FAMILY_SIZE", familySize)
+                        context.startActivity(intent)
+                    }
+                    "volunteer" -> {
+                        val intent = Intent(context, VolunteerActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        context.startActivity(intent)
+                    }
+                    "manager" -> {
+                        val intent = Intent(context, ManagerActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        context.startActivity(intent)
+                    }
+                    else -> {
+                        Toast.makeText(
+                            context,
+                            "Sorry, Not a valid account.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 }
             }
-            .addOnFailureListener {
-                Log.d("TAG", "Retrieve family size from database failed.")
-            }
+            .addOnFailureListener{
+            Log.d("TAG", "Retrieve family size from database failed.")
+        }
     }
 
     fun submitOrder(view: View) {
-        val thisOrder = Order(itemList.value!!)
+        val thisOrder = Order(accountID, Date(), itemList.value!!)
         val filteredOrder = filterOutZeros(thisOrder)
 
         val db = FirebaseFirestore.getInstance()
-        db.collection("orders").document("nextOrder").set(filteredOrder)
+        db.collection(("orders")).document().set(filteredOrder)
+//        db.collection("orders").document("nextOrder").set(filteredOrder)
             .addOnSuccessListener {
                 Navigation.findNavController(view)
                     .navigate(R.id.action_checkoutFragment_to_doneFragment)
             }
     }
 
-    fun filterOutZeros(order: Order): Order{
+    fun filterOutZeros(order: Order): Order {
         val itemList = order.itemList
-        val filteredList = itemList.filter {
-            item->
+        val filteredList = itemList.filter { item ->
             item.qtyOrdered != 0
         }
         val filteredOrder = Order()
         filteredOrder.itemList = filteredList as MutableList<Item>
+        filteredOrder.accountID = order.accountID
+        filteredOrder.date = order.date
         return filteredOrder
     }
 }

@@ -10,19 +10,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
-
-
-        </activity>
-        <activity android:name=".DirectorActivity" />
-        <activity android:name=".ManagerActivity" />
-        <activity android:name=".VolunteerActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".LoginByAccountActivity">
             <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".DirectorActivity" />
+        <activity
+            android:name=".ManagerActivity"
+            android:label="Inventory Manager"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".VolunteerActivity"
+            android:icon="@drawable/ic_hawkeye_harvest_food_bank_logo"
+            android:label="Order Packing"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".MainActivity">
+
+        </activity>
+
 
         <meta-data
             android:name="preloaded_fonts"

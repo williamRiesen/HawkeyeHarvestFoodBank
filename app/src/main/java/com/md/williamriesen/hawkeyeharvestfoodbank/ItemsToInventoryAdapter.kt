@@ -24,8 +24,6 @@ class ItemsToInventoryAdapter(
             checkBoxIsAvailable.setOnClickListener { view ->
                 val item = textViewItemToInventoryName.text
                 viewModel.toggleIsAvailableStatus(item.toString())
-
-                viewModel.toggleIsAvailableStatus(item.toString())
             }
         }
     }

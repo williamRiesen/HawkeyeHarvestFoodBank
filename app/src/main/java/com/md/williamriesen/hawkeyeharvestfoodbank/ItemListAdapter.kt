@@ -132,11 +132,11 @@ class ItemListAdapter(
                 holder.textViewItemName.text = itemList.value!![position].name
                 holder.textViewCount.text = itemList.value!![position].qtyOrdered.toString()
 
-                if (checkIfOption(position)) {
+//                if (checkIfOption(position)) {
                     holder.imageButtonAdd.visibility = View.VISIBLE
-                } else {
-                    holder.imageButtonAdd.visibility = View.INVISIBLE
-                }
+//                } else {
+//                    holder.imageButtonAdd.visibility = View.INVISIBLE
+//                }
             }
         }
     }

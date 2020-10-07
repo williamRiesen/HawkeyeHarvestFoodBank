@@ -1,6 +1,7 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,17 +20,22 @@ class SelectionFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        activity?.setTitle("Item Selection")
+        activity?.actionBar?.setHomeButtonEnabled(true)
+        activity?.actionBar?.setDisplayHomeAsUpEnabled(true)
         viewModel = ViewModelProviders.of(this.requireActivity()).get(MainActivityViewModel::class.java)
 
-        viewModel.sendObjectCatalogToFireStore()
-        viewModel.sendCategoriesListToFireStore()
+//        viewModel.sendObjectCatalogToFireStore()
+//        viewModel.sendCategoriesListToFireStore()
         viewModel.itemList.observe(this, Observer { adapter.notifyDataSetChanged() })
     }
 
     override fun onCreateView(
+
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("TAG", "onCreateView Called.")
         val selectionView = inflater.inflate(R.layout.fragment_selection, container, false)
         val recyclerView = selectionView.findViewById<RecyclerView>(R.id.recyclerviewChoices)
         setUpRecyclerView(viewModel.itemList, recyclerView)
@@ -37,6 +43,8 @@ class SelectionFragment : Fragment() {
     }
 
     private fun setUpRecyclerView(itemList: MutableLiveData<MutableList<Item>>, recyclerView: RecyclerView ) {
+        Log.d("TAG", "setUpRecyclerView Called.")
+        Log.d("TAG", "itemList: ${viewModel.itemList.value}")
         FirestoreRecyclerOptions.Builder<Item>()
         adapter = ItemListAdapter(itemList, viewModel)
         recyclerView.layoutManager = LinearLayoutManager(this.activity)

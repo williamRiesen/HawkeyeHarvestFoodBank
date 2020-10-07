@@ -13,10 +13,8 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_checkout.view.*
 
 class MainActivity : AppCompatActivity() {
@@ -27,9 +25,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
 
+        var accountID = intent.extras["ACCOUNT_ID"].toString()
+        var familySize = intent.extras["FAMILY_SIZE"]
+        viewModel.accountID = accountID
+        viewModel.familySize = familySize as Int
 
+
+        viewModel.retrieveObjectCatalogFromFireStore(this)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val myNotificationManager = MyNotificationManager(applicationContext)
@@ -117,7 +124,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onDoneButtonClick(view: View) {
-        Navigation.findNavController(view).navigate(R.id.action_doneFragment_to_signInFragment)
+        Navigation.findNavController(view).navigate(R.id.action_doneFragment_to_selectionFragment2)
     }
 
     fun onExitButtonClick(view: View){

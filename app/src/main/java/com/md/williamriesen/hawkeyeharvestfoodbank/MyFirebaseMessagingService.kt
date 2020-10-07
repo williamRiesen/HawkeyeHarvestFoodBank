@@ -37,9 +37,14 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         // message, here is where that should be initiated. See sendNotification method below.
     }
 
-    override fun onNewToken(p0: String?) {
+//    override fun onNewToken(p0: String?) {
+//        super.onNewToken(p0)
+//        val token = p0
+//        Log.d("TAG", "Token: $token")
+//    }
+
+    override fun onNewToken(p0: String) {
         super.onNewToken(p0)
-        val token = p0
-        Log.d("TAG", "Token: $token")
+        Log.d("TAG", "Token: $p0")
     }
 }

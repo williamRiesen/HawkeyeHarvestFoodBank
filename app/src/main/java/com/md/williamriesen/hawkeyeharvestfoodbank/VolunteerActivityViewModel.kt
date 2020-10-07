@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.common.internal.FallbackServiceBroker
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
+import java.util.*
 
 class VolunteerActivityViewModel : ViewModel() {
 
@@ -14,10 +16,14 @@ class VolunteerActivityViewModel : ViewModel() {
 
     fun getNextOrderFromFireStore() {
         val db = FirebaseFirestore.getInstance()
-        val docRef = db.collection("orders").document("nextOrder")
-        docRef.get()
-            .addOnSuccessListener { documentSnapshot ->
-                val nextOrder = documentSnapshot.toObject<Order>()
+
+        val ordersRef = db.collection("orders")
+        val query = ordersRef
+//            .whereEqualTo("packed", false)
+            .orderBy("date").limit(1)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                val nextOrder = querySnapshot.documents[0].toObject<Order>()
                 val myList = nextOrder?.itemList
                 itemsToPackList.value = myList
             }

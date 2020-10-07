@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/signInFragment">
+    app:startDestination="@id/selectionFragment">
 
     <fragment
         android:id="@+id/selectionFragment"
@@ -22,22 +22,22 @@
             app:destination="@id/doneFragment" />
     </fragment>
 
-    <fragment
-        android:id="@+id/signInFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.SignInFragment"
-        android:label="SignInFragment" >
-        <action
-            android:id="@+id/action_signInFragment_to_selectionFragment"
-            app:destination="@id/selectionFragment" />
-    </fragment>
+<!--    <fragment-->
+<!--        android:id="@+id/signInFragment"-->
+<!--        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.SignInFragment"-->
+<!--        android:label="SignInFragment" >-->
+<!--        <action-->
+<!--            android:id="@+id/action_signInFragment_to_selectionFragment"-->
+<!--            app:destination="@id/selectionFragment" />-->
+<!--    </fragment>-->
     <fragment
         android:id="@+id/doneFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.DoneFragment"
         android:label="DoneFragment" >
+            android:id="@+id/action_doneFragment_to_selectionFragment"
+            app:destination="@id/selectionFragment" />
         <action
-            android:id="@+id/action_doneFragment_to_signInFragment"
-            app:destination="@id/signInFragment"
-            app:popUpTo="@id/signInFragment"
-            app:popUpToInclusive="true" />
+            android:id="@+id/action_doneFragment_to_selectionFragment2"
+            app:destination="@id/selectionFragment" />
     </fragment>
 </navigation>
