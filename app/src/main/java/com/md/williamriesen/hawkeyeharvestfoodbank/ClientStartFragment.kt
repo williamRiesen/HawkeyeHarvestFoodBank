@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
@@ -28,9 +30,11 @@ class ClientStartFragment : Fragment() {
         val clientStartFragment = inflater.inflate(R.layout.fragment_client_start, container, false)
         val textViewAccountID = clientStartFragment.findViewById<TextView>(R.id.textViewAccountID)
         val textViewFamilySize = clientStartFragment.findViewById<TextView>(R.id.textViewFamilySize)
+
         val buttonShop = clientStartFragment.findViewById<Button>(R.id.buttonShop)
         textViewAccountID.text = viewModel.accountID
         textViewFamilySize.text = viewModel.familySize.toString()
+
         buttonShop.setOnClickListener(){
             Navigation.findNavController(requireView()).navigate(R.id.action_clientStartFragment_to_selectionFragment)
         }
