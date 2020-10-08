@@ -27,40 +27,35 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
 
         var accountID = intent.extras["ACCOUNT_ID"].toString()
         var familySize = intent.extras["FAMILY_SIZE"]
         viewModel.accountID = accountID
+
+        Log.d("TAG", " MainActivity viewModel.accountID: ${viewModel.accountID}")
         viewModel.familySize = familySize as Int
 
 
-        viewModel.retrieveObjectCatalogFromFireStore(this)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val myNotificationManager = MyNotificationManager(applicationContext)
-            val mNotificationManager = myNotificationManager.getInstance(applicationContext)
-            val mChannel = NotificationChannel(
-                "myChannelId",
-                "myChannelName",
-                NotificationManager.IMPORTANCE_HIGH
-            )
-            mChannel.description = "myChannelDescription"
-            mChannel.enableLights(true)
-            mChannel.lightColor = Color.GREEN
-            mChannel.enableVibration(true)
-            val myVibrationPattern: LongArray =
-                longArrayOf(100L, 200L, 300L, 400L, 500L, 400L, 300L, 200L, 400L)
-            mChannel.vibrationPattern = myVibrationPattern
-
-        } else {
-            Log.d("TAG", "Below Oreo branch used.")
-        }
-
-//        viewModel.sendCategoriesListToFireStore()
-
-
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            val myNotificationManager = MyNotificationManager(applicationContext)
+//            val mNotificationManager = myNotificationManager.getInstance(applicationContext)
+//            val mChannel = NotificationChannel(
+//                "myChannelId",
+//                "myChannelName",
+//                NotificationManager.IMPORTANCE_HIGH
+//            )
+//            mChannel.description = "myChannelDescription"
+//            mChannel.enableLights(true)
+//            mChannel.lightColor = Color.GREEN
+//            mChannel.enableVibration(true)
+//            val myVibrationPattern: LongArray =
+//                longArrayOf(100L, 200L, 300L, 400L, 500L, 400L, 300L, 200L, 400L)
+//            mChannel.vibrationPattern = myVibrationPattern
+//
+//        } else {
+//            Log.d("TAG", "Below Oreo branch used.")
+//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -124,10 +119,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onDoneButtonClick(view: View) {
-        Navigation.findNavController(view).navigate(R.id.action_doneFragment_to_selectionFragment2)
+        Navigation.findNavController(view).navigate(R.id.action_doneFragment_to_clientStartFragment)
     }
 
-    fun onExitButtonClick(view: View){
+    fun onExitButtonClick(view: View) {
         startActivity(Intent(this, LoginActivity::class.java))
     }
 }

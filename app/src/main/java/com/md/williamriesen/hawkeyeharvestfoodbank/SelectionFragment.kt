@@ -28,6 +28,7 @@ class SelectionFragment : Fragment() {
 //        viewModel.sendObjectCatalogToFireStore()
 //        viewModel.sendCategoriesListToFireStore()
         viewModel.itemList.observe(this, Observer { adapter.notifyDataSetChanged() })
+        viewModel.retrieveObjectCatalogFromFireStore()
     }
 
     override fun onCreateView(

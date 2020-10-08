@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/selectionFragment">
+    app:startDestination="@id/clientStartFragment">
 
     <fragment
         android:id="@+id/selectionFragment"
@@ -34,10 +34,17 @@
         android:id="@+id/doneFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.DoneFragment"
         android:label="DoneFragment" >
-            android:id="@+id/action_doneFragment_to_selectionFragment"
-            app:destination="@id/selectionFragment" />
         <action
-            android:id="@+id/action_doneFragment_to_selectionFragment2"
+            android:id="@+id/action_doneFragment_to_clientStartFragment"
+            app:destination="@id/clientStartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/clientStartFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.ClientStartFragment"
+        android:label="fragment_client_start"
+        tools:layout="@layout/fragment_client_start" >
+        <action
+            android:id="@+id/action_clientStartFragment_to_selectionFragment"
             app:destination="@id/selectionFragment" />
     </fragment>
 </navigation>

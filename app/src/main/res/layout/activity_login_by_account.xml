@@ -24,15 +24,16 @@ tools:context=".LoginByAccountActivity">
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/textViewHawkeyeHarvest" />
 
-<ImageView
-    android:id="@+id/imageViewLogo"
-    android:layout_width="194dp"
-    android:layout_height="172dp"
-    android:src="@drawable/ic_hawkeye_harvest_food_bank_logo"
-    app:layout_constraintBottom_toTopOf="@+id/textViewHawkeyeHarvest"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.483"
-    app:layout_constraintStart_toStartOf="parent" />
+    <ImageView
+        android:id="@+id/imageViewLogo"
+        android:layout_width="194dp"
+        android:layout_height="172dp"
+        android:src="@drawable/ic_hawkeye_harvest_food_bank_logo"
+        app:layout_constraintBottom_toTopOf="@+id/textViewHawkeyeHarvest"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.483"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 <TextView
     android:id="@+id/textViewHawkeyeHarvest"
@@ -76,17 +77,17 @@ tools:context=".LoginByAccountActivity">
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/textViewFoodBank" />
 
-    <Button
-        android:id="@+id/buttonOK"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:onClick="onShopButtonClick"
-        android:text="Shop"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buttonEspanol" />
+<Button
+    android:id="@+id/buttonOK"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:onClick="onShopButtonClick"
+    android:text="Shop"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toEndOf="@+id/buttonEspanol" />
 
 <Button
     android:id="@+id/buttonEspanol"

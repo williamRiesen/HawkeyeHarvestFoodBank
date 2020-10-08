@@ -2,6 +2,8 @@ package com.md.williamriesen.hawkeyeharvestfoodbank
 
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.getIntent
+import android.content.Intent.parseIntent
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -13,13 +15,12 @@ import com.google.firebase.firestore.ktx.toObject
 import java.util.*
 
 class MainActivityViewModel() : ViewModel() {
+    var accountID = "Turnip"
     val itemList = MutableLiveData<MutableList<Item>>()
     val categoriesList = MutableLiveData<MutableList<Category>>()
     var objectCatalog: MutableMap<String, Any>? = null
     private var familySizeFromFireStore: Long? = null
     var familySize = 0
-    lateinit var accountID: String
-
     var points: Int? = null
     var categories: MutableLiveData<MutableList<Category>> =
         MutableLiveData(mutableListOf())
@@ -158,9 +159,10 @@ class MainActivityViewModel() : ViewModel() {
         db.collection("categories").document("categories").set(categoriesListing)
     }
 
-    fun retrieveCategoriesFromFireStore(context: Context) {
+    fun retrieveCategoriesFromFireStore() {
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection("categories").document("categories")
+        Log.d("TAG", "docRef: $docRef")
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
                 val categoriesListing = documentSnapshot.toObject<CategoriesListing>()
@@ -175,7 +177,7 @@ class MainActivityViewModel() : ViewModel() {
             }
     }
 
-    fun retrieveObjectCatalogFromFireStore(context: Context) {
+    fun retrieveObjectCatalogFromFireStore() {
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection("catalogs").document("objectCatalog")
         docRef.get()
@@ -183,8 +185,7 @@ class MainActivityViewModel() : ViewModel() {
                 Log.d("TAG", "Retrieve objectCatalog from database successful.")
                 val myObjectCatalog = documentSnapshot.toObject<ObjectCatalog>()
                 itemList.value = myObjectCatalog?.itemList as MutableList<Item>?
-                retrieveCategoriesFromFireStore(context)
-                Log.d("TAG", "retrievedObject itemList: ${itemList.value}")
+                retrieveCategoriesFromFireStore()
             }
             .addOnFailureListener {
                 Log.d("TAG", "Retrieve objectCatalog from database failed.")
@@ -192,6 +193,7 @@ class MainActivityViewModel() : ViewModel() {
     }
 
     private fun generateHeadings() {
+        Log.d("TAG", "generateHeadings Called.")
         categoriesList.value?.forEach() { category ->
             val heading = Item(
                 0,
@@ -204,6 +206,7 @@ class MainActivityViewModel() : ViewModel() {
                 category.id,
                 category.calculatePoints(familySize)
             )
+            Log.d("TAG", "heading: $heading")
             itemList.value!!.add(heading)
         }
     }
@@ -233,7 +236,7 @@ class MainActivityViewModel() : ViewModel() {
     fun signIn(enteredAccountID: String, context: Context, view: View) {
         val myFirebaseMessagingService = MyFirebaseMessagingService()
         val token = myFirebaseMessagingService
-        accountID = enteredAccountID
+        val accountID = enteredAccountID
         familySizeFromFireStore = null
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection("accounts").document(enteredAccountID)
