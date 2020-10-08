@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
 
         Log.d("TAG", " MainActivity viewModel.accountID: ${viewModel.accountID}")
         viewModel.familySize = familySize as Int
+        viewModel.retrieveObjectCatalogFromFireStore()
 
 
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

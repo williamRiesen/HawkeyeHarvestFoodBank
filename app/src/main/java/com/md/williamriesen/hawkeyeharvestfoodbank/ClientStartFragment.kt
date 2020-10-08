@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 
 
 class ClientStartFragment : Fragment() {
@@ -16,8 +18,6 @@ class ClientStartFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this.requireActivity()).get(MainActivityViewModel::class.java)
-//        viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
-        Log.d("TAG", " ClientStartActivity viewModel.accountID: ${viewModel.accountID}")
     }
 
     override fun onCreateView(
@@ -27,8 +27,15 @@ class ClientStartFragment : Fragment() {
         // Inflate the layout for this fragment
         val clientStartFragment = inflater.inflate(R.layout.fragment_client_start, container, false)
         val textViewAccountID = clientStartFragment.findViewById<TextView>(R.id.textViewAccountID)
+        val textViewFamilySize = clientStartFragment.findViewById<TextView>(R.id.textViewFamilySize)
+        val buttonShop = clientStartFragment.findViewById<Button>(R.id.buttonShop)
         textViewAccountID.text = viewModel.accountID
+        textViewFamilySize.text = viewModel.familySize.toString()
+        buttonShop.setOnClickListener(){
+            Navigation.findNavController(requireView()).navigate(R.id.action_clientStartFragment_to_selectionFragment)
+        }
         return clientStartFragment
     }
+
 
 }
