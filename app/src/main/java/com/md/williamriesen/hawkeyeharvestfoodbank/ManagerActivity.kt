@@ -2,14 +2,9 @@ package com.md.williamriesen.hawkeyeharvestfoodbank
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.fragment_checkout.view.*
-import kotlinx.android.synthetic.main.fragment_update_inventory.view.*
 
 class ManagerActivity : AppCompatActivity() {
 
@@ -21,7 +16,7 @@ class ManagerActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this).get(ManagerActivityViewModel::class.java)
     }
 
-    fun submitUpdatedInventory(view: View) {
+    fun submitUpdatedInventory() {
         val objectCatalog = ObjectCatalog(viewModel.itemsToInventoryList.value!!)
         val db = FirebaseFirestore.getInstance()
         db.collection("catalogs").document("objectCatalog").set(objectCatalog)

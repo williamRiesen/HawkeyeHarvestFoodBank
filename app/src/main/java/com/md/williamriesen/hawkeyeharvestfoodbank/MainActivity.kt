@@ -1,10 +1,6 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Intent
-import android.graphics.Color
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -89,15 +85,15 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    fun onAddItem(view: android.view.View) {
+    fun onAddItem(view: View) {
         val itemName = findViewById<TextView>(R.id.textview_item_name).text.toString()
         viewModel.addItem(itemName)
         view.recyclerviewChoices.adapter?.notifyDataSetChanged()
     }
 
-    fun onRemoveItem(view: android.view.View) {
+    fun onRemoveItem(view: View) {
         val itemName = findViewById<TextView>(R.id.textview_item_name).text.toString()
-        val updatedCount = viewModel.removeItem(itemName)
+        val updatedCount = viewModel.removeItem()
         val textViewCount = findViewById<TextView>(R.id.textView_count)
         textViewCount.text = updatedCount.toString()
         view.recyclerviewChoices.adapter?.notifyDataSetChanged()
@@ -112,7 +108,7 @@ class MainActivity : AppCompatActivity() {
 
         val editTextAccountID = findViewById<EditText>(R.id.editTextAccountID)
         val accountID = editTextAccountID.text.toString()
-        viewModel.signIn(accountID, applicationContext, view)
+        viewModel.signIn(accountID, applicationContext)
     }
 
     fun onSubmitButtonClick(view: View) {

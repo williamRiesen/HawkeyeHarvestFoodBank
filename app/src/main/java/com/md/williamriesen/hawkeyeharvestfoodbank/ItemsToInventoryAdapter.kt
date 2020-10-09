@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 
 class ItemsToInventoryAdapter(
@@ -21,7 +20,7 @@ class ItemsToInventoryAdapter(
 
 
         init {
-            checkBoxIsAvailable.setOnClickListener { view ->
+            checkBoxIsAvailable.setOnClickListener {
                 val item = textViewItemToInventoryName.text
                 viewModel.toggleIsAvailableStatus(item.toString())
             }
@@ -38,7 +37,6 @@ class ItemsToInventoryAdapter(
     }
 
     override fun onBindViewHolder(holder: ItemsToInventoryAdapter.MyViewHolder, position: Int) {
-
 
         holder.textViewItemToInventoryName.text = itemsToInventoryList.value!![position].name
         Log.d("TAG", "${itemsToInventoryList.value!![position].name}, position $position, isAvailable " +

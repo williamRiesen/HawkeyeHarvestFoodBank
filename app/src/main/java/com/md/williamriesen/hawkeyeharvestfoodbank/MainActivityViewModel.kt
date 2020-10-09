@@ -2,8 +2,6 @@ package com.md.williamriesen.hawkeyeharvestfoodbank
 
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.getIntent
-import android.content.Intent.parseIntent
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -156,10 +154,17 @@ class MainActivityViewModel() : ViewModel() {
             Category(14, "Bottom Bar", 0, 0)
         )
         val db = FirebaseFirestore.getInstance()
+
         db.collection("categories").document("categories").set(categoriesListing)
+            .addOnSuccessListener {
+                Log.d("TAG", "Categories write successful.")
+            }
+            .addOnFailureListener {
+                Log.d("TAG", "Categories write failed.")
+            }
     }
 
-    fun retrieveCategoriesFromFireStore() {
+    private fun retrieveCategoriesFromFireStore() {
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection("categories").document("categories")
         Log.d("TAG", "docRef: $docRef")
@@ -193,8 +198,7 @@ class MainActivityViewModel() : ViewModel() {
     }
 
     private fun generateHeadings() {
-        Log.d("TAG", "generateHeadings Called.")
-        categoriesList.value?.forEach() { category ->
+        categoriesList.value?.forEach { category ->
             val heading = Item(
                 0,
                 category.name,
@@ -206,7 +210,9 @@ class MainActivityViewModel() : ViewModel() {
                 category.id,
                 category.calculatePoints(familySize)
             )
-            Log.d("TAG", "heading: $heading")
+//            Log.d("TAG", "familySize $familySize")
+//            Log.d("TAG", "category.calculatePoints(familySize) ${category.calculatePoints(familySize)}")
+//            Log.d("TAG", "categoryPointsAllocated: ${heading.categoryPointsAllocated}")
             itemList.value!!.add(heading)
         }
     }
@@ -223,20 +229,19 @@ class MainActivityViewModel() : ViewModel() {
         }
         selectedItem?.qtyOrdered = selectedItem?.qtyOrdered?.plus(1)!!
         val selectedCategoryHeading = myList.find {
-            it.name == selectedItem?.category
+            it.name == selectedItem.category
         }
-        Log.d("TAG", "selectedCategoryHeading.name: ${selectedCategoryHeading?.name}")
+//        Log.d("TAG", "selectedCategoryHeading.name: ${selectedCategoryHeading?.name}")
         selectedCategoryHeading?.categoryPointsUsed!!.plus(1)
 
     }
 
-    fun removeItem(itemName: String) {
+    fun removeItem() {
     }
 
-    fun signIn(enteredAccountID: String, context: Context, view: View) {
+    fun signIn(enteredAccountID: String, context: Context) {
         val myFirebaseMessagingService = MyFirebaseMessagingService()
         val token = myFirebaseMessagingService
-        val accountID = enteredAccountID
         familySizeFromFireStore = null
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection("accounts").document(enteredAccountID)
@@ -246,7 +251,7 @@ class MainActivityViewModel() : ViewModel() {
                     "client" -> {
                         val intent = Intent(context, MainActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                        intent.putExtra("ACCOUNT_ID", accountID)
+                        intent.putExtra("ACCOUNT_ID", enteredAccountID)
                         familySizeFromFireStore = documentSnapshot["familySize"] as Long
                         familySize = familySizeFromFireStore!!.toInt()
                         intent.putExtra("FAMILY_SIZE", familySize)
@@ -289,7 +294,7 @@ class MainActivityViewModel() : ViewModel() {
             }
     }
 
-    fun filterOutZeros(order: Order): Order {
+    private fun filterOutZeros(order: Order): Order {
         val itemList = order.itemList
         val filteredList = itemList.filter { item ->
             item.qtyOrdered != 0

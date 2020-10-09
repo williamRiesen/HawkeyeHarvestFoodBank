@@ -50,9 +50,9 @@ class LoginActivity : AppCompatActivity() {
         var isVolunteer = false
         Log.d("TAG", "requestCode: $requestCode, resultCode: $resultCode, data $data")
         if (requestCode == RC_SIGN_IN) {
-            var response = IdpResponse.fromResultIntent(data)
+            val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
-                var user = FirebaseAuth.getInstance().currentUser
+                val user = FirebaseAuth.getInstance().currentUser
                 val token = user?.getIdToken(false)
                 token?.addOnSuccessListener { token ->
                     if (token.claims.containsKey("manager")) {
@@ -73,7 +73,7 @@ class LoginActivity : AppCompatActivity() {
                     return
                 }
                 if (response?.error?.errorCode == ErrorCodes.UNKNOWN_ERROR) {
-                    Toast.makeText(this, response?.error?.errorCode.toString(), Toast.LENGTH_LONG)
+                    Toast.makeText(this, response.error?.errorCode.toString(), Toast.LENGTH_LONG).show()
                 }
             }
         }

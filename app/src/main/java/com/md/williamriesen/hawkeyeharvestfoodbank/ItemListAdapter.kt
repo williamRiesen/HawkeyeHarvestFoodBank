@@ -7,14 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.annotation.ColorInt
-import androidx.core.content.res.ResourcesCompat.getColor
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.google.rpc.context.AttributeContext
 import com.md.williamriesen.hawkeyeharvestfoodbank.R.*
-import com.md.williamriesen.hawkeyeharvestfoodbank.R.color.*
-import io.grpc.internal.SharedResourceHolder
 
 class ItemListAdapter(
     var itemList: MutableLiveData<MutableList<Item>>,
@@ -78,7 +73,7 @@ class ItemListAdapter(
         }
     }
 
-    fun checkIfOption(position: Int): Boolean {
+    private fun checkIfOption(position: Int): Boolean {
         val limit = itemList.value!![position].limit
         val qtyOrderedSoFar = itemList.value!![position].qtyOrdered
         val atLimit = qtyOrderedSoFar == limit
@@ -111,10 +106,10 @@ class ItemListAdapter(
 
         when {
             (isBottomBar) -> {
-                formatAsBottomBar(holder, position)
+                formatAsBottomBar(holder)
             }
             (isCategory) -> {
-                formatAsCategory(holder, position)
+                formatAsCategory(holder)
                 val thisCategory = itemList.value!![position].name
                 holder.textViewItemName.text = thisCategory
                 holder.textViewPointsAllocated.text =
@@ -144,7 +139,7 @@ class ItemListAdapter(
     }
 
 
-    private fun formatAsCategory(holder: MyViewHolder, position: Int) {
+    private fun formatAsCategory(holder: MyViewHolder) {
         holder.imageButtonRemove.visibility = View.GONE
         holder.imageButtonAdd.visibility = View.GONE
         holder.textViewCount.visibility = View.GONE
@@ -169,7 +164,7 @@ class ItemListAdapter(
         holder.textViewItemName.visibility = View.VISIBLE
     }
 
-    private fun formatAsBottomBar(holder: MyViewHolder, position: Int) {
+    private fun formatAsBottomBar(holder: MyViewHolder) {
         holder.imageButtonRemove.visibility = View.GONE
         holder.imageButtonAdd.visibility = View.GONE
         holder.textViewCount.visibility = View.GONE
@@ -185,9 +180,7 @@ class ItemListAdapter(
         holder.textViewCount.setTextColor(Color.parseColor("#000000"))
     }
 
-    override fun getItemCount()
-            : Int {
-
+    override fun getItemCount(): Int {
         var size = 0
         if (itemList.value != null) {
             size = itemList.value?.size!!

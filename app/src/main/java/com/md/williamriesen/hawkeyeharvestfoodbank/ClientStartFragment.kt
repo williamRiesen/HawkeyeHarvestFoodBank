@@ -20,6 +20,9 @@ class ClientStartFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this.requireActivity()).get(MainActivityViewModel::class.java)
+        //        viewModel.sendObjectCatalogToFireStore()
+        Log.d("TAG", "calling sendCategoriesListToFIreStore.")
+        viewModel.sendCategoriesListToFireStore()
     }
 
     override fun onCreateView(
@@ -35,7 +38,7 @@ class ClientStartFragment : Fragment() {
         textViewAccountID.text = viewModel.accountID
         textViewFamilySize.text = viewModel.familySize.toString()
 
-        buttonShop.setOnClickListener(){
+        buttonShop.setOnClickListener {
             Navigation.findNavController(requireView()).navigate(R.id.action_clientStartFragment_to_selectionFragment)
         }
         return clientStartFragment

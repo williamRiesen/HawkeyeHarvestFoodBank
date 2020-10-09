@@ -1,6 +1,5 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +8,6 @@ import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.util.*
 
 class ItemsToPackAdapter(
     private val itemsToPackList: MutableLiveData<MutableList<Item>>,
@@ -20,7 +17,7 @@ class ItemsToPackAdapter(
     inner class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         var textViewItemToPackName: TextView = view.findViewById(R.id.textview_item_to_pack_name)
         var textViewItemToPackCount: TextView =
-            view.findViewById<TextView>(R.id.textView_item_to_pack_count)
+            view.findViewById(R.id.textView_item_to_pack_count)
         var checkBoxPacked: CheckBox = view.findViewById(R.id.checkBoxPacked)
 
 
@@ -58,7 +55,7 @@ class ItemsToPackAdapter(
     override fun getItemCount(): Int {
         var size = 0
         if (itemsToPackList.value != null) {
-            size = itemsToPackList.value!!.filter { it.qtyOrdered != 0 }!!.size
+            size = itemsToPackList.value!!.filter { it.qtyOrdered != 0 }.size
         }
         return size
     }
