@@ -11,6 +11,83 @@
 
 
     <TextView
+        android:id="@+id/textViewEarliestNextOrderDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Earliest Next Order Date"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEarliestNextOrderDateLabel" />
+
+    <TextView
+        android:id="@+id/textViewFoodBank2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/design_default_color_background"
+        android:fontFamily="@font/work_sans_medium"
+        android:gravity="center"
+        android:text="FOOD BANK"
+        android:textColor="#0A3711"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewLogo3"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHawkeyeHarvest3" />
+
+    <TextView
+        android:id="@+id/textViewAccountIDLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="Account ID:"
+        app:layout_constraintBottom_toTopOf="@+id/textViewFamilySizeLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLastOrderDateLabel"
+        app:layout_constraintVertical_chainStyle="spread" />
+
+    <TextView
+        android:id="@+id/textViewLastOrderDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="Date of last order:"
+        app:layout_constraintBottom_toTopOf="@+id/textViewAccountIDLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSuggestedNextOrderDateLabel" />
+
+    <TextView
+        android:id="@+id/textViewSuggestedNextOrderDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Suggested Next Order Date"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSuggestedNextOrderDateLabel" />
+
+    <TextView
+        android:id="@+id/textViewSuggestedNextOrderDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="Suggested date for next order:"
+        app:layout_constraintBottom_toTopOf="@+id/textViewLastOrderDateLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEarliestNextOrderDateLabel" />
+
+    <TextView
+        android:id="@+id/textViewEarliestNextOrderDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="Earliest date for next order:"
+        app:layout_constraintBottom_toTopOf="@+id/textViewSuggestedNextOrderDateLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewLogo3" />
+
+    <TextView
         android:id="@+id/textViewHawkeyeHarvest3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -42,20 +119,23 @@
         android:id="@+id/textViewAccountID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="111dp"
-        android:text="TextView"
+        android:text="AccountID"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewLogo3" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewAccountIDLabel" />
 
     <TextView
         android:id="@+id/textViewFamilySize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="FamilySize"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAccountID" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewFamilySizeLabel" />
 
     <Button
         android:id="@+id/buttonShop"
@@ -64,15 +144,29 @@
         android:text="Shop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.72"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFamilySizeLabel" />
 
     <TextView
         android:id="@+id/textViewLastOrderDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Last Order Date"
-        app:layout_constraintBottom_toTopOf="@+id/buttonShop"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewFamilySize" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewLastOrderDateLabel" />
+
+    <TextView
+        android:id="@+id/textViewFamilySizeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="Family Size:"
+        app:layout_constraintBottom_toTopOf="@+id/buttonShop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAccountIDLabel" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -42,7 +42,9 @@ class MainActivity : AppCompatActivity() {
         viewModel.accountID = accountID
         viewModel.lastOrderDate = lastOrderDate
 
-        Log.d("TAG", " MainActivity viewModel.accountID: ${viewModel.accountID}")
+        Log.d("TAG", "lastOrderDate: $lastOrderDate")
+        Log.d("TAG", "suggestedNextOrderDate: ${viewModel.suggestedNextOrderDate}")
+        Log.d("TAG", "earliestOrderDate: ${viewModel.earliestOrderDate}")
         viewModel.familySize = familySize as Int
         viewModel.retrieveObjectCatalogFromFireStore()
 

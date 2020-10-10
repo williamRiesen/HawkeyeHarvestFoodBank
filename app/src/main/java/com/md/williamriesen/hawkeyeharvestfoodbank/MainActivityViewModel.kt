@@ -11,7 +11,9 @@ import androidx.navigation.Navigation
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
+import java.time.Instant
 import java.time.LocalDate
+import java.time.Period
 import java.util.*
 
 class MainActivityViewModel() : ViewModel() {
@@ -24,6 +26,7 @@ class MainActivityViewModel() : ViewModel() {
     var familySize = 0
     var points: Int? = null
     var lastOrderDate: Date? = null
+    var lastOrderTimestamp: Timestamp? = null
     var categories: MutableLiveData<MutableList<Category>> =
         MutableLiveData(mutableListOf())
 
@@ -259,10 +262,10 @@ class MainActivityViewModel() : ViewModel() {
                         familySizeFromFireStore = documentSnapshot["familySize"] as Long
                         familySize = familySizeFromFireStore!!.toInt()
                         intent.putExtra("FAMILY_SIZE", familySize)
-                        val timestamp = documentSnapshot["lastOrderDate"] as Timestamp
-                        Log.d("TAG", "timestamp.seconds: ${timestamp.seconds}")
+                        lastOrderTimestamp = documentSnapshot["lastOrderDate"] as Timestamp
+                        Log.d("TAG", "timestamp.seconds: ${lastOrderTimestamp!!.seconds}")
                         Log.d("TAG", "lastOrderDate: ${lastOrderDate}")
-                        intent.putExtra("LAST_ORDER_DATE_TIMESTAMP", timestamp)
+                        intent.putExtra("LAST_ORDER_DATE_TIMESTAMP", lastOrderTimestamp)
                         context.startActivity(intent)
                     }
                     "volunteer" -> {
@@ -284,16 +287,16 @@ class MainActivityViewModel() : ViewModel() {
                     }
                 }
             }
-            .addOnFailureListener{
-            Log.d("TAG", "Retrieve family size from database failed.")
-        }
+            .addOnFailureListener {
+                Log.d("TAG", "Retrieve family size from database failed.")
+            }
     }
 
     fun submitOrder(view: View) {
         val thisOrder = Order(accountID, Date(), itemList.value!!)
         val filteredOrder = filterOutZeros(thisOrder)
         val db = FirebaseFirestore.getInstance()
-        Log.d("TAG","filteredOrder.orderState ${filteredOrder.orderState}")
+        Log.d("TAG", "filteredOrder.orderState ${filteredOrder.orderState}")
         db.collection(("orders")).document().set(filteredOrder)
 //        db.collection("orders").document("nextOrder").set(filteredOrder)
             .addOnSuccessListener {
@@ -314,4 +317,25 @@ class MainActivityViewModel() : ViewModel() {
         filteredOrder.orderState = order.orderState
         return filteredOrder
     }
+
+    val suggestedNextOrderDate: Date
+        get() {
+            val calendar = Calendar.getInstance()
+            calendar.time = lastOrderDate
+            calendar.add(Calendar.MONTH, 1)
+            return calendar.time
+        }
+
+    val earliestOrderDate: Date
+        get() {
+            val calendar = Calendar.getInstance()
+            calendar.time = suggestedNextOrderDate
+            val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+            calendar.add(Calendar.DATE, -dayOfMonth + 1)
+            return calendar.time
+        }
+
+    val canOrderNow: Boolean
+        get() = earliestOrderDate.after(Date(System.currentTimeMillis()))
+
 }
