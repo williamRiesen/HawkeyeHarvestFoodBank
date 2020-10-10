@@ -8,11 +8,14 @@ import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
+import java.time.LocalDate
 import java.util.*
 
 class MainActivityViewModel() : ViewModel() {
+
     var accountID = "Turnip"
     val itemList = MutableLiveData<MutableList<Item>>()
     val categoriesList = MutableLiveData<MutableList<Category>>()
@@ -20,6 +23,7 @@ class MainActivityViewModel() : ViewModel() {
     private var familySizeFromFireStore: Long? = null
     var familySize = 0
     var points: Int? = null
+    var lastOrderDate: Date? = null
     var categories: MutableLiveData<MutableList<Category>> =
         MutableLiveData(mutableListOf())
 
@@ -255,6 +259,10 @@ class MainActivityViewModel() : ViewModel() {
                         familySizeFromFireStore = documentSnapshot["familySize"] as Long
                         familySize = familySizeFromFireStore!!.toInt()
                         intent.putExtra("FAMILY_SIZE", familySize)
+                        val timestamp = documentSnapshot["lastOrderDate"] as Timestamp
+                        Log.d("TAG", "timestamp.seconds: ${timestamp.seconds}")
+                        Log.d("TAG", "lastOrderDate: ${lastOrderDate}")
+                        intent.putExtra("LAST_ORDER_DATE_TIMESTAMP", timestamp)
                         context.startActivity(intent)
                     }
                     "volunteer" -> {
@@ -284,8 +292,8 @@ class MainActivityViewModel() : ViewModel() {
     fun submitOrder(view: View) {
         val thisOrder = Order(accountID, Date(), itemList.value!!)
         val filteredOrder = filterOutZeros(thisOrder)
-
         val db = FirebaseFirestore.getInstance()
+        Log.d("TAG","filteredOrder.orderState ${filteredOrder.orderState}")
         db.collection(("orders")).document().set(filteredOrder)
 //        db.collection("orders").document("nextOrder").set(filteredOrder)
             .addOnSuccessListener {
@@ -303,6 +311,7 @@ class MainActivityViewModel() : ViewModel() {
         filteredOrder.itemList = filteredList as MutableList<Item>
         filteredOrder.accountID = order.accountID
         filteredOrder.date = order.date
+        filteredOrder.orderState = order.orderState
         return filteredOrder
     }
 }

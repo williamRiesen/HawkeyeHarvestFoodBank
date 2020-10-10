@@ -11,7 +11,12 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import com.google.firebase.Timestamp
 import kotlinx.android.synthetic.main.fragment_checkout.view.*
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,7 +32,15 @@ class MainActivity : AppCompatActivity() {
 
         var accountID = intent.extras["ACCOUNT_ID"].toString()
         var familySize = intent.extras["FAMILY_SIZE"]
+        var timeStamp = intent.extras["LAST_ORDER_DATE_TIMESTAMP"] as Timestamp
+        val lastOrderDate = Date(timeStamp.seconds * 1000)
+
+
+
+
+
         viewModel.accountID = accountID
+        viewModel.lastOrderDate = lastOrderDate
 
         Log.d("TAG", " MainActivity viewModel.accountID: ${viewModel.accountID}")
         viewModel.familySize = familySize as Int
