@@ -9,54 +9,65 @@
     android:background="@color/design_default_color_background"
     tools:context=".MainActivity">
 
-
-    <TextView
-        android:id="@+id/textViewFoodBankSmall"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tool_bar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/design_default_color_background"
-        android:fontFamily="@font/work_sans_medium"
-        android:gravity="center"
-        android:text="FOOD BANK"
-        android:textColor="#0A3711"
-        android:textSize="14sp"
+        android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageViewLogoSmall"
-        app:layout_constraintTop_toBottomOf="@+id/textViewHawkeyeHarvestSmall" />
-
-    <ImageView
-        android:id="@+id/imageViewLogoSmall"
-        android:layout_width="106dp"
-        android:layout_height="91dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/ic_hawkeye_harvest_food_bank_logo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <ImageView
+            android:id="@+id/imageViewLogo3"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="8dp"
+            android:src="@drawable/ic_hawkeye_harvest_food_bank_logo"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="4dp" />
+
+        <TextView
+            android:id="@+id/textViewSaveSuccessful"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/goblin_one"
+            android:gravity="center"
+            android:text="Save Successful"
+            android:textColor="#CEDFBA"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/imageViewLogo3"
+            app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
+
+    </androidx.appcompat.widget.Toolbar>
+
 
     <TextView
-        android:id="@+id/textViewHawkeyeHarvestSmall"
-        android:layout_width="0dp"
+        android:id="@+id/textViewEarliestNextOrderDate2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/design_default_color_background"
-        android:fontFamily="@font/goblin_one"
-        android:gravity="center"
-        android:text="@string/hawkeye_harvest"
-        android:textColor="#0A3711"
+        android:layout_marginTop="8dp"
+        android:text="Earliest Next Order Date"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageViewLogoSmall"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOrderRecievedMessage" />
 
     <TextView
         android:id="@+id/textViewOrderRecievedMessage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="16dp"
         android:gravity="bottom"
-        android:text="Your order has been received and will be packed shortly. You will recieve a message when it is ready for pickup."
+        android:text="Your order has been saved. You may activate this saved order using this app any time on or after:"
         android:textColor="@color/design_default_color_on_secondary"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -69,7 +80,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:onClick="onDoneButtonClick"
         android:text="OK"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

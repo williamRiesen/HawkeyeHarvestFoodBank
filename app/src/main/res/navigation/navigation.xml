@@ -11,33 +11,21 @@
         android:label="SelectionFragment" >
         <action
             android:id="@+id/action_selectionFragment_to_checkoutFragment"
-            app:destination="@id/checkoutFragment" />
+            app:destination="@id/checkoutFragment"
+            app:popUpTo="@id/selectionFragment" />
     </fragment>
     <fragment
         android:id="@+id/checkoutFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.CheckoutFragment"
         android:label="CheckoutFragment" >
         <action
-            android:id="@+id/action_checkoutFragment_to_doneFragment"
-            app:destination="@id/doneFragment" />
+            android:id="@+id/action_checkoutFragment_to_orderSavedFragment"
+            app:destination="@id/orderSavedFragment"
+            app:popUpTo="@id/clientStartFragment" />
     </fragment>
 
-<!--    <fragment-->
-<!--        android:id="@+id/signInFragment"-->
-<!--        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.SignInFragment"-->
-<!--        android:label="SignInFragment" >-->
-<!--        <action-->
-<!--            android:id="@+id/action_signInFragment_to_selectionFragment"-->
-<!--            app:destination="@id/selectionFragment" />-->
-<!--    </fragment>-->
-    <fragment
-        android:id="@+id/doneFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.DoneFragment"
-        android:label="DoneFragment" >
-        <action
-            android:id="@+id/action_doneFragment_to_clientStartFragment"
-            app:destination="@id/clientStartFragment" />
-    </fragment>
+
+
     <fragment
         android:id="@+id/clientStartFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.ClientStartFragment"
@@ -48,4 +36,8 @@
             app:destination="@id/selectionFragment"
             app:popUpTo="@id/clientStartFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/orderSavedFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.OrderSavedFragment"
+        android:label="OrderSavedFragment" />
 </navigation>

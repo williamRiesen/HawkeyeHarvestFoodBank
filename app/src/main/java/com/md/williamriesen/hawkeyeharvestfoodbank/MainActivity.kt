@@ -129,9 +129,6 @@ class MainActivity : AppCompatActivity() {
         viewModel.submitOrder(view)
     }
 
-    fun onDoneButtonClick(view: View) {
-        Navigation.findNavController(view).navigate(R.id.action_doneFragment_to_clientStartFragment)
-    }
 
     fun onExitButtonClick(view: View) {
         startActivity(Intent(this, LoginActivity::class.java))

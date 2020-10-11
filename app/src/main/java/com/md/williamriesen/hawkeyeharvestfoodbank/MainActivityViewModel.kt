@@ -1,5 +1,6 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -298,12 +299,10 @@ class MainActivityViewModel() : ViewModel() {
         val db = FirebaseFirestore.getInstance()
         Log.d("TAG", "filteredOrder.orderState ${filteredOrder.orderState}")
         db.collection(("orders")).document().set(filteredOrder)
-//        db.collection("orders").document("nextOrder").set(filteredOrder)
             .addOnSuccessListener {
-                Navigation.findNavController(view)
-                    .navigate(R.id.action_checkoutFragment_to_doneFragment)
-            }
+                Navigation.findNavController(view).navigate(R.id.action_checkoutFragment_to_orderSavedFragment) }
     }
+
 
     private fun filterOutZeros(order: Order): Order {
         val itemList = order.itemList
