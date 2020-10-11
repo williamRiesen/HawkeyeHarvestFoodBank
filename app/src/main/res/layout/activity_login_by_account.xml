@@ -1,21 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/design_default_color_background"
-tools:context=".LoginByAccountActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/design_default_color_background"
+    tools:context=".LoginByAccountActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:background="@color/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleLarge"
-        android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminate="true"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,96 +33,97 @@ tools:context=".LoginByAccountActivity">
         app:layout_constraintVertical_bias="0.78" />
 
     <TextView
-    android:id="@+id/textViewFoodBank"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@color/design_default_color_background"
-    android:fontFamily="@font/work_sans_medium"
-    android:gravity="center"
-    android:text="FOOD BANK"
-    android:textColor="#0A3711"
-    android:textSize="18sp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.49"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/textViewHawkeyeHarvest" />
+        android:id="@+id/textViewFoodBank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00FFFFFF"
+        android:fontFamily="@font/work_sans_medium"
+        android:gravity="center"
+        android:text="FOOD BANK"
+        android:textColor="#0A3711"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHawkeyeHarvest" />
 
     <ImageView
         android:id="@+id/imageViewLogo"
         android:layout_width="194dp"
         android:layout_height="172dp"
+        android:layout_marginTop="32dp"
         android:src="@drawable/ic_hawkeye_harvest_food_bank_logo"
-        app:layout_constraintBottom_toTopOf="@+id/textViewHawkeyeHarvest"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.483"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-<TextView
-    android:id="@+id/textViewHawkeyeHarvest"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@color/design_default_color_background"
-    android:fontFamily="@font/goblin_one"
-    android:gravity="center"
-    android:text="@string/hawkeye_harvest"
-    android:textColor="#0A3711"
-    android:textSize="36sp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.0"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintVertical_bias="0.43" />
+    <TextView
+        android:id="@+id/textViewHawkeyeHarvest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00C4D89D"
+        android:fontFamily="@font/goblin_one"
+        android:gravity="center"
+        android:text="@string/hawkeye_harvest"
+        android:textColor="#0D3E14"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewLogo"
+        app:layout_constraintVertical_bias="0.060000002" />
 
-<EditText
-    android:id="@+id/editTextAccountID"
-    android:layout_width="150dp"
-    android:layout_height="wrap_content"
-    android:ems="10"
-    android:inputType="number"
-    android:imeOptions="actionDone"
-    android:textSize="24sp"
-    android:visibility="visible"
-    app:layout_constraintBottom_toBottomOf="@+id/textViewOrderRecievedMessage"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="@+id/textViewOrderRecievedMessage" />
+    <EditText
+        android:id="@+id/editTextAccountID"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:imeOptions="actionDone"
+        android:inputType="number"
+        android:textSize="24sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewAccountIDLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textViewAccountIDLabel" />
 
-<TextView
-    android:id="@+id/textViewOrderRecievedMessage"
-    android:layout_width="282dp"
-    android:layout_height="88dp"
-    android:gravity="bottom"
-    android:text="Please enter your account number:"
-    android:textSize="18sp"
-    android:visibility="visible"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/textViewFoodBank" />
+    <TextView
+        android:id="@+id/textViewAccountIDLabel"
+        android:layout_width="282dp"
+        android:layout_height="88dp"
+        android:gravity="bottom"
+        android:text="Please enter your account number:"
+        android:textSize="18sp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFoodBank" />
 
-<Button
-    android:id="@+id/buttonOK"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:onClick="onShopButtonClick"
-    android:text="Shop"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.5"
-    app:layout_constraintStart_toEndOf="@+id/buttonEspanol" />
+    <Button
+        android:id="@+id/buttonOK"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:onClick="onShopButtonClick"
+        android:text="Shop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonEspanol" />
 
-<Button
-    android:id="@+id/buttonEspanol"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:text="Espanol"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toStartOf="@+id/buttonOK"
-    app:layout_constraintHorizontal_bias="0.5"
-    app:layout_constraintHorizontal_chainStyle="spread"
-    app:layout_constraintStart_toStartOf="parent" />
+    <Button
+        android:id="@+id/buttonEspanol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Espanol"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonOK"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

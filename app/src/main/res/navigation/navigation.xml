@@ -45,6 +45,7 @@
         tools:layout="@layout/fragment_client_start" >
         <action
             android:id="@+id/action_clientStartFragment_to_selectionFragment"
-            app:destination="@id/selectionFragment" />
+            app:destination="@id/selectionFragment"
+            app:popUpTo="@id/clientStartFragment" />
     </fragment>
 </navigation>

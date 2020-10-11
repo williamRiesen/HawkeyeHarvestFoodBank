@@ -10,6 +10,18 @@
     tools:context=".MainActivity">
 
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewLogo3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textViewEarliestNextOrderDate"
         android:layout_width="wrap_content"
@@ -25,11 +37,11 @@
         android:id="@+id/textViewFoodBank2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/design_default_color_background"
+        android:background="@android:color/transparent"
         android:fontFamily="@font/work_sans_medium"
         android:gravity="center"
         android:text="FOOD BANK"
-        android:textColor="#0A3711"
+        android:textColor="#CEDFBA"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageViewLogo3"
@@ -91,29 +103,27 @@
         android:id="@+id/textViewHawkeyeHarvest3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@android:color/white"
+        android:background="@android:color/transparent"
         android:fontFamily="@font/goblin_one"
         android:gravity="center"
         android:text="@string/hawkeye_harvest"
-        android:textColor="#0A3711"
+        android:textColor="#CEDFBA"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/imageViewLogo3"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
 
     <ImageView
         android:id="@+id/imageViewLogo3"
         android:layout_width="117dp"
         android:layout_height="82dp"
-        android:layout_marginTop="8dp"
         android:src="@drawable/ic_hawkeye_harvest_food_bank_logo"
         app:layout_constraintEnd_toStartOf="@+id/textViewHawkeyeHarvest3"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
 
     <TextView
         android:id="@+id/textViewAccountID"

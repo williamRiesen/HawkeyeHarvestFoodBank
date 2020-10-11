@@ -5,6 +5,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 
@@ -29,13 +30,20 @@ class LoginByAccountActivity : AppCompatActivity() {
         val editTextAccountID = findViewById<EditText>(R.id.editTextAccountID)
         val accountID = editTextAccountID.text.toString()
         val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        val label = findViewById<TextView>(R.id.textViewAccountIDLabel)
         progressBar.visibility = View.VISIBLE
+        label.visibility = View.INVISIBLE
+        editTextAccountID.visibility = View.INVISIBLE
         viewModel.signIn(accountID, applicationContext)
     }
 
     override fun onRestart() {
         super.onRestart()
+        val editTextAccountID = findViewById<EditText>(R.id.editTextAccountID)
+        val label = findViewById<TextView>(R.id.textViewAccountIDLabel)
         val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        editTextAccountID.visibility = View.VISIBLE
+        label.visibility = View.VISIBLE
         progressBar.visibility = View.INVISIBLE
     }
 }
