@@ -10,17 +10,62 @@
     tools:context=".MainActivity">
 
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewLogo3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+    <TextView
+        android:id="@+id/textViewSuggesteOrderDateLabel2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Suggested date for next order:"
+        app:layout_constraintBottom_toTopOf="@+id/textViewLastOrderDateLabel"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewEarliestNextOrderDateLabel" />
+
+    <TextView
+        android:id="@+id/textViewFamilySizeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Family Size:"
+        app:layout_constraintBottom_toTopOf="@+id/buttonShop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAccountIDLabel" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tool_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <ImageView
+            android:id="@+id/imageViewLogo3"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="8dp"
+            android:src="@drawable/ic_hawkeye_harvest_food_bank_logo"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="4dp" />
+
+        <TextView
+            android:id="@+id/textViewAccountInformation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/goblin_one"
+            android:gravity="center"
+            android:text="Account Information"
+            android:textColor="#CEDFBA"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/imageViewLogo3"
+            app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
+
+    </androidx.appcompat.widget.Toolbar>
+
 
     <TextView
         android:id="@+id/textViewEarliestNextOrderDate"
@@ -33,25 +78,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewEarliestNextOrderDateLabel" />
 
-    <TextView
-        android:id="@+id/textViewFoodBank2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:fontFamily="@font/work_sans_medium"
-        android:gravity="center"
-        android:text="FOOD BANK"
-        android:textColor="#CEDFBA"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageViewLogo3"
-        app:layout_constraintTop_toBottomOf="@+id/textViewHawkeyeHarvest3" />
 
     <TextView
         android:id="@+id/textViewAccountIDLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
         android:text="Account ID:"
         app:layout_constraintBottom_toTopOf="@+id/textViewFamilySizeLabel"
         app:layout_constraintStart_toStartOf="parent"
@@ -62,11 +94,12 @@
         android:id="@+id/textViewLastOrderDateLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
         android:text="Date of last order:"
         app:layout_constraintBottom_toTopOf="@+id/textViewAccountIDLabel"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSuggestedNextOrderDateLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewSuggesteOrderDateLabel2" />
+
 
     <TextView
         android:id="@+id/textViewSuggestedNextOrderDate"
@@ -77,51 +110,15 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSuggestedNextOrderDateLabel" />
-
-    <TextView
-        android:id="@+id/textViewSuggestedNextOrderDateLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:text="Suggested date for next order:"
-        app:layout_constraintBottom_toTopOf="@+id/textViewLastOrderDateLabel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewEarliestNextOrderDateLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewSuggesteOrderDateLabel2" />
 
     <TextView
         android:id="@+id/textViewEarliestNextOrderDateLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
         android:text="Earliest date for next order:"
-        app:layout_constraintBottom_toTopOf="@+id/textViewSuggestedNextOrderDateLabel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewLogo3" />
-
-    <TextView
-        android:id="@+id/textViewHawkeyeHarvest3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:fontFamily="@font/goblin_one"
-        android:gravity="center"
-        android:text="@string/hawkeye_harvest"
-        android:textColor="#CEDFBA"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageViewLogo3"
-        app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
-
-    <ImageView
-        android:id="@+id/imageViewLogo3"
-        android:layout_width="117dp"
-        android:layout_height="82dp"
-        android:src="@drawable/ic_hawkeye_harvest_food_bank_logo"
-        app:layout_constraintEnd_toStartOf="@+id/textViewHawkeyeHarvest3"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintBottom_toTopOf="@+id/textViewSuggesteOrderDateLabel2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
 
@@ -151,10 +148,14 @@
         android:id="@+id/buttonShop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:paddingStart="72dp"
+        android:paddingEnd="72dp"
         android:text="Shop"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.72"
+        app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewFamilySizeLabel" />
 
@@ -168,15 +169,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewLastOrderDateLabel" />
-
-    <TextView
-        android:id="@+id/textViewFamilySizeLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:text="Family Size:"
-        app:layout_constraintBottom_toTopOf="@+id/buttonShop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAccountIDLabel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
