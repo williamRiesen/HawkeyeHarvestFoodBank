@@ -8,10 +8,10 @@ class Order() {
     var itemList =  mutableListOf<Item>()
     var orderState: String?  = null
 
-    constructor(accountIDArg: String, dateArg: Date, itemListArg: MutableList<Item>) : this() {
+    constructor(accountIDArg: String, dateArg: Date, itemListArg: MutableList<Item>, orderStateArg: String) : this() {
         accountID = accountIDArg
         date = dateArg
         itemList = itemListArg
-        orderState = "SUBMITTED"
+        orderState = orderStateArg
     }
 }

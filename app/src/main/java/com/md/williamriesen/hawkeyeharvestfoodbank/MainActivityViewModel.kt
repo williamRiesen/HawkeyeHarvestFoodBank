@@ -293,8 +293,8 @@ class MainActivityViewModel() : ViewModel() {
             }
     }
 
-    fun submitOrder(view: View) {
-        val thisOrder = Order(accountID, Date(), itemList.value!!)
+    fun saveOrder(view: View) {
+        val thisOrder = Order(accountID, Date(), itemList.value!!, "SAVED")
         val filteredOrder = filterOutZeros(thisOrder)
         val db = FirebaseFirestore.getInstance()
         Log.d("TAG", "filteredOrder.orderState ${filteredOrder.orderState}")
@@ -309,6 +309,18 @@ class MainActivityViewModel() : ViewModel() {
                         .navigate(R.id.action_checkoutFragment_to_orderSavedFragment)
                 }
             }
+    }
+
+    fun submitOrder(view: View){
+        val thisOrder = Order(accountID, Date(), itemList.value!!, "SUBMITTED")
+        val filteredOrder = filterOutZeros(thisOrder)
+        val db = FirebaseFirestore.getInstance()
+        Log.d("TAG", "filteredOrder.orderState ${filteredOrder.orderState}")
+        db.collection(("orders")).document().set(filteredOrder)
+            .addOnSuccessListener{
+
+            }
+
     }
 
 

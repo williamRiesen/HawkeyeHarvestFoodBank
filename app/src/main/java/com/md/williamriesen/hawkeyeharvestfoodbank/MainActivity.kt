@@ -13,9 +13,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.google.firebase.Timestamp
 import kotlinx.android.synthetic.main.fragment_checkout.view.*
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -126,7 +123,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onSubmitButtonClick(view: View) {
-        viewModel.submitOrder(view)
+        viewModel.saveOrder(view)
     }
 
 
