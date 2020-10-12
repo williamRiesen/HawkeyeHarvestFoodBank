@@ -300,7 +300,15 @@ class MainActivityViewModel() : ViewModel() {
         Log.d("TAG", "filteredOrder.orderState ${filteredOrder.orderState}")
         db.collection(("orders")).document().set(filteredOrder)
             .addOnSuccessListener {
-                Navigation.findNavController(view).navigate(R.id.action_checkoutFragment_to_orderSavedFragment) }
+                Log.d("TAG","canOrderNow: $canOrderNow")
+                if (canOrderNow) {
+                    Navigation.findNavController(view)
+                        .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
+                } else {
+                    Navigation.findNavController(view)
+                        .navigate(R.id.action_checkoutFragment_to_orderSavedFragment)
+                }
+            }
     }
 
 
@@ -335,6 +343,6 @@ class MainActivityViewModel() : ViewModel() {
         }
 
     val canOrderNow: Boolean
-        get() = earliestOrderDate.after(Date(System.currentTimeMillis()))
+        get() = earliestOrderDate.before(Date(System.currentTimeMillis()))
 
 }

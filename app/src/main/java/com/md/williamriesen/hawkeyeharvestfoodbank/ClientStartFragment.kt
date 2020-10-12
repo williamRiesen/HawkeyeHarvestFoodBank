@@ -53,11 +53,11 @@ class ClientStartFragment : Fragment() {
         textViewEarliestNextOrderDate.text = formattedEarliestDate
 
         if (viewModel.canOrderNow) {
-            textViewEarliestNextOrderDate.visibility = View.VISIBLE
-            textViewEarliestNextOrderLabel.visibility = View.VISIBLE
-        } else {
             textViewEarliestNextOrderDate.visibility = View.GONE
-            textViewEarliestNextOrderLabel.visibility =View.GONE
+            textViewEarliestNextOrderLabel.visibility = View.GONE
+        } else {
+            textViewEarliestNextOrderDate.visibility = View.VISIBLE
+            textViewEarliestNextOrderLabel.visibility =View.VISIBLE
         }
 
         val formattedSuggestedDate =

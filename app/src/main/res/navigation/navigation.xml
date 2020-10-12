@@ -21,7 +21,13 @@
         <action
             android:id="@+id/action_checkoutFragment_to_orderSavedFragment"
             app:destination="@id/orderSavedFragment"
-            app:popUpTo="@id/clientStartFragment" />
+            app:popUpTo="@id/clientStartFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment"
+            app:destination="@id/askWhetherToSubmitSavedOrderFragment"
+            app:popUpTo="@id/clientStartFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
 
@@ -40,4 +46,8 @@
         android:id="@+id/orderSavedFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.OrderSavedFragment"
         android:label="OrderSavedFragment" />
+    <fragment
+        android:id="@+id/askWhetherToSubmitSavedOrderFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.AskWhetherToSubmitSavedOrderFragment"
+        android:label="AskWhetherToSubmitSavedOrderFragment" />
 </navigation>

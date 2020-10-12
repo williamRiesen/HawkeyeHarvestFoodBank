@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/textViewOrderReceivedMessage"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/design_default_color_background"
+    tools:context=".MainActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tool_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <ImageView
+            android:id="@+id/imageViewLogo3"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="8dp"
+            android:src="@drawable/ic_hawkeye_harvest_food_bank_logo"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="4dp" />
+
+        <TextView
+            android:id="@+id/textViewPlaceOrderNowQuestionMark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/goblin_one"
+            android:gravity="center"
+            android:text="Place order now?"
+            android:textColor="#CEDFBA"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/imageViewLogo3"
+            app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <TextView
+        android:id="@+id/textViewOrderSaveSuccessful"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:gravity="bottom"
+        android:text="Your order has been saved successfully."
+        android:textColor="@color/design_default_color_on_secondary"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+    <Button
+        android:id="@+id/buttonNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="No"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonYes" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tool_bar"
+        app:srcCompat="@drawable/ic_check_mark" />
+
+    <TextView
+        android:id="@+id/textViewOrderNowQuestionMark"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:text="Do you want to place your order now?"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewQuestionMark"
+        app:layout_constraintTop_toTopOf="@+id/textViewQuestionMark" />
+
+    <TextView
+        android:id="@+id/textViewQuestionMark"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="?"
+        android:textColor="@color/colorPrimary"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/textViewImportant"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text='IMPORTANT:  you must be at the food bank to pick up your order within 60 minutes of pressing the "Yes" button. Please be sure you are ready with transportation.'
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewQuestionMark" />
+
+    <TextView
+        android:id="@+id/textViewYes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Pack the order. I am ready to pick it up NOW."
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/buttonYes"
+        app:layout_constraintTop_toTopOf="@+id/buttonYes" />
+
+    <TextView
+        android:id="@+id/textViewNo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="I am not ready. Save the order but do not pack it yet."
+        android:textColor="@color/common_google_signin_btn_text_light_pressed"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/buttonNo"
+        app:layout_constraintTop_toTopOf="@+id/buttonNo" />
+
+    <Button
+        android:id="@+id/buttonYes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="YES"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewImportant" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
