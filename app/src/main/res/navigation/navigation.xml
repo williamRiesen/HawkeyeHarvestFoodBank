@@ -26,6 +26,7 @@
         <action
             android:id="@+id/action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment"
             app:destination="@id/askWhetherToSubmitSavedOrderFragment"
+            app:popUpTo="@id/checkoutFragment"
             app:popUpToInclusive="false" />
     </fragment>
 
@@ -52,6 +53,11 @@
         <action
             android:id="@+id/action_askWhetherToSubmitSavedOrderFragment_to_orderSubmittedFragment"
             app:destination="@id/orderSubmittedFragment"
+            app:popUpTo="@id/clientStartFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_askWhetherToSubmitSavedOrderFragment_to_orderSavedFragment"
+            app:destination="@id/orderSavedFragment"
             app:popUpTo="@id/clientStartFragment"
             app:popUpToInclusive="true" />
     </fragment>

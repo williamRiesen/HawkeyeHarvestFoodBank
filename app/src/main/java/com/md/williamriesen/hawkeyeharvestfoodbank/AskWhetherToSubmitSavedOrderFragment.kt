@@ -27,7 +27,9 @@ class AskWhetherToSubmitSavedOrderFragment : Fragment() {
     ): View? {
         val askWhetherToSubmitFragment = inflater.inflate(R.layout.fragment_ask_whether_to_submit_saved_order, container, false)
         val buttonNo = askWhetherToSubmitFragment.findViewById<Button>(R.id.buttonNo)
-        buttonNo.setOnClickListener { activity?.onBackPressed() }
+        buttonNo.setOnClickListener {
+            Navigation.findNavController(it).navigate(R.id.action_askWhetherToSubmitSavedOrderFragment_to_orderSavedFragment)
+        }
         val buttonYes = askWhetherToSubmitFragment.findViewById<Button>(R.id.buttonYes)
         buttonYes.setOnClickListener{
             Navigation.findNavController(it).navigate(R.id.action_askWhetherToSubmitSavedOrderFragment_to_orderSubmittedFragment)

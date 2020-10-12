@@ -75,17 +75,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewDone" />
 
-    <Button
-        android:id="@+id/buttonOK"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="OK"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewOrderRecievedMessage" />
-
     <ImageView
         android:id="@+id/imageViewCheckMark"
         android:layout_width="60dp"
@@ -113,5 +102,15 @@
         app:layout_constraintStart_toEndOf="@+id/imageViewCheckMark"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.26" />
+
+    <Button
+        android:id="@+id/buttonExit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Exit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEarliestNextOrderDate2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

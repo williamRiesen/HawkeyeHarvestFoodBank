@@ -25,8 +25,10 @@ class OrderSavedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val orderSavedFragment = inflater.inflate(R.layout.fragment_order_saved, container, false)
-        val buttonOK = orderSavedFragment.findViewById<Button>(R.id.buttonOK)
-        buttonOK.setOnClickListener { activity?.onBackPressed() }
+        val buttonOK = orderSavedFragment.findViewById<Button>(R.id.buttonExit)
+        buttonOK.setOnClickListener {
+            activity?.onBackPressed()
+        }
         val textViewEarliestNextOrderDate = orderSavedFragment.findViewById<TextView>(R.id.textViewEarliestNextOrderDate2)
         val formattedEarliestDate =
             DateFormat.getDateInstance().format(viewModel.earliestOrderDate)
