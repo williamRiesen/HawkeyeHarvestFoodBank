@@ -79,7 +79,6 @@ class ItemListAdapter(
         val atLimit = qtyOrderedSoFar == limit
         val pointsNeeded = itemList.value!![position].pointValue!!.toInt()
         val thisCategory = itemList.value!![position].category
-        Log.d("TAG", "thisCategory: $thisCategory")
         val pointsUsed = itemList.value!!.find { item ->
             Log.d("TAG", "item.name: ${item.name}")
             item.name == thisCategory

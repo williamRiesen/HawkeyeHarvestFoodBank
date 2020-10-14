@@ -16,7 +16,6 @@ class VolunteerActivityViewModel : ViewModel() {
 
     fun getNextOrderFromFireStore() {
         val db = FirebaseFirestore.getInstance()
-
         val ordersRef = db.collection("orders")
         val query = ordersRef.whereEqualTo("orderState","SUBMITTED")
             .orderBy("date").limit(1)

@@ -47,4 +47,6 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         super.onNewToken(p0)
         Log.d("TAG", "Token: $p0")
     }
+
+
 }

@@ -37,6 +37,10 @@ class UpdateInventoryFragment : Fragment() {
         val updateInventoryView = inflater.inflate(R.layout.fragment_update_inventory, container, false)
         val recyclerView = updateInventoryView.findViewById<RecyclerView>(R.id.recyclerviewInventoryForUpdate)
         setUpRecyclerView(viewModel.itemsToInventoryList, recyclerView)
+        val actionButton = updateInventoryView.findViewById<FloatingActionButton>(R.id.floatingActionButton)
+        actionButton.setOnClickListener {
+            viewModel.submitUpdatedInventory(requireContext())
+        }
         return updateInventoryView
     }
 

@@ -32,7 +32,7 @@ class AskWhetherToSubmitSavedOrderFragment : Fragment() {
         }
         val buttonYes = askWhetherToSubmitFragment.findViewById<Button>(R.id.buttonYes)
         buttonYes.setOnClickListener{
-            Navigation.findNavController(it).navigate(R.id.action_askWhetherToSubmitSavedOrderFragment_to_orderSubmittedFragment)
+            viewModel.submitOrder(it)
         }
         return askWhetherToSubmitFragment
     }

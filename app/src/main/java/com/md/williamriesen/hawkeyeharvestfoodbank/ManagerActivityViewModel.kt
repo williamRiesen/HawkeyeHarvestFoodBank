@@ -1,7 +1,9 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
+import android.content.Context
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
@@ -50,6 +52,15 @@ class ManagerActivityViewModel : ViewModel() {
             }
             .addOnFailureListener {
                 Log.d("TAG", "Retrieve objectCatalog from database failed.")
+            }
+    }
+
+    fun submitUpdatedInventory(context: Context) {
+        val objectCatalog = ObjectCatalog(itemsToInventoryList.value!!)
+        val db = FirebaseFirestore.getInstance()
+        db.collection("catalogs").document("objectCatalog").set(objectCatalog)
+            .addOnSuccessListener {
+                Toast.makeText(context,"Inventory Updated.", Toast.LENGTH_LONG).show()
             }
     }
 

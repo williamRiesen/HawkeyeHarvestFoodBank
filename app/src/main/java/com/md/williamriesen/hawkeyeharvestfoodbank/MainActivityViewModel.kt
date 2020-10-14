@@ -1,6 +1,5 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -11,16 +10,15 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
-import java.time.Instant
-import java.time.LocalDate
-import java.time.Period
 import java.util.*
 
 class MainActivityViewModel() : ViewModel() {
 
     var accountID = "Turnip"
     val itemList = MutableLiveData<MutableList<Item>>()
+    private var savedItemList = mutableListOf<Item>()
     val categoriesList = MutableLiveData<MutableList<Category>>()
     var objectCatalog: MutableMap<String, Any>? = null
     private var familySizeFromFireStore: Long? = null
@@ -184,6 +182,7 @@ class MainActivityViewModel() : ViewModel() {
                 generateHeadings()
                 itemList.value?.sortWith(
                     compareBy<Item> { it.categoryId }.thenBy { it.itemID })
+                retrieveSavedOrder()
             }
             .addOnFailureListener {
                 Log.d("TAG", "Retrieve categories from database failed.")
@@ -197,13 +196,57 @@ class MainActivityViewModel() : ViewModel() {
             .addOnSuccessListener { documentSnapshot ->
                 Log.d("TAG", "Retrieve objectCatalog from database successful.")
                 val myObjectCatalog = documentSnapshot.toObject<ObjectCatalog>()
-                itemList.value = myObjectCatalog?.itemList as MutableList<Item>?
+                val availableItemsList = myObjectCatalog?.itemList?.filter { item ->
+                    item.isAvailable as Boolean
+                }
+                itemList.value = availableItemsList as MutableList<Item>?
                 retrieveCategoriesFromFireStore()
             }
             .addOnFailureListener {
                 Log.d("TAG", "Retrieve objectCatalog from database failed.")
             }
     }
+
+    fun retrieveSavedOrder() {
+        val db = FirebaseFirestore.getInstance()
+        val ordersRef = db.collection("orders")
+        val query = ordersRef
+            .whereEqualTo("accountID", accountID)
+            .whereEqualTo("orderState", "SAVED")
+            .orderBy("date", Query.Direction.DESCENDING).limit(1)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                Log.d("TAG", "${querySnapshot.size()} documents retrieved.")
+                if (querySnapshot.size() > 0) {
+                    val savedOrder = querySnapshot.documents[0].toObject<Order>()
+                    savedItemList = savedOrder?.itemList!!
+                    checkSavedOrderAgainstCurrentOfferings()
+                }
+            }
+            .addOnFailureListener {
+                Log.d("TAG", "Retrieve orders from database failed with error: $it.")
+            }
+    }
+
+    fun checkSavedOrderAgainstCurrentOfferings() {
+        Log.d("TAG", "checSavedOrderAgainst... called.")
+        savedItemList.forEach { savedItem ->
+            Log.d("TAG", "savedItem: ${savedItem.name}")
+            val itemToCheck = itemList.value?.find { offeredItem ->
+                offeredItem.name == savedItem.name
+            }
+            if (itemToCheck == null) {
+                Log.d("TAG", "Sorry-- we are out of ${savedItem.name}")
+            } else {
+                itemToCheck.qtyOrdered = savedItem.qtyOrdered
+                val categoryToUpdate = itemList.value!!.find { item ->
+                    item.name == itemToCheck.category
+                }
+                categoryToUpdate!!.categoryPointsUsed = categoryToUpdate.categoryPointsUsed + itemToCheck.pointValue!! * itemToCheck.qtyOrdered
+            }
+        }
+    }
+
 
     private fun generateHeadings() {
         categoriesList.value?.forEach { category ->
@@ -297,10 +340,9 @@ class MainActivityViewModel() : ViewModel() {
         val thisOrder = Order(accountID, Date(), itemList.value!!, "SAVED")
         val filteredOrder = filterOutZeros(thisOrder)
         val db = FirebaseFirestore.getInstance()
-        Log.d("TAG", "filteredOrder.orderState ${filteredOrder.orderState}")
         db.collection(("orders")).document().set(filteredOrder)
             .addOnSuccessListener {
-                Log.d("TAG","canOrderNow: $canOrderNow")
+                Log.d("TAG", "canOrderNow: $canOrderNow")
                 if (canOrderNow) {
                     Navigation.findNavController(view)
                         .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
@@ -311,16 +353,15 @@ class MainActivityViewModel() : ViewModel() {
             }
     }
 
-    fun submitOrder(view: View){
+    fun submitOrder(view: View) {
         val thisOrder = Order(accountID, Date(), itemList.value!!, "SUBMITTED")
         val filteredOrder = filterOutZeros(thisOrder)
         val db = FirebaseFirestore.getInstance()
-        Log.d("TAG", "filteredOrder.orderState ${filteredOrder.orderState}")
         db.collection(("orders")).document().set(filteredOrder)
-            .addOnSuccessListener{
-
+            .addOnSuccessListener {
+                Navigation.findNavController(view)
+                    .navigate(R.id.action_askWhetherToSubmitSavedOrderFragment_to_orderSubmittedFragment)
             }
-
     }
 
 

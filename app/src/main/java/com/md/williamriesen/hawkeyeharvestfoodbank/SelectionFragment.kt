@@ -35,7 +35,6 @@ class SelectionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d("TAG", "onCreateView Called.")
         val selectionView = inflater.inflate(R.layout.fragment_selection, container, false)
         val recyclerView = selectionView.findViewById<RecyclerView>(R.id.recyclerviewChoices)
         setUpRecyclerView(viewModel.itemList, recyclerView)
@@ -43,8 +42,6 @@ class SelectionFragment : Fragment() {
     }
 
     private fun setUpRecyclerView(itemList: MutableLiveData<MutableList<Item>>, recyclerView: RecyclerView ) {
-        Log.d("TAG", "setUpRecyclerView Called.")
-//        Log.d("TAG", "itemList: ${viewModel.itemList.value}")
         FirestoreRecyclerOptions.Builder<Item>()
         adapter = ItemListAdapter(itemList, viewModel)
         recyclerView.layoutManager = LinearLayoutManager(this.activity)
