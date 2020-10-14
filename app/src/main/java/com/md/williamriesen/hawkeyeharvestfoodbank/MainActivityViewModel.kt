@@ -19,6 +19,7 @@ class MainActivityViewModel() : ViewModel() {
     var accountID = "Turnip"
     val itemList = MutableLiveData<MutableList<Item>>()
     private var savedItemList = mutableListOf<Item>()
+    val outOfStockNameList : MutableLiveData<MutableList<String>> = MutableLiveData(mutableListOf<String>())
     val categoriesList = MutableLiveData<MutableList<Category>>()
     var objectCatalog: MutableMap<String, Any>? = null
     private var familySizeFromFireStore: Long? = null
@@ -236,7 +237,7 @@ class MainActivityViewModel() : ViewModel() {
                 offeredItem.name == savedItem.name
             }
             if (itemToCheck == null) {
-                Log.d("TAG", "Sorry-- we are out of ${savedItem.name}")
+                outOfStockNameList.value!!.add(savedItem.name!!)
             } else {
                 itemToCheck.qtyOrdered = savedItem.qtyOrdered
                 val categoryToUpdate = itemList.value!!.find { item ->

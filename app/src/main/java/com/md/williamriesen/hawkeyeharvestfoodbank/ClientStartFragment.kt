@@ -39,7 +39,8 @@ class ClientStartFragment : Fragment() {
             clientStartFragment.findViewById<TextView>(R.id.textViewEarliestNextOrderDate)
         val textViewSuggestedNextOrderDate =
             clientStartFragment.findViewById<TextView>(R.id.textViewSuggestedNextOrderDate)
-        val textViewEarliestNextOrderLabel = clientStartFragment.findViewById<TextView>(R.id.textViewEarliestNextOrderDateLabel)
+        val textViewEarliestNextOrderLabel =
+            clientStartFragment.findViewById<TextView>(R.id.textViewEarliestNextOrderDateLabel)
 
         val buttonShop = clientStartFragment.findViewById<Button>(R.id.buttonShop)
         textViewAccountID.text = viewModel.accountID
@@ -57,7 +58,7 @@ class ClientStartFragment : Fragment() {
             textViewEarliestNextOrderLabel.visibility = View.GONE
         } else {
             textViewEarliestNextOrderDate.visibility = View.VISIBLE
-            textViewEarliestNextOrderLabel.visibility =View.VISIBLE
+            textViewEarliestNextOrderLabel.visibility = View.VISIBLE
         }
 
         val formattedSuggestedDate =
@@ -65,11 +66,14 @@ class ClientStartFragment : Fragment() {
         textViewSuggestedNextOrderDate.text = formattedSuggestedDate
 
         buttonShop.setOnClickListener {
-            Navigation.findNavController(requireView())
-                .navigate(R.id.action_clientStartFragment_to_selectionFragment)
+            if (viewModel.outOfStockNameList.value!!.isEmpty()) {
+                Navigation.findNavController(requireView())
+                    .navigate(R.id.action_clientStartFragment_to_selectionFragment)
+            } else {
+                Navigation.findNavController(requireView())
+                    .navigate(R.id.action_clientStartFragment_to_outOfStockFragment)
+            }
         }
         return clientStartFragment
     }
-
-
 }

@@ -41,6 +41,9 @@
             android:id="@+id/action_clientStartFragment_to_selectionFragment"
             app:destination="@id/selectionFragment"
             app:popUpTo="@id/clientStartFragment" />
+        <action
+            android:id="@+id/action_clientStartFragment_to_outOfStockFragment"
+            app:destination="@id/outOfStockFragment" />
     </fragment>
     <fragment
         android:id="@+id/orderSavedFragment"
@@ -65,4 +68,13 @@
         android:id="@+id/orderSubmittedFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.OrderSubmittedFragment"
         android:label="OrderSubmittedFragment" />
+    <fragment
+        android:id="@+id/outOfStockFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.OutOfStockFragment"
+        android:label="OutOfStockFragment" >
+        <action
+            android:id="@+id/action_outOfStockFragment_to_selectionFragment"
+            app:destination="@id/selectionFragment"
+            app:popUpTo="@id/clientStartFragment" />
+    </fragment>
 </navigation>
