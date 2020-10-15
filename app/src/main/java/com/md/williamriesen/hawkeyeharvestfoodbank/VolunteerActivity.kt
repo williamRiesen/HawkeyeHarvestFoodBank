@@ -10,6 +10,9 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.FirebaseApiNotAvailableException
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.fragment_checkout.view.*
 import kotlinx.android.synthetic.main.fragment_pack_order.view.*
 import kotlinx.android.synthetic.main.item_to_pack.*
@@ -22,6 +25,10 @@ class VolunteerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_volunteer)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         viewModel = ViewModelProviders.of(this).get(VolunteerActivityViewModel::class.java)
+        FirebaseMessaging.getInstance().subscribeToTopic("namelesscoder")
+            .addOnSuccessListener {
+                Log.d("TAG","Subscription successful")
+            }
     }
 
     fun onReadyButtonClicked(view: View) {

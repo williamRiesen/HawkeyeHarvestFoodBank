@@ -81,7 +81,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:imeOptions="actionDone"
-        android:inputType="number"
+        android:inputType="textCapCharacters"
         android:textSize="24sp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/textViewAccountIDLabel"
