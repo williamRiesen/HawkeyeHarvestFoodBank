@@ -5,15 +5,31 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.lifecycle.ViewModelProviders
+import kotlinx.android.synthetic.main.fragment_confirm_packed.*
 
 
 class ConfirmPacked : Fragment() {
+
+    private lateinit var viewModel: VolunteerActivityViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this.requireActivity())
+            .get(VolunteerActivityViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_confirm_packed, container, false)
+        val conFirmPackedFragment = inflater.inflate(R.layout.fragment_confirm_packed, container, false)
+        val buttonConfirmPacked = conFirmPackedFragment.findViewById<Button>(R.id.buttonConfirmPacked)
+        buttonConfirmPacked.setOnClickListener{
+            viewModel.upDateOrderAsPacked()
+        }
+        return conFirmPackedFragment
     }
 
 }

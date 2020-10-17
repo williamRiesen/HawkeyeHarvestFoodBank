@@ -12,6 +12,7 @@ import java.util.*
 class VolunteerActivityViewModel : ViewModel() {
 
     var itemsToPackList = MutableLiveData<MutableList<Item>>()
+    var nextOrder: Order? = null
 
 
     fun getNextOrderFromFireStore() {
@@ -22,7 +23,7 @@ class VolunteerActivityViewModel : ViewModel() {
             .get()
             .addOnSuccessListener { querySnapshot ->
                 Log.d("TAG", "${querySnapshot.size()} documents retrieved.")
-                val nextOrder = querySnapshot.documents[0].toObject<Order>()
+                nextOrder = querySnapshot.documents[0].toObject<Order>()
                 val myList = nextOrder?.itemList
                 itemsToPackList.value = myList
             }
@@ -50,6 +51,13 @@ class VolunteerActivityViewModel : ViewModel() {
             (item.packed)
         }
         return allItemsChecked
+    }
+
+    fun upDateOrderAsPacked(){
+        val updatedOrder = nextOrder
+        updatedOrder?.orderState = "PACKED"
+        val db = FirebaseFirestore.getInstance()
+        db.collection("orders").document().set(updatedOrder!!)
     }
 
 }

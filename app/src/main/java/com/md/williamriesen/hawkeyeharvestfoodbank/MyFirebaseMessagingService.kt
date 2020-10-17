@@ -1,5 +1,6 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
+import android.content.Context
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -30,7 +31,10 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 
         // Check if message contains a notification payload.
         if (remoteMessage.notification != null) {
-            Log.d("onMessageReceived", "Message Notification Body: " + remoteMessage.notification!!.body)
+            Log.d(
+                "onMessageReceived",
+                "Message Notification Body: " + remoteMessage.notification!!.body
+            )
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
@@ -42,6 +46,11 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 //        val token = p0
 //        Log.d("TAG", "Token: $token")
 //    }
+
+
+    fun getToken(context: Context): String? {
+        return context.getSharedPreferences("_", MODE_PRIVATE).getString("fb", "empty")
+    }
 
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)

@@ -12,6 +12,8 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import java.util.*
 
 class MainActivityViewModel() : ViewModel() {
@@ -50,15 +52,24 @@ class MainActivityViewModel() : ViewModel() {
             Item(7, "Pork Shoulder Roast 6lb (2pts)", "Meat", 2, 100, 100, false, 1),
             Item(2, "Cooked Chicken Fajita 5lb (4pts)", "Meat", 4, 100, 100, false, 1),
             Item(1, "Cooked Chicken Fillets 5lb (4pts)", "Meat", 4, 100, 100, false, 1),
-            Item (89,"Cooked Chicken Patties 5lb (4pts, Limit 1)","Meat",4,1,100,true,1),
-            Item (90,"Boneless Skinless Chicken Breasts (4pts, Limit 1)","Meat", 4,1,100,true,1),
-            Item (91, "McDonald's Chicken Tenders 3lb (Limit 2)","Meat",1,2,100,true,1),
-            Item (93, "Small Ham 3lb (Limit 2)","Meat",1,2,100,true,1),
-            Item (94, "Bacon 1lb (Limit 2","Meat",1,2,100,true,1),
+            Item(89, "Cooked Chicken Patties 5lb (4pts, Limit 1)", "Meat", 4, 1, 100, true, 1),
+            Item(
+                90,
+                "Boneless Skinless Chicken Breasts (4pts, Limit 1)",
+                "Meat",
+                4,
+                1,
+                100,
+                true,
+                1
+            ),
+            Item(91, "McDonald's Chicken Tenders 3lb (Limit 2)", "Meat", 1, 2, 100, true, 1),
+            Item(93, "Small Ham 3lb (Limit 2)", "Meat", 1, 2, 100, true, 1),
+            Item(94, "Bacon 1lb (Limit 2", "Meat", 1, 2, 100, true, 1),
 
             Item(15, "Spaghetti / Meatballs", "Protein", 1, 100, 100, true, 2),
             Item(16, "Tuna", "Protein", 1, 100, 100, true, 2),
-            Item(92, "Salmon","Protein",1,100,100,true,2),
+            Item(92, "Salmon", "Protein", 1, 100, 100, true, 2),
             Item(17, "Beef Ravioli", "Protein", 1, 100, 100, true, 2),
             Item(18, "Chicken", "Protein", 1, 100, 100, true, 2),
             Item(19, "Peanut Butter", "Protein", 1, 100, 100, true, 2),
@@ -68,8 +79,8 @@ class MainActivityViewModel() : ViewModel() {
             Item(22, "Potatoes", "Vegetables", 1, 100, 100, true, 3),
             Item(23, "Corn", "Vegetables", 1, 100, 100, true, 3),
             Item(24, "Green Beans", "Vegetables", 1, 100, 100, true, 3),
-            Item(95,"Mixed Vegetables","Vegetables",1,100,100,true,3),
-            Item(96,"Peas","Vegetables",1,100,100,true,3),
+            Item(95, "Mixed Vegetables", "Vegetables", 1, 100, 100, true, 3),
+            Item(96, "Peas", "Vegetables", 1, 100, 100, true, 3),
 
             Item(25, "Peaches", "Fruits", 1, 100, 100, true, 4),
             Item(26, "Pears", "Fruits", 1, 100, 100, true, 4),
@@ -92,8 +103,8 @@ class MainActivityViewModel() : ViewModel() {
             Item(42, "Dried Red Beans", "Beans", 1, 100, 100, true, 5),
             Item(43, "Dried Black Beans", "Beans", 1, 100, 100, true, 5),
             Item(44, "Dried Pinto Beans", "Beans", 1, 100, 100, true, 5),
-            Item(97,"Red","Beans",1,100,100,true,5),
-            Item(98, "Chickpeas","Beans",1,100,100,true,5),
+            Item(97, "Red", "Beans", 1, 100, 100, true, 5),
+            Item(98, "Chickpeas", "Beans", 1, 100, 100, true, 5),
 
             Item(45, "Chicken Broth", "Soups", 1, 100, 100, true, 6),
             Item(46, "Vegetarian", "Soups", 1, 100, 100, true, 6),
@@ -113,7 +124,7 @@ class MainActivityViewModel() : ViewModel() {
             Item(58, "Toasted Oats", "Cereals", 1, 100, 100, false, 8),
             Item(59, "Corn Flakes", "Cereals", 1, 100, 100, true, 8),
             Item(60, "Crisp Rice", "Cereals", 1, 100, 100, true, 8),
-            Item(99,"Cheerios","Cereals",1,100,100,true,8),
+            Item(99, "Cheerios", "Cereals", 1, 100, 100, true, 8),
 
             Item(61, "Stuffing", "Sides", 1, 100, 100, true, 9),
             Item(62, "Instant Potatoes", "Sides", 1, 100, 100, true, 9),
@@ -122,11 +133,11 @@ class MainActivityViewModel() : ViewModel() {
 
             Item(65, "Spaghetti", "Pasta", 1, 100, 100, true, 10),
             Item(66, "Rotini/Cellentani", "Pasta", 1, 100, 100, false, 10),
-            Item(100, "Shells", "Pasta",1,100,100,true,10),
+            Item(100, "Shells", "Pasta", 1, 100, 100, true, 10),
             Item(67, "Elbow Macaroni", "Pasta", 1, 100, 100, true, 10),
             Item(68, "Spaghetti", "Pasta", 1, 100, 100, true, 10),
             Item(69, "Egg Noodles", "Pasta", 1, 100, 100, true, 10),
-            Item(101, "Tri-Color Penne", "Pasta",1,100,100,true,10),
+            Item(101, "Tri-Color Penne", "Pasta", 1, 100, 100, true, 10),
 
             Item(70, "Mac & Cheese", "Meal Helper", 1, 100, 100, true, 11),
             Item(71, "Spaghetti Rings", "Meal Helper", 1, 100, 100, true, 11),
@@ -143,9 +154,9 @@ class MainActivityViewModel() : ViewModel() {
             Item(81, "Vegetable Oil (Limit 2", "Extra", 1, 2, 100, true, 12),
             Item(82, "Mini Pies (Cherry/Apple)", "Extra", 1, 100, 100, false, 12),
             Item(83, "Cheese Balls", "Extra", 1, 100, 100, false, 12),
-            Item(102, "Baking Mix (Limit 2)", "Extra",1,2,100,true,12),
-            Item(103,"Dried Fruit & Nuts (Limit 2)", "Extra",1,2,100,true,12),
-            Item(104,"Ranch Dressing (Limit 1)","Extra",1,1,100,true,12),
+            Item(102, "Baking Mix (Limit 2)", "Extra", 1, 2, 100, true, 12),
+            Item(103, "Dried Fruit & Nuts (Limit 2)", "Extra", 1, 2, 100, true, 12),
+            Item(104, "Ranch Dressing (Limit 1)", "Extra", 1, 1, 100, true, 12),
 
             Item(84, "Toothbrush", "Nonedibles", 1, 100, 100, true, 13),
             Item(85, "Toothpaste", "Nonedibles", 1, 100, 100, true, 13),
@@ -379,29 +390,41 @@ class MainActivityViewModel() : ViewModel() {
     fun submitOrder(view: View) {
         val thisOrder = Order(accountID, Date(), itemList.value!!, "SUBMITTED")
         val filteredOrder = filterOutZeros(thisOrder)
-        val db = FirebaseFirestore.getInstance()
-        db.collection(("orders")).document().set(filteredOrder)
-            .addOnSuccessListener {
-                Navigation.findNavController(view)
-                    .navigate(R.id.action_askWhetherToSubmitSavedOrderFragment_to_orderSubmittedFragment)
+
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener {
+                if (!it.isSuccessful) {
+                    Log.d("TAG", "getInstanceID failed ${it.exception}")
+                }
+
+                val token = it.result?.token
+                filteredOrder.deviceToken = token
+                Log.d("TAG", "token: $token")
+
+                val db = FirebaseFirestore.getInstance()
+                db.collection(("orders")).document().set(filteredOrder)
+                    .addOnSuccessListener {
+                        Navigation.findNavController(view)
+                            .navigate(R.id.action_askWhetherToSubmitSavedOrderFragment_to_orderSubmittedFragment)
+                    }
             }
     }
 
 
-    private fun filterOutZeros(order: Order): Order {
-        val itemList = order.itemList
-        val filteredList = itemList.filter { item ->
-            item.qtyOrdered != 0
+        private fun filterOutZeros(order: Order): Order {
+            val itemList = order.itemList
+            val filteredList = itemList.filter { item ->
+                item.qtyOrdered != 0
+            }
+            val filteredOrder = Order()
+            filteredOrder.itemList = filteredList as MutableList<Item>
+            filteredOrder.accountID = order.accountID
+            filteredOrder.date = order.date
+            filteredOrder.orderState = order.orderState
+            return filteredOrder
         }
-        val filteredOrder = Order()
-        filteredOrder.itemList = filteredList as MutableList<Item>
-        filteredOrder.accountID = order.accountID
-        filteredOrder.date = order.date
-        filteredOrder.orderState = order.orderState
-        return filteredOrder
-    }
 
-    val suggestedNextOrderDate: Date
+        val suggestedNextOrderDate: Date
         get() {
             val calendar = Calendar.getInstance()
             calendar.time = lastOrderDate
@@ -409,7 +432,7 @@ class MainActivityViewModel() : ViewModel() {
             return calendar.time
         }
 
-    val earliestOrderDate: Date
+        val earliestOrderDate: Date
         get() {
             val calendar = Calendar.getInstance()
             calendar.time = suggestedNextOrderDate
@@ -418,7 +441,7 @@ class MainActivityViewModel() : ViewModel() {
             return calendar.time
         }
 
-    val canOrderNow: Boolean
+        val canOrderNow: Boolean
         get() = earliestOrderDate.before(Date(System.currentTimeMillis()))
 
-}
+    }

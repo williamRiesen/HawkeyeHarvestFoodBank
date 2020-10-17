@@ -7,6 +7,7 @@ class Order() {
     var date: Date? = null
     var itemList =  mutableListOf<Item>()
     var orderState: String?  = null
+    var deviceToken: String? = null
 
     constructor(accountIDArg: String, dateArg: Date, itemListArg: MutableList<Item>, orderStateArg: String) : this() {
         accountID = accountIDArg
