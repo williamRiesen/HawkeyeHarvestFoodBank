@@ -1,6 +1,7 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,11 @@ class CheckoutFragment : Fragment() {
         val checkoutView = inflater.inflate(R.layout.fragment_checkout, container, false)
         val buttonBack = checkoutView.findViewById<Button>(R.id.buttonBack)
         buttonBack.setOnClickListener { activity?.onBackPressed() }
+
+        val buttonNext = checkoutView.findViewById<Button>(R.id.button_next)
+        buttonNext.setOnClickListener { view ->
+            viewModel.saveOrder(view)
+        }
         val recyclerView = checkoutView.findViewById<RecyclerView>(R.id.recyclerviewChoices)
         setUpRecyclerView(viewModel.itemList, recyclerView)
         return checkoutView

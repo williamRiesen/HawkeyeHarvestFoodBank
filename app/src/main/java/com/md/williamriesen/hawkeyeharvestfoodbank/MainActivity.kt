@@ -123,6 +123,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onSubmitButtonClick(view: View) {
+        Log.d("TAG", "onSubmitButtonClick called.")
         viewModel.saveOrder(view)
     }
 

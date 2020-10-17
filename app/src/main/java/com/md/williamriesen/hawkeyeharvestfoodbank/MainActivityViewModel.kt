@@ -371,6 +371,9 @@ class MainActivityViewModel() : ViewModel() {
                         .navigate(R.id.action_checkoutFragment_to_orderSavedFragment)
                 }
             }
+            .addOnFailureListener { exception ->
+                Log.d("TAG", "save order failed with exception: $exception")
+            }
     }
 
     fun submitOrder(view: View) {
