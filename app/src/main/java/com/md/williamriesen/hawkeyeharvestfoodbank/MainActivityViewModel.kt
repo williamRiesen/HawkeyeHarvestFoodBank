@@ -19,6 +19,7 @@ import java.util.*
 class MainActivityViewModel() : ViewModel() {
 
     var accountID = "Turnip"
+    var orderID: String? = null
     val itemList = MutableLiveData<MutableList<Item>>()
     private var savedItemList = mutableListOf<Item>()
     val outOfStockNameList: MutableLiveData<MutableList<String>> =
@@ -249,6 +250,7 @@ class MainActivityViewModel() : ViewModel() {
                 if (querySnapshot.size() > 0) {
                     val savedOrder = querySnapshot.documents[0].toObject<Order>()
                     savedItemList = savedOrder?.itemList!!
+                    orderID = querySnapshot.documents[0].id
                     checkSavedOrderAgainstCurrentOfferings()
                 }
             }
@@ -371,20 +373,37 @@ class MainActivityViewModel() : ViewModel() {
         val thisOrder = Order(accountID, Date(), itemList.value!!, "SAVED")
         val filteredOrder = filterOutZeros(thisOrder)
         val db = FirebaseFirestore.getInstance()
-        db.collection(("orders")).document().set(filteredOrder)
-            .addOnSuccessListener {
-                Log.d("TAG", "canOrderNow: $canOrderNow")
-                if (canOrderNow) {
-                    Navigation.findNavController(view)
-                        .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
-                } else {
-                    Navigation.findNavController(view)
-                        .navigate(R.id.action_checkoutFragment_to_orderSavedFragment)
+        if (orderID != null) {
+            db.collection(("orders")).document(orderID!!).set(filteredOrder)
+                .addOnSuccessListener {
+                    Log.d("TAG", "canOrderNow: $canOrderNow")
+                    if (canOrderNow) {
+                        Navigation.findNavController(view)
+                            .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
+                    } else {
+                        Navigation.findNavController(view)
+                            .navigate(R.id.action_checkoutFragment_to_orderSavedFragment)
+                    }
                 }
-            }
-            .addOnFailureListener { exception ->
-                Log.d("TAG", "save order failed with exception: $exception")
-            }
+                .addOnFailureListener { exception ->
+                    Log.d("TAG", "save order failed with exception: $exception")
+                }
+        } else {
+            db.collection(("orders")).document().set(filteredOrder)
+                .addOnSuccessListener {
+                    Log.d("TAG", "canOrderNow: $canOrderNow")
+                    if (canOrderNow) {
+                        Navigation.findNavController(view)
+                            .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
+                    } else {
+                        Navigation.findNavController(view)
+                            .navigate(R.id.action_checkoutFragment_to_orderSavedFragment)
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d("TAG", "save order failed with exception: $exception")
+                }
+        }
     }
 
     fun submitOrder(view: View) {
@@ -402,29 +421,37 @@ class MainActivityViewModel() : ViewModel() {
                 Log.d("TAG", "token: $token")
 
                 val db = FirebaseFirestore.getInstance()
-                db.collection(("orders")).document().set(filteredOrder)
-                    .addOnSuccessListener {
-                        Navigation.findNavController(view)
-                            .navigate(R.id.action_askWhetherToSubmitSavedOrderFragment_to_orderSubmittedFragment)
-                    }
+                if (orderID != null) {
+                    db.collection(("orders")).document(orderID!!).set(filteredOrder)
+                        .addOnSuccessListener {
+                            Navigation.findNavController(view)
+                                .navigate(R.id.action_askWhetherToSubmitSavedOrderFragment_to_orderSubmittedFragment)
+                        }
+                } else {
+                    db.collection(("orders")).document().set(filteredOrder)
+                        .addOnSuccessListener {
+                            Navigation.findNavController(view)
+                                .navigate(R.id.action_askWhetherToSubmitSavedOrderFragment_to_orderSubmittedFragment)
+                        }
+                }
             }
     }
 
 
-        private fun filterOutZeros(order: Order): Order {
-            val itemList = order.itemList
-            val filteredList = itemList.filter { item ->
-                item.qtyOrdered != 0
-            }
-            val filteredOrder = Order()
-            filteredOrder.itemList = filteredList as MutableList<Item>
-            filteredOrder.accountID = order.accountID
-            filteredOrder.date = order.date
-            filteredOrder.orderState = order.orderState
-            return filteredOrder
+    private fun filterOutZeros(order: Order): Order {
+        val itemList = order.itemList
+        val filteredList = itemList.filter { item ->
+            item.qtyOrdered != 0
         }
+        val filteredOrder = Order()
+        filteredOrder.itemList = filteredList as MutableList<Item>
+        filteredOrder.accountID = order.accountID
+        filteredOrder.date = order.date
+        filteredOrder.orderState = order.orderState
+        return filteredOrder
+    }
 
-        val suggestedNextOrderDate: Date
+    val suggestedNextOrderDate: Date
         get() {
             val calendar = Calendar.getInstance()
             calendar.time = lastOrderDate
@@ -432,7 +459,7 @@ class MainActivityViewModel() : ViewModel() {
             return calendar.time
         }
 
-        val earliestOrderDate: Date
+    val earliestOrderDate: Date
         get() {
             val calendar = Calendar.getInstance()
             calendar.time = suggestedNextOrderDate
@@ -441,7 +468,7 @@ class MainActivityViewModel() : ViewModel() {
             return calendar.time
         }
 
-        val canOrderNow: Boolean
+    val canOrderNow: Boolean
         get() = earliestOrderDate.before(Date(System.currentTimeMillis()))
 
-    }
+}

@@ -13,6 +13,7 @@ class VolunteerActivityViewModel : ViewModel() {
 
     var itemsToPackList = MutableLiveData<MutableList<Item>>()
     var nextOrder: Order? = null
+    var orderID: String? = null
 
 
     fun getNextOrderFromFireStore() {
@@ -23,6 +24,7 @@ class VolunteerActivityViewModel : ViewModel() {
             .get()
             .addOnSuccessListener { querySnapshot ->
                 Log.d("TAG", "${querySnapshot.size()} documents retrieved.")
+                orderID = querySnapshot.documents[0].id
                 nextOrder = querySnapshot.documents[0].toObject<Order>()
                 val myList = nextOrder?.itemList
                 itemsToPackList.value = myList
@@ -57,7 +59,7 @@ class VolunteerActivityViewModel : ViewModel() {
         val updatedOrder = nextOrder
         updatedOrder?.orderState = "PACKED"
         val db = FirebaseFirestore.getInstance()
-        db.collection("orders").document().set(updatedOrder!!)
+        db.collection("orders").document(orderID!!).set(updatedOrder!!)
     }
 
 }
