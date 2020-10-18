@@ -53,7 +53,7 @@ tools:context=".VolunteerActivity">
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:gravity="bottom"
         android:text="Are you ready to pack the next order?"
@@ -62,7 +62,7 @@ tools:context=".VolunteerActivity">
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewVolunteerSection" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewOrderCount" />
 
     <Button
         android:id="@+id/buttonConfirmPacked"
@@ -77,4 +77,31 @@ tools:context=".VolunteerActivity">
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewconfirmPackedMessage"
         app:layout_constraintVertical_bias="0.203" />
+
+    <TextView
+        android:id="@+id/textViewOrderCountLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="Number of orders needing to be packed:"
+        android:textColor="@color/common_google_signin_btn_text_light_pressed"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewLogoVolunteer" />
+
+    <TextView
+        android:id="@+id/textViewOrderCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Number"
+        android:textColor="@color/design_default_color_primary"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOrderCountLabel" />
 </androidx.constraintlayout.widget.ConstraintLayout>
