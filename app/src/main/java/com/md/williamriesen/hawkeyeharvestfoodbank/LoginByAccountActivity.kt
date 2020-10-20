@@ -13,7 +13,10 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.RecyclerView
 
 class LoginByAccountActivity : AppCompatActivity() {
@@ -31,7 +34,23 @@ class LoginByAccountActivity : AppCompatActivity() {
             }
             false
         }
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        val label = findViewById<TextView>(R.id.textViewAccountIDLabel)
+        val pleaseWaitObserver = Observer<Boolean> {
+            if(it){
+                progressBar.visibility = View.VISIBLE
+                editTextAccountID.visibility = View.INVISIBLE
+                label.visibility = View.INVISIBLE
+            }
+            else{
+                progressBar.visibility = View.INVISIBLE
+                editTextAccountID.visibility = View.VISIBLE
+                label.visibility = View.VISIBLE
+            }
+        }
+        viewModel.pleaseWait.observe(this,pleaseWaitObserver)
     }
+
 
 
     override fun onResume() {
@@ -47,11 +66,11 @@ class LoginByAccountActivity : AppCompatActivity() {
         val editTextAccountID = findViewById<EditText>(R.id.editTextAccountID)
         val accountID = editTextAccountID.text.toString()
         if (accountID != null && accountID != "") {
-            val progressBar = findViewById<ProgressBar>(R.id.progressBar)
-            val label = findViewById<TextView>(R.id.textViewAccountIDLabel)
-            progressBar.visibility = View.VISIBLE
-            label.visibility = View.INVISIBLE
-            editTextAccountID.visibility = View.INVISIBLE
+//            val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+//            val label = findViewById<TextView>(R.id.textViewAccountIDLabel)
+//            progressBar.visibility = View.VISIBLE
+//            label.visibility = View.INVISIBLE
+//            editTextAccountID.visibility = View.INVISIBLE
             viewModel.signIn(accountID, applicationContext)
         }
     }

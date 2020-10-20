@@ -33,6 +33,7 @@ class MainActivityViewModel() : ViewModel() {
     var lastOrderTimestamp: Timestamp? = null
     var categories: MutableLiveData<MutableList<Category>> =
         MutableLiveData(mutableListOf())
+    var pleaseWait = MutableLiveData<Boolean>()
 
 
     fun sendObjectCatalogToFireStore() {
@@ -323,6 +324,7 @@ class MainActivityViewModel() : ViewModel() {
     }
 
     fun signIn(enteredAccountID: String, context: Context) {
+        pleaseWait.value= true
         val myFirebaseMessagingService = MyFirebaseMessagingService()
         val token = myFirebaseMessagingService
         familySizeFromFireStore = null
@@ -353,6 +355,7 @@ class MainActivityViewModel() : ViewModel() {
                             Log.d("TAG", "timestamp.seconds: ${lastOrderTimestamp!!.seconds}")
                             Log.d("TAG", "lastOrderDate: ${lastOrderDate}")
                             intent.putExtra("LAST_ORDER_DATE_TIMESTAMP", lastOrderTimestamp)
+                            pleaseWait.value = false
                             context.startActivity(intent)
                         }
                     }
@@ -363,9 +366,10 @@ class MainActivityViewModel() : ViewModel() {
                         "Sorry, Not a valid account.",
                         Toast.LENGTH_LONG
                     ).show()
-                    val intent = Intent(context, LoginByAccountActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    context.startActivity(intent)
+//                    val intent = Intent(context, LoginByAccountActivity::class.java)
+//                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//                    context.startActivity(intent)
+                    pleaseWait.value = false
                 }
             }
                     .addOnFailureListener {
