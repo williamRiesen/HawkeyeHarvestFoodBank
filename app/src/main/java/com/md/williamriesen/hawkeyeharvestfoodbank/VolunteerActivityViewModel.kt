@@ -20,21 +20,25 @@ class VolunteerActivityViewModel : ViewModel() {
     fun getNextOrderFromFireStore() {
         val db = FirebaseFirestore.getInstance()
         val ordersRef = db.collection("orders")
-        val query = ordersRef.whereEqualTo("orderState", "SUBMITTED")
-            .orderBy("date").limit(1)
+        val queryCount = ordersRef.whereEqualTo("orderState", "SUBMITTED")
             .get()
-            .addOnSuccessListener { querySnapshot ->
-                ordersToPackCount.value = querySnapshot.size()
-                Log.d("TAG", "$ordersToPackCount documents retrieved.")
+            .addOnSuccessListener {
+                ordersToPackCount.value = it.size()
                 if (ordersToPackCount.value!! > 0) {
-                    orderID = querySnapshot.documents[0].id
-                    nextOrder = querySnapshot.documents[0].toObject<Order>()
-                    val myList = nextOrder?.itemList
-                    itemsToPackList.value = myList
                 }
-            }
-            .addOnFailureListener {
-                Log.d("TAG", "Retrieve orders from database failed with error: $it.")
+                val query = ordersRef.whereEqualTo("orderState", "SUBMITTED")
+                    .orderBy("date").limit(1)
+                    .get()
+                    .addOnSuccessListener { querySnapshot ->
+                        Log.d("TAG", "$ordersToPackCount documents retrieved.")
+                        orderID = querySnapshot.documents[0].id
+                        nextOrder = querySnapshot.documents[0].toObject<Order>()
+                        val myList = nextOrder?.itemList
+                        itemsToPackList.value = myList
+                    }
+                    .addOnFailureListener {
+                        Log.d("TAG", "Retrieve orders from database failed with error: $it.")
+                    }
             }
     }
 

@@ -21,7 +21,7 @@ class ClientStartFragment : Fragment() {
         super.onCreate(savedInstanceState)
         viewModel =
             ViewModelProviders.of(this.requireActivity()).get(MainActivityViewModel::class.java)
-//         viewModel.sendObjectCatalogToFireStore()
+         viewModel.sendObjectCatalogToFireStore()
 //         viewModel.sendCategoriesListToFireStore()
     }
 
