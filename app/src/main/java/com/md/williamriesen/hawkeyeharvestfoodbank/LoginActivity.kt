@@ -27,8 +27,8 @@ class LoginActivity : AppCompatActivity() {
 
             AuthUI.IdpConfig.EmailBuilder().build(),
             AuthUI.IdpConfig.PhoneBuilder().build(),
-            AuthUI.IdpConfig.GoogleBuilder().build(),
-            AuthUI.IdpConfig.AnonymousBuilder().build()
+            AuthUI.IdpConfig.GoogleBuilder().build()
+//            AuthUI.IdpConfig.AnonymousBuilder().build()
 //            ,
 //            AuthUI.IdpConfig.FacebookBuilder().build(),
 //            AuthUI.IdpConfig.TwitterBuilder().build()
@@ -39,6 +39,7 @@ class LoginActivity : AppCompatActivity() {
             AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
+                .setLogo(R.drawable.ic_hawkeye_harvest_food_bank_logo)
                 .build(),
             RC_SIGN_IN
         )
@@ -63,7 +64,17 @@ class LoginActivity : AppCompatActivity() {
                     }
                     Log.d("TAG", "isManager:  $isManager")
                     Log.d("TAG", "isVolunteer:  $isVolunteer")
-                    startActivity(Intent(this, MainActivity::class.java))
+                    when {
+                        (isManager) -> {
+                            startActivity(Intent(this, ManagerActivity::class.java))
+                        }
+                        (isVolunteer) -> {
+                            startActivity(Intent(this, VolunteerActivity::class.java))
+                        }
+                        else -> {
+                            startActivity(Intent(this, MainActivity::class.java))
+                        }
+                    }
                 }
             } else {
                 if (response == null) {
@@ -73,7 +84,11 @@ class LoginActivity : AppCompatActivity() {
                     return
                 }
                 if (response?.error?.errorCode == ErrorCodes.UNKNOWN_ERROR) {
-                    Toast.makeText(this, response.error?.errorCode.toString(), Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this,
+                        response.error?.errorCode.toString(),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }

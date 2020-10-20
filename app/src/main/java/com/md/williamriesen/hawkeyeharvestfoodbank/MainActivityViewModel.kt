@@ -324,142 +324,131 @@ class MainActivityViewModel() : ViewModel() {
     }
 
     fun signIn(enteredAccountID: String, context: Context) {
-        pleaseWait.value= true
-        val myFirebaseMessagingService = MyFirebaseMessagingService()
-        val token = myFirebaseMessagingService
-        familySizeFromFireStore = null
-        val db = FirebaseFirestore.getInstance()
-        val docRef = db.collection("accounts").document(enteredAccountID)
-        docRef.get()
-            .addOnSuccessListener { documentSnapshot ->
-                if (documentSnapshot.exists()) {
-                    when (documentSnapshot["role"]) {
-                        "volunteer" -> {
-                            val intent = Intent(context, VolunteerActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                            context.startActivity(intent)
-                        }
-                        "manager" -> {
-                            val intent = Intent(context, ManagerActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                            context.startActivity(intent)
-                        }
-                        else -> {
-                            val intent = Intent(context, MainActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                            intent.putExtra("ACCOUNT_ID", enteredAccountID)
-                            familySizeFromFireStore = documentSnapshot["familySize"] as Long
-                            familySize = familySizeFromFireStore!!.toInt()
-                            intent.putExtra("FAMILY_SIZE", familySize)
-                            lastOrderTimestamp = documentSnapshot["lastOrderDate"] as Timestamp
-                            Log.d("TAG", "timestamp.seconds: ${lastOrderTimestamp!!.seconds}")
-                            Log.d("TAG", "lastOrderDate: ${lastOrderDate}")
-                            intent.putExtra("LAST_ORDER_DATE_TIMESTAMP", lastOrderTimestamp)
-                            pleaseWait.value = false
-                            context.startActivity(intent)
-                        }
-                    }
-
-                } else {
-                    Toast.makeText(
-                        context,
-                        "Sorry, Not a valid account.",
-                        Toast.LENGTH_LONG
-                    ).show()
-//                    val intent = Intent(context, LoginByAccountActivity::class.java)
-//                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//                    context.startActivity(intent)
-                    pleaseWait.value = false
-                }
-            }
-                    .addOnFailureListener {
-                        Log.d("TAG", "Retrieve family size from database failed.")
-                    }
-            }
-
-        fun saveOrder(view: View) {
-            val thisOrder = Order(accountID, Date(), itemList.value!!, "SAVED")
-            val filteredOrder = filterOutZeros(thisOrder)
+        pleaseWait.value = true
+        if (enteredAccountID == "STAFF") {
+            val intent = Intent(context, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            pleaseWait.value = false
+            context.startActivity(intent)
+        } else {
+            val myFirebaseMessagingService = MyFirebaseMessagingService()
+            val token = myFirebaseMessagingService
+            familySizeFromFireStore = null
             val db = FirebaseFirestore.getInstance()
-            if (orderID != null) {
-                db.collection(("orders")).document(orderID!!).set(filteredOrder)
-                    .addOnSuccessListener {
-                        Log.d("TAG", "canOrderNow: $canOrderNow")
-                        if (canOrderNow) {
-                            Navigation.findNavController(view)
-                                .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
-                        } else {
-                            Navigation.findNavController(view)
-                                .navigate(R.id.action_checkoutFragment_to_orderSavedFragment)
-                        }
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.d("TAG", "save order failed with exception: $exception")
-                    }
-            } else {
-                db.collection(("orders")).document().set(filteredOrder)
-                    .addOnSuccessListener {
-                        Log.d("TAG", "canOrderNow: $canOrderNow")
-                        if (canOrderNow) {
-                            Navigation.findNavController(view)
-                                .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
-                        } else {
-                            Navigation.findNavController(view)
-                                .navigate(R.id.action_checkoutFragment_to_orderSavedFragment)
-                        }
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.d("TAG", "save order failed with exception: $exception")
-                    }
-            }
-        }
-
-        fun submitOrder(view: View) {
-            val thisOrder = Order(accountID, Date(), itemList.value!!, "SUBMITTED")
-            val filteredOrder = filterOutZeros(thisOrder)
-
-            FirebaseInstanceId.getInstance().instanceId
-                .addOnCompleteListener {
-                    if (!it.isSuccessful) {
-                        Log.d("TAG", "getInstanceID failed ${it.exception}")
-                    }
-
-                    val token = it.result?.token
-                    filteredOrder.deviceToken = token
-                    Log.d("TAG", "token: $token")
-
-                    val db = FirebaseFirestore.getInstance()
-                    if (orderID != null) {
-                        db.collection(("orders")).document(orderID!!).set(filteredOrder)
-                            .addOnSuccessListener {
-                                Navigation.findNavController(view)
-                                    .navigate(R.id.action_askWhetherToSubmitSavedOrderFragment_to_orderSubmittedFragment)
-                            }
+            val docRef = db.collection("accounts").document(enteredAccountID)
+            docRef.get()
+                .addOnSuccessListener { documentSnapshot ->
+                    if (documentSnapshot.exists()) {
+                        val intent = Intent(context, MainActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        intent.putExtra("ACCOUNT_ID", enteredAccountID)
+                        familySizeFromFireStore = documentSnapshot["familySize"] as Long
+                        familySize = familySizeFromFireStore!!.toInt()
+                        intent.putExtra("FAMILY_SIZE", familySize)
+                        lastOrderTimestamp = documentSnapshot["lastOrderDate"] as Timestamp
+                        Log.d("TAG", "timestamp.seconds: ${lastOrderTimestamp!!.seconds}")
+                        Log.d("TAG", "lastOrderDate: ${lastOrderDate}")
+                        intent.putExtra("LAST_ORDER_DATE_TIMESTAMP", lastOrderTimestamp)
+                        pleaseWait.value = false
+                        context.startActivity(intent)
                     } else {
-                        db.collection(("orders")).document().set(filteredOrder)
-                            .addOnSuccessListener {
-                                Navigation.findNavController(view)
-                                    .navigate(R.id.action_askWhetherToSubmitSavedOrderFragment_to_orderSubmittedFragment)
-                            }
+                        Toast.makeText(
+                            context,
+                            "Sorry, Not a valid account.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        pleaseWait.value = false
                     }
                 }
-        }
-
-
-        private fun filterOutZeros(order: Order): Order {
-            val itemList = order.itemList
-            val filteredList = itemList.filter { item ->
-                item.qtyOrdered != 0
+                .addOnFailureListener {
+                Log.d("TAG", "Retrieve family size from database failed.")
             }
-            val filteredOrder = Order()
-            filteredOrder.itemList = filteredList as MutableList<Item>
-            filteredOrder.accountID = order.accountID
-            filteredOrder.date = order.date
-            filteredOrder.orderState = order.orderState
-            return filteredOrder
         }
+    }
 
-        val suggestedNextOrderDate: Date
+    fun saveOrder(view: View) {
+        val thisOrder = Order(accountID, Date(), itemList.value!!, "SAVED")
+        val filteredOrder = filterOutZeros(thisOrder)
+        val db = FirebaseFirestore.getInstance()
+        if (orderID != null) {
+            db.collection(("orders")).document(orderID!!).set(filteredOrder)
+                .addOnSuccessListener {
+                    Log.d("TAG", "canOrderNow: $canOrderNow")
+                    if (canOrderNow) {
+                        Navigation.findNavController(view)
+                            .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
+                    } else {
+                        Navigation.findNavController(view)
+                            .navigate(R.id.action_checkoutFragment_to_orderSavedFragment)
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d("TAG", "save order failed with exception: $exception")
+                }
+        } else {
+            db.collection(("orders")).document().set(filteredOrder)
+                .addOnSuccessListener {
+                    Log.d("TAG", "canOrderNow: $canOrderNow")
+                    if (canOrderNow) {
+                        Navigation.findNavController(view)
+                            .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
+                    } else {
+                        Navigation.findNavController(view)
+                            .navigate(R.id.action_checkoutFragment_to_orderSavedFragment)
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d("TAG", "save order failed with exception: $exception")
+                }
+        }
+    }
+
+    fun submitOrder(view: View) {
+        val thisOrder = Order(accountID, Date(), itemList.value!!, "SUBMITTED")
+        val filteredOrder = filterOutZeros(thisOrder)
+
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener {
+                if (!it.isSuccessful) {
+                    Log.d("TAG", "getInstanceID failed ${it.exception}")
+                }
+
+                val token = it.result?.token
+                filteredOrder.deviceToken = token
+                Log.d("TAG", "token: $token")
+
+                val db = FirebaseFirestore.getInstance()
+                if (orderID != null) {
+                    db.collection(("orders")).document(orderID!!).set(filteredOrder)
+                        .addOnSuccessListener {
+                            Navigation.findNavController(view)
+                                .navigate(R.id.action_askWhetherToSubmitSavedOrderFragment_to_orderSubmittedFragment)
+                        }
+                } else {
+                    db.collection(("orders")).document().set(filteredOrder)
+                        .addOnSuccessListener {
+                            Navigation.findNavController(view)
+                                .navigate(R.id.action_askWhetherToSubmitSavedOrderFragment_to_orderSubmittedFragment)
+                        }
+                }
+            }
+    }
+
+
+    private fun filterOutZeros(order: Order): Order {
+        val itemList = order.itemList
+        val filteredList = itemList.filter { item ->
+            item.qtyOrdered != 0
+        }
+        val filteredOrder = Order()
+        filteredOrder.itemList = filteredList as MutableList<Item>
+        filteredOrder.accountID = order.accountID
+        filteredOrder.date = order.date
+        filteredOrder.orderState = order.orderState
+        return filteredOrder
+    }
+
+    val suggestedNextOrderDate: Date
         get() {
             val calendar = Calendar.getInstance()
             calendar.time = lastOrderDate
@@ -467,7 +456,7 @@ class MainActivityViewModel() : ViewModel() {
             return calendar.time
         }
 
-        val earliestOrderDate: Date
+    val earliestOrderDate: Date
         get() {
             val calendar = Calendar.getInstance()
             calendar.time = suggestedNextOrderDate
@@ -476,7 +465,7 @@ class MainActivityViewModel() : ViewModel() {
             return calendar.time
         }
 
-        val canOrderNow: Boolean
+    val canOrderNow: Boolean
         get() = earliestOrderDate.before(Date(System.currentTimeMillis()))
 
-    }
+}
