@@ -11,7 +11,7 @@ service cloud.firestore {
   }
     	match /catalogs/{catalog} {
   		allow read: if true;
-      allow write: if true;
+      allow write: if request.auth.token.manager == true;
   }
       match /orders/{order} {
       allow read: if true;
