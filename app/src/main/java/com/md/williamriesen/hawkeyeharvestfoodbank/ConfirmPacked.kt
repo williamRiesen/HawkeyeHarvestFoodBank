@@ -27,7 +27,7 @@ class ConfirmPacked : Fragment() {
         val conFirmPackedFragment = inflater.inflate(R.layout.fragment_confirm_packed, container, false)
         val buttonConfirmPacked = conFirmPackedFragment.findViewById<Button>(R.id.buttonConfirmPacked)
         buttonConfirmPacked.setOnClickListener{
-            viewModel.upDateOrderAsPacked()
+            viewModel.upDateOrderAsPacked(requireActivity())
         }
         return conFirmPackedFragment
     }

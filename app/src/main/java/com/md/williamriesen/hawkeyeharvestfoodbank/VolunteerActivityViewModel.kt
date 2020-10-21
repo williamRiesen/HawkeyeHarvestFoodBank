@@ -1,11 +1,14 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
+import android.app.Activity
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.common.internal.FallbackServiceBroker
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.core.View
 import com.google.firebase.firestore.ktx.toObject
 import java.util.*
 
@@ -63,11 +66,14 @@ class VolunteerActivityViewModel : ViewModel() {
         return allItemsChecked
     }
 
-    fun upDateOrderAsPacked() {
+    fun upDateOrderAsPacked(activity: Activity) {
         val updatedOrder = nextOrder
         updatedOrder?.orderState = "PACKED"
         val db = FirebaseFirestore.getInstance()
         db.collection("orders").document(orderID!!).set(updatedOrder!!)
+            .addOnSuccessListener {
+                activity.onBackPressed()
+            }
     }
 
 }
