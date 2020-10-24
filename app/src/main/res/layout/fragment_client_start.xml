@@ -37,9 +37,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/textViewOpenOrClosed"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread_inside">
 
 
         <ImageView
@@ -73,13 +76,14 @@
         android:id="@+id/textViewEarliestNextOrderDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="Earliest Next Order Date"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewEarliestNextOrderDateLabel" />
-
 
     <TextView
         android:id="@+id/textViewAccountIDLabel"
@@ -93,16 +97,16 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewLastOrderDateLabel"
         app:layout_constraintVertical_chainStyle="spread" />
 
+
     <TextView
         android:id="@+id/textViewLastOrderDateLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="4dp"
         android:text="Date of last order:"
-        app:layout_constraintBottom_toTopOf="@+id/textViewAccountIDLabel"
+        app:layout_constraintBottom_toTopOf="@+id/buttonShop"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSuggesteOrderDateLabel2" />
-
+        app:layout_constraintTop_toBottomOf="@+id/textViewEarliestNextOrderDateLabel" />
 
     <TextView
         android:id="@+id/textViewSuggestedNextOrderDate"
@@ -120,11 +124,11 @@
         android:id="@+id/textViewEarliestNextOrderDateLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="4dp"
         android:text="Earliest date for next order:"
-        app:layout_constraintBottom_toTopOf="@+id/textViewSuggesteOrderDateLabel2"
+        app:layout_constraintBottom_toTopOf="@+id/textViewLastOrderDateLabel"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewOpenOrClosed" />
 
     <TextView
         android:id="@+id/textViewAccountID"
@@ -154,6 +158,7 @@
         android:id="@+id/buttonShop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:padding="16dp"
         android:paddingStart="72dp"
         android:paddingEnd="72dp"
@@ -161,9 +166,9 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewFamilySizeLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewLastOrderDateLabel" />
 
     <TextView
         android:id="@+id/textViewLastOrderDate"
@@ -175,5 +180,31 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewLastOrderDateLabel" />
+
+    <TextView
+        android:id="@+id/textViewOpenOrClosed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:text="The Food Bank is OPEN and can take orders until 3:30 PM"
+        android:textColor="?attr/colorControlActivated"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textViewEarliestNextOrderDateLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
+
+    <Button
+        android:id="@+id/buttonTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOpenOrClosed" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

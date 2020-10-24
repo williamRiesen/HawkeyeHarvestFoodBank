@@ -1,6 +1,8 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import java.text.DateFormat
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Observer
+import com.google.protobuf.Value
 
 
 class ClientStartFragment : Fragment() {
@@ -21,7 +25,10 @@ class ClientStartFragment : Fragment() {
         super.onCreate(savedInstanceState)
         viewModel =
             ViewModelProviders.of(this.requireActivity()).get(MainActivityViewModel::class.java)
-         viewModel.sendObjectCatalogToFireStore()
+
+        val foodBank = FoodBank()
+        viewModel.isOpen.value= foodBank.isOpen
+//         viewModel.sendObjectCatalogToFireStore()
 //         viewModel.sendCategoriesListToFireStore()
     }
 
@@ -41,16 +48,27 @@ class ClientStartFragment : Fragment() {
             clientStartFragment.findViewById<TextView>(R.id.textViewSuggestedNextOrderDate)
         val textViewEarliestNextOrderLabel =
             clientStartFragment.findViewById<TextView>(R.id.textViewEarliestNextOrderDateLabel)
-
+        val textViewOpenOrClosed = clientStartFragment.findViewById<TextView>(R.id.textViewOpenOrClosed)
+        val openOrClosedObserver = Observer<Boolean> { isOpen  ->
+            Log.d("TAG", "observer fired; isOpen = ${viewModel.isOpen.value}")
+            if (isOpen){
+                textViewOpenOrClosed.text = "The food bank is OPEN and can take orders until 3:30 PM."
+                textViewOpenOrClosed.setTextColor(Color.parseColor("#199115"))
+            } else{
+                textViewOpenOrClosed.text = "The food bank is CLOSED. You may shop and save your order now. Return to this app to place the order after 12 Noon on:"
+                textViewOpenOrClosed.setTextColor(Color.RED)
+            }
+        }
+        viewModel.isOpen.observe(viewLifecycleOwner,openOrClosedObserver)
         val buttonShop = clientStartFragment.findViewById<Button>(R.id.buttonShop)
         textViewAccountID.text = viewModel.accountID
         textViewFamilySize.text = viewModel.familySize.toString()
 
-        val formattedDate = DateFormat.getDateInstance().format(viewModel.lastOrderDate);
+        val formattedDate = DateFormat.getDateInstance().format(viewModel.lastOrderDate)
         textViewLastOrderDate.text = formattedDate
 
         val formattedEarliestDate =
-            DateFormat.getDateInstance().format(viewModel.earliestOrderDate);
+            DateFormat.getDateInstance().format(viewModel.earliestOrderDate)
         textViewEarliestNextOrderDate.text = formattedEarliestDate
 
         if (viewModel.canOrderNow) {
@@ -62,7 +80,7 @@ class ClientStartFragment : Fragment() {
         }
 
         val formattedSuggestedDate =
-            DateFormat.getDateInstance().format(viewModel.suggestedNextOrderDate);
+            DateFormat.getDateInstance().format(viewModel.suggestedNextOrderDate)
         textViewSuggestedNextOrderDate.text = formattedSuggestedDate
 
         buttonShop.setOnClickListener {
@@ -74,6 +92,12 @@ class ClientStartFragment : Fragment() {
                     .navigate(R.id.action_clientStartFragment_to_outOfStockFragment)
             }
         }
+
+        val buttonTest = clientStartFragment.findViewById<Button>(R.id.buttonTest)
+        buttonTest.setOnClickListener {
+            viewModel.isOpen.value = !viewModel.isOpen.value!!
+        }
+
         return clientStartFragment
     }
 }

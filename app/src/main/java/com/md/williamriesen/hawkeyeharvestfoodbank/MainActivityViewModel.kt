@@ -34,6 +34,7 @@ class MainActivityViewModel() : ViewModel() {
     var categories: MutableLiveData<MutableList<Category>> =
         MutableLiveData(mutableListOf())
     var pleaseWait = MutableLiveData<Boolean>()
+    var isOpen = MutableLiveData<Boolean>(false)
 
 
     fun sendObjectCatalogToFireStore() {
@@ -324,6 +325,10 @@ class MainActivityViewModel() : ViewModel() {
     }
 
     fun signIn(enteredAccountID: String, context: Context) {
+        Log.d("TAG","at sign in: ${isOpen.value}")
+        isOpen.value = false
+        Log.d("TAG","at sign in: ${isOpen.value}")
+
         pleaseWait.value = true
         if (enteredAccountID == "STAFF") {
             val intent = Intent(context, LoginActivity::class.java)
@@ -467,5 +472,7 @@ class MainActivityViewModel() : ViewModel() {
 
     val canOrderNow: Boolean
         get() = earliestOrderDate.before(Date(System.currentTimeMillis()))
+
+
 
 }

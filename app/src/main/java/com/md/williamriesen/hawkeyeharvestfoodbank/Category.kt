@@ -1,7 +1,5 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
-import android.util.Log
-
 class Category() {
     var pointsUsed: Int = 0
     var name: String = ""
@@ -22,9 +20,6 @@ class Category() {
     }
 
     fun calculatePoints(familySize: Int): Int {
-//        Log.d("TAG" ,"calculatePoints familySize: $familySize")
-//        Log.d("TAG", "pointsPerFamilyMember: $pointsPerFamilyMember")
-//        Log.d("TAG", "additionalPointsPerFamily: $additionalPointsPerFamily")
         return pointsPerFamilyMember * familySize + additionalPointsPerFamily
     }
 }

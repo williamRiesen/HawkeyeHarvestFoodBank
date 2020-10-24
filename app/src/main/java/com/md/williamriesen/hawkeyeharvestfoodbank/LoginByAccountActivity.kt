@@ -27,6 +27,9 @@ class LoginByAccountActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_by_account)
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
+        Log.d("TAG", "isOpen before ${viewModel.isOpen.value}")
+        viewModel.isOpen.value = true
+        Log.d("TAG", "isOpen after ${viewModel.isOpen.value}")
         val editTextAccountID = findViewById<EditText>(R.id.editTextAccountID)
         editTextAccountID.setOnEditorActionListener { _, actionId, _ ->
             if(actionId == EditorInfo.IME_ACTION_DONE){
