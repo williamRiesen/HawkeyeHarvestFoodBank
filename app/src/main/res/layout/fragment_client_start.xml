@@ -199,10 +199,10 @@
         app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
 
     <Button
-        android:id="@+id/buttonTest"
+        android:id="@+id/buttonShowAccountID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Test"
+        android:text="Show Number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewOpenOrClosed" />

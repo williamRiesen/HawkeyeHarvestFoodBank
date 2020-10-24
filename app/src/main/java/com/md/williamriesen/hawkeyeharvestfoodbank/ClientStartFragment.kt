@@ -8,14 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import java.text.DateFormat
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
-import com.google.protobuf.Value
 
 
 class ClientStartFragment : Fragment() {
@@ -27,7 +24,7 @@ class ClientStartFragment : Fragment() {
             ViewModelProviders.of(this.requireActivity()).get(MainActivityViewModel::class.java)
 
         val foodBank = FoodBank()
-        viewModel.isOpen.value= foodBank.isOpen
+        viewModel.isOpen.value= foodBank.isOpeningLaterToday
 //         viewModel.sendObjectCatalogToFireStore()
 //         viewModel.sendCategoriesListToFireStore()
     }
@@ -93,7 +90,7 @@ class ClientStartFragment : Fragment() {
             }
         }
 
-        val buttonTest = clientStartFragment.findViewById<Button>(R.id.buttonTest)
+        val buttonTest = clientStartFragment.findViewById<Button>(R.id.buttonShowAccountID)
         buttonTest.setOnClickListener {
             viewModel.isOpen.value = !viewModel.isOpen.value!!
         }
