@@ -21,8 +21,8 @@ class FoodBank {
     fun createTimePoint(date: Date, hour24: Int, minute: Int): Date {
         val calendar = Calendar.getInstance()
         calendar.time = date
-        calendar.set(Calendar.HOUR_OF_DAY, 0)
-        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.HOUR_OF_DAY, hour24)
+        calendar.set(Calendar.MINUTE, minute)
         return calendar.time
     }
 
@@ -32,7 +32,7 @@ class FoodBank {
         makeDate(Calendar.JANUARY, 1, 2021)
     )
 
-    private fun getCurrentDateWithoutTime(): Date {
+    fun getCurrentDateWithoutTime(): Date {
         val calendar = Calendar.getInstance()
         val thisMonth = calendar.get(Calendar.MONTH)
         val thisDay = calendar.get(Calendar.DAY_OF_MONTH)
@@ -48,16 +48,15 @@ class FoodBank {
         return isSaturday || isSunday
     }
 
-    val isOpen: Boolean
+    val isOpenToday: Boolean
         get() {
             val today = getCurrentDateWithoutTime()
-            return !isWeekend(today) && !holidaysList.contains(today)
+            val tooEarly = notOpenYet
+            return !isWeekend(today) && !holidaysList.contains(today) && !tooEarly
         }
 
-    val isOpeningLaterToday: Boolean
+    private val notOpenYet: Boolean
         get() {
-            return if (!isOpen) false
-            else {
                 val today = getCurrentDateWithoutTime()
                 val openingTime = createTimePoint(today, 12, 0)
                 val calendar = Calendar.getInstance()
@@ -65,7 +64,25 @@ class FoodBank {
                 Log.d("TAG", "today: $today, openingTime: $openingTime, now: $now")
                 val result = (openingTime > now)
                 Log.d("TAG", "result: $result")
-                result
-            }
+                return result
         }
+
+    val nextDayOpen: Date
+    get() {
+        val today = getCurrentDateWithoutTime()
+        return if(notOpenYet && isOpenToday){
+            today
+        }else {
+            val calendar = Calendar.getInstance()
+            calendar.time = today
+            calendar.add(Calendar.DATE, 1)
+            var tryThisDate = calendar.time
+            Log.d("TAG", "tryThisDate: $tryThisDate, isWeekend: ${isWeekend(tryThisDate)}, isHoliday: ${holidaysList.contains(tryThisDate)}")
+            while (isWeekend(tryThisDate) || holidaysList.contains(tryThisDate)){
+                calendar.add(Calendar.DATE, 1)
+                tryThisDate = calendar.time
+            }
+            tryThisDate
+        }
+    }
 }

@@ -13,11 +13,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.messaging.FirebaseMessaging
 import java.util.*
 
 class MainActivityViewModel() : ViewModel() {
 
+
+    var orderDate: Date? = null
+    var nextDayOpen: Date = Date()
     var accountID = "Turnip"
     var orderID: String? = null
     val itemList = MutableLiveData<MutableList<Item>>()
@@ -27,6 +29,7 @@ class MainActivityViewModel() : ViewModel() {
     val categoriesList = MutableLiveData<MutableList<Category>>()
     var objectCatalog: MutableMap<String, Any>? = null
     private var familySizeFromFireStore: Long? = null
+    var orderState: MutableLiveData<String> = MutableLiveData("NONE")
     var familySize = 0
     var points: Int? = null
     var lastOrderDate: Date? = null
@@ -35,6 +38,9 @@ class MainActivityViewModel() : ViewModel() {
         MutableLiveData(mutableListOf())
     var pleaseWait = MutableLiveData<Boolean>()
     var isOpen = MutableLiveData<Boolean>(false)
+
+    var accountNumberForDisplay: String = ""
+        get() = accountID.takeLast(4)
 
 
     fun sendObjectCatalogToFireStore() {
@@ -194,23 +200,15 @@ class MainActivityViewModel() : ViewModel() {
         val db = FirebaseFirestore.getInstance()
 
         db.collection("categories").document("categories").set(categoriesListing)
-            .addOnSuccessListener {
-                Log.d("TAG", "Categories write successful.")
-            }
-            .addOnFailureListener {
-                Log.d("TAG", "Categories write failed.")
-            }
     }
 
     private fun retrieveCategoriesFromFireStore() {
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection("categories").document("categories")
-        Log.d("TAG", "docRef: $docRef")
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
                 val categoriesListing = documentSnapshot.toObject<CategoriesListing>()
                 categoriesList.value = categoriesListing?.categories as MutableList<Category>
-                Log.d("TAG", "Retrieve categories from database succeeded.")
                 generateHeadings()
                 itemList.value?.sortWith(
                     compareBy<Item> { it.categoryId }.thenBy { it.itemID })
@@ -226,7 +224,6 @@ class MainActivityViewModel() : ViewModel() {
         val docRef = db.collection("catalogs").document("objectCatalog")
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
-                Log.d("TAG", "Retrieve objectCatalog from database successful.")
                 val myObjectCatalog = documentSnapshot.toObject<ObjectCatalog>()
                 val availableItemsList = myObjectCatalog?.itemList?.filter { item ->
                     item.isAvailable as Boolean
@@ -248,11 +245,11 @@ class MainActivityViewModel() : ViewModel() {
             .orderBy("date", Query.Direction.DESCENDING).limit(1)
             .get()
             .addOnSuccessListener { querySnapshot ->
-                Log.d("TAG", "${querySnapshot.size()} documents retrieved.")
                 if (querySnapshot.size() > 0) {
                     val savedOrder = querySnapshot.documents[0].toObject<Order>()
                     savedItemList = savedOrder?.itemList!!
                     orderID = querySnapshot.documents[0].id
+                    orderState.value = savedOrder.orderState!!
                     checkSavedOrderAgainstCurrentOfferings()
                 }
             }
@@ -262,9 +259,7 @@ class MainActivityViewModel() : ViewModel() {
     }
 
     fun checkSavedOrderAgainstCurrentOfferings() {
-        Log.d("TAG", "checSavedOrderAgainst... called.")
         savedItemList.forEach { savedItem ->
-            Log.d("TAG", "savedItem: ${savedItem.name}")
             val itemToCheck = itemList.value?.find { offeredItem ->
                 offeredItem.name == savedItem.name
             }
@@ -295,17 +290,10 @@ class MainActivityViewModel() : ViewModel() {
                 category.id,
                 category.calculatePoints(familySize)
             )
-//            Log.d("TAG", "familySize $familySize")
-//            Log.d("TAG", "category.calculatePoints(familySize) ${category.calculatePoints(familySize)}")
-//            Log.d("TAG", "categoryPointsAllocated: ${heading.categoryPointsAllocated}")
             itemList.value!!.add(heading)
         }
     }
 
-//    fun lookUpPointsAllocated(category: String): Int {
-//        val thisCategory = categories.value?.find { it.name == category }
-//        return thisCategory!!.calculatePoints(familySize)
-//    }
 
     fun addItem(itemName: String) {
         val myList = itemList.value
@@ -316,7 +304,6 @@ class MainActivityViewModel() : ViewModel() {
         val selectedCategoryHeading = myList.find {
             it.name == selectedItem.category
         }
-//        Log.d("TAG", "selectedCategoryHeading.name: ${selectedCategoryHeading?.name}")
         selectedCategoryHeading?.categoryPointsUsed!!.plus(1)
 
     }
@@ -325,10 +312,7 @@ class MainActivityViewModel() : ViewModel() {
     }
 
     fun signIn(enteredAccountID: String, context: Context) {
-        Log.d("TAG","at sign in: ${isOpen.value}")
         isOpen.value = false
-        Log.d("TAG","at sign in: ${isOpen.value}")
-
         pleaseWait.value = true
         if (enteredAccountID == "STAFF") {
             val intent = Intent(context, LoginActivity::class.java)
@@ -347,6 +331,13 @@ class MainActivityViewModel() : ViewModel() {
                         val intent = Intent(context, MainActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                         intent.putExtra("ACCOUNT_ID", enteredAccountID)
+                        orderState.value = if (documentSnapshot["orderState"] != null) {
+                            documentSnapshot["orderState"] as String
+                        } else {
+                            "UNDETERMINED"
+                        }
+                        Log.d("TAG", "orderState: ${orderState.value}")
+                        intent.putExtra("ORDER_STATE", orderState.value)
                         familySizeFromFireStore = documentSnapshot["familySize"] as Long
                         familySize = familySizeFromFireStore!!.toInt()
                         intent.putExtra("FAMILY_SIZE", familySize)
@@ -366,8 +357,8 @@ class MainActivityViewModel() : ViewModel() {
                     }
                 }
                 .addOnFailureListener {
-                Log.d("TAG", "Retrieve family size from database failed.")
-            }
+                    Log.d("TAG", "Retrieve family size from database failed.")
+                }
         }
     }
 
@@ -379,7 +370,7 @@ class MainActivityViewModel() : ViewModel() {
             db.collection(("orders")).document(orderID!!).set(filteredOrder)
                 .addOnSuccessListener {
                     Log.d("TAG", "canOrderNow: $canOrderNow")
-                    if (canOrderNow) {
+                    if (canOrderNow && isOpen.value!!) {
                         Navigation.findNavController(view)
                             .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
                     } else {
@@ -394,7 +385,7 @@ class MainActivityViewModel() : ViewModel() {
             db.collection(("orders")).document().set(filteredOrder)
                 .addOnSuccessListener {
                     Log.d("TAG", "canOrderNow: $canOrderNow")
-                    if (canOrderNow) {
+                    if (canOrderNow && isOpen.value!!) {
                         Navigation.findNavController(view)
                             .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
                     } else {
@@ -473,6 +464,10 @@ class MainActivityViewModel() : ViewModel() {
     val canOrderNow: Boolean
         get() = earliestOrderDate.before(Date(System.currentTimeMillis()))
 
-
-
+    val eligibilityStatus: MutableLiveData<String>
+        get() = when {
+            canOrderNow && isOpen.value!! -> MutableLiveData("mayOrderNow")
+            canOrderNow -> MutableLiveData("mayOrderWhenOpen")
+            else -> MutableLiveData("mayOrderNextMonth")
+        }
 }

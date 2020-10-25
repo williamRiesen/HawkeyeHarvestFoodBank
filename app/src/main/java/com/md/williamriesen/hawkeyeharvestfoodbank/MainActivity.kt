@@ -26,25 +26,27 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         FirebaseMessaging.getInstance().unsubscribeFromTopic("volunteer")
 
+
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
 
         var accountID = intent.extras["ACCOUNT_ID"].toString()
         var familySize = intent.extras["FAMILY_SIZE"]
         var timeStamp = intent.extras["LAST_ORDER_DATE_TIMESTAMP"] as Timestamp
         val lastOrderDate = Date(timeStamp.seconds * 1000)
-
-
+        var orderState = intent.extras["ORDER_STATE"] as String
 
 
 
         viewModel.accountID = accountID
         viewModel.lastOrderDate = lastOrderDate
+        viewModel.orderState.value = orderState
 
         Log.d("TAG", "lastOrderDate: $lastOrderDate")
         Log.d("TAG", "suggestedNextOrderDate: ${viewModel.suggestedNextOrderDate}")
         Log.d("TAG", "earliestOrderDate: ${viewModel.earliestOrderDate}")
         viewModel.familySize = familySize as Int
-        viewModel.retrieveObjectCatalogFromFireStore()
+
+            viewModel.retrieveObjectCatalogFromFireStore()
 
 
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -66,7 +68,8 @@ class MainActivity : AppCompatActivity() {
 //        } else {
 //            Log.d("TAG", "Below Oreo branch used.")
 //        }
-    }
+        }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val menuInflater = menuInflater

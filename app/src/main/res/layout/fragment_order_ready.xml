@@ -3,7 +3,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/textViewOrderReceivedMessage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/design_default_color_background"
@@ -29,13 +28,13 @@
             tools:layout_editor_absoluteY="4dp" />
 
         <TextView
-            android:id="@+id/textViewPlaceOrderSuccessful"
+            android:id="@+id/textViewOrderReadyTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:fontFamily="@font/goblin_one"
             android:gravity="center"
-            android:text="Order Placed"
+            android:text="Hawkeye Harvest"
             android:textColor="#CEDFBA"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -47,58 +46,57 @@
 
 
     <TextView
-        android:id="@+id/textViewOrderRecievedMessage"
+        android:id="@+id/textViewOrderPackedMessage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:gravity="bottom"
-        android:text="Your order has been placed and will be packed shortly. Please proceed to the Food Bank location to pick up.  Show the order number on the next screen in your car window at pickup."
+        android:text="Your order has been packed. Please pull up to the food bank now. Show the order number on the next screen in your car window."
         android:textColor="@color/design_default_color_on_secondary"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDone" />
-
-    <Button
-        android:id="@+id/buttonOK2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="OK"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewOrderRecievedMessage" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewReadyForPickUP" />
 
     <ImageView
         android:id="@+id/imageViewCheckMark"
         android:layout_width="60dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewDone"
-        app:layout_constraintEnd_toStartOf="@+id/textViewDone"
+        android:layout_height="60dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textViewReadyForPickUP"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textViewDone"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/tool_bar"
+        app:layout_constraintVertical_bias="0.13999999"
         app:srcCompat="@drawable/ic_check_mark" />
 
     <TextView
-        android:id="@+id/textViewDone"
-        android:layout_width="wrap_content"
+        android:id="@+id/textViewReadyForPickUP"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Done !"
+        android:layout_marginTop="8dp"
+        android:text="Ready for Pick Up!"
         android:textColor="@android:color/background_dark"
         android:textSize="36sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/imageViewCheckMark"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.26" />
+        app:layout_constraintTop_toTopOf="@+id/imageViewCheckMark" />
+
+    <Button
+        android:id="@+id/buttonShowNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOrderPackedMessage"
+        app:layout_constraintVertical_bias="0.23000002" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,6 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +11,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import java.text.DateFormat
+import java.util.*
 
 
-class OrderSubmittedFragment : Fragment() {
+class OrderReadyFragment : Fragment() {
     lateinit var viewModel: MainActivityViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,14 +26,13 @@ class OrderSubmittedFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val orderSubmittedFragment = inflater.inflate(R.layout.fragment_order_submitted, container, false)
-        val buttonOK = orderSubmittedFragment.findViewById<Button>(R.id.buttonOK2)
-        buttonOK.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_orderSubmittedFragment_to_displayNumberFragment)
+        val orderReadyFragment = inflater.inflate(R.layout.fragment_order_ready, container, false)
+        val buttonShowNumber = orderReadyFragment.findViewById<Button>(R.id.buttonShowNumber)
+        buttonShowNumber.setOnClickListener {
+            Navigation.findNavController(it)
+                .navigate(R.id.action_orderReadyFragment_to_displayNumberFragment)
         }
-        return orderSubmittedFragment
+
+        return orderReadyFragment
     }
-
-
-
 }

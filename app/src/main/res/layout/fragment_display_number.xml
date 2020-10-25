@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,20 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/design_default_color_on_secondary"
-    tools:context=".MainActivity"><?xml version="1.0" encoding="utf-8"?>
+    tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/textViewAccountIdBig"
-
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:rotation="-90"
         android:text="0000"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
-        android:textSize="183sp"
+        android:textSize="125sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

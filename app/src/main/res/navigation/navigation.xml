@@ -13,6 +13,10 @@
             android:id="@+id/action_selectionFragment_to_checkoutFragment"
             app:destination="@id/checkoutFragment"
             app:popUpTo="@id/selectionFragment" />
+        <action
+            android:id="@+id/action_selectionFragment_to_orderReadyFragment"
+            app:destination="@id/orderReadyFragment"
+            app:popUpTo="@id/clientStartFragment" />
     </fragment>
     <fragment
         android:id="@+id/checkoutFragment"
@@ -44,6 +48,14 @@
         <action
             android:id="@+id/action_clientStartFragment_to_outOfStockFragment"
             app:destination="@id/outOfStockFragment" />
+        <action
+            android:id="@+id/action_clientStartFragment_to_displayNumberFragment"
+            app:destination="@id/displayNumberFragment"
+            app:popUpTo="@id/clientStartFragment" />
+        <action
+            android:id="@+id/action_clientStartFragment_to_orderReadyFragment"
+            app:destination="@id/orderReadyFragment"
+            app:popUpTo="@id/clientStartFragment" />
     </fragment>
     <fragment
         android:id="@+id/orderSavedFragment"
@@ -67,7 +79,12 @@
     <fragment
         android:id="@+id/orderSubmittedFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.OrderSubmittedFragment"
-        android:label="OrderSubmittedFragment" />
+        android:label="OrderSubmittedFragment" >
+        <action
+            android:id="@+id/action_orderSubmittedFragment_to_displayNumberFragment"
+            app:destination="@id/displayNumberFragment"
+            app:popUpTo="@id/clientStartFragment" />
+    </fragment>
     <fragment
         android:id="@+id/outOfStockFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.OutOfStockFragment"
@@ -75,6 +92,19 @@
         <action
             android:id="@+id/action_outOfStockFragment_to_selectionFragment"
             app:destination="@id/selectionFragment"
+            app:popUpTo="@id/clientStartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/displayNumberFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.DisplayNumberFragment"
+        android:label="DisplayNumberFragment" />
+    <fragment
+        android:id="@+id/orderReadyFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.OrderReadyFragment"
+        android:label="OrderReadyFragment" >
+        <action
+            android:id="@+id/action_orderReadyFragment_to_displayNumberFragment"
+            app:destination="@id/displayNumberFragment"
             app:popUpTo="@id/clientStartFragment" />
     </fragment>
 </navigation>

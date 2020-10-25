@@ -34,10 +34,12 @@ class VolunteerActivityViewModel : ViewModel() {
                     .get()
                     .addOnSuccessListener { querySnapshot ->
                         Log.d("TAG", "$ordersToPackCount documents retrieved.")
-                        orderID = querySnapshot.documents[0].id
-                        nextOrder = querySnapshot.documents[0].toObject<Order>()
-                        val myList = nextOrder?.itemList
-                        itemsToPackList.value = myList
+                        if (querySnapshot.size()>0) {
+                            orderID = querySnapshot.documents[0].id
+                            nextOrder = querySnapshot.documents[0].toObject<Order>()
+                            val myList = nextOrder?.itemList
+                            itemsToPackList.value = myList
+                        }
                     }
                     .addOnFailureListener {
                         Log.d("TAG", "Retrieve orders from database failed with error: $it.")

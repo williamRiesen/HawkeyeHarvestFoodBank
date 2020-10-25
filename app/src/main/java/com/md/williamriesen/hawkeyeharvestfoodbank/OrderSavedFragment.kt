@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import java.text.DateFormat
+import java.util.*
 
 
 class OrderSavedFragment : Fragment() {
@@ -29,10 +30,21 @@ class OrderSavedFragment : Fragment() {
         buttonOK.setOnClickListener {
             activity?.onBackPressed()
         }
-        val textViewEarliestNextOrderDate = orderSavedFragment.findViewById<TextView>(R.id.textViewEarliestNextOrderDate2)
-        val formattedEarliestDate =
-            DateFormat.getDateInstance().format(viewModel.earliestOrderDate)
-        textViewEarliestNextOrderDate.text = formattedEarliestDate
+        val textViewEarliestNextOrderDate =
+            orderSavedFragment.findViewById<TextView>(R.id.textViewEarliestNextOrderDate2)
+        val orderReceivedMessage =
+            orderSavedFragment.findViewById<TextView>(R.id.textViewOrderSavedMessage)
+        if (viewModel.canOrderNow) {
+            val formattedNextDayOpen =
+                DateFormat.getDateInstance().format((viewModel.nextDayOpen))
+            textViewEarliestNextOrderDate.text = formattedNextDayOpen
+            orderReceivedMessage.text =
+                "Your order has been saved. You may activate this order for packing and pickup when the food bank opens at 12 noon on"
+        } else {
+            val formattedEarliestDate =
+                DateFormat.getDateInstance().format(viewModel.earliestOrderDate)
+            textViewEarliestNextOrderDate.text = formattedEarliestDate
+        }
         return orderSavedFragment
     }
 }

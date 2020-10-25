@@ -11,6 +11,19 @@
 
 
     <TextView
+        android:id="@+id/textViewNextDayOpen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next Day Open"
+        android:textColor="?attr/actionModeSplitBackground"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOpenOrClosed" />
+
+    <TextView
         android:id="@+id/textViewSuggesteOrderDateLabel2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -80,6 +93,7 @@
         android:text="Earliest Next Order Date"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textSize="24sp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
@@ -126,6 +140,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:text="Earliest date for next order:"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/textViewLastOrderDateLabel"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewOpenOrClosed" />
@@ -166,8 +181,6 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewLastOrderDateLabel" />
 
     <TextView
@@ -187,14 +200,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:gravity="center"
+        android:gravity="left"
         android:text="The Food Bank is OPEN and can take orders until 3:30 PM"
         android:textColor="?attr/colorControlActivated"
         android:textSize="24sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/textViewEarliestNextOrderDateLabel"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
 
@@ -203,8 +215,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Show Number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewOpenOrClosed" />
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

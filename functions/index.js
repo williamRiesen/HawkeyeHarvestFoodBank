@@ -60,23 +60,42 @@ exports.updateLastOrderDate = functions.firestore.document('orders/{turnip}').on
 	console.log(accountID)
 	console.log(orderDate)
 	if (orderStateBefore ==="SAVED" && orderStateAfter === "SUBMITTED"){
-	const db = admin.firestore();
-	const ref = db.collection('accounts').doc(accountID);
-	// const ref = firebase.firestore().collection('accounts').doc(accountID);
-	ref.get()
-		.then((doc) => {
-			console.log("Promise fulfilled");
-    		if (doc.exists){
-       			 ref.update({lastOrderDate: orderDate});
-       			}
- 			return null
- 			}
- 		)
+		const db = admin.firestore();
+		const ref = db.collection('accounts').doc(accountID);
+		// const ref = firebase.firestore().collection('accounts').doc(accountID);
+		ref.get()
+			.then((doc) => {
+				console.log("Promise fulfilled");
+    			if (doc.exists){
+     	  			 ref.update({lastOrderDate: orderDate});
+     	  			}
+ 				return null
+ 				}
+ 			)
  		 
-		.catch(function(error){
-			// console.log("Promise rejected")
+			.catch(function(error){
+				// console.log("Promise rejected")
 
-			console.error("Error writing document: ", error);
+				console.error("Error writing document: ", error);
+		});
+	}
+	if (orderStateAfter === "PACKED"){
+		const db = admin.firestore();
+		const ref = db.collection('accounts').doc(accountID);
+		ref.get()
+			.then((doc) => {
+				console.log("Promise fulfilled");
+    			if (doc.exists){
+     	  			 ref.update({orderState: "PACKED"});
+     	  			}
+ 				return null
+ 				}
+ 			)
+ 		 
+			.catch(function(error){
+				// console.log("Promise rejected")
+
+				console.error("Error writing document: ", error);
 		});
 	}
 });
