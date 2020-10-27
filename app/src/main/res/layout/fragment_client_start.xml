@@ -11,6 +11,21 @@
 
 
     <TextView
+        android:id="@+id/yourOrderForThisMonthIsLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:text="Your order for this month is:"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOrderStateLabel2" />
+
+    <TextView
         android:id="@+id/textViewNextDayOpen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,10 +33,8 @@
         android:textColor="?attr/actionModeSplitBackground"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewOpenOrClosed" />
+        tools:layout_editor_absoluteX="252dp"
+        tools:layout_editor_absoluteY="731dp" />
 
     <TextView
         android:id="@+id/textViewSuggesteOrderDateLabel2"
@@ -50,7 +63,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        app:layout_constraintBottom_toTopOf="@+id/textViewOpenOrClosed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,7 +101,6 @@
         android:id="@+id/textViewEarliestNextOrderDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:text="Earliest Next Order Date"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textSize="24sp"
@@ -97,7 +108,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewEarliestNextOrderDateLabel" />
+        tools:layout_editor_absoluteY="411dp" />
 
     <TextView
         android:id="@+id/textViewAccountIDLabel"
@@ -118,6 +129,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:text="Date of last order:"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/buttonShop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewEarliestNextOrderDateLabel" />
@@ -138,12 +150,11 @@
         android:id="@+id/textViewEarliestNextOrderDateLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="16dp"
         android:text="Earliest date for next order:"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/textViewLastOrderDateLabel"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewOpenOrClosed" />
+        tools:layout_editor_absoluteY="381dp" />
 
     <TextView
         android:id="@+id/textViewAccountID"
@@ -179,9 +190,9 @@
         android:paddingEnd="72dp"
         android:text="Shop"
         android:textSize="24sp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLastOrderDateLabel" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/textViewLastOrderDate"
@@ -190,6 +201,7 @@
         android:text="Last Order Date"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textSize="24sp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewLastOrderDateLabel" />
@@ -204,11 +216,11 @@
         android:text="The Food Bank is OPEN and can take orders until 3:30 PM"
         android:textColor="?attr/colorControlActivated"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/textViewEarliestNextOrderDateLabel"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/buttonShowAccountID"
@@ -217,6 +229,62 @@
         android:text="Show Number"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewOrderState"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:text="Order State"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/yourOrderForThisMonthIsLabel" />
+
+    <TextView
+        android:id="@+id/textViewOrderStateLabel2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="16dp"
+        android:text="Welcome to Hawkeye Harvest."
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
+
+    <TextView
+        android:id="@+id/textViewIsOpen"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:text="Open or Closed Message"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOrderState" />
+
+    <Button
+        android:id="@+id/buttonOK"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="OK"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

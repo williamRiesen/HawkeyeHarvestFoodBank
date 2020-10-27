@@ -28,7 +28,10 @@ class FoodBank {
 
     private val holidaysList = listOf<Date>(
         makeDate(Calendar.NOVEMBER, 26, 2020),
+        makeDate(Calendar.NOVEMBER, 27, 2020),
+        makeDate(Calendar.DECEMBER, 24, 2020),
         makeDate(Calendar.DECEMBER, 25, 2020),
+        makeDate(Calendar.DECEMBER, 31, 2020),
         makeDate(Calendar.JANUARY, 1, 2021)
     )
 
@@ -37,7 +40,16 @@ class FoodBank {
         val thisMonth = calendar.get(Calendar.MONTH)
         val thisDay = calendar.get(Calendar.DAY_OF_MONTH)
         val thisYear = calendar.get(Calendar.YEAR)
+//        return makeDate(Calendar.OCTOBER,26,2020)  // this line for debugging: set today to be what you want.
         return makeDate(thisMonth, thisDay, thisYear)
+    }
+
+    fun getFakeNowForDebugging(): Date {
+        val calendar = Calendar.getInstance()
+        calendar.time = getCurrentDateWithoutTime()
+        calendar.set(Calendar.HOUR_OF_DAY, 14)
+        calendar.set(Calendar.MINUTE, 15)
+        return Date(calendar.timeInMillis)
     }
 
     private fun isWeekend(date: Date): Boolean {
@@ -51,15 +63,19 @@ class FoodBank {
     val isOpenToday: Boolean
         get() {
             val today = getCurrentDateWithoutTime()
+            Log.d("TAG", "today: $today")
             val tooEarly = notOpenYet
+            Log.d("TAG", "tooEarly: $tooEarly")
+            Log.d("TAG", "holiday: ${holidaysList.contains(today)}")
             return !isWeekend(today) && !holidaysList.contains(today) && !tooEarly
         }
 
     private val notOpenYet: Boolean
         get() {
                 val today = getCurrentDateWithoutTime()
-                val openingTime = createTimePoint(today, 12, 0)
+                val openingTime = createTimePoint(today, 13, 0)
                 val calendar = Calendar.getInstance()
+//                val now = getFakeNowForDebugging()
                 val now = Date(calendar.timeInMillis)
                 Log.d("TAG", "today: $today, openingTime: $openingTime, now: $now")
                 val result = (openingTime > now)

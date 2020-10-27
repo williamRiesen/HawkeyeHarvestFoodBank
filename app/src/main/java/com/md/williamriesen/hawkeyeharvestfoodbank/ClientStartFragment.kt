@@ -25,7 +25,8 @@ class ClientStartFragment : Fragment() {
             ViewModelProviders.of(this.requireActivity()).get(MainActivityViewModel::class.java)
         val foodBank = FoodBank()
         val today = foodBank.getCurrentDateWithoutTime()
-        Log.d("TAG", "viewModel.orderState ${viewModel.orderState}")
+        viewModel.isOpen.value = foodBank.isOpenToday
+        Log.d("TAG", "viewModel.isOpen.value ${viewModel.isOpen.value}")
 //         viewModel.sendCategoriesListToFireStore()
 
         }
@@ -35,6 +36,7 @@ class ClientStartFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
         ): View? {
+
             // Inflate the layout for this fragment
             val clientStartFragment =
                 inflater.inflate(R.layout.fragment_client_start, container, false)
@@ -142,10 +144,25 @@ class ClientStartFragment : Fragment() {
                 if (it == "PACKED"){
                     Log.d("TAG", "About to navigate to ORder ready.")
                     Navigation.findNavController(requireView()).navigate(R.id.action_clientStartFragment_to_orderReadyFragment)
-                }
+                } else if (it =="SUBMITTED")
+                    Navigation.findNavController(requireView()).navigate(R.id.action_clientStartFragment_to_orderBeingPackedFragment)
             }
             viewModel.orderState.observe(viewLifecycleOwner,orderStateObserver)
 
+            val textViewOrderState = clientStartFragment.findViewById<TextView>(R.id.textViewOrderState)
+            textViewOrderState.text = viewModel.orderState.value
+            val textViewIsOpen = clientStartFragment.findViewById<TextView>(R.id.textViewIsOpen)
+
+            val isOpenObserver = Observer<Boolean> {isOpen ->
+                if (isOpen) textViewIsOpen.text = "The food bank is currently open to pack online orders."
+                else textViewIsOpen.text = "The food bank is currently closed, but you can still shop."
+            }
+            viewModel.isOpen.observe(viewLifecycleOwner, isOpenObserver)
+
+            val buttonOK = clientStartFragment.findViewById<Button>(R.id.buttonOK)
+            buttonOK.setOnClickListener {
+                Navigation.findNavController(requireView()).navigate(viewModel.nextFragment)
+            }
             return clientStartFragment
 
         }

@@ -334,7 +334,7 @@ class MainActivityViewModel() : ViewModel() {
                         orderState.value = if (documentSnapshot["orderState"] != null) {
                             documentSnapshot["orderState"] as String
                         } else {
-                            "UNDETERMINED"
+                            "NOTHING YET"
                         }
                         Log.d("TAG", "orderState: ${orderState.value}")
                         intent.putExtra("ORDER_STATE", orderState.value)
@@ -469,5 +469,27 @@ class MainActivityViewModel() : ViewModel() {
             canOrderNow && isOpen.value!! -> MutableLiveData("mayOrderNow")
             canOrderNow -> MutableLiveData("mayOrderWhenOpen")
             else -> MutableLiveData("mayOrderNextMonth")
+        }
+
+    val nextFragment: Int
+        get() {
+            return if (isOpen.value!!) {
+                when (orderState.value) {
+                    "SAVED" -> R.id.action_clientStartFragment_to_shopVsCheckOutFragment
+                    "SUBMITTED" -> R.id.action_clientStartFragment_to_orderBeingPackedFragment
+                    "PACKED" -> R.id.action_clientStartFragment_to_orderReadyFragment
+                    "PICKED UP" -> R.id.action_clientStartFragment_to_shopForNextMonthFragment
+                    else -> R.id.action_clientStartFragment_to_selectionFragment
+                }
+            } else {
+                when (orderState.value) {
+                    "SAVED" -> R.id.action_clientStartFragment_to_reviseSavedOrderOptionFragment
+                    "SUBMITTED" -> R.id.action_clientStartFragment_to_notPackedFragment
+                    "PACKED" -> R.id.action_clientStartFragment_to_notPickedUpFragment
+                    "PICKED UP" -> R.id.action_clientStartFragment_to_shopForNextMonthFragment
+                    else -> R.id.action_clientStartFragment_to_selectionFragment
+
+                }
+            }
         }
 }

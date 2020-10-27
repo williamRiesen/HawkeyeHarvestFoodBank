@@ -79,14 +79,14 @@ exports.updateLastOrderDate = functions.firestore.document('orders/{turnip}').on
 				console.error("Error writing document: ", error);
 		});
 	}
-	if (orderStateAfter === "PACKED"){
+	if (orderStateAfter === "PACKED" || orderStateAfter === "SUBMITTED" || orderStateAfter === "SAVED"){
 		const db = admin.firestore();
 		const ref = db.collection('accounts').doc(accountID);
 		ref.get()
 			.then((doc) => {
 				console.log("Promise fulfilled");
     			if (doc.exists){
-     	  			 ref.update({orderState: "PACKED"});
+     	  			 ref.update({orderState: orderStateAfter});
      	  			}
  				return null
  				}
