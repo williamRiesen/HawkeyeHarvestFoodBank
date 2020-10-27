@@ -71,7 +71,8 @@
         <action
             android:id="@+id/action_clientStartFragment_to_reviseSavedOrderOptionFragment"
             app:destination="@id/reviseSavedOrderOptionFragment"
-            app:popUpTo="@id/clientStartFragment" />
+            app:popUpTo="@id/clientStartFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_clientStartFragment_to_notPackedFragment"
             app:destination="@id/notPackedFragment" />

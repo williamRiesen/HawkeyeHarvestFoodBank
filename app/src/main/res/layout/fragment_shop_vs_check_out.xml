@@ -64,8 +64,8 @@
         android:id="@+id/button_shop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:text="No"
-        app:layout_constraintBottom_toTopOf="@+id/button_exit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.151"
         app:layout_constraintStart_toStartOf="parent"
@@ -80,18 +80,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.151"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAreYour ReadyMessage" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewAreYouReadyMessage" />
 
     <Button
         android:id="@+id/button_exit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:text="Exit"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.151"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_no" />
+        app:layout_constraintTop_toBottomOf="@+id/button_shop" />
 
     <TextView
         android:id="@+id/textViewCheckOutLabel"
@@ -112,8 +112,8 @@
         android:layout_marginTop="8dp"
         android:text="Shop some more"
         android:textSize="24sp"
-        app:layout_constraintStart_toEndOf="@+id/button_no"
-        app:layout_constraintTop_toTopOf="@+id/button_no" />
+        app:layout_constraintStart_toEndOf="@+id/button_shop"
+        app:layout_constraintTop_toTopOf="@+id/button_shop" />
 
     <TextView
         android:id="@+id/textViewWIllComeBackLaterLabel"
