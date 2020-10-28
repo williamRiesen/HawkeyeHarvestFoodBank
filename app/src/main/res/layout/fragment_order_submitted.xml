@@ -47,7 +47,7 @@
 
 
     <TextView
-        android:id="@+id/textViewOrderRecievedMessage"
+        android:id="@+id/textViewOrderNumber"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

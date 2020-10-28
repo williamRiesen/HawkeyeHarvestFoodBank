@@ -11,6 +11,10 @@
         <action
             android:id="@+id/action_volunteerSignInFragment_to_packOrderFragment"
             app:destination="@id/packOrderFragment" />
+        <action
+            android:id="@+id/action_volunteerSignInFragment_to_noShowFragment"
+            app:destination="@id/noShowFragment"
+            app:popUpTo="@id/volunteerSignInFragment" />
     </fragment>
     <fragment
         android:id="@+id/packOrderFragment"
@@ -26,4 +30,8 @@
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.ConfirmPacked"
         android:label="fragment_confirm_packed"
         tools:layout="@layout/fragment_confirm_packed" />
+    <fragment
+        android:id="@+id/noShowFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.NoShowFragment"
+        android:label="NoShowFragment" />
 </navigation>

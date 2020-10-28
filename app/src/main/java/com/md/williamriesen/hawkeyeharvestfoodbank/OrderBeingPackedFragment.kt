@@ -26,11 +26,11 @@ class OrderBeingPackedFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val orderReadyFragment = inflater.inflate(R.layout.fragment_order_ready, container, false)
+        val orderReadyFragment = inflater.inflate(R.layout.fragment_order_being_packed, container, false)
         val buttonShowNumber = orderReadyFragment.findViewById<Button>(R.id.buttonShowNumber)
         buttonShowNumber.setOnClickListener {
             Navigation.findNavController(it)
-                .navigate(R.id.action_orderReadyFragment_to_displayNumberFragment)
+                .navigate(R.id.action_orderBeingPackedFragment_to_displayNumberFragment)
         }
 
         return orderReadyFragment

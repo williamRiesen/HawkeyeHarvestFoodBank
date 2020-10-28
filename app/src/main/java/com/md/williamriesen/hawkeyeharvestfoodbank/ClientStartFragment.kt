@@ -140,21 +140,21 @@ class ClientStartFragment : Fragment() {
                 DateFormat.getDateInstance().format(viewModel.nextDayOpen)
             textViewNextDayOpen.text = formattedNextDayOpen
 
-            val orderStateObserver = Observer<String> {
-                if (it == "PACKED"){
-                    Log.d("TAG", "About to navigate to ORder ready.")
-                    Navigation.findNavController(requireView()).navigate(R.id.action_clientStartFragment_to_orderReadyFragment)
-                } else if (it =="SUBMITTED")
-                    Navigation.findNavController(requireView()).navigate(R.id.action_clientStartFragment_to_orderBeingPackedFragment)
-            }
-            viewModel.orderState.observe(viewLifecycleOwner,orderStateObserver)
+//            val orderStateObserver = Observer<String> {
+//                if (it == "PACKED"){
+//                    Log.d("TAG", "About to navigate to ORder ready.")
+//                    Navigation.findNavController(requireView()).navigate(R.id.action_clientStartFragment_to_orderReadyFragment)
+//                } else if (it =="SUBMITTED")
+//                    Navigation.findNavController(requireView()).navigate(R.id.action_clientStartFragment_to_orderBeingPackedFragment)
+//            }
+//            viewModel.orderState.observe(viewLifecycleOwner,orderStateObserver)
 
             val textViewOrderState = clientStartFragment.findViewById<TextView>(R.id.textViewOrderState)
             textViewOrderState.text = viewModel.orderState.value
             val textViewIsOpen = clientStartFragment.findViewById<TextView>(R.id.textViewIsOpen)
 
             val isOpenObserver = Observer<Boolean> {isOpen ->
-                if (isOpen) textViewIsOpen.text = "The food bank is currently open to pack online orders."
+                if (isOpen) textViewIsOpen.text = "The food bank is currently open to pack and pick up online orders."
                 else textViewIsOpen.text = "The food bank is currently closed, but you can still shop."
             }
             viewModel.isOpen.observe(viewLifecycleOwner, isOpenObserver)

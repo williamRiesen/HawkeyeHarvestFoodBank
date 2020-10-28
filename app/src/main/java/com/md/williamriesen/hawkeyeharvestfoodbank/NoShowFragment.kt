@@ -1,7 +1,6 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,37 +11,35 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
-class PackOrderFragment : Fragment() {
+class NoShowFragment : Fragment() {
 
-    private lateinit var adapter: ItemsToPackAdapter
+    private lateinit var adapter: NoShowAdapter
     private lateinit var viewModel: VolunteerActivityViewModel
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this.requireActivity())
             .get(VolunteerActivityViewModel::class.java)
-//        viewModel.getNextOrderFromFireStore()  // commented out due to being called in volunteer sign in fragment
-        viewModel.itemsToPackList.observe(this, Observer { adapter.notifyDataSetChanged() })
+        viewModel.getTodaysOrdersList()
+        viewModel.todaysOrdersList.observe(this, Observer{ adapter.notifyDataSetChanged()})
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val packOrderView = inflater.inflate(R.layout.fragment_pack_order, container, false)
-        val recyclerView = packOrderView.findViewById<RecyclerView>(R.id.recyclerviewInventoryForUpdate)
-        setUpRecyclerView(viewModel.itemsToPackList, recyclerView)
-        return packOrderView
+        // Inflate the layout for this fragment
+        val fragment =  inflater.inflate(R.layout.fragment_no_show, container, false)
+        val recyclerView = fragment.findViewById<RecyclerView>(R.id.recyclerViewTodaysOrders)
+        setUpRecyclerView(viewModel.todaysOrdersList, recyclerView)
+        return fragment
     }
 
-    private fun setUpRecyclerView(itemsToPackList: MutableLiveData<MutableList<Item>>, recyclerView: RecyclerView) {
+    private fun setUpRecyclerView(todaysOrdersList: MutableLiveData<MutableList<Order>>, recyclerView: RecyclerView) {
         FirestoreRecyclerOptions.Builder<Item>()
-        adapter = ItemsToPackAdapter(itemsToPackList, viewModel)
+        adapter = NoShowAdapter(todaysOrdersList, viewModel)
         recyclerView.layoutManager = LinearLayoutManager(this.activity)
         recyclerView.adapter = adapter
     }

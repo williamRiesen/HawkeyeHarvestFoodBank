@@ -40,8 +40,8 @@ class FoodBank {
         val thisMonth = calendar.get(Calendar.MONTH)
         val thisDay = calendar.get(Calendar.DAY_OF_MONTH)
         val thisYear = calendar.get(Calendar.YEAR)
-        return makeDate(Calendar.OCTOBER,25,2020)  // this line for debugging: set today to be what you want.
-//        return makeDate(thisMonth, thisDay, thisYear)
+//        return makeDate(Calendar.OCTOBER,25,2020)  // this line for debugging: set today to be what you want.
+        return makeDate(thisMonth, thisDay, thisYear)
     }
 
     fun getFakeNowForDebugging(): Date {

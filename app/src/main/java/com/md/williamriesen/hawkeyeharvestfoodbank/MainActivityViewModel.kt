@@ -334,7 +334,7 @@ class MainActivityViewModel() : ViewModel() {
                         orderState.value = if (documentSnapshot["orderState"] != null) {
                             documentSnapshot["orderState"] as String
                         } else {
-                            "NOTHING YET"
+                            "NOT STARTED YET"
                         }
                         Log.d("TAG", "orderState: ${orderState.value}")
                         intent.putExtra("ORDER_STATE", orderState.value)

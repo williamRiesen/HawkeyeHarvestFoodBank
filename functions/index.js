@@ -79,7 +79,7 @@ exports.updateLastOrderDate = functions.firestore.document('orders/{turnip}').on
 				console.error("Error writing document: ", error);
 		});
 	}
-	if (orderStateAfter === "PACKED" || orderStateAfter === "SUBMITTED" || orderStateAfter === "SAVED"){
+	if (orderStateAfter === "PACKED" || orderStateAfter === "SUBMITTED" || orderStateAfter === "SAVED"|| orderStateAfter === "NO SHOW"){
 		const db = admin.firestore();
 		const ref = db.collection('accounts').doc(accountID);
 		ref.get()

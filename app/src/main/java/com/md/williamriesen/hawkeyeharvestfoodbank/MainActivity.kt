@@ -40,13 +40,8 @@ class MainActivity : AppCompatActivity() {
         viewModel.accountID = accountID
         viewModel.lastOrderDate = lastOrderDate
         viewModel.orderState.value = orderState
-
-        Log.d("TAG", "lastOrderDate: $lastOrderDate")
-        Log.d("TAG", "suggestedNextOrderDate: ${viewModel.suggestedNextOrderDate}")
-        Log.d("TAG", "earliestOrderDate: ${viewModel.earliestOrderDate}")
         viewModel.familySize = familySize as Int
-
-            viewModel.retrieveObjectCatalogFromFireStore()
+        viewModel.retrieveObjectCatalogFromFireStore()
 
 
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

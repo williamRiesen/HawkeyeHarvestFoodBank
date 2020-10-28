@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
+import androidx.navigation.Navigation
 import kotlinx.android.synthetic.main.fragment_volunteer_sign_in.*
 
 class VolunteerSignInFragment : Fragment() {
@@ -34,6 +36,10 @@ class VolunteerSignInFragment : Fragment() {
             volunteerSignInFragment.findViewById<TextView>(R.id.textViewOrderCount)
         val countObserver = Observer<Int> { newCount: Int ->
             textViewOrderCount.text = newCount.toString()
+        }
+        val imageButtonNoShow = volunteerSignInFragment.findViewById<ImageButton>(R.id.imageButtonNoShow)
+        imageButtonNoShow.setOnClickListener {
+            Navigation.findNavController(it).navigate(R.id.action_volunteerSignInFragment_to_noShowFragment)
         }
         viewModel.ordersToPackCount.observe(viewLifecycleOwner, countObserver)
         viewModel.getNextOrderFromFireStore()

@@ -10,7 +10,23 @@ android:background="@color/design_default_color_background"
 tools:context=".MainActivity">
 
 
-<TextView
+    <TextView
+        android:id="@+id/textViewconfirmPackedMessage2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="bottom"
+        android:text="Thank you for packing this order. Please mark the order NOW with this order number."
+        android:textColor="@color/design_default_color_on_secondary"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewVolunteerSection" />
+
+    <TextView
     android:id="@+id/textViewVolunteerSection"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
@@ -53,16 +69,16 @@ tools:context=".MainActivity">
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:gravity="bottom"
-        android:text="Thank you for packing this order. Hit CONFIRM to notify client, or back button to recheck."
+        android:text="Hit CONFIRM to finalize this order, or the phone back button to recheck."
         android:textColor="@color/design_default_color_on_secondary"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewVolunteerSection" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewOrderNumber" />
 
     <Button
         android:id="@+id/buttonConfirmPacked"
@@ -71,7 +87,22 @@ tools:context=".MainActivity">
         android:text="CONFIRM"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewconfirmPackedMessage"
-        app:layout_constraintVertical_bias="0.24000001" />
+        app:layout_constraintVertical_bias="0.875" />
+
+    <TextView
+        android:id="@+id/textViewOrderNumber"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:text="ORDER NUMBER"
+        android:textColor="@color/colorPrimary"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewconfirmPackedMessage2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

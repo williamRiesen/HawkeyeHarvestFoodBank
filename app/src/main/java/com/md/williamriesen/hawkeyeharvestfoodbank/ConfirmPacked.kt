@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_confirm_packed.*
 
@@ -29,6 +30,8 @@ class ConfirmPacked : Fragment() {
         buttonConfirmPacked.setOnClickListener{
             viewModel.upDateOrderAsPacked(requireActivity())
         }
+        val textViewOrderNumber = conFirmPackedFragment.findViewById<TextView>(R.id.textViewOrderNumber)
+        textViewOrderNumber.text = viewModel.accountNumberForDisplay
         return conFirmPackedFragment
     }
 
