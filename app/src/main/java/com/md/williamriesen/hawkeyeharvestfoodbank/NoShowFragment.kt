@@ -30,6 +30,7 @@ class NoShowFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         // Inflate the layout for this fragment
         val fragment =  inflater.inflate(R.layout.fragment_no_show, container, false)
         val recyclerView = fragment.findViewById<RecyclerView>(R.id.recyclerViewTodaysOrders)
@@ -39,8 +40,9 @@ class NoShowFragment : Fragment() {
 
     private fun setUpRecyclerView(todaysOrdersList: MutableLiveData<MutableList<Order>>, recyclerView: RecyclerView) {
         FirestoreRecyclerOptions.Builder<Item>()
-        adapter = NoShowAdapter(todaysOrdersList, viewModel)
+        adapter = NoShowAdapter(todaysOrdersList, viewModel, this.activity as VolunteerActivity)
         recyclerView.layoutManager = LinearLayoutManager(this.activity)
         recyclerView.adapter = adapter
     }
+
 }

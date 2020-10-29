@@ -12,7 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class NoShowAdapter(
     private val todaysOrdersList: MutableLiveData<MutableList<Order>>,
-    var viewModel: VolunteerActivityViewModel
+    var viewModel: VolunteerActivityViewModel,
+    val activity: VolunteerActivity
 ) : RecyclerView.Adapter<NoShowAdapter.MyViewHolder>() {
 
     inner class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
@@ -23,6 +24,7 @@ class NoShowAdapter(
             imageButtonNoShow.setOnClickListener {
                 val orderID = textViewOrderID.text
                     viewModel.recordNoShow(orderID.toString(), it.context)
+                activity.onBackPressed()
             }
         }
     }

@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.common.internal.FallbackServiceBroker
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QueryDocumentSnapshot
@@ -60,10 +61,13 @@ class VolunteerActivityViewModel : ViewModel() {
         Log.d("TAG", "getTodaysOrdersList called.")
         val foodBank = FoodBank()
         val today = foodBank.getCurrentDateWithoutTime()
+        Log.d("TAG","today: $today")
+        val startOfTodayTimestamp = Timestamp(today)
+        Log.d("TAG","startOfTodayTimestamp $startOfTodayTimestamp")
         val db = FirebaseFirestore.getInstance()
         val ordersRef = db.collection("orders")
         val query = ordersRef
-//            .whereEqualTo("orderDate", today)
+            .whereGreaterThan("date", startOfTodayTimestamp)
             .whereEqualTo("orderState", "PACKED")
             .get()
             .addOnSuccessListener {querySnapshot ->
@@ -71,6 +75,7 @@ class VolunteerActivityViewModel : ViewModel() {
                     todaysOrdersList.value = querySnapshot.toObjects<Order>(Order().javaClass)
                     querySnapshot.forEachIndexed{index, queryDocumentSnapshot ->
                         (todaysOrdersList.value as MutableList<Order>)[index].orderID = queryDocumentSnapshot.id
+                        Log.d("TAG","date: ${queryDocumentSnapshot.get("date")}")
                     }
                     Log.d("TAG", "retrieved orders for today: count= ${querySnapshot.size()}")
                 }else {
