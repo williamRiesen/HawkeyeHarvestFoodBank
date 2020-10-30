@@ -53,7 +53,7 @@
         android:layout_marginEnd="16dp"
         android:text="Your order was packed but not picked up by closing time and had to be put away. Please come to the food bank between 1PM and 3PM weekdays to order in person."
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
-        android:textSize="30sp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

@@ -17,7 +17,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:text="Your order for this month is:"
+        android:text="Your order status for this month:"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"

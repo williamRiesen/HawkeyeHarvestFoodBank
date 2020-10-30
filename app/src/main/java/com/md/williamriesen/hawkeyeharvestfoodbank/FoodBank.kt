@@ -70,35 +70,55 @@ class FoodBank {
             return !isWeekend(today) && !holidaysList.contains(today) && !tooEarly
         }
 
+    val isOpen: Boolean
+        get() {
+            val today = getCurrentDateWithoutTime()
+            val now = Date()
+            return (
+                    !isWeekend(today) &&
+                            !holidaysList.contains(today) &&
+                            now > openingTime &&
+                            now < closingTime
+                    )
+        }
+
+    val openingTime = createTimePoint(getCurrentDateWithoutTime(), 13, 0)
+    val closingTime = createTimePoint(getCurrentDateWithoutTime(), 15, 0)
+
     private val notOpenYet: Boolean
         get() {
-                val today = getCurrentDateWithoutTime()
-                val openingTime = createTimePoint(today, 13, 0)
-                val calendar = Calendar.getInstance()
+            val today = getCurrentDateWithoutTime()
+
+            val calendar = Calendar.getInstance()
 //                val now = getFakeNowForDebugging()
-                val now = Date(calendar.timeInMillis)
-                Log.d("TAG", "today: $today, openingTime: $openingTime, now: $now")
-                val result = (openingTime > now)
-                Log.d("TAG", "result: $result")
-                return result
+            val now = Date(calendar.timeInMillis)
+            Log.d("TAG", "today: $today, openingTime: $openingTime, now: $now")
+            val result = (openingTime > now)
+            Log.d("TAG", "result: $result")
+            return result
         }
 
     val nextDayOpen: Date
-    get() {
-        val today = getCurrentDateWithoutTime()
-        return if(notOpenYet && isOpenToday){
-            today
-        }else {
-            val calendar = Calendar.getInstance()
-            calendar.time = today
-            calendar.add(Calendar.DATE, 1)
-            var tryThisDate = calendar.time
-            Log.d("TAG", "tryThisDate: $tryThisDate, isWeekend: ${isWeekend(tryThisDate)}, isHoliday: ${holidaysList.contains(tryThisDate)}")
-            while (isWeekend(tryThisDate) || holidaysList.contains(tryThisDate)){
+        get() {
+            val today = getCurrentDateWithoutTime()
+            return if (notOpenYet && isOpenToday) {
+                today
+            } else {
+                val calendar = Calendar.getInstance()
+                calendar.time = today
                 calendar.add(Calendar.DATE, 1)
-                tryThisDate = calendar.time
+                var tryThisDate = calendar.time
+                Log.d(
+                    "TAG",
+                    "tryThisDate: $tryThisDate, isWeekend: ${isWeekend(tryThisDate)}, isHoliday: ${
+                        holidaysList.contains(tryThisDate)
+                    }"
+                )
+                while (isWeekend(tryThisDate) || holidaysList.contains(tryThisDate)) {
+                    calendar.add(Calendar.DATE, 1)
+                    tryThisDate = calendar.time
+                }
+                tryThisDate
             }
-            tryThisDate
         }
-    }
 }

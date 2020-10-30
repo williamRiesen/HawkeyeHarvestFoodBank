@@ -42,6 +42,22 @@ class MainActivityViewModel() : ViewModel() {
     var accountNumberForDisplay: String = ""
         get() = accountID.takeLast(4)
 
+    val whenOrdered: String
+        get() {
+            val foodBank = FoodBank()
+            val startOfToday: Date = foodBank.getCurrentDateWithoutTime()
+            val calendar = Calendar.getInstance()
+            calendar.time = startOfToday
+            calendar.set(Calendar.DAY_OF_MONTH, 1)
+            val startOfThisMonth = calendar.time
+
+            return when {
+                lastOrderDate!! > startOfToday -> "TODAY"
+                lastOrderDate!! > startOfThisMonth -> "EARLIER_THIS_MONTH"
+                else -> "PRIOR_TO_THIS_MONTH"
+            }
+        }
+
 
     fun sendObjectCatalogToFireStore() {
         val myObjectCatalog = ObjectCatalog()
@@ -369,8 +385,8 @@ class MainActivityViewModel() : ViewModel() {
         if (orderID != null) {
             db.collection(("orders")).document(orderID!!).set(filteredOrder)
                 .addOnSuccessListener {
-                    Log.d("TAG", "canOrderNow: $canOrderNow")
-                    if (canOrderNow && isOpen.value!!) {
+                    Log.d("TAG", "mayOrderNow: $mayOrderNow")
+                    if (mayOrderNow) {
                         Navigation.findNavController(view)
                             .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
                     } else {
@@ -384,8 +400,8 @@ class MainActivityViewModel() : ViewModel() {
         } else {
             db.collection(("orders")).document().set(filteredOrder)
                 .addOnSuccessListener {
-                    Log.d("TAG", "canOrderNow: $canOrderNow")
-                    if (canOrderNow && isOpen.value!!) {
+                    Log.d("TAG", "mayOrderNow: $mayOrderNow")
+                    if (mayOrderNow) {
                         Navigation.findNavController(view)
                             .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
                     } else {
@@ -461,32 +477,64 @@ class MainActivityViewModel() : ViewModel() {
             return calendar.time
         }
 
-    val canOrderNow: Boolean
-        get() = earliestOrderDate.before(Date(System.currentTimeMillis()))
+//    val canOrderNow: Boolean
+//        get() = earliestOrderDate.before(Date(System.currentTimeMillis()))
 
-    val eligibilityStatus: MutableLiveData<String>
-        get() = when {
-            canOrderNow && isOpen.value!! -> MutableLiveData("mayOrderNow")
-            canOrderNow -> MutableLiveData("mayOrderWhenOpen")
-            else -> MutableLiveData("mayOrderNextMonth")
-        }
+    val mayOrderNow: Boolean
+        get() =
+        isOpen.value!! &&
+                !(orderState.value == "PACKED" && whenOrdered == "EARLIER_THIS_MONTH") &&
+                !(orderState.value == "NO SHOW" && whenOrdered == "EARLIER_THIS_MONTH")
+
+
+//    val eligibilityStatus: MutableLiveData<String>
+//        get() = when {
+//            canOrderNow && isOpen.value!! -> MutableLiveData("mayOrderNow")
+//            canOrderNow -> MutableLiveData("mayOrderWhenOpen")
+//            else -> MutableLiveData("mayOrderNextMonth")
+//        }
 
     val nextFragment: Int
         get() {
             return if (isOpen.value!!) {
                 when (orderState.value) {
                     "SAVED" -> R.id.action_clientStartFragment_to_shopVsCheckOutFragment
-                    "SUBMITTED" -> R.id.action_clientStartFragment_to_orderBeingPackedFragment
-                    "PACKED" -> R.id.action_clientStartFragment_to_orderReadyFragment
-                    "PICKED UP" -> R.id.action_clientStartFragment_to_shopForNextMonthFragment
+                    "SUBMITTED" -> {
+                        if (whenOrdered == "TODAY") {
+                            R.id.action_clientStartFragment_to_orderBeingPackedFragment
+                        } else {
+                            R.id.action_clientStartFragment_to_errorMessageFragment
+                        }
+                    }
+                    "PACKED" -> {
+                        when (whenOrdered) {
+                            "TODAY" -> R.id.action_clientStartFragment_to_orderReadyFragment
+                            "EARLIER_THIS_MONTH" -> R.id.action_clientStartFragment_to_shopForNextMonthFragment
+                            else -> R.id.action_clientStartFragment_to_selectionFragment
+                        }
+                    }
+                    "NO SHOW" -> {
+                        Log.d("TAG", "whenOrdered: $whenOrdered")
+                        if (whenOrdered == "PRIOR_TO_THIS_MONTH") {
+                            R.id.action_clientStartFragment_to_selectionFragment
+                        } else {
+                            R.id.action_clientStartFragment_to_notPickedUpFragment
+                        }
+                    }
                     else -> R.id.action_clientStartFragment_to_selectionFragment
                 }
             } else {
                 when (orderState.value) {
                     "SAVED" -> R.id.action_clientStartFragment_to_reviseSavedOrderOptionFragment
-                    "SUBMITTED" -> R.id.action_clientStartFragment_to_notPackedFragment
-                    "PACKED" -> R.id.action_clientStartFragment_to_notPickedUpFragment
-                    "PICKED UP" -> R.id.action_clientStartFragment_to_shopForNextMonthFragment
+                    "SUBMITTED" -> R.id.action_clientStartFragment_to_errorMessageFragment
+                    "PACKED" -> R.id.action_clientStartFragment_to_shopForNextMonthFragment
+                    "NO SHOW" -> {
+                        if (whenOrdered == "PRIOR_TO_THIS_MONTH") {
+                            R.id.action_clientStartFragment_to_selectionFragment
+                        } else {
+                            R.id.action_clientStartFragment_to_notPickedUpFragment
+                        }
+                    }
                     else -> R.id.action_clientStartFragment_to_selectionFragment
 
                 }

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 
 
-class NotPackedFragment : Fragment() {
+class ErrorMessageFragment : Fragment() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +22,7 @@ class NotPackedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val fragment = inflater.inflate(R.layout.fragment_not_packed, container, false)
+        val fragment = inflater.inflate(R.layout.fragment_error_message, container, false)
         val buttonExit = fragment.findViewById<Button>(R.id.button_exit)
         buttonExit.setOnClickListener {
             activity?.onBackPressed()

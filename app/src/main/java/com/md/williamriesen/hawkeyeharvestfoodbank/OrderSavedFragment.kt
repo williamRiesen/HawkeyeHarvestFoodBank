@@ -34,7 +34,7 @@ class OrderSavedFragment : Fragment() {
             orderSavedFragment.findViewById<TextView>(R.id.textViewEarliestNextOrderDate2)
         val orderReceivedMessage =
             orderSavedFragment.findViewById<TextView>(R.id.textViewOrderSavedMessage)
-        if (viewModel.canOrderNow) {
+        if (viewModel.mayOrderNow) {
             val formattedNextDayOpen =
                 DateFormat.getDateInstance().format((viewModel.nextDayOpen))
             textViewEarliestNextOrderDate.text = formattedNextDayOpen

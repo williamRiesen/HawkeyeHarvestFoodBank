@@ -78,13 +78,12 @@
             app:popUpTo="@id/clientStartFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_clientStartFragment_to_notPackedFragment"
-            app:destination="@id/notPackedFragment"
-            app:popUpTo="@id/clientStartFragment"
-            app:popUpToInclusive="true" />
-        <action
             android:id="@+id/action_clientStartFragment_to_notPickedUpFragment"
             app:destination="@id/notPickedUpFragment"
+            app:popUpTo="@id/clientStartFragment" />
+        <action
+            android:id="@+id/action_clientStartFragment_to_errorMessageFragment"
+            app:destination="@id/errorMessageFragment"
             app:popUpTo="@id/clientStartFragment" />
     </fragment>
     <fragment
@@ -166,11 +165,16 @@
     <fragment
         android:id="@+id/reviseSavedOrderOptionFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.ReviseSavedOrderOptionFragment"
-        android:label="ReviseSavedOrderOptionFragment" />
+        android:label="ReviseSavedOrderOptionFragment" >
+        <action
+            android:id="@+id/action_reviseSavedOrderOptionFragment_to_selectionFragment"
+            app:destination="@id/selectionFragment"
+            app:popUpTo="@id/clientStartFragment" />
+    </fragment>
     <fragment
-        android:id="@+id/notPackedFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.NotPackedFragment"
-        android:label="NotPackedFragment" />
+        android:id="@+id/errorMessageFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.ErrorMessageFragment"
+        android:label="ErrorMessageFragment" />
     <fragment
         android:id="@+id/notPickedUpFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.NotPickedUpFragment"

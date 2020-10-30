@@ -25,7 +25,7 @@ class ClientStartFragment : Fragment() {
             ViewModelProviders.of(this.requireActivity()).get(MainActivityViewModel::class.java)
         val foodBank = FoodBank()
         val today = foodBank.getCurrentDateWithoutTime()
-        viewModel.isOpen.value = foodBank.isOpenToday
+        viewModel.isOpen.value = foodBank.isOpen
         Log.d("TAG", "viewModel.isOpen.value ${viewModel.isOpen.value}")
 //         viewModel.sendCategoriesListToFireStore()
 
@@ -94,7 +94,8 @@ class ClientStartFragment : Fragment() {
 //                textViewOpenOrClosed.setTextColor(Color.GRAY)
 //            }
 //        }
-            viewModel.eligibilityStatus.observe(viewLifecycleOwner, eligibilityStatusObserver)
+//            viewModel.eligibilityStatus.observe(viewLifecycleOwner, eligibilityStatusObserver)
+
             val buttonShop = clientStartFragment.findViewById<Button>(R.id.buttonShop)
             textViewAccountID.text = viewModel.accountID
             textViewFamilySize.text = viewModel.familySize.toString()
@@ -106,7 +107,7 @@ class ClientStartFragment : Fragment() {
                 DateFormat.getDateInstance().format(viewModel.earliestOrderDate)
             textViewEarliestNextOrderDate.text = formattedEarliestDate
 
-            if (viewModel.canOrderNow) {
+            if (viewModel.mayOrderNow) {
                 textViewEarliestNextOrderDate.visibility = View.GONE
                 textViewEarliestNextOrderLabel.visibility = View.GONE
             } else {
@@ -155,7 +156,7 @@ class ClientStartFragment : Fragment() {
 
             val isOpenObserver = Observer<Boolean> {isOpen ->
                 if (isOpen) textViewIsOpen.text = "The food bank is currently open to pack and pick up online orders."
-                else textViewIsOpen.text = "The food bank is currently closed, but you can still shop."
+                else textViewIsOpen.text = "The food bank is currently closed, but you can work online with this app."
             }
             viewModel.isOpen.observe(viewLifecycleOwner, isOpenObserver)
 

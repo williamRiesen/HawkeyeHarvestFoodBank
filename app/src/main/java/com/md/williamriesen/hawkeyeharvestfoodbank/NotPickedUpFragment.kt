@@ -18,7 +18,7 @@ class NotPickedUpFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val fragment = inflater.inflate(R.layout.fragment_not_packed, container, false)
+        val fragment = inflater.inflate(R.layout.fragment_not_picked_up, container, false)
         val buttonExit = fragment.findViewById<Button>(R.id.button_exit)
         buttonExit.setOnClickListener {
             activity?.onBackPressed()
