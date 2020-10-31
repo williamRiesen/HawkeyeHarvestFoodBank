@@ -44,6 +44,7 @@ class MainActivityViewModel() : ViewModel() {
 
     val whenOrdered: String
         get() {
+            Log.d("TAG", "lastOrderDate: $lastOrderDate")
             val foodBank = FoodBank()
             val startOfToday: Date = foodBank.getCurrentDateWithoutTime()
             val calendar = Calendar.getInstance()
@@ -415,6 +416,55 @@ class MainActivityViewModel() : ViewModel() {
         }
     }
 
+    fun postSaveNavigation(view: View) {
+
+        if (mayOrderNow) {
+            Navigation.findNavController(view)
+                .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
+        } else {
+            Navigation.findNavController(view)
+                .navigate(R.id.action_checkoutFragment_to_orderSavedFragment)
+        }
+    }
+
+
+    fun saveOrderWithoutNavigating() {
+        val thisOrder = Order(accountID, Date(), itemList.value!!, "SAVED")
+        val filteredOrder = filterOutZeros(thisOrder)
+        val db = FirebaseFirestore.getInstance()
+        if (orderID != null) {
+            db.collection(("orders")).document(orderID!!).set(filteredOrder)
+//                .addOnSuccessListener {
+//                    Log.d("TAG", "mayOrderNow: $mayOrderNow")
+//                    if (mayOrderNow) {
+//                        Navigation.findNavController(view)
+//                            .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
+//                    } else {
+//                        Navigation.findNavController(view)
+//                            .navigate(R.id.action_checkoutFragment_to_orderSavedFragment)
+//                    }
+//                }
+//                .addOnFailureListener { exception ->
+//                    Log.d("TAG", "save order failed with exception: $exception")
+//                }
+        } else {
+            db.collection(("orders")).document().set(filteredOrder)
+//                .addOnSuccessListener {
+//                    Log.d("TAG", "mayOrderNow: $mayOrderNow")
+//                    if (mayOrderNow) {
+//                        Navigation.findNavController(view)
+//                            .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
+//                    } else {
+//                        Navigation.findNavController(view)
+//                            .navigate(R.id.action_checkoutFragment_to_orderSavedFragment)
+//                    }
+//                }
+//                .addOnFailureListener { exception ->
+//                    Log.d("TAG", "save order failed with exception: $exception")
+//                }
+        }
+    }
+
     fun submitOrder(view: View) {
         val thisOrder = Order(accountID, Date(), itemList.value!!, "SUBMITTED")
         val filteredOrder = filterOutZeros(thisOrder)
@@ -482,9 +532,9 @@ class MainActivityViewModel() : ViewModel() {
 
     val mayOrderNow: Boolean
         get() =
-        isOpen.value!! &&
-                !(orderState.value == "PACKED" && whenOrdered == "EARLIER_THIS_MONTH") &&
-                !(orderState.value == "NO SHOW" && whenOrdered == "EARLIER_THIS_MONTH")
+            isOpen.value!! &&
+                    !(orderState.value == "PACKED" && whenOrdered == "EARLIER_THIS_MONTH") &&
+                    !(orderState.value == "NO SHOW" && whenOrdered == "EARLIER_THIS_MONTH")
 
 
 //    val eligibilityStatus: MutableLiveData<String>
@@ -496,10 +546,15 @@ class MainActivityViewModel() : ViewModel() {
 
     val nextFragment: Int
         get() {
+            Log.d("TAG", "nextFragment getter called.")
+            Log.d("TAG", "isOpen.value: ${isOpen.value}")
+            Log.d("TAG", "orderState.value ${orderState.value}")
+            Log.d("TAG", "whenOrdered: $whenOrdered")
             return if (isOpen.value!!) {
                 when (orderState.value) {
                     "SAVED" -> R.id.action_clientStartFragment_to_shopVsCheckOutFragment
                     "SUBMITTED" -> {
+                        Log.d("TAG", "whenOrdered: $whenOrdered")
                         if (whenOrdered == "TODAY") {
                             R.id.action_clientStartFragment_to_orderBeingPackedFragment
                         } else {
@@ -510,18 +565,17 @@ class MainActivityViewModel() : ViewModel() {
                         when (whenOrdered) {
                             "TODAY" -> R.id.action_clientStartFragment_to_orderReadyFragment
                             "EARLIER_THIS_MONTH" -> R.id.action_clientStartFragment_to_shopForNextMonthFragment
-                            else -> R.id.action_clientStartFragment_to_selectionFragment
+                            else -> R.id.action_clientStartFragment_to_instructionsFragment
                         }
                     }
                     "NO SHOW" -> {
-                        Log.d("TAG", "whenOrdered: $whenOrdered")
                         if (whenOrdered == "PRIOR_TO_THIS_MONTH") {
-                            R.id.action_clientStartFragment_to_selectionFragment
+                            R.id.action_clientStartFragment_to_instructionsFragment
                         } else {
                             R.id.action_clientStartFragment_to_notPickedUpFragment
                         }
                     }
-                    else -> R.id.action_clientStartFragment_to_selectionFragment
+                    else -> R.id.action_clientStartFragment_to_instructionsFragment
                 }
             } else {
                 when (orderState.value) {
@@ -530,12 +584,12 @@ class MainActivityViewModel() : ViewModel() {
                     "PACKED" -> R.id.action_clientStartFragment_to_shopForNextMonthFragment
                     "NO SHOW" -> {
                         if (whenOrdered == "PRIOR_TO_THIS_MONTH") {
-                            R.id.action_clientStartFragment_to_selectionFragment
+                            R.id.action_clientStartFragment_to_instructionsFragment
                         } else {
                             R.id.action_clientStartFragment_to_notPickedUpFragment
                         }
                     }
-                    else -> R.id.action_clientStartFragment_to_selectionFragment
+                    else -> R.id.action_clientStartFragment_to_instructionsFragment
 
                 }
             }

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -17,6 +18,7 @@ class SelectionFragment : Fragment() {
 
     private lateinit var adapter: ItemListAdapter
     private lateinit var viewModel: MainActivityViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +33,6 @@ class SelectionFragment : Fragment() {
     }
 
     override fun onCreateView(
-
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
@@ -41,10 +42,19 @@ class SelectionFragment : Fragment() {
         return selectionView
     }
 
-    private fun setUpRecyclerView(itemList: MutableLiveData<MutableList<Item>>, recyclerView: RecyclerView ) {
+    private fun setUpRecyclerView(
+        itemList: MutableLiveData<MutableList<Item>>,
+        recyclerView: RecyclerView) {
         FirestoreRecyclerOptions.Builder<Item>()
         adapter = ItemListAdapter(itemList, viewModel)
         recyclerView.layoutManager = LinearLayoutManager(this.activity)
         recyclerView.adapter = adapter
     }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.saveOrderWithoutNavigating()
+        Log.d("TAG", "onStop called and order saved. ")
+    }
+
 }

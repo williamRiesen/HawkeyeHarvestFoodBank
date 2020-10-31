@@ -71,16 +71,17 @@ class FoodBank {
         }
 
     val isOpen: Boolean
-        get() {
-            val today = getCurrentDateWithoutTime()
-            val now = Date()
-            return (
-                    !isWeekend(today) &&
-                            !holidaysList.contains(today) &&
-                            now > openingTime &&
-                            now < closingTime
-                    )
-        }
+    get()=true //for debugging
+//        get() {
+//            val today = getCurrentDateWithoutTime()
+//            val now = Date()
+//            return (
+//                    !isWeekend(today) &&
+//                            !holidaysList.contains(today) &&
+//                            now > openingTime &&
+//                            now < closingTime
+//                    )
+//        }
 
     val openingTime = createTimePoint(getCurrentDateWithoutTime(), 13, 0)
     val closingTime = createTimePoint(getCurrentDateWithoutTime(), 15, 0)

@@ -116,7 +116,7 @@ class ClientStartFragment : Fragment() {
             buttonShop.setOnClickListener {
                 if (viewModel.outOfStockNameList.value!!.isEmpty()) {
                     Navigation.findNavController(requireView())
-                        .navigate(R.id.action_clientStartFragment_to_selectionFragment)
+                        .navigate(R.id.action_clientStartFragment_to_instructionsFragment)
                 } else {
                     Navigation.findNavController(requireView())
                         .navigate(R.id.action_clientStartFragment_to_outOfStockFragment)

@@ -23,7 +23,7 @@
         <action
             android:id="@+id/action_packOrderFragment_to_confirmPacked"
             app:destination="@id/confirmPacked"
-            app:popUpTo="@id/volunteerSignInFragment" />
+            app:popUpTo="@id/packOrderFragment" />
     </fragment>
     <fragment
         android:id="@+id/confirmPacked"

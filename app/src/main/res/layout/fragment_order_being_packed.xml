@@ -65,20 +65,20 @@
         android:id="@+id/imageViewCheckMark"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toStartOf="@+id/textViewReadyForPickUP"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tool_bar"
-        app:layout_constraintVertical_bias="0.13999999"
+        app:layout_constraintTop_toTopOf="@+id/textViewOrderBeingPacked"
         app:srcCompat="@drawable/ic_shopping_cart" />
 
     <TextView
         android:id="@+id/textViewOrderBeingPacked"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
         android:text="Your order is being packed."
         android:textColor="@android:color/background_dark"
         android:textSize="36sp"
@@ -86,7 +86,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/imageViewCheckMark"
-        app:layout_constraintTop_toTopOf="@+id/imageViewCheckMark" />
+        app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
 
     <Button
         android:id="@+id/buttonShowNumber"

@@ -42,10 +42,6 @@
         android:label="fragment_client_start"
         tools:layout="@layout/fragment_client_start" >
         <action
-            android:id="@+id/action_clientStartFragment_to_selectionFragment"
-            app:destination="@id/selectionFragment"
-            app:popUpTo="@id/clientStartFragment" />
-        <action
             android:id="@+id/action_clientStartFragment_to_outOfStockFragment"
             app:destination="@id/outOfStockFragment" />
         <action
@@ -86,6 +82,9 @@
             android:id="@+id/action_clientStartFragment_to_errorMessageFragment"
             app:destination="@id/errorMessageFragment"
             app:popUpTo="@id/clientStartFragment" />
+        <action
+            android:id="@+id/action_clientStartFragment_to_instructionsFragment"
+            app:destination="@id/instructionsFragment" />
     </fragment>
     <fragment
         android:id="@+id/orderSavedFragment"
@@ -113,7 +112,7 @@
         <action
             android:id="@+id/action_orderSubmittedFragment_to_displayNumberFragment"
             app:destination="@id/displayNumberFragment"
-            app:popUpTo="@id/clientStartFragment" />
+            app:popUpTo="@id/orderSubmittedFragment" />
     </fragment>
     <fragment
         android:id="@+id/outOfStockFragment"
@@ -185,4 +184,12 @@
         android:id="@+id/notPickedUpFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.NotPickedUpFragment"
         android:label="NotPickedUpFragment" />
+    <fragment
+        android:id="@+id/instructionsFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.InstructionsFragment"
+        android:label="InstructionsFragment" >
+        <action
+            android:id="@+id/action_instructionsFragment_to_selectionFragment"
+            app:destination="@id/selectionFragment" />
+    </fragment>
 </navigation>
