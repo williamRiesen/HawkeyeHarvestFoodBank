@@ -39,11 +39,13 @@ class OrderSavedFragment : Fragment() {
                 DateFormat.getDateInstance().format((viewModel.nextDayOpen))
             textViewEarliestNextOrderDate.text = formattedNextDayOpen
             orderReceivedMessage.text =
-                "Your order has been saved. You may activate this order for packing and pickup when the food bank opens at 12 noon on"
+                "Your order has been saved. Return to this app to activate your order when you are ready to pick it up. "
         } else {
             val formattedEarliestDate =
                 DateFormat.getDateInstance().format(viewModel.earliestOrderDate)
             textViewEarliestNextOrderDate.text = formattedEarliestDate
+            orderReceivedMessage.text =
+                "Your order has been saved. Return to this app to activate your order when the food bank is open and you are ready to pick it up. The food bank accepts orders weekdays from 1 PM to 3 PM. "
         }
         return orderSavedFragment
     }

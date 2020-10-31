@@ -80,7 +80,8 @@
         <action
             android:id="@+id/action_clientStartFragment_to_notPickedUpFragment"
             app:destination="@id/notPickedUpFragment"
-            app:popUpTo="@id/clientStartFragment" />
+            app:popUpTo="@id/clientStartFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_clientStartFragment_to_errorMessageFragment"
             app:destination="@id/errorMessageFragment"
@@ -161,7 +162,12 @@
     <fragment
         android:id="@+id/shopForNextMonthFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.ShopForNextMonthFragment"
-        android:label="ShopForNextMonthFragment" />
+        android:label="ShopForNextMonthFragment" >
+        <action
+            android:id="@+id/action_shopForNextMonthFragment_to_selectionFragment"
+            app:destination="@id/selectionFragment"
+            app:popUpTo="@id/clientStartFragment" />
+    </fragment>
     <fragment
         android:id="@+id/reviseSavedOrderOptionFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.ReviseSavedOrderOptionFragment"

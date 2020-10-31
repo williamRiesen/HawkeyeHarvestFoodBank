@@ -1,5 +1,6 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -26,7 +27,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         FirebaseMessaging.getInstance().unsubscribeFromTopic("volunteer")
 
-
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
 
         var accountID = intent.extras["ACCOUNT_ID"].toString()
@@ -35,34 +35,12 @@ class MainActivity : AppCompatActivity() {
         val lastOrderDate = Date(timeStamp.seconds * 1000)
         var orderState = intent.extras["ORDER_STATE"] as String
 
-
-
         viewModel.accountID = accountID
         viewModel.lastOrderDate = lastOrderDate
         viewModel.orderState.value = orderState
         viewModel.familySize = familySize as Int
+
         viewModel.retrieveObjectCatalogFromFireStore()
-
-
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            val myNotificationManager = MyNotificationManager(applicationContext)
-//            val mNotificationManager = myNotificationManager.getInstance(applicationContext)
-//            val mChannel = NotificationChannel(
-//                "myChannelId",
-//                "myChannelName",
-//                NotificationManager.IMPORTANCE_HIGH
-//            )
-//            mChannel.description = "myChannelDescription"
-//            mChannel.enableLights(true)
-//            mChannel.lightColor = Color.GREEN
-//            mChannel.enableVibration(true)
-//            val myVibrationPattern: LongArray =
-//                longArrayOf(100L, 200L, 300L, 400L, 500L, 400L, 300L, 200L, 400L)
-//            mChannel.vibrationPattern = myVibrationPattern
-//
-//        } else {
-//            Log.d("TAG", "Below Oreo branch used.")
-//        }
         }
 
 

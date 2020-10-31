@@ -27,7 +27,7 @@
         android:layout_height="35dp"
         android:src="@drawable/ic_hawkeye_harvest_food_bank_logo"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar3"
-        app:layout_constraintEnd_toStartOf="@+id/textViewAccountInformation"
+        app:layout_constraintEnd_toStartOf="@+id/textViewSignInSuccessful"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"

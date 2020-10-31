@@ -6,14 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 
 
 class ReviseSavedOrderOptionFragment : Fragment() {
 
+    lateinit var viewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel =
+            ViewModelProviders.of(this.requireActivity()).get(MainActivityViewModel::class.java)
     }
 
     override fun onCreateView(

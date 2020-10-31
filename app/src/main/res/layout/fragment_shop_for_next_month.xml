@@ -53,7 +53,7 @@
         android:layout_marginEnd="16dp"
         android:text="Our records show you have picked up this month's order already. You may shop for next month now, and then activate your order between 1 and 3 PM weekdays next month."
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
-        android:textSize="18sp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

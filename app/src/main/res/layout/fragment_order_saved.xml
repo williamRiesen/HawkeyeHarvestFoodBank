@@ -52,6 +52,7 @@
         android:text="Earliest Next Order Date"
         android:textColor="@color/common_google_signin_btn_text_dark_focused"
         android:textSize="24sp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewOrderSavedMessage" />

@@ -46,12 +46,8 @@ class ClientStartFragment : Fragment() {
                 clientStartFragment.findViewById<TextView>(R.id.textViewFamilySize)
             val textViewLastOrderDate =
                 clientStartFragment.findViewById<TextView>(R.id.textViewLastOrderDate)
-            val textViewEarliestNextOrderDate =
-                clientStartFragment.findViewById<TextView>(R.id.textViewEarliestNextOrderDate)
             val textViewSuggestedNextOrderDate =
                 clientStartFragment.findViewById<TextView>(R.id.textViewSuggestedNextOrderDate)
-            val textViewEarliestNextOrderLabel =
-                clientStartFragment.findViewById<TextView>(R.id.textViewEarliestNextOrderDateLabel)
             val textViewOpenOrClosed =
                 clientStartFragment.findViewById<TextView>(R.id.textViewOpenOrClosed)
 
@@ -77,8 +73,6 @@ class ClientStartFragment : Fragment() {
                             "You may shop now for next month using this app. Save your order when you are done. Our records show you have ordered already this month. Please sign back in on the first weekday of next month to place your saved order. "
                         textViewOpenOrClosed.setTextColor(Color.BLUE)
                         textViewNextDayOpen.visibility = View.INVISIBLE
-                        textViewEarliestNextOrderLabel.visibility = View.GONE
-                        textViewEarliestNextOrderDate.visibility = View.GONE
                     }
 
                 }
@@ -105,14 +99,14 @@ class ClientStartFragment : Fragment() {
 
             val formattedEarliestDate =
                 DateFormat.getDateInstance().format(viewModel.earliestOrderDate)
-            textViewEarliestNextOrderDate.text = formattedEarliestDate
+//            textViewEarliestNextOrderDate.text = formattedEarliestDate
 
             if (viewModel.mayOrderNow) {
-                textViewEarliestNextOrderDate.visibility = View.GONE
-                textViewEarliestNextOrderLabel.visibility = View.GONE
+//                textViewEarliestNextOrderDate.visibility = View.GONE
+//                textViewEarliestNextOrderLabel.visibility = View.GONE
             } else {
-                textViewEarliestNextOrderDate.visibility = View.VISIBLE
-                textViewEarliestNextOrderLabel.visibility = View.VISIBLE
+//                textViewEarliestNextOrderDate.visibility = View.VISIBLE
+//                textViewEarliestNextOrderLabel.visibility = View.VISIBLE
             }
 
             val formattedSuggestedDate =

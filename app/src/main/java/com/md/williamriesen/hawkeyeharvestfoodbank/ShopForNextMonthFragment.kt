@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.navigation.Navigation
 
 
 class ShopForNextMonthFragment : Fragment() {
@@ -24,6 +25,10 @@ class ShopForNextMonthFragment : Fragment() {
         val buttonExit = fragment.findViewById<Button>(R.id.button_exit)
         buttonExit.setOnClickListener {
             activity?.onBackPressed()
+        }
+        val buttonShop = fragment.findViewById<Button>(R.id.button_shop)
+        buttonShop.setOnClickListener {
+            Navigation.findNavController(it).navigate(R.id.action_shopForNextMonthFragment_to_selectionFragment)
         }
         return fragment
     }
