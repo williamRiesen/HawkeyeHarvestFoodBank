@@ -46,10 +46,6 @@
             android:id="@+id/action_clientStartFragment_to_outOfStockFragment"
             app:destination="@id/outOfStockFragment" />
         <action
-            android:id="@+id/action_clientStartFragment_to_displayNumberFragment"
-            app:destination="@id/displayNumberFragment"
-            app:popUpTo="@id/clientStartFragment" />
-        <action
             android:id="@+id/action_clientStartFragment_to_orderReadyFragment"
             app:destination="@id/orderReadyFragment"
             app:popUpTo="@id/clientStartFragment"

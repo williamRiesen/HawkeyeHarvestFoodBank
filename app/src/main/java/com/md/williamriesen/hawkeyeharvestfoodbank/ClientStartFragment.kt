@@ -123,11 +123,11 @@ class ClientStartFragment : Fragment() {
                 }
             }
 
-            val buttonTest = clientStartFragment.findViewById<Button>(R.id.buttonShowAccountID)
-            buttonTest.setOnClickListener {
-                Navigation.findNavController(it)
-                    .navigate(R.id.action_clientStartFragment_to_displayNumberFragment)
-            }
+//            val buttonTest = clientStartFragment.findViewById<Button>(R.id.buttonShowAccountID)
+//            buttonTest.setOnClickListener {
+//                Navigation.findNavController(it)
+//                    .navigate(R.id.action_clientStartFragment_to_displayNumberFragment)
+//            }
 
             val textViewNextDayOpen =
                 clientStartFragment.findViewById<TextView>(R.id.textViewNextDayOpen)
