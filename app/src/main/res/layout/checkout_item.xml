@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/background_light">
+    android:background="@color/fragmentBackground">
 
     <TextView
         android:id="@+id/textview_item_name"
@@ -12,31 +12,32 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
-        android:background="@android:color/white"
+        android:background="@color/fragmentBackground"
         android:gravity="right|left|center_vertical"
         android:text="@string/item_name"
-        android:textColor="@color/design_default_color_on_secondary"
+        android:textColor="@color/plainText"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/textView_count"
         app:layout_constraintHorizontal_bias="5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlHardcoded" />
 
     <TextView
         android:id="@+id/textView_count"
         android:layout_width="20dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="@color/design_default_color_background"
+        android:background="@color/fragmentBackground"
         android:gravity="center"
-        android:inputType="number"
         android:text="0"
-        android:textColor="@color/design_default_color_on_secondary"
+        android:textColor="@color/plainText"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textview_item_name"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

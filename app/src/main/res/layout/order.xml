@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
         android:layout_marginTop="12dp"
-        android:text="Order Number"
+        android:text="@string/order_number2"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -31,7 +31,7 @@
         android:id="@+id/textViewOrderID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="OrderID"
+        android:text="@string/orderid"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewOrderNumber" />

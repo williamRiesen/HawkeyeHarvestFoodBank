@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/background_light">
+    android:background="@color/fragmentBackground">
 
     <TextView
         android:id="@+id/textview_item_to_inventory_name"
@@ -13,10 +13,10 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@android:color/white"
+        android:background="@color/fragmentBackground"
         android:gravity="right|left|center_vertical"
         android:text="@string/item_name"
-        android:textColor="@color/design_default_color_on_secondary"
+        android:textColor="@color/plainText"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/checkBoxIsAvailable"
         app:layout_constraintStart_toStartOf="parent"

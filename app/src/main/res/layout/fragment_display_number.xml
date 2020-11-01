@@ -5,7 +5,7 @@
     android:id="@+id/display_number"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/design_default_color_on_secondary"
+    android:background="@color/largeNumbersBackground"
     tools:context=".MainActivity">
 
     <TextView
@@ -14,11 +14,12 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="0000"
-        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:textColor="@color/largeNumbersForeground"
         android:textSize="200sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

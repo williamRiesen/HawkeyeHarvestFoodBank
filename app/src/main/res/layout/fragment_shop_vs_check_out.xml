@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/design_default_color_background"
+    android:background="@color/fragmentBackground"
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -34,8 +34,8 @@
             android:background="@android:color/transparent"
             android:fontFamily="@font/goblin_one"
             android:gravity="center"
-            android:text="Hawkeye Harvest"
-            android:textColor="#CEDFBA"
+            android:text="@string/hawkeye_harvest"
+            android:textColor="@color/logoLimeGreen"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -51,8 +51,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:text="You have a saved order.  Are you ready to pick up your order now?"
-        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:text="@string/you_have_a_saved_order_are_you_ready_to_pick_up_your_order_now"
+        android:textColor="@color/plainText"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/button_yes"
         app:layout_constraintEnd_toEndOf="parent"
@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
-        android:text="No"
+        android:text="@string/no"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_yes" />
 
@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="Yes"
+        android:text="@string/yes"
         app:layout_constraintBottom_toTopOf="@+id/button_no"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewAreYouReadyMessage" />
@@ -87,7 +87,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
-        android:text="Exit"
+        android:text="@string/exit"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_shop" />
 
@@ -97,7 +97,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:text="Check out"
+        android:text="@string/check_out"
         android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/button_yes"
         app:layout_constraintTop_toTopOf="@+id/button_yes" />
@@ -108,7 +108,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:text="Shop some more"
+        android:text="@string/shop_some_more"
         android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/button_shop"
         app:layout_constraintTop_toTopOf="@+id/button_shop" />
@@ -119,7 +119,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:text="Come back later"
+        android:text="@string/come_back_later"
         android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/button_exit"
         app:layout_constraintTop_toTopOf="@+id/button_exit" />

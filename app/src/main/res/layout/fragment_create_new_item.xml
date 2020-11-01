@@ -10,7 +10,7 @@
         android:id="@+id/textViewNewItemInstructions"
         android:layout_width="263dp"
         android:layout_height="81dp"
-        android:text="Prior to creating a new item, please check inventory list:  your item may be there already. If so, just mark it as available."
+        android:text="@string/prior_to_creating_a_new_item_please_check_inventory_list_your_item_may_be_there_already_if_so_just_mark_it_as_available"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="136dp" />

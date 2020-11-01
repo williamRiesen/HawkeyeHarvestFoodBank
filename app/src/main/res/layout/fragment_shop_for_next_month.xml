@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/design_default_color_background"
+    android:background="@color/fragmentBackground"
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -34,8 +34,8 @@
             android:background="@android:color/transparent"
             android:fontFamily="@font/goblin_one"
             android:gravity="center"
-            android:text="Hawkeye Harvest"
-            android:textColor="#CEDFBA"
+            android:text="@string/hawkeye_harvest"
+            android:textColor="@color/logoLimeGreen"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -51,8 +51,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:text="Our records show you have picked up this month's order already. You may shop for next month now, and then activate your order between 1 and 3 PM weekdays next month."
-        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:text="@string/our_records_show_you_have_picked_up_this_month_s_order_already_you_may_shop_for_next_month_now_and_then_activate_your_order_between_1_and_3_pm_weekdays_next_month"
+        android:textColor="@color/plainText"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -65,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
-        android:text="Shop"
+        android:text="@string/shop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewAlreadyPickedUpMessage" />
 
@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
-        android:text="Exit"
+        android:text="@string/exit"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_shop" />
 
@@ -85,8 +85,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:text="Shop for next month"
-        android:textColor="@android:color/background_dark"
+        android:text="@string/shop_for_next_month"
+        android:textColor="@color/plainText"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/button_shop"
         app:layout_constraintTop_toTopOf="@+id/button_shop" />
@@ -97,8 +97,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:text="Come back later"
-        android:textColor="@color/common_google_signin_btn_text_light_pressed"
+        android:text="@string/come_back_later"
+        android:textColor="@color/plainText"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/button_exit"
         app:layout_constraintTop_toTopOf="@+id/button_exit" />

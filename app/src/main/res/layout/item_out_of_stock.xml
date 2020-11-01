@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/background_light">
+    android:background="@color/fragmentBackground">
 
     <TextView
         android:id="@+id/textview_item_out_of_stock_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="@android:color/white"
+        android:background="@color/fragmentBackground"
         android:gravity="right|left|center_vertical"
         android:text="@string/item_name"
-        android:textColor="@color/design_default_color_on_secondary"
+        android:textColor="@color/plainText"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
