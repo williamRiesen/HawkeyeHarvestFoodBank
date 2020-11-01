@@ -229,12 +229,15 @@ class MainActivityViewModel() : ViewModel() {
                 generateHeadings()
                 itemList.value?.sortWith(
                     compareBy<Item> { it.categoryId }.thenBy { it.itemID })
-                retrieveSavedOrder()
+                if (!needToStartNewOrder) retrieveSavedOrder()
             }
             .addOnFailureListener {
                 Log.d("TAG", "Retrieve categories from database failed.")
             }
     }
+
+    private val needToStartNewOrder: Boolean
+        get() = orderState.value == "PACKED" && (!isOpen.value!! || whenOrdered != "TODAY")
 
     fun retrieveObjectCatalogFromFireStore() {
         val db = FirebaseFirestore.getInstance()
@@ -253,6 +256,7 @@ class MainActivityViewModel() : ViewModel() {
             }
     }
 
+
     fun retrieveSavedOrder() {
         val db = FirebaseFirestore.getInstance()
         val ordersRef = db.collection("orders")
@@ -266,7 +270,7 @@ class MainActivityViewModel() : ViewModel() {
                     val savedOrder = querySnapshot.documents[0].toObject<Order>()
                     savedItemList = savedOrder?.itemList!!
                     orderID = querySnapshot.documents[0].id
-                    orderState.value = savedOrder.orderState!!
+//                    orderState.value = savedOrder.orderState!!
                     checkSavedOrderAgainstCurrentOfferings()
                 }
             }
@@ -433,35 +437,8 @@ class MainActivityViewModel() : ViewModel() {
         val filteredOrder = filterOutZeros(thisOrder)
         val db = FirebaseFirestore.getInstance()
         if (orderID != null) {
-            db.collection(("orders")).document(orderID!!).set(filteredOrder)
-//                .addOnSuccessListener {
-//                    Log.d("TAG", "mayOrderNow: $mayOrderNow")
-//                    if (mayOrderNow) {
-//                        Navigation.findNavController(view)
-//                            .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
-//                    } else {
-//                        Navigation.findNavController(view)
-//                            .navigate(R.id.action_checkoutFragment_to_orderSavedFragment)
-//                    }
-//                }
-//                .addOnFailureListener { exception ->
-//                    Log.d("TAG", "save order failed with exception: $exception")
-//                }
         } else {
             db.collection(("orders")).document().set(filteredOrder)
-//                .addOnSuccessListener {
-//                    Log.d("TAG", "mayOrderNow: $mayOrderNow")
-//                    if (mayOrderNow) {
-//                        Navigation.findNavController(view)
-//                            .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
-//                    } else {
-//                        Navigation.findNavController(view)
-//                            .navigate(R.id.action_checkoutFragment_to_orderSavedFragment)
-//                    }
-//                }
-//                .addOnFailureListener { exception ->
-//                    Log.d("TAG", "save order failed with exception: $exception")
-//                }
         }
     }
 

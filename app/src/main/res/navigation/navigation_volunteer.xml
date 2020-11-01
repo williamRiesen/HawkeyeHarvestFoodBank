@@ -13,8 +13,7 @@
             app:destination="@id/packOrderFragment" />
         <action
             android:id="@+id/action_volunteerSignInFragment_to_noShowFragment"
-            app:destination="@id/noShowFragment"
-            app:popUpTo="@id/volunteerSignInFragment" />
+            app:destination="@id/noShowFragment" />
     </fragment>
     <fragment
         android:id="@+id/packOrderFragment"
@@ -23,7 +22,7 @@
         <action
             android:id="@+id/action_packOrderFragment_to_confirmPacked"
             app:destination="@id/confirmPacked"
-            app:popUpTo="@id/packOrderFragment" />
+            app:popUpTo="@id/volunteerSignInFragment" />
     </fragment>
     <fragment
         android:id="@+id/confirmPacked"
