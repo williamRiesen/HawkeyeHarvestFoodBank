@@ -26,9 +26,6 @@ class VolunteerActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         viewModel = ViewModelProviders.of(this).get(VolunteerActivityViewModel::class.java)
         FirebaseMessaging.getInstance().subscribeToTopic("volunteer")
-            .addOnSuccessListener {
-                Log.d("TAG","Subscription successful")
-            }
     }
 
     fun onReadyButtonClicked(view: View) {

@@ -17,13 +17,4 @@ class ManagerActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         viewModel = ViewModelProviders.of(this).get(ManagerActivityViewModel::class.java)
     }
-
-
-
-//    fun onCheckBoxClicked(view: View){
-//        val itemName = findViewById<TextView>(R.id.textview_item_to_inventory_name).text.toString()
-//        viewModel.toggleIsAvailableStatus(itemName)
-//        view.recyclerviewInventoryForUpdate.adapter?.notifyDataSetChanged()
-//    }
-
 }

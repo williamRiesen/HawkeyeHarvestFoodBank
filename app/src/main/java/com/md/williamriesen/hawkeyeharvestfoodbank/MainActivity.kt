@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity() {
         var orderState = intent.extras["ORDER_STATE"] as String
 
         viewModel.accountID = accountID
-        Log.d("TAG", "MainActivity.lastOrderDate: $lastOrderDate")
         viewModel.lastOrderDate = lastOrderDate
         viewModel.orderState.value = orderState
         viewModel.familySize = familySize as Int
@@ -102,7 +101,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onSubmitButtonClick(view: View) {
-        Log.d("TAG", "onSubmitButtonClick called.")
         viewModel.postSaveNavigation(view)
     }
 

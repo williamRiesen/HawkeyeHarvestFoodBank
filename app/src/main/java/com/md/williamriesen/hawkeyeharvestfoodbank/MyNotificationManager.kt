@@ -14,7 +14,6 @@ class MyNotificationManager(context: Context) {
 
     companion object
 
-
     fun getInstance(context: Context): MyNotificationManager{
         if (mInstance == null) {
             mInstance = MyNotificationManager(context)

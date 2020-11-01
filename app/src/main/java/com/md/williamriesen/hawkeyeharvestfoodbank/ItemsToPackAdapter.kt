@@ -20,7 +20,6 @@ class ItemsToPackAdapter(
             view.findViewById(R.id.textView_item_to_pack_count)
         var checkBoxPacked: CheckBox = view.findViewById(R.id.checkBoxPacked)
 
-
         init {
             checkBoxPacked.setOnClickListener { view ->
                 val item = textViewItemToPackName.text

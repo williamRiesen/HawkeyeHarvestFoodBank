@@ -22,7 +22,7 @@ class SelectionFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.setTitle("Item Selection")
+        activity?.title = "Item Selection"
         activity?.actionBar?.setHomeButtonEnabled(true)
         activity?.actionBar?.setDisplayHomeAsUpEnabled(true)
         viewModel = ViewModelProviders.of(this.requireActivity()).get(MainActivityViewModel::class.java)
@@ -54,7 +54,6 @@ class SelectionFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         viewModel.saveOrderWithoutNavigating()
-        Log.d("TAG", "onStop called and order saved. ")
     }
 
 }

@@ -124,5 +124,4 @@
         app:layout_constraintStart_toEndOf="@+id/button_exit"
         app:layout_constraintTop_toTopOf="@+id/button_exit" />
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>

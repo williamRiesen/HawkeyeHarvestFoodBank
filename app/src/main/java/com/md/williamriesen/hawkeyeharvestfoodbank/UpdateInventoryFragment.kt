@@ -20,7 +20,6 @@ class UpdateInventoryFragment : Fragment() {
     private lateinit var adapter: ItemsToInventoryAdapter
     private lateinit var viewModel: ManagerActivityViewModel
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this.requireActivity())
@@ -28,7 +27,6 @@ class UpdateInventoryFragment : Fragment() {
         viewModel.getInventoryFromFirestore()
         viewModel.itemsToInventoryList.observe(this, Observer { adapter.notifyDataSetChanged() })
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,8 +48,4 @@ class UpdateInventoryFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(this.activity)
         recyclerView.adapter = adapter
     }
-
-
-
-
 }

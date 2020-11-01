@@ -22,8 +22,6 @@ class VolunteerSignInFragment : Fragment() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this.requireActivity())
             .get(VolunteerActivityViewModel::class.java)
-
-
     }
 
     override fun onCreateView(

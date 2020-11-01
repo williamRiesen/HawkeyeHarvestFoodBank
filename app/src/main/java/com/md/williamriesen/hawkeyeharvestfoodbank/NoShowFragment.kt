@@ -30,8 +30,6 @@ class NoShowFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        // Inflate the layout for this fragment
         val fragment =  inflater.inflate(R.layout.fragment_no_show, container, false)
         val recyclerView = fragment.findViewById<RecyclerView>(R.id.recyclerViewTodaysOrders)
         setUpRecyclerView(viewModel.todaysOrdersList, recyclerView)

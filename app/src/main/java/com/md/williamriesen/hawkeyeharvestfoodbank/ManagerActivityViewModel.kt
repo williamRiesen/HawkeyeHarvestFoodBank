@@ -24,13 +24,9 @@ class ManagerActivityViewModel : ViewModel() {
                 itemsToInventoryList.value = myObjectCatalog?.itemList as MutableList<Item>?
 //                retrieveCategoriesFromFireStore(view)
             }
-            .addOnFailureListener {
-                Log.d("TAG", "Retrieve objectCatalog from database failed.")
-            }
     }
 
     fun toggleIsAvailableStatus(itemName: String){
-
         val myList = itemsToInventoryList.value
         val thisItem = myList?.find { item ->
             item.name == itemName
@@ -41,7 +37,6 @@ class ManagerActivityViewModel : ViewModel() {
     }
 
     fun getInventoryFromFirestore() {
-
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection("catalogs").document("objectCatalog")
         docRef.get()
@@ -49,9 +44,6 @@ class ManagerActivityViewModel : ViewModel() {
                 val myObjectCatalog = documentSnapshot.toObject<ObjectCatalog>()
                 itemsToInventoryList.value = myObjectCatalog?.itemList as MutableList<Item>?
 //                retrieveCategoriesFromFireStore(view)
-            }
-            .addOnFailureListener {
-                Log.d("TAG", "Retrieve objectCatalog from database failed.")
             }
     }
 
@@ -63,10 +55,4 @@ class ManagerActivityViewModel : ViewModel() {
                 Toast.makeText(context,"Inventory Updated.", Toast.LENGTH_LONG).show()
             }
     }
-
-
-
-
-
-
 }

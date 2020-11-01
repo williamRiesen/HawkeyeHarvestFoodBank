@@ -40,8 +40,8 @@ class OutOfStockFragment : Fragment() {
         setUpRecyclerView(viewModel.outOfStockNameList,recyclerView)
         val buttonOK2 = outOfStockFragment.findViewById<Button>(R.id.buttonOK2)
         buttonOK2.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_outOfStockFragment_to_selectionFragment)
-//            activity?.onBackPressed()
+//            Navigation.findNavController(it).navigate(R.id.action_outOfStockFragment_to_selectionFragment)
+            activity?.onBackPressed()
         }
         return outOfStockFragment
     }

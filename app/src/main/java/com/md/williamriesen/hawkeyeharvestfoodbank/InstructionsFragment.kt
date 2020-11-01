@@ -12,17 +12,10 @@ import androidx.navigation.Navigation
 class InstructionsFragment : Fragment() {
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        }
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val fragment = inflater.inflate(R.layout.fragment_instructions, container, false)
         val buttonReady = fragment.findViewById<Button>(R.id.buttonReady)
         buttonReady.setOnClickListener {

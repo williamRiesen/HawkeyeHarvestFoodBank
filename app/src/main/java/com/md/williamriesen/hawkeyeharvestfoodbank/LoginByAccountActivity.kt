@@ -1,23 +1,16 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
-import android.content.Context
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.observe
-import androidx.recyclerview.widget.RecyclerView
 
 class LoginByAccountActivity : AppCompatActivity() {
 
@@ -27,13 +20,11 @@ class LoginByAccountActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_by_account)
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
-        Log.d("TAG", "isOpen before ${viewModel.isOpen.value}")
         viewModel.isOpen.value = true
-        Log.d("TAG", "isOpen after ${viewModel.isOpen.value}")
         val editTextAccountID = findViewById<EditText>(R.id.editTextAccountID)
         editTextAccountID.setOnEditorActionListener { _, actionId, _ ->
             if(actionId == EditorInfo.IME_ACTION_DONE){
-                onShopButtonClick(View(this))
+                onShopButtonClick()
             }
             false
         }
@@ -52,9 +43,11 @@ class LoginByAccountActivity : AppCompatActivity() {
             }
         }
         viewModel.pleaseWait.observe(this,pleaseWaitObserver)
+        val buttonNext = this.findViewById<Button>(R.id.buttonOK)
+        buttonNext.setOnClickListener {
+            onShopButtonClick()
+        }
     }
-
-
 
     override fun onResume() {
         super.onResume()
@@ -65,15 +58,10 @@ class LoginByAccountActivity : AppCompatActivity() {
         }
     }
 
-    fun onShopButtonClick(view: View) {
+    private fun onShopButtonClick() {
         val editTextAccountID = findViewById<EditText>(R.id.editTextAccountID)
         val accountID = editTextAccountID.text.toString()
         if (accountID != null && accountID != "") {
-//            val progressBar = findViewById<ProgressBar>(R.id.progressBar)
-//            val label = findViewById<TextView>(R.id.textViewAccountIDLabel)
-//            progressBar.visibility = View.VISIBLE
-//            label.visibility = View.INVISIBLE
-//            editTextAccountID.visibility = View.INVISIBLE
             viewModel.signIn(accountID, applicationContext)
         }
     }
