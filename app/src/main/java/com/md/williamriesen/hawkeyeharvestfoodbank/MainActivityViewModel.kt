@@ -65,6 +65,11 @@ class MainActivityViewModel() : ViewModel() {
                 val categoriesListing = documentSnapshot.toObject<CategoriesListing>()
                 categoriesList.value = categoriesListing?.categories as MutableList<Category>
                 generateHeadings()
+                val filteredList = itemList.value?.filter {
+                    canAfford(it)
+                } as MutableList
+
+                itemList.value = filteredList
                 itemList.value?.sortWith(
                     compareBy<Item> { it.categoryId }.thenBy { it.itemID })
                 if (!needToStartNewOrder) retrieveSavedOrder()
@@ -86,6 +91,21 @@ class MainActivityViewModel() : ViewModel() {
             .addOnFailureListener {
                 Log.d("TAG", "Retrieve objectCatalog from database failed.")
             }
+    }
+
+    fun canAfford(item: Item): Boolean {
+        Log.d("TAG", "item.name ${item.name}")
+        Log.d("TAG", "item.category ${item.category}")
+
+        val thisCategory = categoriesList.value?.find {
+            it.name == item.category
+        }
+        Log.d("TAG", "thisCategory.name ${thisCategory!!.name}")
+        val pointsAllocated = thisCategory.calculatePoints(familySize)
+        Log.d("TAG", "pointsAllocated $pointsAllocated")
+        Log.d("TAG", "pointValue: ${item.pointValue}")
+        Log.d("TAG", "return ${pointsAllocated >= item.pointValue!!}")
+        return pointsAllocated >= item.pointValue!!
     }
 
     private fun retrieveSavedOrder() {
