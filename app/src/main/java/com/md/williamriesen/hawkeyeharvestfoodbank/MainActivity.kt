@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.orderState.value = orderState
         viewModel.familySize = familySize as Int
 
+
         viewModel.retrieveObjectCatalogFromFireStore()
         }
 

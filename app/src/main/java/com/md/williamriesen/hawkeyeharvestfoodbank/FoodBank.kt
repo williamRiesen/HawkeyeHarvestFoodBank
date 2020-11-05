@@ -120,6 +120,7 @@ class FoodBank {
             Item(2, "Cooked Chicken Fajita 5lb (4pts)", "Meat", 4, 100, 100, false, 1),
             Item(1, "Cooked Chicken Fillets 5lb (4pts)", "Meat", 4, 100, 100, false, 1),
             Item(89, "Cooked Chicken Patties 5lb (4pts, Limit 1)", "Meat", 4, 1, 100, true, 1),
+            Item(105,"Canned Pork","Meat",1,100,100,true,1),
             Item(
                 90,
                 "Boneless Skinless Chicken Breasts (4pts, Limit 1)",
@@ -130,6 +131,9 @@ class FoodBank {
                 true,
                 1
             ),
+            Item(106,"Canned Beef","Meat",1,100,100,true,1),
+            Item(109, "Chicken Leg Quarters 10# (Limit 1","Meat",4,1,100,true,1),
+
             Item(91, "McDonald's Chicken Tenders 3lb (Limit 2)", "Meat", 1, 2, 100, true, 1),
             Item(93, "Small Ham 3lb (Limit 2)", "Meat", 1, 2, 100, true, 1),
             Item(94, "Bacon 1lb (Limit 2)", "Meat", 1, 2, 100, true, 1),
@@ -185,6 +189,7 @@ class FoodBank {
             Item(53, "Tomato Sauce", "Processed Tomato", 1, 100, 100, true, 7),
             Item(54, "Diced Tomatoes", "Processed Tomato", 1, 100, 100, true, 7),
             Item(55, "Pasta Sauce", "Processed Tomato", 1, 100, 100, true, 7),
+            Item(106,"Tomato Veg Juice 5 cans (Limit-2)","Processed Tomato",1,2,100,true,7),
 
             Item(56, "Oatmeal", "Cereals", 1, 100, 100, true, 8),
             Item(57, "Oatmeal Packets", "Cereals", 1, 100, 100, true, 8),
@@ -192,6 +197,7 @@ class FoodBank {
             Item(59, "Corn Flakes", "Cereals", 1, 100, 100, true, 8),
             Item(60, "Crisp Rice", "Cereals", 1, 100, 100, true, 8),
             Item(99, "Cheerios", "Cereals", 1, 100, 100, true, 8),
+            Item(107, "Corn Biscuits (CHex)", "Cereals",1,100,100,true,8),
 
             Item(61, "Stuffing", "Sides", 1, 100, 100, true, 9),
             Item(62, "Instant Potatoes", "Sides", 1, 100, 100, true, 9),
@@ -224,6 +230,7 @@ class FoodBank {
             Item(102, "Baking Mix (Limit 2)", "Extra", 1, 2, 100, true, 12),
             Item(103, "Dried Fruit & Nuts (Limit 2)", "Extra", 1, 2, 100, true, 12),
             Item(104, "Ranch Dressing (Limit 1)", "Extra", 1, 1, 100, true, 12),
+            Item(108,"White Flour (Limit 1)","Extra",1,1,100,true,12),
 
             Item(84, "Toothbrush", "Nonedibles", 1, 100, 100, true, 13),
             Item(85, "Toothpaste", "Nonedibles", 1, 100, 100, true, 13),

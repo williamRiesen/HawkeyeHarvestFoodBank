@@ -59,7 +59,7 @@
             android:id="@+id/action_clientStartFragment_to_shopVsCheckOutFragment"
             app:destination="@id/shopVsCheckOutFragment"
             app:popUpTo="@id/clientStartFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_clientStartFragment_to_shopForNextMonthFragment"
             app:destination="@id/shopForNextMonthFragment"
@@ -78,7 +78,8 @@
         <action
             android:id="@+id/action_clientStartFragment_to_errorMessageFragment"
             app:destination="@id/errorMessageFragment"
-            app:popUpTo="@id/clientStartFragment" />
+            app:popUpTo="@id/clientStartFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_clientStartFragment_to_instructionsFragment"
             app:destination="@id/instructionsFragment" />
@@ -92,13 +93,11 @@
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.AskWhetherToSubmitSavedOrderFragment"
         android:label="AskWhetherToSubmitSavedOrderFragment" >
         <action
+            android:id="@+id/action_askWhetherToSubmitSavedOrderFragment_to_orderSavedFragment"
+            app:destination="@id/orderSavedFragment"/>
+        <action
             android:id="@+id/action_askWhetherToSubmitSavedOrderFragment_to_orderSubmittedFragment"
             app:destination="@id/orderSubmittedFragment"
-            app:popUpTo="@id/clientStartFragment"
-            app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_askWhetherToSubmitSavedOrderFragment_to_orderSavedFragment"
-            app:destination="@id/orderSavedFragment"
             app:popUpTo="@id/clientStartFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -109,7 +108,7 @@
         <action
             android:id="@+id/action_orderSubmittedFragment_to_displayNumberFragment"
             app:destination="@id/displayNumberFragment"
-            app:popUpTo="@id/orderSubmittedFragment" />
+            app:popUpTo="@id/clientStartFragment" />
     </fragment>
     <fragment
         android:id="@+id/outOfStockFragment"

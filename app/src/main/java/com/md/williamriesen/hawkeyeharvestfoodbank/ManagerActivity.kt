@@ -16,5 +16,7 @@ class ManagerActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         viewModel = ViewModelProviders.of(this).get(ManagerActivityViewModel::class.java)
+        val foodBank = FoodBank()
+        foodBank.sendObjectCatalogToFireStore()
     }
 }

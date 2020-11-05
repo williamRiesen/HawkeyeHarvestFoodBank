@@ -10,7 +10,7 @@
     <string name="place_order_now_question_mark">Place order now?</string>
     <string name="your_order_has_been_saved_successfully">Your order has been saved successfully.</string>
     <string name="do_you_want_to_place_your_order_now">Do you want to place your order now?</string>
-    <string name="important_you_must_be_at_the_food_bank_to_pick_up_your_order_within_60_minutes_of_pressing_the_yes_button_please_be_sure_you_are_ready_with_transportation">IMPORTANT: you must be at the food bank to pick up your order within 60 minutes of pressing the Yesbutton. Please be sure you are ready with transportation.</string>
+    <string name="important_you_must_be_at_the_food_bank_to_pick_up_your_order_within_60_minutes_of_pressing_the_yes_button_please_be_sure_you_are_ready_with_transportation">IMPORTANT: You must be at the food bank to pick up your order within 60 minutes of pressing the Yes button. Please be sure you are ready with transportation.</string>
     <string name="pack_the_order_i_am_ready_to_pick_it_up_now">Pack the order. I am ready to pick it up NOW.</string>
     <string name="i_am_not_ready_save_the_order_but_do_not_pack_it_yet">I am not ready. Save the order but do not pack it yet.</string>
     <string name="yes">Yes</string>
