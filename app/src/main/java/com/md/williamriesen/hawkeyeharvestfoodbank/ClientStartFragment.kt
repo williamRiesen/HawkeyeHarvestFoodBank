@@ -74,8 +74,8 @@ class ClientStartFragment : Fragment() {
             }
             viewModel.isOpen.observe(viewLifecycleOwner, isOpenObserver)
 
-            val buttonOK = clientStartFragment.findViewById<Button>(R.id.buttonOK)
-            buttonOK.setOnClickListener {
+            val buttonNext = clientStartFragment.findViewById<Button>(R.id.buttonNext)
+            buttonNext.setOnClickListener {
                 Navigation.findNavController(requireView()).navigate(viewModel.nextFragment)
             }
             return clientStartFragment

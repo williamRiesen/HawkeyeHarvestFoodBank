@@ -6,7 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/design_default_color_background"
-    tools:context=".MainActivity">
+    tools:context=".NextDayOrderActivity">
+
+
+
+
+
+
+
+
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tool_bar"
@@ -14,8 +22,10 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread_inside">
 
 
         <ImageView
@@ -28,14 +38,14 @@
             tools:layout_editor_absoluteY="4dp" />
 
         <TextView
-            android:id="@+id/textViewOrderReadyTitle"
+            android:id="@+id/textViewSignInSuccessful"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:fontFamily="@font/goblin_one"
             android:gravity="center"
-            android:text="@string/hawkeye_harvest"
-            android:textColor="@color/logoLimeGreen"
+            android:text="@string/sign_in_successful"
+            android:textColor="#CEDFBA"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -44,30 +54,36 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+
     <TextView
-        android:id="@+id/textViewNotTakingNextDayOrders"
+        android:id="@+id/textViewWelcome"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="68dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/instructions_pick_your_food_from_the_list_use_the_plus_button_to_pick_the_food_use_the_minus_button_to_put_it_back_scroll_down_to_see_all_your_choices_when_you_are_done_shopping_push_the_shopping_cart_button_to_save"
-        android:textColor="@color/plainText"
-        android:textSize="24sp"
+        android:gravity="center"
+        android:text="@string/welcome_to_hawkeye_harvest_next_day_ordering"
+        android:textColor="@color/logoHunterGreen"
+        android:textSize="36sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
 
+
+
     <Button
-        android:id="@+id/buttonReady"
+        android:id="@+id/buttonNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/ready"
+        android:layout_marginBottom="32dp"
+        android:text="@string/next"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewInstructions" />
-
+        app:layout_constraintTop_toBottomOf="@+id/textViewWelcome" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

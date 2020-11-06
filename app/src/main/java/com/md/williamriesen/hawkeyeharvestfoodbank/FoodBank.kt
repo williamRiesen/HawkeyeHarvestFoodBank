@@ -74,8 +74,40 @@ class FoodBank {
 //                    )
 //        }
 
-    private val openingTime = createTimePoint(getCurrentDateWithoutTime(), 13, 0)
-    private val closingTime = createTimePoint(getCurrentDateWithoutTime(), 15, 0)
+    val isTakingNextDayOrders: Boolean
+    get() {
+        val today = getCurrentDateWithoutTime()
+        val calendar = Calendar.getInstance()
+        calendar.time = today
+        calendar.add(Calendar.DAY_OF_YEAR, +1)
+        val tomorrow = calendar.time as Date
+        return isOpenOn(tomorrow)
+    }
+
+    val nextDayOpen: Date
+    get() {
+        val today = getCurrentDateWithoutTime()
+        val calendar = Calendar.getInstance()
+        calendar.time = today
+        while (!isOpenOn(calendar.time)){
+            calendar.add(Calendar.DAY_OF_YEAR, 1)
+        }
+        return calendar.time
+    }
+
+    val nextDayTakingOrders: Date
+    get() {
+        val calendar = Calendar.getInstance()
+        calendar.time = nextDayOpen
+        calendar.add(Calendar.DAY_OF_YEAR, -1)
+        return calendar.time
+    }
+
+    private fun isOpenOn(date: Date) = !isWeekend(date) && !holidaysList.contains(date)
+
+
+    private val openingTime = createTimePoint(getCurrentDateWithoutTime(), openingHour24, openingMinute)
+    private val closingTime = createTimePoint(getCurrentDateWithoutTime(), closingHour24, closingMinute)
 
     fun sendCategoriesListToFireStore() {
         val categoriesListing = CategoriesListing()

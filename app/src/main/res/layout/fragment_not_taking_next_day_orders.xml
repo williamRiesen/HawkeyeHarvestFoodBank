@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/design_default_color_background"
-    tools:context=".MainActivity">
+    tools:context=".NextDayOrderActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tool_bar"
@@ -51,7 +51,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/instructions_pick_your_food_from_the_list_use_the_plus_button_to_pick_the_food_use_the_minus_button_to_put_it_back_scroll_down_to_see_all_your_choices_when_you_are_done_shopping_push_the_shopping_cart_button_to_save"
+        android:text="For now, orders by app need to be sent the day before being picked up. In the future we hope to offer same-day ordering.  The food bank is not open tomorrow. "
         android:textColor="@color/plainText"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,15 +59,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
 
-    <Button
-        android:id="@+id/buttonReady"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/textViewPleaseReturnOn"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/ready"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Please come back to this app on _ before 5 PM to place an order for _."
+        android:textColor="@color/plainText"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewInstructions" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewNotTakingNextDayOrders" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

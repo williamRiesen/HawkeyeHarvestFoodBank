@@ -10,33 +10,37 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
-        <activity android:name=".LoginByAccountActivity"
+        <activity android:name=".NextDayOrderActivity"></activity>
+        <activity
+            android:name=".LoginByAccountActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".DirectorActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DirectorActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ManagerActivity"
-            android:screenOrientation="portrait"
             android:label="Inventory Manager"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".VolunteerActivity"
-            android:screenOrientation="portrait"
             android:icon="@drawable/ic_hawkeye_harvest_food_bank_logo"
             android:label="Order Packing"
-            android:parentActivityName=".MainActivity" />
-
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".LoginByAccountActivity" >
+            android:parentActivityName=".LoginByAccountActivity"
+            android:screenOrientation="portrait">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data

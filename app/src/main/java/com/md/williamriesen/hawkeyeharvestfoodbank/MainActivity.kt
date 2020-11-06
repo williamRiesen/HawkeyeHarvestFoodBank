@@ -40,9 +40,16 @@ class MainActivity : AppCompatActivity() {
         viewModel.orderState.value = orderState
         viewModel.familySize = familySize as Int
 
+        if (acceptNextDayOrders) {
+            if (acceptSameDayOrders) {
+                TODO() // implement logic for when BOTH options are enabled.
+            } else viewModel.startNextDayOrdering(this)
+        } else startSameDayOrdering()
+    }
 
+    private fun startSameDayOrdering() {
         viewModel.retrieveObjectCatalogFromFireStore()
-        }
+    }
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

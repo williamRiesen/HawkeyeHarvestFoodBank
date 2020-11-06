@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_next_day_ordering"
+    app:startDestination="@id/nextDayOrderingStartFragment">
+
+    <fragment
+        android:id="@+id/nextDayOrderingStartFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.NextDayOrderingStartFragment"
+        android:label="NextDayOrderingStartFragment" >
+        <action
+            android:id="@+id/action_nextDayOrderingStartFragment_to_notTakingNextDayOrdersFragment"
+            app:destination="@id/notTakingNextDayOrdersFragment"
+            app:popUpTo="@id/nextDayOrderingStartFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/notTakingNextDayOrdersFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.NotTakingNextDayOrdersFragment"
+        android:label="NotTakingNextDayOrdersFragment" />
+</navigation>

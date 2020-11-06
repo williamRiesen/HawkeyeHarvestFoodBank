@@ -46,7 +46,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <TextView
-        android:id="@+id/textViewInstructions"
+        android:id="@+id/textViewNotTakingNextDayOrders"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

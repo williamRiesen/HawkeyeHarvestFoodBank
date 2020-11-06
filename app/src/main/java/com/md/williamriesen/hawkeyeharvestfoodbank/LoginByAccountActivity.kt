@@ -43,7 +43,7 @@ class LoginByAccountActivity : AppCompatActivity() {
             }
         }
         viewModel.pleaseWait.observe(this,pleaseWaitObserver)
-        val buttonNext = this.findViewById<Button>(R.id.buttonOK)
+        val buttonNext = this.findViewById<Button>(R.id.buttonNext)
         buttonNext.setOnClickListener {
             onShopButtonClick()
         }

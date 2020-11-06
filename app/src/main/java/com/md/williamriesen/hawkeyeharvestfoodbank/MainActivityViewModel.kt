@@ -204,14 +204,11 @@ class MainActivityViewModel() : ViewModel() {
                         } else {
                             "NOT STARTED YET"
                         }
-                        Log.d("TAG", "orderState: ${orderState.value}")
                         intent.putExtra("ORDER_STATE", orderState.value)
                         familySizeFromFireStore = documentSnapshot["familySize"] as Long
                         familySize = familySizeFromFireStore!!.toInt()
                         intent.putExtra("FAMILY_SIZE", familySize)
                         lastOrderTimestamp = documentSnapshot["lastOrderDate"] as Timestamp
-                        Log.d("TAG", "timestamp.seconds: ${lastOrderTimestamp!!.seconds}")
-                        Log.d("TAG", "lastOrderDate: ${lastOrderDate}")
                         intent.putExtra("LAST_ORDER_DATE_TIMESTAMP", lastOrderTimestamp)
                         pleaseWait.value = false
                         context.startActivity(intent)
@@ -401,4 +398,10 @@ class MainActivityViewModel() : ViewModel() {
                 }
             }
         }
+
+    fun startNextDayOrdering(context: Context) {
+        val intent = Intent(context, NextDayOrderActivity::class.java)
+        context.startActivity(intent)
+        }
+
 }
