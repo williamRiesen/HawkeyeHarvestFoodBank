@@ -14,11 +14,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.iid.FirebaseInstanceId
+import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivityViewModel() : ViewModel() {
 
-    var nextDayOpen: Date = Date()
     var accountID = "Turnip"
     var orderID: String? = null
     val itemList = MutableLiveData<MutableList<Item>>()
@@ -36,6 +36,7 @@ class MainActivityViewModel() : ViewModel() {
         MutableLiveData(mutableListOf())
     var pleaseWait = MutableLiveData<Boolean>()
     var isOpen = MutableLiveData<Boolean>(false)
+    var pickUpHour24 = 0
 
     val accountNumberForDisplay: String
         get() = accountID.takeLast(4)
@@ -248,8 +249,16 @@ class MainActivityViewModel() : ViewModel() {
                         Navigation.findNavController(view)
                             .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
                     } else {
-                        Navigation.findNavController(view)
-                            .navigate(R.id.action_checkoutFragment_to_orderSavedFragment)
+                        val action = if (acceptNextDayOrders){
+                            if (acceptSameDayOrders){
+                                TODO() // implement action if BOTH kinds of orders accepted.
+                            } else {
+                                R.id.action_checkoutFragment2_to_nextDayOrderConfirmedFragment
+                            }
+                        } else {
+                            R.id.action_checkoutFragment_to_orderSavedFragment
+                        }
+                        Navigation.findNavController(view).navigate(action)
                     }
                 }
                 .addOnFailureListener { exception ->
@@ -408,4 +417,29 @@ class MainActivityViewModel() : ViewModel() {
             }
         }
 
+    val foodBank = FoodBank()
+    val simpleDateFormat = SimpleDateFormat("E, MMM d")
+    val takingOrders : Boolean
+        get() = FoodBank().isTakingNextDayOrders
+    val nextPickUpDay: String
+        get() = simpleDateFormat.format(foodBank.nextDayOpen(afterTomorrow = true))
+
+    val nextPreOrderDay : String
+        get() = simpleDateFormat.format(foodBank.nextDayTakingOrders(afterToday = true))
+
+    val nextDayTakingOrders: String
+        get() = simpleDateFormat.format(foodBank.nextDayTakingOrders())
+
+    val nextDayOpen : String?
+        get() = simpleDateFormat.format(foodBank.nextDayOpen())
+
+    fun goToNextFragment(pickUpHour24Arg: Int, view: View){
+        pickUpHour24 = pickUpHour24Arg
+        if (pickUpHour24Arg == 0){
+            Navigation.findNavController(view).navigate(R.id.action_selectPickUpTimeFragment_to_returnAnotherDayFragment)
+
+        } else {
+            Navigation.findNavController(view).navigate(R.id.action_selectPickUpTimeFragment_to_selectionFragment2)
+        }
+    }
 }

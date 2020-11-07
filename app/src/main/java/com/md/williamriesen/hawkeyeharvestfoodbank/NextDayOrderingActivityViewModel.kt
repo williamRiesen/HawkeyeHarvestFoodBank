@@ -1,12 +1,25 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
+import android.util.Log
 import android.view.View
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
 import java.text.DateFormat
 import java.text.SimpleDateFormat
+import java.util.*
 
 class NextDayOrderingActivityViewModel : ViewModel() {
+
+    var accountID = ""
+    var lastOrderDate: Date? = null
+    var orderState = "NOT STARTED YET"
+    var familySize = 0
+    var points: Int? = null
+    val itemList = MutableLiveData<MutableList<Item>>()
+    val categoriesList = MutableLiveData<MutableList<Category>>()
 
     var pickUpHour24 = 0
     val foodBank = FoodBank()
@@ -30,6 +43,8 @@ class NextDayOrderingActivityViewModel : ViewModel() {
     val takingOrders : Boolean
     get() = FoodBank().isTakingNextDayOrders
 
+
+
     fun goToNextFragment(pickUpHour24Arg: Int, view: View){
         pickUpHour24 = pickUpHour24Arg
         if (pickUpHour24Arg == 0){
@@ -38,6 +53,71 @@ class NextDayOrderingActivityViewModel : ViewModel() {
         } else {
             Navigation.findNavController(view).navigate(R.id.action_selectPickUpTimeFragment_to_selectionFragment2)
         }
+    }
+
+    fun retrieveObjectCatalogFromFireStore() {
+        val db = FirebaseFirestore.getInstance()
+        val docRef = db.collection("catalogs").document("objectCatalog")
+        docRef.get()
+            .addOnSuccessListener { documentSnapshot ->
+                val myObjectCatalog = documentSnapshot.toObject<ObjectCatalog>()
+                val availableItemsList = myObjectCatalog?.itemList?.filter { item ->
+                    item.isAvailable as Boolean
+                }
+                itemList.value = availableItemsList as MutableList<Item>?
+                retrieveCategoriesFromFireStore()
+            }
+            .addOnFailureListener {
+                Log.d("TAG", "Retrieve objectCatalog from database failed.")
+            }
+    }
+
+    private fun retrieveCategoriesFromFireStore() {
+        val db = FirebaseFirestore.getInstance()
+        val docRef = db.collection("categories").document("categories")
+        docRef.get()
+            .addOnSuccessListener { documentSnapshot ->
+                val categoriesListing = documentSnapshot.toObject<CategoriesListing>()
+                categoriesList.value = categoriesListing?.categories as MutableList<Category>
+                generateHeadings()
+                val filteredList = itemList.value?.filter {
+                    canAfford(it)
+                } as MutableList
+
+                itemList.value = filteredList
+                itemList.value?.sortWith(
+                    compareBy<Item> { it.categoryId }.thenBy { it.itemID })
+                Log.d("TAG","Data retrieval done.")
+                itemList.value!!.forEach { item->
+                    Log.d("TAG", "${item.name}")
+                }
+
+//                if (!needToStartNewOrder) retrieveSavedOrder()
+            }
+    }
+
+    private fun generateHeadings() {
+        categoriesList.value?.forEach { category ->
+            val heading = Item(
+                0,
+                category.name,
+                category.name,
+                0,
+                0,
+                0,
+                true,
+                category.id,
+                category.calculatePoints(familySize)
+            )
+            itemList.value!!.add(heading)
+        }
+    }
+    fun canAfford(item: Item): Boolean {
+        val thisCategory = categoriesList.value?.find {
+            it.name == item.category
+        }
+        val pointsAllocated = thisCategory!!.calculatePoints(familySize)
+        return pointsAllocated >= item.pointValue!!
     }
 
 }

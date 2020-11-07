@@ -16,7 +16,6 @@ class CheckAndSubmitFragment : Fragment() {
 
     private lateinit var adapter: ItemListAdapter
     private lateinit var viewModel: MainActivityViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)

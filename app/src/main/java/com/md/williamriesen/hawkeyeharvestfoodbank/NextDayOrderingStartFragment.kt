@@ -11,11 +11,11 @@ import androidx.navigation.Navigation
 
 class NextDayOrderingStartFragment : Fragment() {
 
-    lateinit var viewModel: NextDayOrderingActivityViewModel
+    lateinit var viewModel: MainActivityViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this.requireActivity())
-            .get(NextDayOrderingActivityViewModel::class.java)
+            .get(MainActivityViewModel::class.java)
     }
 
     override fun onCreateView(

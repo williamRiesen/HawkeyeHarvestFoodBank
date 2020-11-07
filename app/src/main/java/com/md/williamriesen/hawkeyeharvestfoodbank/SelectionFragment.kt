@@ -27,7 +27,6 @@ class SelectionFragment : Fragment() {
         activity?.actionBar?.setDisplayHomeAsUpEnabled(true)
         viewModel = ViewModelProviders.of(this.requireActivity()).get(MainActivityViewModel::class.java)
 
-
         viewModel.itemList.observe(this, Observer { adapter.notifyDataSetChanged() })
 
     }
@@ -53,7 +52,7 @@ class SelectionFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        viewModel.saveOrderWithoutNavigating()
+//        viewModel.saveOrderWithoutNavigating()
     }
 
 }

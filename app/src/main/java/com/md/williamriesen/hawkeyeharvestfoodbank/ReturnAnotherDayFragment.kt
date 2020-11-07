@@ -9,10 +9,10 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
 
 class ReturnAnotherDayFragment : Fragment() {
-    lateinit var viewModel: NextDayOrderingActivityViewModel
+    lateinit var viewModel: MainActivityViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this.requireActivity()).get(NextDayOrderingActivityViewModel::class.java)
+        viewModel = ViewModelProviders.of(this.requireActivity()).get(MainActivityViewModel()::class.java)
     }
 
     override fun onCreateView(
