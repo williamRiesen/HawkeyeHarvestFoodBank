@@ -12,10 +12,34 @@
             android:id="@+id/action_nextDayOrderingStartFragment_to_notTakingNextDayOrdersFragment"
             app:destination="@id/notTakingNextDayOrdersFragment"
             app:popUpTo="@id/nextDayOrderingStartFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_nextDayOrderingStartFragment_to_selectPickUpTimeFragment"
+            app:destination="@id/selectPickUpTimeFragment"
+            app:popUpTo="@id/nextDayOrderingStartFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/notTakingNextDayOrdersFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.NotTakingNextDayOrdersFragment"
         android:label="NotTakingNextDayOrdersFragment" />
+    <fragment
+        android:id="@+id/selectPickUpTimeFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.SelectPickUpTimeFragment"
+        android:label="SelectPickUpTimeFragment" >
+        <action
+            android:id="@+id/action_selectPickUpTimeFragment_to_selectionFragment2"
+            app:destination="@id/selectionFragment2" />
+        <action
+            android:id="@+id/action_selectPickUpTimeFragment_to_returnAnotherDayFragment"
+            app:destination="@id/returnAnotherDayFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectionFragment2"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.SelectionFragment"
+        android:label="SelectionFragment" />
+    <fragment
+        android:id="@+id/returnAnotherDayFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.ReturnAnotherDayFragment"
+        android:label="ReturnAnotherDayFragment" />
 </navigation>

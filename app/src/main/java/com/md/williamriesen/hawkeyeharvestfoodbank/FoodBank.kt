@@ -82,23 +82,24 @@ class FoodBank {
         calendar.add(Calendar.DAY_OF_YEAR, +1)
         val tomorrow = calendar.time as Date
         return isOpenOn(tomorrow)
+//        return true
     }
 
-    val nextDayOpen: Date
-    get() {
+    fun nextDayOpen(afterTomorrow: Boolean = false): Date {
         val today = getCurrentDateWithoutTime()
         val calendar = Calendar.getInstance()
         calendar.time = today
+        calendar.add(Calendar.DAY_OF_YEAR, 1)
+        if (afterTomorrow) calendar.add(Calendar.DAY_OF_YEAR, 1)
         while (!isOpenOn(calendar.time)){
             calendar.add(Calendar.DAY_OF_YEAR, 1)
         }
         return calendar.time
     }
 
-    val nextDayTakingOrders: Date
-    get() {
+    fun  nextDayTakingOrders(afterToday: Boolean = false): Date {
         val calendar = Calendar.getInstance()
-        calendar.time = nextDayOpen
+        calendar.time = nextDayOpen(afterToday)
         calendar.add(Calendar.DAY_OF_YEAR, -1)
         return calendar.time
     }

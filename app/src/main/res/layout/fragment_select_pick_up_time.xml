@@ -45,33 +45,61 @@
     </androidx.appcompat.widget.Toolbar>
 
     <TextView
-        android:id="@+id/textViewNotTakingNextDayOrders"
+        android:id="@+id/textViewWhenToPickUpLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="For now, orders by app need to be sent by 5 PM on the day before pickup. In the future we hope to offer same-day ordering.  The food bank is not open tomorrow. "
-        android:textColor="@color/plainText"
-        android:textSize="18sp"
+        android:text="When can you pick up your food tomorrow?"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
 
-    <TextView
-        android:id="@+id/textViewPleaseReturnOn"
+    <RadioGroup
+        android:id="@+id/radioGroup"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:text="Please come back to this app on _ before 5 PM to place an order for _."
-        android:textColor="@color/plainText"
-        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNotTakingNextDayOrders" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewWhenToPickUpLabel"
+        app:layout_constraintVertical_bias="0.19999999">
+
+        <RadioButton
+            android:id="@+id/radioButton2to3PM"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Between 2 PM and 3 PM TOMORROW"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/radioButton3to4PM"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Between 3 PM and 4 PM TOMORROW"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/radioButtonNo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="I cannot come at these times TOMORROW."
+            android:textSize="18sp" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/buttonNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,6 +8,32 @@
     android:background="@color/design_default_color_background"
     tools:context=".NextDayOrderActivity">
 
+    <TextView
+        android:id="@+id/textViewNextPickUpDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="nextPickUpDay"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewIfYouWantToPickUpOn" />
+
+    <TextView
+        android:id="@+id/textViewReturnAnotherDay2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Please return to this App when you are ready. You can sign in before 5 PM on:"
+        android:textColor="@color/plainText"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewReturnAnotherDay" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tool_bar"
         android:layout_width="0dp"
@@ -45,33 +71,44 @@
     </androidx.appcompat.widget.Toolbar>
 
     <TextView
-        android:id="@+id/textViewNotTakingNextDayOrders"
+        android:id="@+id/textViewReturnAnotherDay"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="For now, orders by app need to be sent by 5 PM on the day before pickup. In the future we hope to offer same-day ordering.  The food bank is not open tomorrow. "
+        android:text="At this time we can only do App orders one day before pickup. We hope to have more flexibility in the future. "
         android:textColor="@color/plainText"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
 
     <TextView
-        android:id="@+id/textViewPleaseReturnOn"
+        android:id="@+id/textViewNextPreOrderDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="nextPreOrderDay"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewReturnAnotherDay2" />
+
+    <TextView
+        android:id="@+id/textViewIfYouWantToPickUpOn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:text="Please come back to this app on _ before 5 PM to place an order for _."
+        android:text="If you want to pick up on:"
         android:textColor="@color/plainText"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNotTakingNextDayOrders" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewNextPreOrderDay" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

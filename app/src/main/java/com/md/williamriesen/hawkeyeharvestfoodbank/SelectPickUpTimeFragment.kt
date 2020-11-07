@@ -1,16 +1,15 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.fragment.app.Fragment
+import android.widget.RadioGroup
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
 
-class NextDayOrderingStartFragment : Fragment() {
-
+class SelectPickUpTimeFragment : Fragment() {
     lateinit var viewModel: NextDayOrderingActivityViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,17 +21,22 @@ class NextDayOrderingStartFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val fragment = inflater.inflate(R.layout.fragment_next_day_ordering_start, container, false)
+        val fragment = inflater.inflate(R.layout.fragment_select_pick_up_time, container, false)
+        val radioGroup = fragment.findViewById<RadioGroup>(R.id.radioGroup)
         val buttonNext = fragment.findViewById<Button>(R.id.buttonNext)
         buttonNext.setOnClickListener {
-            if (viewModel.takingOrders) {
-                Navigation.findNavController(it)
-                    .navigate(R.id.action_nextDayOrderingStartFragment_to_selectPickUpTimeFragment)
-            } else {
-                Navigation.findNavController(it)
-                    .navigate(R.id.action_nextDayOrderingStartFragment_to_notTakingNextDayOrdersFragment)
+            val selection = radioGroup.checkedRadioButtonId
+            val pickUpHour24 = when (selection){
+                R.id.radioButton2to3PM ->  14
+                R.id.radioButton3to4PM ->  15
+                else ->  0
             }
+            viewModel.goToNextFragment(
+                pickUpHour24, requireView()
+            )
         }
+
         return fragment
     }
+
 }
