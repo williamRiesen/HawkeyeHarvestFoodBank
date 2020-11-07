@@ -39,15 +39,6 @@ class MainActivity : AppCompatActivity() {
         viewModel.lastOrderDate = lastOrderDate
         viewModel.orderState.value = orderState
         viewModel.familySize = familySize as Int
-
-        if (acceptNextDayOrders) {
-            if (acceptSameDayOrders) {
-                TODO() // implement logic for when BOTH options are enabled.
-            } else viewModel.startNextDayOrdering(this)
-        } else startSameDayOrdering()
-    }
-
-    private fun startSameDayOrdering() {
         viewModel.retrieveObjectCatalogFromFireStore()
     }
 

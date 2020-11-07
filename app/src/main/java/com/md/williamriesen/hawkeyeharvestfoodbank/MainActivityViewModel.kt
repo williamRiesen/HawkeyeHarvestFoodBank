@@ -5,6 +5,7 @@ import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
@@ -196,7 +197,15 @@ class MainActivityViewModel() : ViewModel() {
             docRef.get()
                 .addOnSuccessListener { documentSnapshot ->
                     if (documentSnapshot.exists()) {
-                        val intent = Intent(context, MainActivity::class.java)
+                        val intent = if (acceptNextDayOrders) {
+                            if (acceptSameDayOrders) {
+                                TODO() // Implement logic for when accepting BOTH next day and same day orders
+                            } else {
+                                Intent(context, NextDayOrderActivity::class.java)
+                            }
+                        } else {
+                            Intent(context, MainActivity::class.java)
+                        }
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                         intent.putExtra("ACCOUNT_ID", enteredAccountID)
                         orderState.value = if (documentSnapshot["orderState"] != null) {
@@ -397,11 +406,6 @@ class MainActivityViewModel() : ViewModel() {
 
                 }
             }
-        }
-
-    fun startNextDayOrdering(context: Context) {
-        val intent = Intent(context, NextDayOrderActivity::class.java)
-        context.startActivity(intent)
         }
 
 }

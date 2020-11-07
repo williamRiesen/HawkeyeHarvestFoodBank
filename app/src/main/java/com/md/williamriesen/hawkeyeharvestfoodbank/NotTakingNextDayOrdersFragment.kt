@@ -23,8 +23,10 @@ class NotTakingNextDayOrdersFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val fragment = inflater.inflate(R.layout.fragment_not_taking_next_day_orders, container, false)
-        val textViewPleaseReturnOn = fragment.findViewById<TextView>(R.id.textViewPleaseReturnOn)
-        textViewPleaseReturnOn.text = viewModel.returnOnMessage
+        val textViewNextDayOpen = fragment.findViewById<TextView>(R.id.textViewNextDayOpen)
+        textViewNextDayOpen.text = viewModel.nextDayOpen
+        val textViewNextDayTakingOrders = fragment.findViewById<TextView>(R.id.textViewNextDayTakingOrders)
+        textViewNextDayTakingOrders.text = viewModel.nextDayTakingOrders
         return fragment
     }
 }

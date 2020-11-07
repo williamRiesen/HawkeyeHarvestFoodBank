@@ -61,8 +61,6 @@ class LoginActivity : AppCompatActivity() {
                     if (token.claims.containsKey("volunteer")) {
                         isVolunteer = token.claims.getValue("volunteer") as Boolean
                     }
-                    Log.d("TAG", "isManager:  $isManager")
-                    Log.d("TAG", "isVolunteer:  $isVolunteer")
                     when {
                         (isManager) -> {
                             startActivity(Intent(this, ManagerActivity::class.java))
@@ -71,7 +69,8 @@ class LoginActivity : AppCompatActivity() {
                             startActivity(Intent(this, VolunteerActivity::class.java))
                         }
                         else -> {
-                            startActivity(Intent(this, MainActivity::class.java))
+
+                                startActivity(Intent(this, MainActivity::class.java))
                         }
                     }
                 }

@@ -8,6 +8,20 @@
     android:background="@color/design_default_color_background"
     tools:context=".NextDayOrderActivity">
 
+    <TextView
+        android:id="@+id/textViewNextDayOpen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Next Day Open"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewToPlaceOrderFor" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tool_bar"
         android:layout_width="0dp"
@@ -66,12 +80,40 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:text="Please come back to this app on _ before 5 PM to place an order for _."
+        android:text="Please return to this app one day before pickup. You can sign in before 5 PM on:"
         android:textColor="@color/plainText"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewNotTakingNextDayOrders" />
+
+    <TextView
+        android:id="@+id/textViewNextDayTakingOrders"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Next Day Taking Orders"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPleaseReturnOn" />
+
+    <TextView
+        android:id="@+id/textViewToPlaceOrderFor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="to place an order for:"
+        android:textColor="@color/plainText"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNextDayTakingOrders" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
