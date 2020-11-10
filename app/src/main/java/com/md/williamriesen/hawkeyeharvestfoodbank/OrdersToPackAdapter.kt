@@ -36,9 +36,12 @@ class OrdersToPackAdapter(
         holder.textViewAccountID.text = todaysSubmittedOrdersList.value!![position].accountID
         holder.textViewOrderSize.text =
             todaysSubmittedOrdersList.value!![position].itemList.size.toString()
-        val pickUpHour24: Int  = todaysSubmittedOrdersList.value!![position]?.pickUpHour24 ?: 0
-        val pickUpHour12 = if (pickUpHour24 > 12) pickUpHour24 - 12
-        else pickUpHour24
+        val pickUpHour24: Int = todaysSubmittedOrdersList.value!![position]?.pickUpHour24 ?: 0
+        val pickUpHour12 = when {
+            (pickUpHour24 > 12) -> (pickUpHour24 - 12).toString() + " PM"
+            (pickUpHour24 == 12) -> "12 Noon"
+            else -> "$pickUpHour24 AM"
+        }
         holder.textViewPickUpHour24.text = pickUpHour12.toString()
     }
 

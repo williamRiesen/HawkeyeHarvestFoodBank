@@ -85,6 +85,9 @@ class VolunteerActivityViewModel : ViewModel() {
                             queryDocumentSnapshot.id
                     }
                 }
+                todaysSubmittedOrdersList.value?.sortBy {
+                    it.pickUpHour24
+                }
             }
     }
 

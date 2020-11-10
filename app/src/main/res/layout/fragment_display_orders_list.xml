@@ -11,6 +11,31 @@
 
 
     <TextView
+        android:id="@+id/textViewOrderSizeTimeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Order Size"
+        android:textColor="@color/plainText"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textViewPickUpTimeLabel"
+        app:layout_constraintTop_toTopOf="@+id/textViewPickUpTimeLabel" />
+
+    <TextView
+        android:id="@+id/textViewAccoundID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="AccountID"
+        android:textColor="@color/plainText"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/textViewPickUpTimeLabel"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewLogoVolunteer" />
+
+    <TextView
         android:id="@+id/textViewVolunteerSection"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -52,9 +77,22 @@
         android:id="@+id/recyclerViewOrdersList"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewLogoVolunteer" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewAccoundID" />
+
+    <TextView
+        android:id="@+id/textViewPickUpTimeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pick Up Time"
+        android:textColor="@color/plainText"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/textViewOrderSizeTimeLabel"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textViewAccoundID"
+        app:layout_constraintTop_toTopOf="@+id/textViewAccoundID" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
