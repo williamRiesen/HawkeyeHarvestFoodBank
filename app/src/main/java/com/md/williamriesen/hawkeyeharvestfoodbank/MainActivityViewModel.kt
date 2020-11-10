@@ -37,6 +37,7 @@ class MainActivityViewModel() : ViewModel() {
     var pleaseWait = MutableLiveData<Boolean>()
     var isOpen = MutableLiveData<Boolean>(false)
     var pickUpHour24 = 0
+    var pickUpMonth = 0
 
     val accountNumberForDisplay: String
         get() = accountID.takeLast(4)
@@ -330,6 +331,37 @@ class MainActivityViewModel() : ViewModel() {
             }
     }
 
+    fun submitNextDayOrder(view: View) {
+        val thisOrder = Order(accountID, Date(), itemList.value!!, "SUBMITTED",pickUpHour24, foodBank.monthTomorrow)
+        val filteredOrder = filterOutZeros(thisOrder)
+
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener {
+                if (!it.isSuccessful) {
+                    Log.d("TAG", "getInstanceID failed ${it.exception}")
+                }
+
+                val token = it.result?.token
+                filteredOrder.deviceToken = token
+                Log.d("TAG", "token: $token")
+
+                val db = FirebaseFirestore.getInstance()
+                if (orderID != null) {
+                    db.collection(("orders")).document(orderID!!).set(filteredOrder)
+                        .addOnSuccessListener {
+                            Navigation.findNavController(view)
+                                .navigate(R.id.action_checkoutFragment2_to_nextDayOrderConfirmedFragment)
+                        }
+                } else {
+                    db.collection(("orders")).document().set(filteredOrder)
+                        .addOnSuccessListener {
+                            Navigation.findNavController(view)
+                                .navigate(R.id.action_checkoutFragment2_to_nextDayOrderConfirmedFragment)
+                        }
+                }
+            }
+    }
+
     private fun filterOutZeros(order: Order): Order {
         val itemList = order.itemList
         val filteredList = itemList.filter { item ->
@@ -340,6 +372,8 @@ class MainActivityViewModel() : ViewModel() {
         filteredOrder.accountID = order.accountID
         filteredOrder.date = order.date
         filteredOrder.orderState = order.orderState
+        filteredOrder.pickUpHour24 = order.pickUpHour24
+        filteredOrder.pickUpMonth = order.pickUpMonth
         return filteredOrder
     }
 

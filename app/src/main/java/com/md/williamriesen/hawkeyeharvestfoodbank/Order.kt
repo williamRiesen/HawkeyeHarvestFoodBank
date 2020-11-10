@@ -9,11 +9,15 @@ class Order() {
     var orderState: String?  = null
     var deviceToken: String? = null
     var orderID: String? = null
+    var pickUpHour24: Int? = null
+    var pickUpMonth: Int? = null
 
-    constructor(accountIDArg: String, dateArg: Date, itemListArg: MutableList<Item>, orderStateArg: String) : this() {
+    constructor(accountIDArg: String, dateArg: Date, itemListArg: MutableList<Item>, orderStateArg: String, pickUpHour24Arg: Int? = null, pickUpMonthArg: Int? = null) : this() {
         accountID = accountIDArg
         date = dateArg
         itemList = itemListArg
         orderState = orderStateArg
+        pickUpHour24 = pickUpHour24Arg
+        pickUpMonth = pickUpMonthArg
     }
 }

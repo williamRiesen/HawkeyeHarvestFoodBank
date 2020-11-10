@@ -12,7 +12,8 @@ import com.google.firebase.firestore.ktx.toObject
 class VolunteerActivityViewModel : ViewModel() {
 
     var itemsToPackList = MutableLiveData<MutableList<Item>>()
-    var todaysOrdersList = MutableLiveData<MutableList<Order>>()
+    var todaysSubmittedOrdersList = MutableLiveData<MutableList<Order>>()
+    var todaysPackedOrdersList = MutableLiveData<MutableList<Order>>()
     var nextOrder: Order? = null
     var orderID: String? = null
     var ordersToPackCount = MutableLiveData<Int>()
@@ -45,7 +46,7 @@ class VolunteerActivityViewModel : ViewModel() {
             }
     }
 
-    fun getTodaysOrdersList() {
+    fun getTodaysPackedOrdersList() {
         val foodBank = FoodBank()
         val today = foodBank.getCurrentDateWithoutTime()
         val startOfTodayTimestamp = Timestamp(today)
@@ -57,9 +58,30 @@ class VolunteerActivityViewModel : ViewModel() {
             .get()
             .addOnSuccessListener { querySnapshot ->
                 if (!querySnapshot.isEmpty) {
-                    todaysOrdersList.value = querySnapshot.toObjects<Order>(Order().javaClass)
+                    todaysPackedOrdersList.value = querySnapshot.toObjects<Order>(Order().javaClass)
                     querySnapshot.forEachIndexed { index, queryDocumentSnapshot ->
-                        (todaysOrdersList.value as MutableList<Order>)[index].orderID =
+                        (todaysPackedOrdersList.value as MutableList<Order>)[index].orderID =
+                            queryDocumentSnapshot.id
+                    }
+                }
+            }
+    }
+
+    fun getTodaysSubmittedOrdersList() {
+        val foodBank = FoodBank()
+        val today = foodBank.getCurrentDateWithoutTime()
+        val startOfTodayTimestamp = Timestamp(today)
+        val db = FirebaseFirestore.getInstance()
+        val ordersRef = db.collection("orders")
+        val query = ordersRef
+//            .whereGreaterThan("date", startOfTodayTimestamp)
+            .whereEqualTo("orderState", "SUBMITTED")
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                if (!querySnapshot.isEmpty) {
+                    todaysSubmittedOrdersList.value = querySnapshot.toObjects<Order>(Order().javaClass)
+                    querySnapshot.forEachIndexed { index, queryDocumentSnapshot ->
+                        (todaysSubmittedOrdersList.value as MutableList<Order>)[index].orderID =
                             queryDocumentSnapshot.id
                     }
                 }

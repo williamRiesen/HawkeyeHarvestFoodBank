@@ -1,6 +1,8 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,10 +24,14 @@ lateinit var viewModel: MainActivityViewModel
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        Log.d("TAG", "Orientation request called")
         val displayNumberFragment =
             inflater.inflate(R.layout.fragment_display_number, container, false)
         val textViewAccountID= displayNumberFragment.findViewById<TextView>(R.id.textViewAccountIdBig)
         textViewAccountID.text = viewModel.accountNumberForDisplay
         return displayNumberFragment
     }
+
+
 }

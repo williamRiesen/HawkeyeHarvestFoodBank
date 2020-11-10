@@ -53,7 +53,6 @@ tools:context=".VolunteerActivity">
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:gravity="bottom"
         android:text="@string/are_you_ready_to_pack_the_next_order"
@@ -62,21 +61,19 @@ tools:context=".VolunteerActivity">
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewOrderCount" />
+        tools:layout_editor_absoluteY="344dp" />
 
     <Button
         android:id="@+id/buttonConfirmPacked"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
         android:onClick="onReadyButtonClicked"
         android:text="@string/ok"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.851"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewconfirmPackedMessage"
-        app:layout_constraintVertical_bias="0.203" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewconfirmPackedMessage" />
 
     <TextView
         android:id="@+id/textViewOrderCountLabel"
@@ -125,4 +122,15 @@ tools:context=".VolunteerActivity">
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_no_show" />
+
+    <Button
+        android:id="@+id/buttonPreviewOrders"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Preview Orders"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOrderCount" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,7 @@ class NextDayOrderingStartFragment : Fragment() {
     ): View? {
         val fragment = inflater.inflate(R.layout.fragment_next_day_ordering_start, container, false)
         val buttonNext = fragment.findViewById<Button>(R.id.buttonNext)
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         buttonNext.setOnClickListener {
             if (viewModel.takingOrders) {
                 Navigation.findNavController(it)
@@ -35,4 +37,5 @@ class NextDayOrderingStartFragment : Fragment() {
         }
         return fragment
     }
+
 }

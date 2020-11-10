@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/textViewOrderReceivedMessage"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fragmentBackground"
+    tools:context=".VolunteerActivity">
+
+
+    <TextView
+        android:id="@+id/textViewVolunteerSection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/fragmentBackground"
+        android:fontFamily="@font/work_sans_medium"
+        android:gravity="center"
+        android:text="@string/volunteer_section"
+        android:textColor="@color/logoHunterGreen"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewLogoVolunteer"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHawkeyeHarvestVolunteer" />
+
+    <ImageView
+        android:id="@+id/imageViewLogoVolunteer"
+        android:layout_width="106dp"
+        android:layout_height="91dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_hawkeye_harvest_food_bank_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewHawkeyeHarvestVolunteer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/fragmentBackground"
+        android:fontFamily="@font/goblin_one"
+        android:gravity="center"
+        android:text="@string/hawkeye_harvest"
+        android:textColor="@color/logoHunterGreen"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewLogoVolunteer"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewOrdersList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewLogoVolunteer" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

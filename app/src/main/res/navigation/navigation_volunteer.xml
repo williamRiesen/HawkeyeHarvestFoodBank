@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_volunteerSignInFragment_to_noShowFragment"
             app:destination="@id/noShowFragment" />
+        <action
+            android:id="@+id/action_volunteerSignInFragment_to_displayOrdersListFragment"
+            app:destination="@id/displayOrdersListFragment" />
     </fragment>
     <fragment
         android:id="@+id/packOrderFragment"
@@ -33,4 +36,8 @@
         android:id="@+id/noShowFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.NoShowFragment"
         android:label="NoShowFragment" />
+    <fragment
+        android:id="@+id/displayOrdersListFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.DisplayOrdersListFragment"
+        android:label="DisplayOrdersListFragment" />
 </navigation>

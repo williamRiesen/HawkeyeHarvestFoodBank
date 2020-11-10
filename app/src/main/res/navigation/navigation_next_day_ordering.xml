@@ -52,7 +52,9 @@
         android:label="CheckoutFragment" >
         <action
             android:id="@+id/action_checkoutFragment2_to_nextDayOrderConfirmedFragment"
-            app:destination="@id/nextDayOrderConfirmedFragment" />
+            app:destination="@id/nextDayOrderConfirmedFragment"
+            app:popUpTo="@id/nextDayOrderingStartFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/nextDayOrderConfirmedFragment"

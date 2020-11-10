@@ -97,6 +97,13 @@ class FoodBank {
         return calendar.time
     }
 
+    val monthTomorrow: Int
+    get() {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_YEAR,1)
+        return calendar.get(Calendar.MONTH)
+    }
+
     fun  nextDayTakingOrders(afterToday: Boolean = false): Date {
         val calendar = Calendar.getInstance()
         calendar.time = nextDayOpen(afterToday)
