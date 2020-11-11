@@ -31,7 +31,6 @@ class NextDayOrderActivity : AppCompatActivity() {
         viewModel.lastOrderDate = lastOrderDate
         viewModel.orderState = MutableLiveData(orderState)
         viewModel.familySize = familySize as Int
-        Log.d("TAG", "Calling retrievObjectCatalogFromFirestore.")
         viewModel.retrieveObjectCatalogFromFireStore()
     }
 

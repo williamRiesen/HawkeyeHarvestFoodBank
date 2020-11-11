@@ -453,8 +453,10 @@ class MainActivityViewModel() : ViewModel() {
 
     val foodBank = FoodBank()
     val simpleDateFormat = SimpleDateFormat("E, MMM d")
+
     val takingOrders : Boolean
         get() = FoodBank().isTakingNextDayOrders
+
     val nextPickUpDay: String
         get() = simpleDateFormat.format(foodBank.nextDayOpen(afterTomorrow = true))
 

@@ -26,7 +26,9 @@ class VolunteerActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         viewModel = ViewModelProviders.of(this).get(VolunteerActivityViewModel::class.java)
         FirebaseMessaging.getInstance().subscribeToTopic("volunteer")
-
+        val foodBank = FoodBank()
+        foodBank.sendCategoriesListToFireStore()
+        foodBank.sendObjectCatalogToFireStore()
     }
 
     fun onReadyButtonClicked(view: View) {

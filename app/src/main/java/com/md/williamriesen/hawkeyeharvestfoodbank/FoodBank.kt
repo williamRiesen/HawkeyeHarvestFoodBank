@@ -3,6 +3,7 @@ package com.md.williamriesen.hawkeyeharvestfoodbank
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
+import kotlin.time.hours
 
 
 class FoodBank {
@@ -81,7 +82,14 @@ class FoodBank {
         calendar.time = today
         calendar.add(Calendar.DAY_OF_YEAR, +1)
         val tomorrow = calendar.time as Date
-//        return isOpenOn(tomorrow)
+        return isOpenOn(tomorrow) && isBeforeFivePM()
+//        return true
+    }
+
+    fun isBeforeFivePM(): Boolean{
+        val calendar = Calendar.getInstance()
+        val hour24 = calendar.get(Calendar.HOUR_OF_DAY)
+//        return hour24 < 17
         return true
     }
 
@@ -90,7 +98,7 @@ class FoodBank {
         val calendar = Calendar.getInstance()
         calendar.time = today
         calendar.add(Calendar.DAY_OF_YEAR, 1)
-        if (afterTomorrow) calendar.add(Calendar.DAY_OF_YEAR, 1)
+        if (!isBeforeFivePM() || (afterTomorrow)) calendar.add(Calendar.DAY_OF_YEAR, 1)
         while (!isOpenOn(calendar.time)){
             calendar.add(Calendar.DAY_OF_YEAR, 1)
         }
@@ -122,37 +130,44 @@ class FoodBank {
         categoriesListing.categoriesListingName = "myCategories"
         categoriesListing.categories = listOf(
             Category(1, "Meat", 2, 0),
-            Category(2, "Protein", 1, 2),
+            Category(2, "Protein", 2, 0),
             Category(3, "Vegetables", 2, 0),
             Category(4, "Fruits", 2, 0),
             Category(5, "Beans", 2, 0),
             Category(6, "Soups", 2, 0),
-            Category(7, "Processed Tomato", 2, 1),
+            Category(7, "Processed Tomato", 2, 0),
             Category(8, "Cereals", 1, 0),
             Category(9, "Sides", 1, 0),
-            Category(10, "Pasta", 1, 0),
-            Category(11, "Meal Helper", 1, 0),
-            Category(12, "Extra", 1, 0),
-            Category(13, "Nonedibles", 1, 2),
-            Category(14, "Bottom Bar", 0, 0)
+            Category(10, "Pasta", 2, 0),
+            Category(11, "Meal Helper", 2, 0),
+            Category(12, "Extra", 2, 0),
+            Category(13, "Nonedibles", 2, 0),
+            Category(14, "Milk", 1,0),
+            Category(15, "Eggs",0,12),
+            Category(16,"Pudding",0,3),
+            Category(17, "Dairy (except milk)",0,1),
+            Category(18, "Bottom Bar", 0, 0)
         )
         val db = FirebaseFirestore.getInstance()
 
         db.collection("categories").document("categories").set(categoriesListing)
+            .addOnSuccessListener {
+                Log.d("TAG", "Categories updated.")
+            }
     }
 
     fun sendObjectCatalogToFireStore() {
         val myObjectCatalog = ObjectCatalog()
         myObjectCatalog.catalogName = "myCatalog"
         myObjectCatalog.itemList = listOf(
-            Item(8, "Pork Chops 1lb (Limit 2)", "Meat", 1, 2, 100, true, 1),
+            Item(8, "Pork Chops 1lb (Limit 2)", "Meat", 1, 2, 100, false, 1),
             Item(9, "Pork & Bacon Sausage 1.5lb", "Meat", 1, 100, 100, false, 1),
             Item(10, "Ground Beef 1lb (Limit 2)", "Meat", 1, 2, 100, false, 1),
             Item(11, "Sliced Cooked Ham 2lb (Limit 1)", "Meat", 1, 1, 100, false, 1),
             Item(12, "Sliced Cotto Salami 2lb (Limit 1)", "Meat", 1, 1, 100, false, 1),
             Item(13, "Whole Chicken 3lb (Limit 2)", "Meat", 1, 2, 100, true, 1),
             Item(14, "Chicken Legs 5lb", "Meat", 1, 100, 100, false, 1),
-            Item(3, "Large Ham 10lb (3pts, Limit 1)", "Meat", 3, 1, 100, true, 1),
+            Item(3, "Large Whole Ham 10lb (3pts, Limit 1)", "Meat", 3, 1, 100, true, 1),
             Item(4, "Catfish Fillets 2lb (2pts, Limit 2)", "Meat", 2, 2, 100, true, 1),
             Item(5, "Pork Loin 4lb (2pts)", "Meat", 2, 100, 100, false, 1),
             Item(6, "Chicken Thighs 5lb (2pts, Limit 2)", "Meat", 2, 2, 100, false, 1),
@@ -160,8 +175,7 @@ class FoodBank {
             Item(2, "Cooked Chicken Fajita 5lb (4pts)", "Meat", 4, 100, 100, false, 1),
             Item(1, "Cooked Chicken Fillets 5lb (4pts)", "Meat", 4, 100, 100, false, 1),
             Item(89, "Cooked Chicken Patties 5lb (4pts, Limit 1)", "Meat", 4, 1, 100, true, 1),
-            Item(105,"Canned Pork","Meat",1,100,100,true,1),
-            Item(
+                Item(
                 90,
                 "Boneless Skinless Chicken Breasts (4pts, Limit 1)",
                 "Meat",
@@ -169,14 +183,15 @@ class FoodBank {
                 1,
                 100,
                 true,
-                1
-            ),
-            Item(106,"Canned Beef","Meat",1,100,100,true,1),
+                1),
             Item(109, "Chicken Leg Quarters 10# (Limit 1","Meat",4,1,100,true,1),
-
+            Item(110, "Sliced Turkey Bologna 2lb (Limit 2)","Meat",1,2,100,true,1),
+            Item(111, "Ground Pork 1lb (Limit 2)", "Meat", 1,2,100,true,1),
+            Item(112, "Italian Hot Ham 5lb (Limit 2)", "Meat",1,2,100,true,1),
+            Item(113,"Chicken Fajita (4 pts, limit 1)","Meat",4,1,100,true,1),
             Item(91, "McDonald's Chicken Tenders 3lb (Limit 2)", "Meat", 1, 2, 100, true, 1),
             Item(93, "Small Ham 3lb (Limit 2)", "Meat", 1, 2, 100, true, 1),
-            Item(94, "Bacon 1lb (Limit 2)", "Meat", 1, 2, 100, true, 1),
+            Item(94, "Bacon 1lb (Limit 2)", "Meat", 1, 2, 100, false, 1),
 
             Item(15, "Spaghetti / Meatballs", "Protein", 1, 100, 100, true, 2),
             Item(16, "Tuna", "Protein", 1, 100, 100, true, 2),
@@ -185,6 +200,8 @@ class FoodBank {
             Item(18, "Chicken", "Protein", 1, 100, 100, true, 2),
             Item(19, "Peanut Butter", "Protein", 1, 100, 100, true, 2),
             Item(20, "Beef Stew", "Protein", 1, 100, 100, true, 2),
+            Item(105,"Canned Pork","Protein",1,100,100,true,2),
+            Item(106,"Canned Beef","Protein",1,100,100,true,2),
 
             Item(21, "Carrots", "Vegetables", 1, 100, 100, true, 3),
             Item(22, "Potatoes", "Vegetables", 1, 100, 100, true, 3),
@@ -202,7 +219,7 @@ class FoodBank {
             Item(31, "Mandarin Oranges", "Fruits", 1, 100, 100, true, 4),
             Item(32, "Applesauce", "Fruits", 1, 100, 100, true, 4),
             Item(33, "Pineapple", "Fruits", 1, 100, 100, true, 4),
-            Item(34, "Grape Juice", "Fruits", 1, 100, 100, true, 4),
+            Item(34, "Grape Juice", "Fruits", 1, 100, 100, false, 4),
 
             Item(35, "Pinto", "Beans", 1, 100, 100, true, 5),
             Item(36, "Refried", "Beans", 1, 100, 100, true, 5),
@@ -229,13 +246,13 @@ class FoodBank {
             Item(53, "Tomato Sauce", "Processed Tomato", 1, 100, 100, true, 7),
             Item(54, "Diced Tomatoes", "Processed Tomato", 1, 100, 100, true, 7),
             Item(55, "Pasta Sauce", "Processed Tomato", 1, 100, 100, true, 7),
-            Item(106,"Tomato Veg Juice 5 cans (Limit-2)","Processed Tomato",1,2,100,true,7),
+            Item(106,"Tomato Veg Juice 5 cans (Limit 2)","Processed Tomato",1,2,100,true,7),
 
             Item(56, "Oatmeal", "Cereals", 1, 100, 100, true, 8),
             Item(57, "Oatmeal Packets", "Cereals", 1, 100, 100, true, 8),
             Item(58, "Toasted Oats", "Cereals", 1, 100, 100, false, 8),
             Item(59, "Corn Flakes", "Cereals", 1, 100, 100, true, 8),
-            Item(60, "Crisp Rice", "Cereals", 1, 100, 100, true, 8),
+            Item(60, "Crisp Rice", "Cereals", 1, 100, 100, false, 8),
             Item(99, "Cheerios", "Cereals", 1, 100, 100, true, 8),
             Item(107, "Corn Biscuits (CHex)", "Cereals",1,100,100,true,8),
 
@@ -264,23 +281,44 @@ class FoodBank {
             Item(78, "Whole Wheat Flour", "Extra", 1, 100, 100, true, 12),
             Item(79, "Dry Milk", "Extra", 1, 100, 100, true, 12),
             Item(80, "Boxed Milk", "Extra", 1, 100, 100, true, 12),
-            Item(81, "Vegetable Oil (Limit 2)", "Extra", 1, 2, 100, true, 12),
+            Item(81, "Vegetable Oil (Limit 1)", "Extra", 1, 1, 100, true, 12),
             Item(82, "Mini Pies (Cherry/Apple)", "Extra", 1, 100, 100, false, 12),
             Item(83, "Cheese Balls", "Extra", 1, 100, 100, false, 12),
             Item(102, "Baking Mix (Limit 2)", "Extra", 1, 2, 100, true, 12),
             Item(103, "Dried Fruit & Nuts (Limit 2)", "Extra", 1, 2, 100, true, 12),
             Item(104, "Ranch Dressing (Limit 1)", "Extra", 1, 1, 100, true, 12),
             Item(108,"White Flour (Limit 1)","Extra",1,1,100,true,12),
+            Item(114, "Fruit by the Foot (Limit 1)", "Extra",1,1,100,true,12),
+            Item(115, "Fruit Snacks (Limit 1)", "Extra",1,1,100,true,12),
+            Item(115, "Sugar Cookie Decorating Kit", "Extra",1,100,100,true,12 ),
+            Item(116,"Selzer Water (6 pack)","Extra",1,100,100,true,12),
+
+            Item(117,"Little Bites","Extra",1,100,100,true,12),
+            Item(118,"Donuts","Extra",1,100,100,true,12),
+            Item(119,"Pound Cakes","Extra",1,100,100,true,12),
+            Item(120,"Pick Me Up","Extra",1,100,100,true,12),
+            Item(121,"Marshmallow Cookies","Extra",1,100,100,true,12),
+            Item(122,"Chocolate Cupcakes","Extra",1,100,100,true,12),
 
             Item(84, "Toothbrush", "Nonedibles", 1, 100, 100, true, 13),
             Item(85, "Toothpaste", "Nonedibles", 1, 100, 100, true, 13),
             Item(86, "Bar of Soap", "Nonedibles", 1, 100, 100, true, 13),
             Item(87, "Toilet Paper", "Nonedibles", 1, 100, 100, true, 13),
-            Item(88, "Laundry Soap (Homemade- Limit 1)", "Nonedibles", 1, 1, 100, true, 13)
+            Item(88, "Laundry Soap (Homemade- Limit 1)", "Nonedibles", 1, 1, 100, false, 13),
+
+            Item(123,"Half Gallon Milk 1%","Milk",1,100,100,true,14),
+            Item(124, "Dozen Eggs","Eggs",1,12,100,true,15),
+            Item(125,"Sugar Free Chocolate Swirl Pudding","Pudding",1,3,100,true,16),
+            Item(126,"Yogurt (9-5oz cups)","Dairy (except milk)",1,100,100,true,17),
+            Item(127, "American Cheese (32 oz)","Dairy (except milk)",1,100,100,true,17),
+            Item(128,"Cream Cheese (8 oz)","Dairy (except milk)",1,100,100,true,17)
         )
 
         val db = FirebaseFirestore.getInstance()
         db.collection("catalogs").document("objectCatalog").set(myObjectCatalog)
+            .addOnSuccessListener {
+                Log.d("TAG", "Catalog updated.")
+            }
     }
 
 

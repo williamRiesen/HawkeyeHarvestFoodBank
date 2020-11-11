@@ -52,6 +52,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="When can you pick up your food tomorrow?"
+        android:textColor="@color/logoHunterGreen"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,21 +75,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Between 2 PM and 3 PM TOMORROW"
-            android:textSize="18sp" />
+            android:textSize="24sp" />
 
         <RadioButton
             android:id="@+id/radioButton3to4PM"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Between 3 PM and 4 PM TOMORROW"
-            android:textSize="18sp" />
+            android:textSize="24sp" />
 
         <RadioButton
             android:id="@+id/radioButtonNo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="I cannot come at these times TOMORROW."
-            android:textSize="18sp" />
+            android:textSize="24sp" />
     </RadioGroup>
 
     <Button

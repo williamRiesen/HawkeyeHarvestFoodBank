@@ -5,15 +5,19 @@ If you are using a library that supports the FIRESTORE_EMULATOR_HOST environment
 
 Dev App Server is now running.
 
-Oct 20, 2020 7:43:32 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Nov 11, 2020 6:00:34 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Oct 20, 2020 7:43:33 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Nov 11, 2020 6:00:34 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected HTTP/2 connection.
-Oct 20, 2020 7:43:33 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Nov 11, 2020 6:00:35 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Oct 20, 2020 7:43:33 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+Nov 11, 2020 6:00:35 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
 INFO: Detected non-HTTP/2 connection.
-Oct 20, 2020 7:49:50 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
-INFO: Detected HTTP/2 connection.
-*** shutting down gRPC server since JVM is shutting down
-*** server shut down
+Nov 11, 2020 6:06:50 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Nov 11, 2020 6:06:50 AM io.gapi.emulators.netty.NotFoundHandler handleRequest
+INFO: Unknown request URI: /hawkeye_harvest_food_bank/us-central1/appointAsVolunteer?text=hhfb50401@gmail.com
+Nov 11, 2020 6:06:50 AM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+Nov 11, 2020 6:06:51 AM io.gapi.emulators.netty.NotFoundHandler handleRequest
+INFO: Unknown request URI: /favicon.ico
