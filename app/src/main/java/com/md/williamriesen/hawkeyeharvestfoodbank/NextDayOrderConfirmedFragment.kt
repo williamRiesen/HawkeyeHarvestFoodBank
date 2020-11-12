@@ -1,5 +1,6 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.app.ShareCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 
@@ -32,8 +34,10 @@ class NextDayOrderConfirmedFragment : Fragment() {
         textViewPickUpInstructions.text = "Please go to the food bank between $startOfWindow PM and $endOfWindow PM to pick up your order."
         val buttonShowNumber = fragment.findViewById<Button>(R.id.buttonShowNumber)
         buttonShowNumber.setOnClickListener {
-            Navigation.findNavController(it)
-                .navigate(R.id.action_nextDayOrderConfirmedFragment_to_displayNumberFragment2)
+//            Navigation.findNavController(it)
+//                .navigate(R.id.action_nextDayOrderConfirmedFragment_to_displayNumberFragment2)
+            val intent = Intent(context, DisplayNumberActivity::class.java)
+            startActivity(intent)
         }
         return fragment
     }

@@ -10,7 +10,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
-        <activity android:name=".NextDayOrderActivity"></activity>
+        <activity android:name=".DisplayNumberActivity"
+            android:screenOrientation="landscape">
+        </activity>
+        <activity android:name=".NextDayOrderActivity" />
         <activity
             android:name=".LoginByAccountActivity"
             android:screenOrientation="portrait">
