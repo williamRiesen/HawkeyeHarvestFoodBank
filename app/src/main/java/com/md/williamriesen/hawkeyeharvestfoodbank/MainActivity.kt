@@ -96,7 +96,8 @@ class MainActivity : AppCompatActivity() {
 
         val editTextAccountID = findViewById<EditText>(R.id.editTextAccountID)
         val accountID = editTextAccountID.text.toString()
-        viewModel.signIn(accountID, applicationContext)
+        viewModel.accountID = accountID
+        viewModel.signIn(accountID, viewModel.clientIsOnSite,applicationContext)
     }
 
     fun onSubmitButtonClick(view: View) {

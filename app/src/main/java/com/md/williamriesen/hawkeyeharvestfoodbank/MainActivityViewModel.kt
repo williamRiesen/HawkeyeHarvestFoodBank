@@ -38,6 +38,7 @@ class MainActivityViewModel() : ViewModel() {
     var isOpen = MutableLiveData<Boolean>(false)
     var pickUpHour24 = 0
     var pickUpMonth = 0
+    var clientIsOnSite = false
 
     val accountNumberForDisplay: String
         get() = accountID.takeLast(4)
@@ -182,10 +183,28 @@ class MainActivityViewModel() : ViewModel() {
     fun removeItem() {
     }
 
-    fun signIn(enteredAccountID: String, context: Context) {
+    fun determineClientLocation(accountIdArg: String, view: View,context: Context) {
+        accountID = accountIdArg
+        Log.d("TAG","determineClientLocation Called; accountID = $accountID")
+        Log.d("TAG","context: $context")
+
+        val foodBank = FoodBank()
+        if (foodBank.isOpen) {
+            Navigation.findNavController(view)
+                .navigate(R.id.action_loginByAccountIdFragment_to_askIfOnSiteFragment)
+        } else {
+            signIn(accountID, clientIsOnSite, context)
+        }
+    }
+
+
+    fun signIn(accountIdArg: String, clientIsOnSiteArg: Boolean,context: Context) {
+        accountID = accountIdArg
+        Log.d("TAG","signIn Called; accountID = $accountID")
+        Log.d("TAG","context: $context")
         isOpen.value = false
         pleaseWait.value = true
-        if (enteredAccountID == "STAFF") {
+        if (accountID == "STAFF") {
             val intent = Intent(context, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             pleaseWait.value = false
@@ -195,13 +214,17 @@ class MainActivityViewModel() : ViewModel() {
             val token = myFirebaseMessagingService
             familySizeFromFireStore = null
             val db = FirebaseFirestore.getInstance()
-            val docRef = db.collection("accounts").document(enteredAccountID)
+            val docRef = db.collection("accounts").document(accountID)
             docRef.get()
                 .addOnSuccessListener { documentSnapshot ->
                     if (documentSnapshot.exists()) {
                         val intent = if (acceptNextDayOrders) {
                             if (acceptSameDayOrders) {
-                                TODO() // Implement logic for when accepting BOTH next day and same day orders
+                                if (clientIsOnSiteArg) {
+                                    Intent(context, MainActivity::class.java)
+                                }else{
+                                    Intent(context,NextDayOrderActivity::class.java)
+                                }
                             } else {
                                 Intent(context, NextDayOrderActivity::class.java)
                             }
@@ -209,7 +232,7 @@ class MainActivityViewModel() : ViewModel() {
                             Intent(context, MainActivity::class.java)
                         }
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                        intent.putExtra("ACCOUNT_ID", enteredAccountID)
+                        intent.putExtra("ACCOUNT_ID", accountID)
                         orderState.value = if (documentSnapshot["orderState"] != null) {
                             documentSnapshot["orderState"] as String
                         } else {
@@ -250,8 +273,8 @@ class MainActivityViewModel() : ViewModel() {
                         Navigation.findNavController(view)
                             .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
                     } else {
-                        val action = if (acceptNextDayOrders){
-                            if (acceptSameDayOrders){
+                        val action = if (acceptNextDayOrders) {
+                            if (acceptSameDayOrders) {
                                 TODO() // implement action if BOTH kinds of orders accepted.
                             } else {
                                 R.id.action_checkoutFragment2_to_nextDayOrderConfirmedFragment
@@ -332,7 +355,14 @@ class MainActivityViewModel() : ViewModel() {
     }
 
     fun submitNextDayOrder(view: View) {
-        val thisOrder = Order(accountID, Date(), itemList.value!!, "SUBMITTED",pickUpHour24, foodBank.monthTomorrow)
+        val thisOrder = Order(
+            accountID,
+            Date(),
+            itemList.value!!,
+            "SUBMITTED",
+            pickUpHour24,
+            foodBank.monthTomorrow
+        )
         val filteredOrder = filterOutZeros(thisOrder)
 
         FirebaseInstanceId.getInstance().instanceId
@@ -454,28 +484,30 @@ class MainActivityViewModel() : ViewModel() {
     val foodBank = FoodBank()
     val simpleDateFormat = SimpleDateFormat("E, MMM d")
 
-    val takingOrders : Boolean
+    val takingOrders: Boolean
         get() = FoodBank().isTakingNextDayOrders
 
     val nextPickUpDay: String
         get() = simpleDateFormat.format(foodBank.nextDayOpen(afterTomorrow = true))
 
-    val nextPreOrderDay : String
+    val nextPreOrderDay: String
         get() = simpleDateFormat.format(foodBank.nextDayTakingOrders(afterToday = true))
 
     val nextDayTakingOrders: String
         get() = simpleDateFormat.format(foodBank.nextDayTakingOrders())
 
-    val nextDayOpen : String?
+    val nextDayOpen: String?
         get() = simpleDateFormat.format(foodBank.nextDayOpen())
 
-    fun goToNextFragment(pickUpHour24Arg: Int, view: View){
+    fun goToNextFragment(pickUpHour24Arg: Int, view: View) {
         pickUpHour24 = pickUpHour24Arg
-        if (pickUpHour24Arg == 0){
-            Navigation.findNavController(view).navigate(R.id.action_selectPickUpTimeFragment_to_returnAnotherDayFragment)
+        if (pickUpHour24Arg == 0) {
+            Navigation.findNavController(view)
+                .navigate(R.id.action_selectPickUpTimeFragment_to_returnAnotherDayFragment)
 
         } else {
-            Navigation.findNavController(view).navigate(R.id.action_selectPickUpTimeFragment_to_selectionFragment2)
+            Navigation.findNavController(view)
+                .navigate(R.id.action_selectPickUpTimeFragment_to_selectionFragment2)
         }
     }
 }
