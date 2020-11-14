@@ -1,4 +1,4 @@
-package com.md.williamriesen.hawkeyeharvestfoodbank
+package com.md.williamriesen.hawkeyeharvestfoodbank.signin
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,18 +12,19 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import com.md.williamriesen.hawkeyeharvestfoodbank.MainActivityViewModel
+import com.md.williamriesen.hawkeyeharvestfoodbank.R
 
 
 class LoginByAccountIdFragment : Fragment() {
 
 
-    private lateinit var viewModel: MainActivityViewModel
+    private lateinit var viewModel: SignInViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity()).get(MainActivityViewModel::class.java)
-        viewModel.isOpen.value = true
+        viewModel = ViewModelProvider(requireActivity()).get(SignInViewModel::class.java)
+//        viewModel.isOpen.value = true
     }
 
     override fun onCreateView(
@@ -65,7 +66,7 @@ class LoginByAccountIdFragment : Fragment() {
         super.onResume()
         val editTextAccountID = requireView().findViewById<EditText>(R.id.editTextAccountID)
         if (editTextAccountID.text != null && editTextAccountID.text.toString() != "") {
-            val buttonNext = requireView().findViewById<Button>(R.id.buttonOK)
+            val buttonNext = requireView().findViewById<Button>(R.id.buttonNext)
             buttonNext.visibility = View.VISIBLE
         }
     }
@@ -75,8 +76,11 @@ class LoginByAccountIdFragment : Fragment() {
         val accountID = editTextAccountID.text.toString()
         if (accountID != null && accountID != "") {
             viewModel.accountID = accountID
-            viewModel.determineClientLocation(accountID, view, requireContext())
-//            viewModel.signIn(requireContext())
+            if (accountID == "STAFF"){
+                            viewModel.signIn(accountID,true,requireContext())
+            } else {
+                viewModel.determineClientLocation(accountID, view, requireContext())
+            }
         }
     }
 

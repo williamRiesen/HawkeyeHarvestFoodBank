@@ -60,9 +60,9 @@ class ClientStartFragment : Fragment() {
 
             val textViewNextDayOpen =
                 clientStartFragment.findViewById<TextView>(R.id.textViewNextDayOpen)
-            val formattedNextDayOpen =
-                DateFormat.getDateInstance().format(viewModel.nextDayOpen)
-            textViewNextDayOpen.text = formattedNextDayOpen
+//            val formattedNextDayOpen =
+//                DateFormat.getDateInstance().format(viewModel.nextDayOpen)
+//            textViewNextDayOpen.text = formattedNextDayOpen
 
             val textViewOrderState = clientStartFragment.findViewById<TextView>(R.id.textViewOrderState)
             textViewOrderState.text = viewModel.orderState.value

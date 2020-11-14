@@ -1,6 +1,5 @@
-package com.md.williamriesen.hawkeyeharvestfoodbank
+package com.md.williamriesen.hawkeyeharvestfoodbank.signin
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,14 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import com.md.williamriesen.hawkeyeharvestfoodbank.MainActivityViewModel
+import com.md.williamriesen.hawkeyeharvestfoodbank.R
 
 class AskIfOnSiteFragment : Fragment() {
 
-    lateinit var viewModel: MainActivityViewModel
+    lateinit var viewModel: SignInViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity()).get(MainActivityViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(SignInViewModel::class.java)
         Log.d("TAG", "accountId from AskIfOnSiteFragment: ${viewModel.accountID}")
     }
 

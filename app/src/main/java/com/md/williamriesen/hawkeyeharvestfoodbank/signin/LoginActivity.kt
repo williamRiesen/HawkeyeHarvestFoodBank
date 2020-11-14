@@ -1,4 +1,4 @@
-package com.md.williamriesen.hawkeyeharvestfoodbank
+package com.md.williamriesen.hawkeyeharvestfoodbank.signin
 
 import android.app.Activity
 import android.content.Intent
@@ -10,7 +10,10 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
-import java.time.Duration
+import com.md.williamriesen.hawkeyeharvestfoodbank.MainActivity
+import com.md.williamriesen.hawkeyeharvestfoodbank.ManagerActivity
+import com.md.williamriesen.hawkeyeharvestfoodbank.R
+import com.md.williamriesen.hawkeyeharvestfoodbank.VolunteerActivity
 
 class LoginActivity : AppCompatActivity() {
 

@@ -1,10 +1,8 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -14,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.google.firebase.Timestamp
 import com.google.firebase.messaging.FirebaseMessaging
+import com.md.williamriesen.hawkeyeharvestfoodbank.signin.LoginActivity
 import kotlinx.android.synthetic.main.fragment_checkout.view.*
 import java.util.*
 
@@ -92,13 +91,7 @@ class MainActivity : AppCompatActivity() {
             .navigate(R.id.action_selectionFragment_to_checkoutFragment)
     }
 
-    fun onShopButtonClick(view: View) {
 
-        val editTextAccountID = findViewById<EditText>(R.id.editTextAccountID)
-        val accountID = editTextAccountID.text.toString()
-        viewModel.accountID = accountID
-        viewModel.signIn(accountID, viewModel.clientIsOnSite,applicationContext)
-    }
 
     fun onSubmitButtonClick(view: View) {
         viewModel.postSaveNavigation(view)

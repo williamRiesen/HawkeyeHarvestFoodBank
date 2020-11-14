@@ -26,7 +26,7 @@ class MainActivityViewModel() : ViewModel() {
     val outOfStockNameList: MutableLiveData<MutableList<String>> =
         MutableLiveData(mutableListOf<String>())
     val categoriesList = MutableLiveData<MutableList<Category>>()
-    private var familySizeFromFireStore: Long? = null
+
     var orderState: MutableLiveData<String> = MutableLiveData("NONE")
     var familySize = 0
     var points: Int? = null
@@ -38,7 +38,7 @@ class MainActivityViewModel() : ViewModel() {
     var isOpen = MutableLiveData<Boolean>(false)
     var pickUpHour24 = 0
     var pickUpMonth = 0
-    var clientIsOnSite = false
+
 
     val accountNumberForDisplay: String
         get() = accountID.takeLast(4)
@@ -183,83 +183,10 @@ class MainActivityViewModel() : ViewModel() {
     fun removeItem() {
     }
 
-    fun determineClientLocation(accountIdArg: String, view: View,context: Context) {
-        accountID = accountIdArg
-        Log.d("TAG","determineClientLocation Called; accountID = $accountID")
-        Log.d("TAG","context: $context")
-
-        val foodBank = FoodBank()
-        if (foodBank.isOpen) {
-            Navigation.findNavController(view)
-                .navigate(R.id.action_loginByAccountIdFragment_to_askIfOnSiteFragment)
-        } else {
-            signIn(accountID, clientIsOnSite, context)
-        }
-    }
 
 
-    fun signIn(accountIdArg: String, clientIsOnSiteArg: Boolean,context: Context) {
-        accountID = accountIdArg
-        Log.d("TAG","signIn Called; accountID = $accountID")
-        Log.d("TAG","context: $context")
-        isOpen.value = false
-        pleaseWait.value = true
-        if (accountID == "STAFF") {
-            val intent = Intent(context, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            pleaseWait.value = false
-            context.startActivity(intent)
-        } else {
-            val myFirebaseMessagingService = MyFirebaseMessagingService()
-            val token = myFirebaseMessagingService
-            familySizeFromFireStore = null
-            val db = FirebaseFirestore.getInstance()
-            val docRef = db.collection("accounts").document(accountID)
-            docRef.get()
-                .addOnSuccessListener { documentSnapshot ->
-                    if (documentSnapshot.exists()) {
-                        val intent = if (acceptNextDayOrders) {
-                            if (acceptSameDayOrders) {
-                                if (clientIsOnSiteArg) {
-                                    Intent(context, MainActivity::class.java)
-                                }else{
-                                    Intent(context,NextDayOrderActivity::class.java)
-                                }
-                            } else {
-                                Intent(context, NextDayOrderActivity::class.java)
-                            }
-                        } else {
-                            Intent(context, MainActivity::class.java)
-                        }
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                        intent.putExtra("ACCOUNT_ID", accountID)
-                        orderState.value = if (documentSnapshot["orderState"] != null) {
-                            documentSnapshot["orderState"] as String
-                        } else {
-                            "NOT STARTED YET"
-                        }
-                        intent.putExtra("ORDER_STATE", orderState.value)
-                        familySizeFromFireStore = documentSnapshot["familySize"] as Long
-                        familySize = familySizeFromFireStore!!.toInt()
-                        intent.putExtra("FAMILY_SIZE", familySize)
-                        lastOrderTimestamp = documentSnapshot["lastOrderDate"] as Timestamp
-                        intent.putExtra("LAST_ORDER_DATE_TIMESTAMP", lastOrderTimestamp)
-                        pleaseWait.value = false
-                        context.startActivity(intent)
-                    } else {
-                        Toast.makeText(
-                            context,
-                            "Sorry, Not a valid account.",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        pleaseWait.value = false
-                    }
-                }
-                .addOnFailureListener {
-                    Log.d("TAG", "Retrieve family size from database failed.")
-                }
-        }
-    }
+
+
 
     fun saveOrder(view: View) {
         val thisOrder = Order(accountID, Date(), itemList.value!!, "SAVED")
