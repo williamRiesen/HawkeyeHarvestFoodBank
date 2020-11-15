@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.lifecycle.ViewModelProvider
-import com.md.williamriesen.hawkeyeharvestfoodbank.MainActivityViewModel
 import com.md.williamriesen.hawkeyeharvestfoodbank.R
 
 class AskIfOnSiteFragment : Fragment() {
@@ -35,6 +34,7 @@ class AskIfOnSiteFragment : Fragment() {
         buttonNo.setOnClickListener {
             viewModel.clientIsOnSite = false
             Log.d("TAG", "viewModel.accountID:  ${viewModel.accountID}")
+
             viewModel.signIn(viewModel.accountID,viewModel.clientIsOnSite,it.context)
         }
         return fragment

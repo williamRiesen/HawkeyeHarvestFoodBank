@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_on_site_ordering"
+    app:startDestination="@id/onSiteOrderStartFragment">
+
+    <fragment
+        android:id="@+id/onSiteOrderStartFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderonsite.OnSiteOrderStartFragment"
+        android:label="OnSiteOrderStartFragment" >
+        <action
+            android:id="@+id/action_onSiteOrderStartFragment_to_instructionsFragment2"
+            app:destination="@id/instructionsFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/instructionsFragment2"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.InstructionsFragment"
+        android:label="InstructionsFragment" />
+</navigation>

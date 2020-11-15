@@ -9,21 +9,23 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import com.md.williamriesen.hawkeyeharvestfoodbank.orderonsite.OnSiteOrderingViewModel
 import java.text.DateFormat
 
 
-class ClientStartFragment : Fragment() {
+class ClientStartFragment() : Fragment() {
 
     lateinit var viewModel: MainActivityViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel =
-            ViewModelProviders.of(this.requireActivity()).get(MainActivityViewModel::class.java)
         val foodBank = FoodBank()
         foodBank.getCurrentDateWithoutTime()
-        viewModel.isOpen.value = foodBank.isOpen
+        viewModel = ViewModelProviders.of(this.requireActivity()).get(MainActivityViewModel::class.java)
+//        viewModel.isOpen.value = foodBank.isOpen
 //         foodBank.sendCategoriesListToFireStore()
         }
 
@@ -46,16 +48,16 @@ class ClientStartFragment : Fragment() {
             textViewAccountID.text = viewModel.accountID
             textViewFamilySize.text = viewModel.familySize.toString()
 
-            val formattedDate = DateFormat.getDateInstance().format(viewModel.lastOrderDate)
-            textViewLastOrderDate.text = formattedDate
+//            val formattedDate = DateFormat.getDateInstance().format(viewModel.lastOrderDate)
+//            textViewLastOrderDate.text = formattedDate
 
-            val formattedSuggestedDate =
-                DateFormat.getDateInstance().format(viewModel.suggestedNextOrderDate)
-            textViewSuggestedNextOrderDate.text = formattedSuggestedDate
+//            val formattedSuggestedDate =
+//                DateFormat.getDateInstance().format(viewModel.suggestedNextOrderDate)
+//            textViewSuggestedNextOrderDate.text = formattedSuggestedDate
 
             buttonShop.setOnClickListener {
-                Navigation.findNavController(requireView())
-                    .navigate(R.id.action_clientStartFragment_to_instructionsFragment)
+                viewModel.shop(it)
+
             }
 
             val textViewNextDayOpen =

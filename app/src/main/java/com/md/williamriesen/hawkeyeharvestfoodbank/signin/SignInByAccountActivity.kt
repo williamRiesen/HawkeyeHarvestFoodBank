@@ -3,10 +3,9 @@ package com.md.williamriesen.hawkeyeharvestfoodbank.signin
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
-import com.md.williamriesen.hawkeyeharvestfoodbank.MainActivityViewModel
 import com.md.williamriesen.hawkeyeharvestfoodbank.R
 
-class LoginByAccountActivity : AppCompatActivity() {
+class SignInByAccountActivity : AppCompatActivity() {
 
     lateinit var viewModel: SignInViewModel
     override fun onCreate(savedInstanceState: Bundle?) {

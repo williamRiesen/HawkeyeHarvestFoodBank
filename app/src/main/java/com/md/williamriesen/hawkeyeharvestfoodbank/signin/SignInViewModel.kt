@@ -11,6 +11,8 @@ import androidx.navigation.Navigation
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.md.williamriesen.hawkeyeharvestfoodbank.*
+import com.md.williamriesen.hawkeyeharvestfoodbank.orderonsite.OnSiteOrderActivity
+import java.util.*
 
 class SignInViewModel() : ViewModel() {
     var accountID = ""
@@ -21,9 +23,6 @@ class SignInViewModel() : ViewModel() {
 
     fun determineClientLocation(accountIdArg: String, view: View, context: Context) {
         accountID = accountIdArg
-        Log.d("TAG", "determineClientLocation Called; accountID = $accountID")
-        Log.d("TAG", "context: $context")
-
         val foodBank = FoodBank()
         if (foodBank.isOpen) {
             Navigation.findNavController(view)
@@ -35,10 +34,10 @@ class SignInViewModel() : ViewModel() {
 
     fun signIn(accountIdArg: String, clientIsOnSiteArg: Boolean, context: Context) {
         accountID = accountIdArg
-//        isOpen.value = false
         pleaseWait.value = true
+        clientIsOnSite = clientIsOnSiteArg
         if (accountID == "STAFF") {
-            val intent = Intent(context, LoginActivity::class.java)
+            val intent = Intent(context, SignStaffInActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             pleaseWait.value = false
             context.startActivity(intent)
@@ -51,29 +50,31 @@ class SignInViewModel() : ViewModel() {
             docRef.get()
                 .addOnSuccessListener { documentSnapshot ->
                     if (documentSnapshot.exists()) {
-                        val intent = if (acceptNextDayOrders) {
-                            if (acceptSameDayOrders) {
-                                if (clientIsOnSiteArg) {
-                                    Intent(context, MainActivity::class.java)
-                                } else {
-                                    Intent(context, NextDayOrderActivity::class.java)
-                                }
-                            } else {
-                                Intent(context, NextDayOrderActivity::class.java)
-                            }
-                        } else {
-                            Intent(context, MainActivity::class.java)
+                        val foodBank = FoodBank()
+                        val intent = when {
+                            foodBank.isOpen && clientIsOnSite -> Intent(
+                                context,
+                                OnSiteOrderActivity::class.java
+                            )
+                            else -> Intent(context, NextDayOrderActivity::class.java)
                         }
+
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        Log.d("TAG", "accountId: $accountID")
                         intent.putExtra("ACCOUNT_ID", accountID)
                         orderState.value = if (documentSnapshot["orderState"] != null) {
                             documentSnapshot["orderState"] as String
                         } else {
                             "NOT STARTED YET"
                         }
+                        Log.d("TAG", "orderState: ${orderState.value}")
                         intent.putExtra("ORDER_STATE", orderState.value)
                         familySizeFromFireStore = documentSnapshot["familySize"] as Long
+                        Log.d("TAG", "familySize: ${familySizeFromFireStore}")
                         intent.putExtra("FAMILY_SIZE", familySizeFromFireStore!!.toInt())
+                        val timeStamp: Timestamp = documentSnapshot["lastOrderDate"] as Timestamp
+                        val lastOrderDate = Date(timeStamp.seconds * 1000)
+                        Log.d("TAG", "lastOrderDate (from signInActivity): $lastOrderDate")
                         intent.putExtra(
                             "LAST_ORDER_DATE_TIMESTAMP",
                             documentSnapshot["lastOrderDate"] as Timestamp

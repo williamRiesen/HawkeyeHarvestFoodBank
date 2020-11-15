@@ -51,6 +51,8 @@ class MainActivityViewModel() : ViewModel() {
             calendar.time = startOfToday
             calendar.set(Calendar.DAY_OF_MONTH, 1)
             val startOfThisMonth = calendar.time
+            Log.d("TAG",
+            "lastOrderDate: $lastOrderDate, startOfToday: $startOfToday, startOfThisMonth: $startOfThisMonth")
             return when {
                 lastOrderDate!! > startOfToday -> "TODAY"
                 lastOrderDate!! > startOfThisMonth -> "EARLIER_THIS_MONTH"
@@ -60,6 +62,11 @@ class MainActivityViewModel() : ViewModel() {
 
     private val needToStartNewOrder: Boolean
         get() = orderState.value == "PACKED" && (!isOpen.value!! || whenOrdered != "TODAY")
+
+    fun shop(view: View){
+        Navigation.findNavController(view)
+            .navigate(R.id.action_clientStartFragment_to_instructionsFragment)
+    }
 
     private fun retrieveCategoriesFromFireStore() {
         val db = FirebaseFirestore.getInstance()
@@ -183,11 +190,6 @@ class MainActivityViewModel() : ViewModel() {
     fun removeItem() {
     }
 
-
-
-
-
-
     fun saveOrder(view: View) {
         val thisOrder = Order(accountID, Date(), itemList.value!!, "SAVED")
         val filteredOrder = filterOutZeros(thisOrder)
@@ -200,8 +202,8 @@ class MainActivityViewModel() : ViewModel() {
                         Navigation.findNavController(view)
                             .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
                     } else {
-                        val action = if (acceptNextDayOrders) {
-                            if (acceptSameDayOrders) {
+                        val action = if (true) {
+                            if (true) {
                                 TODO() // implement action if BOTH kinds of orders accepted.
                             } else {
                                 R.id.action_checkoutFragment2_to_nextDayOrderConfirmedFragment
@@ -250,38 +252,11 @@ class MainActivityViewModel() : ViewModel() {
         }
     }
 
-    fun submitOrder(view: View) {
-        val thisOrder = Order(accountID, Date(), itemList.value!!, "SUBMITTED")
-        val filteredOrder = filterOutZeros(thisOrder)
 
-        FirebaseInstanceId.getInstance().instanceId
-            .addOnCompleteListener {
-                if (!it.isSuccessful) {
-                    Log.d("TAG", "getInstanceID failed ${it.exception}")
-                }
 
-                val token = it.result?.token
-                filteredOrder.deviceToken = token
-                Log.d("TAG", "token: $token")
-
-                val db = FirebaseFirestore.getInstance()
-                if (orderID != null) {
-                    db.collection(("orders")).document(orderID!!).set(filteredOrder)
-                        .addOnSuccessListener {
-                            Navigation.findNavController(view)
-                                .navigate(R.id.action_askWhetherToSubmitSavedOrderFragment_to_orderSubmittedFragment)
-                        }
-                } else {
-                    db.collection(("orders")).document().set(filteredOrder)
-                        .addOnSuccessListener {
-                            Navigation.findNavController(view)
-                                .navigate(R.id.action_askWhetherToSubmitSavedOrderFragment_to_orderSubmittedFragment)
-                        }
-                }
-            }
-    }
 
     fun submitNextDayOrder(view: View) {
+        Log.d("TAG", "Starting submitNextDayOrder...")
         val thisOrder = Order(
             accountID,
             Date(),
@@ -306,12 +281,14 @@ class MainActivityViewModel() : ViewModel() {
                 if (orderID != null) {
                     db.collection(("orders")).document(orderID!!).set(filteredOrder)
                         .addOnSuccessListener {
+                            Log.d("TAG", "Updated order save successful.")
                             Navigation.findNavController(view)
                                 .navigate(R.id.action_checkoutFragment2_to_nextDayOrderConfirmedFragment)
                         }
                 } else {
                     db.collection(("orders")).document().set(filteredOrder)
                         .addOnSuccessListener {
+                            Log.d("TAG", "New order save successful.")
                             Navigation.findNavController(view)
                                 .navigate(R.id.action_checkoutFragment2_to_nextDayOrderConfirmedFragment)
                         }

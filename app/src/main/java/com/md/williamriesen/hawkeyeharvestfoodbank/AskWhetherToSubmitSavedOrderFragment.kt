@@ -29,7 +29,7 @@ class AskWhetherToSubmitSavedOrderFragment : Fragment() {
         }
         val buttonYes = askWhetherToSubmitFragment.findViewById<Button>(R.id.buttonYes)
         buttonYes.setOnClickListener{
-            viewModel.submitOrder(it)
+//            viewModel.submitOnSiteOrder(it)
         }
         return askWhetherToSubmitFragment
     }

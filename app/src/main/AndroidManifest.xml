@@ -10,20 +10,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
-        <activity android:name=".DisplayNumberActivity"
-            android:screenOrientation="landscape">
+        <activity android:name=".orderonsite.OnSiteOrderActivity">
         </activity>
+        <activity
+            android:name=".DisplayNumberActivity"
+            android:screenOrientation="landscape"></activity>
         <activity android:name=".NextDayOrderActivity" />
         <activity
-            android:name=".signin.LoginByAccountActivity"
+            android:name=".signin.SignInByAccountActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".signin.LoginActivity"
+            android:name=".signin.SignStaffInActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".DirectorActivity"
@@ -41,7 +44,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
-            android:parentActivityName=".signin.LoginByAccountActivity"
+            android:parentActivityName=".signin.SignInByAccountActivity"
             android:screenOrientation="portrait">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->

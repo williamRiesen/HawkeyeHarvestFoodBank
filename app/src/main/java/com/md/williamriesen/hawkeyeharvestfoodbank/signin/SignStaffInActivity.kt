@@ -15,7 +15,7 @@ import com.md.williamriesen.hawkeyeharvestfoodbank.ManagerActivity
 import com.md.williamriesen.hawkeyeharvestfoodbank.R
 import com.md.williamriesen.hawkeyeharvestfoodbank.VolunteerActivity
 
-class LoginActivity : AppCompatActivity() {
+class SignStaffInActivity : AppCompatActivity() {
 
     val RC_SIGN_IN = 9999
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,6 +1,7 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,15 +37,7 @@ class CheckoutFragment : Fragment() {
 
         val buttonNext = checkoutView.findViewById<Button>(R.id.button_next)
         buttonNext.setOnClickListener { view ->
-            if (acceptNextDayOrders){
-                if (acceptSameDayOrders){
-                    TODO()// what to do if both kinds of orders accepted
-                } else {
-                    viewModel.submitNextDayOrder(view)
-                }
-            } else {
-                viewModel.saveOrder(view)
-            }
+//                    viewModel.submitOnSiteOrder(view)
         }
         val recyclerView = checkoutView.findViewById<RecyclerView>(R.id.recyclerviewChoices)
         setUpRecyclerView(viewModel.itemList, recyclerView)

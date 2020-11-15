@@ -11,7 +11,7 @@
         android:label="AskIfOnSiteFragment" />
     <fragment
         android:id="@+id/loginByAccountIdFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.signin.LoginByAccountIdFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.signin.SignInByAccountFragment"
         android:label="LoginByAccountIdFragment" >
         <action
             android:id="@+id/action_loginByAccountIdFragment_to_askIfOnSiteFragment"

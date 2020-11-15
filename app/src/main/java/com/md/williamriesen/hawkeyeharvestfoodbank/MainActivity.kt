@@ -3,16 +3,16 @@ package com.md.williamriesen.hawkeyeharvestfoodbank
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.google.firebase.Timestamp
 import com.google.firebase.messaging.FirebaseMessaging
-import com.md.williamriesen.hawkeyeharvestfoodbank.signin.LoginActivity
+import com.md.williamriesen.hawkeyeharvestfoodbank.signin.SignStaffInActivity
 import kotlinx.android.synthetic.main.fragment_checkout.view.*
 import java.util.*
 
@@ -32,12 +32,14 @@ class MainActivity : AppCompatActivity() {
         var familySize = intent.extras["FAMILY_SIZE"]
         var timeStamp = intent.extras["LAST_ORDER_DATE_TIMESTAMP"] as Timestamp
         val lastOrderDate = Date(timeStamp.seconds * 1000)
+        Log.d("TAG","lastOrderDate received as activity parameter: $lastOrderDate")
         var orderState = intent.extras["ORDER_STATE"] as String
 
         viewModel.accountID = accountID
         viewModel.lastOrderDate = lastOrderDate
         viewModel.orderState.value = orderState
         viewModel.familySize = familySize as Int
+        Log.d("TAG","nextFragment: ${viewModel.nextFragment}")
         viewModel.retrieveObjectCatalogFromFireStore()
     }
 
@@ -99,7 +101,7 @@ class MainActivity : AppCompatActivity() {
 
 
     fun onExitButtonClick(view: View) {
-        startActivity(Intent(this, LoginActivity::class.java))
+        startActivity(Intent(this, SignStaffInActivity::class.java))
     }
 }
 

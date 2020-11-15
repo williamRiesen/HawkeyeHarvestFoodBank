@@ -12,11 +12,10 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.md.williamriesen.hawkeyeharvestfoodbank.MainActivityViewModel
 import com.md.williamriesen.hawkeyeharvestfoodbank.R
 
 
-class LoginByAccountIdFragment : Fragment() {
+class SignInByAccountFragment : Fragment() {
 
 
     private lateinit var viewModel: SignInViewModel

@@ -20,4 +20,19 @@ class Order() {
         pickUpHour24 = pickUpHour24Arg
         pickUpMonth = pickUpMonthArg
     }
+
+   fun filterOutZeros(): Order {
+        val itemList = itemList
+        val filteredList = itemList.filter { item ->
+            item.qtyOrdered != 0
+        }
+        val filteredOrder = Order()
+        filteredOrder.itemList = filteredList as MutableList<Item>
+        filteredOrder.accountID = accountID
+        filteredOrder.date = date
+        filteredOrder.orderState = orderState
+        filteredOrder.pickUpHour24 = pickUpHour24
+        filteredOrder.pickUpMonth = pickUpMonth
+        return filteredOrder
+    }
 }
