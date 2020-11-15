@@ -27,7 +27,7 @@ class OnSiteOrderActivity : AppCompatActivity() {
         viewModel.lastOrderDate = lastOrderDate
         viewModel.orderState.value = orderState
         viewModel.familySize = familySize as Int
+        viewModel.retrieveObjectCatalogFromFireStore()
         setContentView(R.layout.activity_on_site_ordering)
-        Log.d("TAG","on site ordering onCreate.")
     }
 }

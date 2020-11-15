@@ -9,11 +9,33 @@
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderonsite.OnSiteOrderStartFragment"
         android:label="OnSiteOrderStartFragment" >
         <action
-            android:id="@+id/action_onSiteOrderStartFragment_to_instructionsFragment2"
-            app:destination="@id/instructionsFragment2" />
+            android:id="@+id/action_onSiteOrderStartFragment_to_orderBeingPackedFragment2"
+            app:destination="@id/orderBeingPackedFragment2" />
+        <action
+            android:id="@+id/action_onSiteOrderStartFragment_to_orderReadyFragment2"
+            app:destination="@id/orderReadyFragment2" />
+        <action
+            android:id="@+id/action_onSiteOrderStartFragment_to_onSiteInstructionsFragment"
+            app:destination="@id/onSiteInstructionsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/instructionsFragment2"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.InstructionsFragment"
-        android:label="InstructionsFragment" />
+        android:id="@+id/orderBeingPackedFragment2"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.OrderBeingPackedFragment"
+        android:label="OrderBeingPackedFragment" />
+    <fragment
+        android:id="@+id/orderReadyFragment2"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.OrderReadyFragment"
+        android:label="OrderReadyFragment" />
+    <fragment
+        android:id="@+id/onSiteInstructionsFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderonsite.OnSiteInstructionsFragment"
+        android:label="OnSiteInstructionsFragment" >
+        <action
+            android:id="@+id/action_onSiteInstructionsFragment_to_onSiteOrderSelectionFragment"
+            app:destination="@id/onSiteOrderSelectionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/onSiteOrderSelectionFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderonsite.OnSiteOrderSelectionFragment"
+        android:label="OnSiteOrderSelectionFragment" />
 </navigation>

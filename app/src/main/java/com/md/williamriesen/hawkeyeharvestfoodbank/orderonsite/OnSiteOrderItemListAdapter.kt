@@ -1,4 +1,4 @@
-package com.md.williamriesen.hawkeyeharvestfoodbank
+package com.md.williamriesen.hawkeyeharvestfoodbank.orderonsite
 
 import android.graphics.Color
 import android.util.Log
@@ -10,14 +10,15 @@ import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
+import com.md.williamriesen.hawkeyeharvestfoodbank.Item
 import com.md.williamriesen.hawkeyeharvestfoodbank.R.*
 import com.md.williamriesen.hawkeyeharvestfoodbank.orderonsite.OnSiteOrderingViewModel
 
-class ItemListAdapter(
+class OnSiteOrderItemListAdapter(
     var itemList: MutableLiveData<MutableList<Item>>,
-    var viewModel: MainActivityViewModel
+    var viewModel: OnSiteOrderingViewModel
 ) :
-    RecyclerView.Adapter<ItemListAdapter.MyViewHolder>() {
+    RecyclerView.Adapter<OnSiteOrderItemListAdapter.MyViewHolder>() {
 
     inner class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         var textViewItemName: TextView = view.findViewById(id.textview_item_name)
