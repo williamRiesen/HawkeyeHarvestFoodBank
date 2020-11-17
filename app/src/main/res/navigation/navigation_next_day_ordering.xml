@@ -25,37 +25,19 @@
         android:label="NotTakingNextDayOrdersFragment" />
     <fragment
         android:id="@+id/selectPickUpTimeFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.SelectPickUpTimeFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderfornextday.SelectPickUpTimeFragment"
         android:label="SelectPickUpTimeFragment" >
-        <action
-            android:id="@+id/action_selectPickUpTimeFragment_to_selectionFragment2"
-            app:destination="@id/selectionFragment2" />
         <action
             android:id="@+id/action_selectPickUpTimeFragment_to_returnAnotherDayFragment"
             app:destination="@id/returnAnotherDayFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/selectionFragment2"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.SelectionFragment"
-        android:label="SelectionFragment" >
         <action
-            android:id="@+id/action_selectionFragment2_to_checkoutFragment2"
-            app:destination="@id/checkoutFragment2" />
+            android:id="@+id/action_selectPickUpTimeFragment_to_nextDayOrderSelectionFragment"
+            app:destination="@id/nextDayOrderSelectionFragment" />
     </fragment>
     <fragment
         android:id="@+id/returnAnotherDayFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.ReturnAnotherDayFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderfornextday.ReturnAnotherDayFragment"
         android:label="ReturnAnotherDayFragment" />
-    <fragment
-        android:id="@+id/checkoutFragment2"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.CheckoutFragment"
-        android:label="CheckoutFragment" >
-        <action
-            android:id="@+id/action_checkoutFragment2_to_nextDayOrderConfirmedFragment"
-            app:destination="@id/nextDayOrderConfirmedFragment"
-            app:popUpTo="@id/nextDayOrderingStartFragment"
-            app:popUpToInclusive="false" />
-    </fragment>
     <fragment
         android:id="@+id/nextDayOrderConfirmedFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderfornextday.NextDayOrderConfirmedFragment"
@@ -68,4 +50,20 @@
         android:id="@+id/displayNumberFragment2"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.communication.DisplayNumberFragment"
         android:label="DisplayNumberFragment" />
+    <fragment
+        android:id="@+id/nextDayOrderSelectionFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderfornextday.NextDayOrderSelectionFragment"
+        android:label="NextDayOrderSelectionFragment" >
+        <action
+            android:id="@+id/action_nextDayOrderSelectionFragment_to_nextDayCheckoutFragment"
+            app:destination="@id/nextDayCheckoutFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nextDayCheckoutFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderfornextday.NextDayCheckoutFragment"
+        android:label="NextDayCheckoutFragment" >
+        <action
+            android:id="@+id/action_nextDayCheckoutFragment_to_nextDayOrderConfirmedFragment"
+            app:destination="@id/nextDayOrderConfirmedFragment" />
+    </fragment>
 </navigation>

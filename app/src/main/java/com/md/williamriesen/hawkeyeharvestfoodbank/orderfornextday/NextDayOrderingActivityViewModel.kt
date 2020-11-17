@@ -6,7 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.iid.FirebaseInstanceId
 import com.md.williamriesen.hawkeyeharvestfoodbank.*
 import com.md.williamriesen.hawkeyeharvestfoodbank.foodbank.*
 import java.text.SimpleDateFormat
@@ -19,11 +21,12 @@ class NextDayOrderingActivityViewModel : ViewModel() {
     var orderState = "NOT STARTED YET"
     var familySize = 0
     var points: Int? = null
-    val itemList = MutableLiveData<MutableList<FoodItem>>()
+    val foodItemList = MutableLiveData<MutableList<FoodItem>>()
     val categoriesList = MutableLiveData<MutableList<Category>>()
 
     var pickUpHour24 = 0
     val foodBank = FoodBank()
+    var orderID: String? = null
     val simpleDateFormat = SimpleDateFormat("E, MMM d")
 
     val nextDayOpen : String?
@@ -55,7 +58,7 @@ class NextDayOrderingActivityViewModel : ViewModel() {
             Navigation.findNavController(view).navigate(R.id.action_selectPickUpTimeFragment_to_returnAnotherDayFragment)
 
         } else {
-            Navigation.findNavController(view).navigate(R.id.action_selectPickUpTimeFragment_to_selectionFragment2)
+            Navigation.findNavController(view).navigate(R.id.action_selectPickUpTimeFragment_to_nextDayOrderSelectionFragment)
         }
     }
 
@@ -68,7 +71,7 @@ class NextDayOrderingActivityViewModel : ViewModel() {
                 val availableItemsList = myObjectCatalog?.foodItemList?.filter { item ->
                     item.isAvailable as Boolean
                 }
-                itemList.value = availableItemsList as MutableList<FoodItem>?
+                foodItemList.value = availableItemsList as MutableList<FoodItem>?
                 retrieveCategoriesFromFireStore()
             }
             .addOnFailureListener {
@@ -84,15 +87,15 @@ class NextDayOrderingActivityViewModel : ViewModel() {
                 val categoriesListing = documentSnapshot.toObject<CategoriesListing>()
                 categoriesList.value = categoriesListing?.categories as MutableList<Category>
                 generateHeadings()
-                val filteredList = itemList.value?.filter {
+                val filteredList = foodItemList.value?.filter {
                     canAfford(it)
                 } as MutableList
 
-                itemList.value = filteredList
-                itemList.value?.sortWith(
+                foodItemList.value = filteredList
+                foodItemList.value?.sortWith(
                     compareBy<FoodItem> { it.categoryId }.thenBy { it.itemID })
                 Log.d("TAG","Data retrieval done.")
-                itemList.value!!.forEach { item->
+                foodItemList.value!!.forEach { item->
                     Log.d("TAG", "${item.name}")
                 }
 
@@ -113,7 +116,7 @@ class NextDayOrderingActivityViewModel : ViewModel() {
                 category.id,
                 category.calculatePoints(familySize)
             )
-            itemList.value!!.add(heading)
+            foodItemList.value!!.add(heading)
         }
     }
     fun canAfford(foodItem: FoodItem): Boolean {
@@ -122,6 +125,84 @@ class NextDayOrderingActivityViewModel : ViewModel() {
         }
         val pointsAllocated = thisCategory!!.calculatePoints(familySize)
         return pointsAllocated >= foodItem.pointValue!!
+    }
+
+    private fun retrieveSavedOrder() {
+        val db = FirebaseFirestore.getInstance()
+        val ordersRef = db.collection("orders")
+        val query = ordersRef
+            .whereEqualTo("accountID", accountID)
+            .whereEqualTo("orderState", "SAVED")
+            .orderBy("date", Query.Direction.DESCENDING).limit(1)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                if (querySnapshot.size() > 0) {
+                    val savedOrder = querySnapshot.documents[0].toObject<Order>()
+//                    savedItemList = savedOrder?.itemList!!
+                    orderID = querySnapshot.documents[0].id
+//                    checkSavedOrderAgainstCurrentOfferings()
+                }
+            }
+    }
+
+    fun saveOrder() {
+        val thisOrder = Order(accountID, Date(), foodItemList.value!!, "SAVED")
+        val filteredOrder = thisOrder.filterOutZeros()
+        val db = FirebaseFirestore.getInstance()
+        if (orderID != null) {
+            db.collection(("orders")).document(orderID!!).set(filteredOrder)
+                .addOnSuccessListener {
+                    retrieveSavedOrder()
+// Save then immediately retrieve is done this way to obtain orderID //
+// which is subsequently used to submit.//
+// The transition from "SAVED" to "SUBMITTED" status is unnecessary on the client side,//
+// but is done this way to fire a rule on the server side which is working and //
+// I would rather not change.
+                }
+        } else {
+            db.collection(("orders")).document().set(filteredOrder)
+        }
+    }
+
+    fun submitNextDayOrder(view: View) {
+        Log.d("TAG", "Starting submitNextDayOrder...")
+        val thisOrder = Order(
+            accountID,
+            Date(),
+            foodItemList.value!!,
+            "SUBMITTED",
+            pickUpHour24,
+            foodBank.monthTomorrow
+        )
+        val filteredOrder = thisOrder.filterOutZeros()
+
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener {
+                if (!it.isSuccessful) {
+                    Log.d("TAG", "getInstanceID failed ${it.exception}")
+                }
+
+                val token = it.result?.token
+                filteredOrder.deviceToken = token
+                Log.d("TAG", "token: $token")
+
+                val db = FirebaseFirestore.getInstance()
+                if (orderID != null) {
+                    db.collection(("orders")).document(orderID!!).set(filteredOrder)
+                        .addOnSuccessListener {
+                            Log.d("TAG", "Updated order save successful.")
+                            Navigation.findNavController(view)
+                                .navigate(R.id.action_nextDayCheckoutFragment_to_nextDayOrderConfirmedFragment)
+                        }
+                } else {
+                    db.collection(("orders")).document().set(filteredOrder)
+                        .addOnSuccessListener {
+                            Log.d("TAG", "New order save successful.")
+                            Navigation.findNavController(view)
+                                .navigate(R.id.action_nextDayCheckoutFragment_to_nextDayOrderConfirmedFragment)
+                        }
+                }
+            }
     }
 
 }

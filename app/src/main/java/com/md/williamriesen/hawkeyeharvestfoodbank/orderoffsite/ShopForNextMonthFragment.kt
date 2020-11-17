@@ -1,4 +1,4 @@
-package com.md.williamriesen.hawkeyeharvestfoodbank.orderfornextday
+package com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

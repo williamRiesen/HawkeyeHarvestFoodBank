@@ -1,4 +1,4 @@
-package com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite
+package com.md.williamriesen.hawkeyeharvestfoodbank.orderfornextday
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
 import com.md.williamriesen.hawkeyeharvestfoodbank.R
+import com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.MainActivityViewModel
 
 class ReturnAnotherDayFragment : Fragment() {
     lateinit var viewModel: MainActivityViewModel

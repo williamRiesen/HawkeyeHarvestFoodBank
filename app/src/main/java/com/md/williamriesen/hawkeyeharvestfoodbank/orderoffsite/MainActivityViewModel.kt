@@ -193,46 +193,46 @@ class MainActivityViewModel() : ViewModel() {
     fun removeItem() {
     }
 
-    fun saveOrder(view: View) {
-        val thisOrder = Order(accountID, Date(), itemList.value!!, "SAVED")
-        val filteredOrder = filterOutZeros(thisOrder)
-        val db = FirebaseFirestore.getInstance()
-        if (orderID != null) {
-            db.collection(("orders")).document(orderID!!).set(filteredOrder)
-                .addOnSuccessListener {
-                    Log.d("TAG", "mayOrderNow: $mayOrderNow")
-                    if (mayOrderNow) {
-                        Navigation.findNavController(view)
-                            .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
-                    } else {
-                        val action = if (true) {
-                            if (true) {
-                                TODO() // implement action if BOTH kinds of orders accepted.
-                            } else {
-                                R.id.action_checkoutFragment2_to_nextDayOrderConfirmedFragment
-                            }
-                        } else {
-                            R.id.action_checkoutFragment_to_orderSavedFragment
-                        }
-                        Navigation.findNavController(view).navigate(action)
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    Log.d("TAG", "save order failed with exception: $exception")
-                }
-        } else {
-            db.collection(("orders")).document().set(filteredOrder)
-                .addOnSuccessListener {
-                    if (mayOrderNow) {
-                        Navigation.findNavController(view)
-                            .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
-                    } else {
-                        Navigation.findNavController(view)
-                            .navigate(R.id.action_checkoutFragment_to_orderSavedFragment)
-                    }
-                }
-        }
-    }
+//    fun saveOrder(view: View) {
+//        val thisOrder = Order(accountID, Date(), itemList.value!!, "SAVED")
+//        val filteredOrder = filterOutZeros(thisOrder)
+//        val db = FirebaseFirestore.getInstance()
+//        if (orderID != null) {
+//            db.collection(("orders")).document(orderID!!).set(filteredOrder)
+//                .addOnSuccessListener {
+//                    Log.d("TAG", "mayOrderNow: $mayOrderNow")
+//                    if (mayOrderNow) {
+//                        Navigation.findNavController(view)
+//                            .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
+//                    } else {
+//                        val action = if (true) {
+//                            if (true) {
+//                                TODO() // implement action if BOTH kinds of orders accepted.
+//                            } else {
+//                                R.id.action_checkoutFragment2_to_nextDayOrderConfirmedFragment
+//                            }
+//                        } else {
+//                            R.id.action_checkoutFragment_to_orderSavedFragment
+//                        }
+//                        Navigation.findNavController(view).navigate(action)
+//                    }
+//                }
+//                .addOnFailureListener { exception ->
+//                    Log.d("TAG", "save order failed with exception: $exception")
+//                }
+//        } else {
+//            db.collection(("orders")).document().set(filteredOrder)
+//                .addOnSuccessListener {
+//                    if (mayOrderNow) {
+//                        Navigation.findNavController(view)
+//                            .navigate(R.id.action_checkoutFragment_to_askWhetherToSubmitSavedOrderFragment)
+//                    } else {
+//                        Navigation.findNavController(view)
+//                            .navigate(R.id.action_checkoutFragment_to_orderSavedFragment)
+//                    }
+//                }
+//        }
+//    }
 
     fun postSaveNavigation(view: View) {
         if (mayOrderNow) {
@@ -258,46 +258,7 @@ class MainActivityViewModel() : ViewModel() {
 
 
 
-    fun submitNextDayOrder(view: View) {
-        Log.d("TAG", "Starting submitNextDayOrder...")
-        val thisOrder = Order(
-            accountID,
-            Date(),
-            itemList.value!!,
-            "SUBMITTED",
-            pickUpHour24,
-            foodBank.monthTomorrow
-        )
-        val filteredOrder = filterOutZeros(thisOrder)
 
-        FirebaseInstanceId.getInstance().instanceId
-            .addOnCompleteListener {
-                if (!it.isSuccessful) {
-                    Log.d("TAG", "getInstanceID failed ${it.exception}")
-                }
-
-                val token = it.result?.token
-                filteredOrder.deviceToken = token
-                Log.d("TAG", "token: $token")
-
-                val db = FirebaseFirestore.getInstance()
-                if (orderID != null) {
-                    db.collection(("orders")).document(orderID!!).set(filteredOrder)
-                        .addOnSuccessListener {
-                            Log.d("TAG", "Updated order save successful.")
-                            Navigation.findNavController(view)
-                                .navigate(R.id.action_checkoutFragment2_to_nextDayOrderConfirmedFragment)
-                        }
-                } else {
-                    db.collection(("orders")).document().set(filteredOrder)
-                        .addOnSuccessListener {
-                            Log.d("TAG", "New order save successful.")
-                            Navigation.findNavController(view)
-                                .navigate(R.id.action_checkoutFragment2_to_nextDayOrderConfirmedFragment)
-                        }
-                }
-            }
-    }
 
     private fun filterOutZeros(order: Order): Order {
         val itemList = order.itemList
@@ -406,15 +367,14 @@ class MainActivityViewModel() : ViewModel() {
     val nextDayOpen: String?
         get() = simpleDateFormat.format(foodBank.nextDayOpen())
 
-    fun goToNextFragment(pickUpHour24Arg: Int, view: View) {
-        pickUpHour24 = pickUpHour24Arg
-        if (pickUpHour24Arg == 0) {
-            Navigation.findNavController(view)
-                .navigate(R.id.action_selectPickUpTimeFragment_to_returnAnotherDayFragment)
-
-        } else {
-            Navigation.findNavController(view)
-                .navigate(R.id.action_selectPickUpTimeFragment_to_selectionFragment2)
-        }
-    }
+//    fun goToNextFragment(pickUpHour24Arg: Int, view: View) {
+//        pickUpHour24 = pickUpHour24Arg
+//        if (pickUpHour24Arg == 0) {
+//            Navigation.findNavController(view)
+//                .navigate(R.id.action_selectPickUpTimeFragment_to_returnAnotherDayFragment)
+//        } else {
+//            Navigation.findNavController(view)
+//                .navigate(R.id.action_selectPickUpTimeFragment_to_selectionFragment2)
+//        }
+//    }
 }

@@ -14,13 +14,13 @@ import java.util.*
 
 class NextDayOrderActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: MainActivityViewModel
+    private lateinit var viewModel: NextDayOrderingActivityViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_next_day_order)
         FirebaseMessaging.getInstance().unsubscribeFromTopic("volunteer")
 
-        viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(NextDayOrderingActivityViewModel::class.java)
 
         var accountID = intent.extras["ACCOUNT_ID"].toString()
         var familySize = intent.extras["FAMILY_SIZE"]
@@ -30,12 +30,12 @@ class NextDayOrderActivity : AppCompatActivity() {
 
         viewModel.accountID = accountID
         viewModel.lastOrderDate = lastOrderDate
-        viewModel.orderState = MutableLiveData(orderState)
+        viewModel.orderState = orderState
         viewModel.familySize = familySize as Int
         viewModel.retrieveObjectCatalogFromFireStore()
     }
 
     fun onCartButtonClick(view: View){
-        Navigation.findNavController(view).navigate(R.id.action_selectionFragment2_to_checkoutFragment2)
+        Navigation.findNavController(view).navigate(R.id.action_nextDayOrderSelectionFragment_to_nextDayCheckoutFragment)
     }
 }

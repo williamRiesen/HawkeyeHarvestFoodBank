@@ -1,4 +1,4 @@
-package com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite
+package com.md.williamriesen.hawkeyeharvestfoodbank.orderfornextday
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,13 +9,14 @@ import android.widget.Button
 import android.widget.RadioGroup
 import androidx.lifecycle.ViewModelProviders
 import com.md.williamriesen.hawkeyeharvestfoodbank.R
+import com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.MainActivityViewModel
 
 class SelectPickUpTimeFragment : Fragment() {
-    lateinit var viewModel: MainActivityViewModel
+    lateinit var viewModel: NextDayOrderingActivityViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this.requireActivity())
-            .get(MainActivityViewModel::class.java)
+            .get(NextDayOrderingActivityViewModel::class.java)
     }
 
     override fun onCreateView(

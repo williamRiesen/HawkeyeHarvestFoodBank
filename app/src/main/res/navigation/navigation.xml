@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/selectionFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.SelectionFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderfornextday.SelectionFragment"
         android:label="SelectionFragment" >
         <action
             android:id="@+id/action_selectionFragment_to_checkoutFragment"
@@ -151,7 +151,7 @@
     </fragment>
     <fragment
         android:id="@+id/shopForNextMonthFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderfornextday.ShopForNextMonthFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.ShopForNextMonthFragment"
         android:label="ShopForNextMonthFragment" >
         <action
             android:id="@+id/action_shopForNextMonthFragment_to_selectionFragment"

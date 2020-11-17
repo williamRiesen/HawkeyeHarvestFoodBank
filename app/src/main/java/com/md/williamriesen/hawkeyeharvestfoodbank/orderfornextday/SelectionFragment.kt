@@ -1,4 +1,4 @@
-package com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite
+package com.md.williamriesen.hawkeyeharvestfoodbank.orderfornextday
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.md.williamriesen.hawkeyeharvestfoodbank.R
 import com.md.williamriesen.hawkeyeharvestfoodbank.foodbank.FoodItem
+import com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.FoodItemListAdapter
+import com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.MainActivityViewModel
 
 class SelectionFragment : Fragment() {
 
@@ -54,5 +56,6 @@ class SelectionFragment : Fragment() {
         super.onPause()
 //        viewModel.saveOrderWithoutNavigating()
     }
+
 
 }
