@@ -9,23 +9,15 @@
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderonsite.OnSiteOrderStartFragment"
         android:label="OnSiteOrderStartFragment" >
         <action
-            android:id="@+id/action_onSiteOrderStartFragment_to_orderBeingPackedFragment2"
-            app:destination="@id/orderBeingPackedFragment2" />
-        <action
-            android:id="@+id/action_onSiteOrderStartFragment_to_orderReadyFragment2"
-            app:destination="@id/orderReadyFragment2" />
-        <action
             android:id="@+id/action_onSiteOrderStartFragment_to_onSiteInstructionsFragment"
             app:destination="@id/onSiteInstructionsFragment" />
+        <action
+            android:id="@+id/action_onSiteOrderStartFragment_to_onSiteOrderBeingPackedFragment"
+            app:destination="@id/onSiteOrderBeingPackedFragment" />
+        <action
+            android:id="@+id/action_onSiteOrderStartFragment_to_onSiteOrderReadyFragment"
+            app:destination="@id/onSiteOrderReadyFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/orderBeingPackedFragment2"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.OrderBeingPackedFragment"
-        android:label="OrderBeingPackedFragment" />
-    <fragment
-        android:id="@+id/orderReadyFragment2"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.OrderReadyFragment"
-        android:label="OrderReadyFragment" />
     <fragment
         android:id="@+id/onSiteInstructionsFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderonsite.OnSiteInstructionsFragment"
@@ -37,5 +29,29 @@
     <fragment
         android:id="@+id/onSiteOrderSelectionFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderonsite.OnSiteOrderSelectionFragment"
-        android:label="OnSiteOrderSelectionFragment" />
+        android:label="OnSiteOrderSelectionFragment" >
+        <action
+            android:id="@+id/action_onSiteOrderSelectionFragment_to_onSiteCheckoutFragment"
+            app:destination="@id/onSiteCheckoutFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/onSiteCheckoutFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderonsite.OnSiteCheckoutFragment"
+        android:label="OnSiteCheckoutFragment" >
+        <action
+            android:id="@+id/action_onSiteCheckoutFragment_to_onSiteOrderConfirmedFragment"
+            app:destination="@id/onSiteOrderConfirmedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/onSiteOrderConfirmedFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderonsite.OnSiteOrderConfirmedFragment"
+        android:label="OnSiteOrderConfirmedFragment" />
+    <fragment
+        android:id="@+id/onSiteOrderBeingPackedFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderonsite.OnSiteOrderBeingPackedFragment"
+        android:label="OnSiteOrderBeingPackedFragment" />
+    <fragment
+        android:id="@+id/onSiteOrderReadyFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderonsite.OnSiteOrderReadyFragment"
+        android:label="OnSiteOrderReadyFragment" />
 </navigation>

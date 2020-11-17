@@ -3,7 +3,9 @@ package com.md.williamriesen.hawkeyeharvestfoodbank.orderonsite
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import com.google.firebase.Timestamp
 import com.md.williamriesen.hawkeyeharvestfoodbank.MainActivityViewModel
 import com.md.williamriesen.hawkeyeharvestfoodbank.R
@@ -29,5 +31,9 @@ class OnSiteOrderActivity : AppCompatActivity() {
         viewModel.familySize = familySize as Int
         viewModel.retrieveObjectCatalogFromFireStore()
         setContentView(R.layout.activity_on_site_ordering)
+    }
+    fun onCartButtonClick(view: View) {
+        Navigation.findNavController(view)
+            .navigate(R.id.action_onSiteOrderSelectionFragment_to_onSiteCheckoutFragment)
     }
 }

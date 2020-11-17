@@ -1,4 +1,4 @@
-package com.md.williamriesen.hawkeyeharvestfoodbank
+package com.md.williamriesen.hawkeyeharvestfoodbank.orderfornextday
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,9 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.core.app.ShareCompat
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
+import com.md.williamriesen.hawkeyeharvestfoodbank.DisplayNumberActivity
+import com.md.williamriesen.hawkeyeharvestfoodbank.MainActivityViewModel
+import com.md.williamriesen.hawkeyeharvestfoodbank.R
 
 
 class NextDayOrderConfirmedFragment : Fragment() {

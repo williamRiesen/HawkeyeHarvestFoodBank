@@ -59,18 +59,20 @@ class OnSiteOrderingViewModel : ViewModel() {
                 else -> "PRIOR_TO_THIS_MONTH"
             }
         }
+    val accountNumberForDisplay: String
+        get() = accountID.takeLast(4)
 
     val nextFragment: Int
         get() {
             return when (orderState.value) {
                 "SAVED" -> R.id.action_onSiteOrderStartFragment_to_onSiteInstructionsFragment
                 "SUBMITTED" -> {
-                        R.id.action_onSiteOrderStartFragment_to_orderBeingPackedFragment2
+                        R.id.action_onSiteOrderStartFragment_to_onSiteOrderBeingPackedFragment
                 }
                 "PACKED" -> {
                     when (whenOrdered) {
-                        "TODAY" -> R.id.action_onSiteOrderStartFragment_to_orderReadyFragment2
-                        "EARLIER_THIS_MONTH" -> R.id.action_onSiteOrderStartFragment_to_orderReadyFragment2
+                        "TODAY" -> R.id.action_onSiteOrderStartFragment_to_onSiteOrderReadyFragment
+                        "EARLIER_THIS_MONTH" -> R.id.action_onSiteOrderStartFragment_to_onSiteOrderReadyFragment
                         else -> R.id.action_onSiteOrderStartFragment_to_onSiteInstructionsFragment
                     }
                 }
@@ -95,17 +97,23 @@ class OnSiteOrderingViewModel : ViewModel() {
                 Log.d("TAG", "token: $token")
 
                 val db = FirebaseFirestore.getInstance()
+                Log.d("TAG","orderID: $orderID")
                 if (orderID != null) {
                     db.collection(("orders")).document(orderID!!).set(filteredOrder)
                         .addOnSuccessListener {
                             Navigation.findNavController(view)
-                                .navigate(R.id.action_askWhetherToSubmitSavedOrderFragment_to_orderSubmittedFragment)
+                                .navigate(R.id.action_onSiteCheckoutFragment_to_onSiteOrderConfirmedFragment)
                         }
                 } else {
+                    Log.d("TAG", "about to attempt Submit.")
                     db.collection(("orders")).document().set(filteredOrder)
                         .addOnSuccessListener {
+                            Log.d("TAG", "filteredOrder $filteredOrder")
                             Navigation.findNavController(view)
-                                .navigate(R.id.action_askWhetherToSubmitSavedOrderFragment_to_orderSubmittedFragment)
+                                .navigate(R.id.action_onSiteCheckoutFragment_to_onSiteOrderConfirmedFragment)
+                        }
+                        .addOnFailureListener {
+                            Log.d("TAG", "Submit failed due to $it")
                         }
                 }
             }

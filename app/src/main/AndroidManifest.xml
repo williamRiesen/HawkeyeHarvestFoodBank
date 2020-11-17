@@ -15,7 +15,7 @@
         <activity
             android:name=".DisplayNumberActivity"
             android:screenOrientation="landscape"></activity>
-        <activity android:name=".NextDayOrderActivity" />
+        <activity android:name=".orderfornextday.NextDayOrderActivity" />
         <activity
             android:name=".signin.SignInByAccountActivity"
             android:screenOrientation="portrait">

@@ -1,4 +1,4 @@
-package com.md.williamriesen.hawkeyeharvestfoodbank
+package com.md.williamriesen.hawkeyeharvestfoodbank.orderfornextday
 
 import android.util.Log
 import android.view.View
@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
-import java.text.DateFormat
+import com.md.williamriesen.hawkeyeharvestfoodbank.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -42,6 +42,9 @@ class NextDayOrderingActivityViewModel : ViewModel() {
 
     val takingOrders : Boolean
     get() = FoodBank().isTakingNextDayOrders
+
+    val accountNumberForDisplay: String
+        get() = accountID.takeLast(4)
 
 
 

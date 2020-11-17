@@ -65,6 +65,7 @@
         android:id="@+id/imageViewCheckMark"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toStartOf="@+id/textViewReadyForPickUP"
         app:layout_constraintHorizontal_bias="0.5"
