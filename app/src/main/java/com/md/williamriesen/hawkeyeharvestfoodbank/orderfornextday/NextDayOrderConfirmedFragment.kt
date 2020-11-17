@@ -16,11 +16,11 @@ import com.md.williamriesen.hawkeyeharvestfoodbank.R
 
 class NextDayOrderConfirmedFragment : Fragment() {
 
-    lateinit var viewModel: MainActivityViewModel
+    lateinit var viewModel: NextDayOrderingActivityViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this.requireActivity())
-            .get(MainActivityViewModel::class.java)
+            .get(NextDayOrderingActivityViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -38,7 +38,9 @@ class NextDayOrderConfirmedFragment : Fragment() {
 //            Navigation.findNavController(it)
 //                .navigate(R.id.action_nextDayOrderConfirmedFragment_to_displayNumberFragment2)
             val intent = Intent(context, DisplayNumberActivity::class.java)
+            intent.putExtra("ACCOUNT_ID", viewModel.accountID)
             startActivity(intent)
+
         }
         return fragment
     }
