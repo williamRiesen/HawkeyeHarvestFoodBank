@@ -90,7 +90,7 @@
         android:label="OrderSavedFragment" />
     <fragment
         android:id="@+id/askWhetherToSubmitSavedOrderFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.AskWhetherToSubmitSavedOrderFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.AskWhetherToSubmitSavedOrderFragment"
         android:label="AskWhetherToSubmitSavedOrderFragment" >
         <action
             android:id="@+id/action_askWhetherToSubmitSavedOrderFragment_to_orderSavedFragment"

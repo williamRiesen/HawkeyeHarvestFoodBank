@@ -24,7 +24,9 @@
         android:label="OnSiteInstructionsFragment" >
         <action
             android:id="@+id/action_onSiteInstructionsFragment_to_onSiteOrderSelectionFragment"
-            app:destination="@id/onSiteOrderSelectionFragment" />
+            app:destination="@id/onSiteOrderSelectionFragment"
+            app:popUpTo="@id/onSiteOrderStartFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/onSiteOrderSelectionFragment"
@@ -40,7 +42,9 @@
         android:label="OnSiteCheckoutFragment" >
         <action
             android:id="@+id/action_onSiteCheckoutFragment_to_onSiteOrderConfirmedFragment"
-            app:destination="@id/onSiteOrderConfirmedFragment" />
+            app:destination="@id/onSiteOrderConfirmedFragment"
+            app:popUpTo="@id/onSiteOrderSelectionFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/onSiteOrderConfirmedFragment"

@@ -49,14 +49,12 @@ class OnSiteOrderSelectionFragment : Fragment() {
         recyclerView: RecyclerView) {
         FirestoreRecyclerOptions.Builder<Item>()
         adapter = OnSiteOrderItemListAdapter(itemList,viewModel)
-//        adapter = ItemListAdapter(itemList, viewModel)
         recyclerView.layoutManager = LinearLayoutManager(this.activity)
         recyclerView.adapter = adapter
     }
 
     override fun onPause() {
         super.onPause()
-//        viewModel.saveOrderWithoutNavigating()
+        viewModel.saveOrder()
     }
-
 }

@@ -118,6 +118,17 @@ class OnSiteOrderingViewModel : ViewModel() {
                 }
             }
     }
+
+    fun saveOrder() {
+        val thisOrder = Order(accountID, Date(), itemList.value!!, "SAVED")
+        val filteredOrder = thisOrder.filterOutZeros()
+        val db = FirebaseFirestore.getInstance()
+        if (orderID != null) {
+            db.collection(("orders")).document(orderID!!).set(filteredOrder)
+        } else {
+            db.collection(("orders")).document().set(filteredOrder)
+        }
+    }
     fun retrieveObjectCatalogFromFireStore() {
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection("catalogs").document("objectCatalog")
@@ -219,4 +230,5 @@ class OnSiteOrderingViewModel : ViewModel() {
             }
         }
     }
+
 }

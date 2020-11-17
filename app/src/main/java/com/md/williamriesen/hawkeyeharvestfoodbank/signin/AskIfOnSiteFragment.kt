@@ -26,6 +26,7 @@ class AskIfOnSiteFragment : Fragment() {
         val fragment = inflater.inflate(R.layout.fragment_ask_if_on_site, container, false)
         val buttonYes = fragment.findViewById<Button>(R.id.buttonYes)
         buttonYes.setOnClickListener {
+            activity?.onBackPressed()
             viewModel.clientIsOnSite = true
             Log.d("TAG", "viewModel.accountID:  ${viewModel.accountID}")
             viewModel.signIn(viewModel.accountID,viewModel.clientIsOnSite,it.context)
