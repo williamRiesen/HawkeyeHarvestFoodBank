@@ -8,7 +8,6 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
-import com.md.williamriesen.hawkeyeharvestfoodbank.MainActivityViewModel
 import com.md.williamriesen.hawkeyeharvestfoodbank.R
 
 

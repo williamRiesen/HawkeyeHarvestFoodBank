@@ -1,7 +1,6 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank.orderonsite
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +12,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.md.williamriesen.hawkeyeharvestfoodbank.CheckoutAdapter
-import com.md.williamriesen.hawkeyeharvestfoodbank.Item
+import com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.CheckoutAdapter
+import com.md.williamriesen.hawkeyeharvestfoodbank.foodbank.FoodItem
 import com.md.williamriesen.hawkeyeharvestfoodbank.R
 
 class OnSiteCheckoutFragment : Fragment() {
@@ -26,7 +25,7 @@ class OnSiteCheckoutFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this.requireActivity()).get(OnSiteOrderingViewModel::class.java)
-        viewModel.itemList.observe(this, Observer { adapter.notifyDataSetChanged() })
+        viewModel.foodItemList.observe(this, Observer { adapter.notifyDataSetChanged() })
     }
 
 
@@ -43,15 +42,15 @@ class OnSiteCheckoutFragment : Fragment() {
                     viewModel.submitOnSiteOrder(view)
         }
         val recyclerView = checkoutView.findViewById<RecyclerView>(R.id.recyclerviewChoices)
-        setUpRecyclerView(viewModel.itemList, recyclerView)
+        setUpRecyclerView(viewModel.foodItemList, recyclerView)
         return checkoutView
     }
 
     private fun setUpRecyclerView(
-        myList: MutableLiveData<MutableList<Item>>,
+        myList: MutableLiveData<MutableList<FoodItem>>,
         recyclerView: RecyclerView
     ) {
-        FirestoreRecyclerOptions.Builder<Item>()
+        FirestoreRecyclerOptions.Builder<FoodItem>()
         adapter = CheckoutAdapter(myList)
         recyclerView.layoutManager = LinearLayoutManager(this.activity)
         recyclerView.adapter = adapter

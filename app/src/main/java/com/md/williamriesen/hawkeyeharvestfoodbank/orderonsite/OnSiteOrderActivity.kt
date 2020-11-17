@@ -7,7 +7,6 @@ import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.google.firebase.Timestamp
-import com.md.williamriesen.hawkeyeharvestfoodbank.MainActivityViewModel
 import com.md.williamriesen.hawkeyeharvestfoodbank.R
 import java.util.*
 

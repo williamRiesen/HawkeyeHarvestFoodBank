@@ -13,7 +13,7 @@
         <activity android:name=".orderonsite.OnSiteOrderActivity">
         </activity>
         <activity
-            android:name=".DisplayNumberActivity"
+            android:name=".communication.DisplayNumberActivity"
             android:screenOrientation="landscape"></activity>
         <activity android:name=".orderfornextday.NextDayOrderActivity" />
         <activity
@@ -29,28 +29,28 @@
             android:name=".signin.SignStaffInActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".DirectorActivity"
+            android:name=".director.DirectorActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ManagerActivity"
+            android:name=".manager.ManagerActivity"
             android:label="Inventory Manager"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".orderoffsite.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".VolunteerActivity"
+            android:name=".volunteer.VolunteerActivity"
             android:icon="@drawable/ic_hawkeye_harvest_food_bank_logo"
             android:label="Order Packing"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".orderoffsite.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name=".orderoffsite.MainActivity"
             android:parentActivityName=".signin.SignInByAccountActivity"
             android:screenOrientation="portrait">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".orderoffsite.MainActivity" />
         </activity>
 
         <meta-data
@@ -58,7 +58,7 @@
             android:resource="@array/preloaded_fonts" />
 
         <service
-            android:name=".MyFirebaseMessagingService"
+            android:name=".communication.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

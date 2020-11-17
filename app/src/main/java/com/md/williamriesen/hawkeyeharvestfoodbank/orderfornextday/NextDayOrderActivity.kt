@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.google.firebase.Timestamp
 import com.google.firebase.messaging.FirebaseMessaging
-import com.md.williamriesen.hawkeyeharvestfoodbank.MainActivityViewModel
+import com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.MainActivityViewModel
 import com.md.williamriesen.hawkeyeharvestfoodbank.R
 import java.util.*
 

@@ -8,6 +8,7 @@ import androidx.navigation.Navigation
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.md.williamriesen.hawkeyeharvestfoodbank.*
+import com.md.williamriesen.hawkeyeharvestfoodbank.foodbank.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,7 +19,7 @@ class NextDayOrderingActivityViewModel : ViewModel() {
     var orderState = "NOT STARTED YET"
     var familySize = 0
     var points: Int? = null
-    val itemList = MutableLiveData<MutableList<Item>>()
+    val itemList = MutableLiveData<MutableList<FoodItem>>()
     val categoriesList = MutableLiveData<MutableList<Category>>()
 
     var pickUpHour24 = 0
@@ -64,10 +65,10 @@ class NextDayOrderingActivityViewModel : ViewModel() {
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
                 val myObjectCatalog = documentSnapshot.toObject<ObjectCatalog>()
-                val availableItemsList = myObjectCatalog?.itemList?.filter { item ->
+                val availableItemsList = myObjectCatalog?.foodItemList?.filter { item ->
                     item.isAvailable as Boolean
                 }
-                itemList.value = availableItemsList as MutableList<Item>?
+                itemList.value = availableItemsList as MutableList<FoodItem>?
                 retrieveCategoriesFromFireStore()
             }
             .addOnFailureListener {
@@ -89,7 +90,7 @@ class NextDayOrderingActivityViewModel : ViewModel() {
 
                 itemList.value = filteredList
                 itemList.value?.sortWith(
-                    compareBy<Item> { it.categoryId }.thenBy { it.itemID })
+                    compareBy<FoodItem> { it.categoryId }.thenBy { it.itemID })
                 Log.d("TAG","Data retrieval done.")
                 itemList.value!!.forEach { item->
                     Log.d("TAG", "${item.name}")
@@ -101,7 +102,7 @@ class NextDayOrderingActivityViewModel : ViewModel() {
 
     private fun generateHeadings() {
         categoriesList.value?.forEach { category ->
-            val heading = Item(
+            val heading = FoodItem(
                 0,
                 category.name,
                 category.name,
@@ -115,12 +116,12 @@ class NextDayOrderingActivityViewModel : ViewModel() {
             itemList.value!!.add(heading)
         }
     }
-    fun canAfford(item: Item): Boolean {
+    fun canAfford(foodItem: FoodItem): Boolean {
         val thisCategory = categoriesList.value?.find {
-            it.name == item.category
+            it.name == foodItem.category
         }
         val pointsAllocated = thisCategory!!.calculatePoints(familySize)
-        return pointsAllocated >= item.pointValue!!
+        return pointsAllocated >= foodItem.pointValue!!
     }
 
 }

@@ -36,7 +36,7 @@
     <string name="hit_confirm_to_finalize_this_order_or_the_phone_back_button_to_recheck">Hit CONFIRM to finalize this order, or the phone back button to recheck.</string>
     <string name="confirm">CONFIRM</string>
     <string name="order_number">ORDER NUMBER</string>
-    <string name="prior_to_creating_a_new_item_please_check_inventory_list_your_item_may_be_there_already_if_so_just_mark_it_as_available">Prior to creating a new item, please check inventory list: your item may be there already. If so, just mark it as available.</string>
+    <string name="prior_to_creating_a_new_item_please_check_inventory_list_your_item_may_be_there_already_if_so_just_mark_it_as_available">Prior to creating a new foodItem, please check inventory list: your foodItem may be there already. If so, just mark it as available.</string>
     <string name="your_order_was_received_but_not_packed_by_closing_time_or_some_other_error_has_occurred_something_has_gone_wrong_we_apologize_please_call_the_food_bank_between_1pm_and_3pm_weekdays_to_correct_the_problem">Your order was received but not packed by closing time, or some other error has occurred. Something has gone wrong: we apologize. Please call the food bank between 1PM and 3PM weekdays to correct the problem.</string>
     <string name="instructions_pick_your_food_from_the_list_use_the_plus_button_to_pick_the_food_use_the_minus_button_to_put_it_back_scroll_down_to_see_all_your_choices_when_you_are_done_shopping_push_the_shopping_cart_button_to_save">INSTRUCTIONS: pick your food from the list. Use the plus(+) button to pick the food. Use the minus (-) button to put it back. Scroll down to see all your choices. When you are done shopping, push the shopping cart button to save.</string>
     <string name="ready">Ready</string>
@@ -74,7 +74,7 @@
     <string name="shop_some_more">Shop some more</string>
     <string name="please_enter_your_account_id">Please enter your account ID:</string>
     <string name="espanol">Espanol</string>
-    <string name="item">Item</string>
+    <string name="foodItem">Item</string>
     <string name="available">Available</string>
     <string name="are_you_ready_to_pack_the_next_order">Are you ready to pack the next order?</string>
     <string name="number_of_orders_needing_to_be_packed">Number of orders needing to be packed:</string>

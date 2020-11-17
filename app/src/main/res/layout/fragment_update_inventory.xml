@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ManagerActivity">
+    tools:context=".manager.ManagerActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerviewInventoryForUpdate"
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="@string/item"
+        android:text="@string/foodItem"
         android:textSize="24sp"
         app:layout_constraintEnd_toStartOf="@+id/textViewAvailableLabel"
         app:layout_constraintHorizontal_bias="0.5"

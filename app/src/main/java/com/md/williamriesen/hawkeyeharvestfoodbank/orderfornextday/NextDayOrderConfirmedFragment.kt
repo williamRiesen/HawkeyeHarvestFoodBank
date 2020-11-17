@@ -9,8 +9,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
-import com.md.williamriesen.hawkeyeharvestfoodbank.DisplayNumberActivity
-import com.md.williamriesen.hawkeyeharvestfoodbank.MainActivityViewModel
+import com.md.williamriesen.hawkeyeharvestfoodbank.communication.DisplayNumberActivity
+import com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.MainActivityViewModel
 import com.md.williamriesen.hawkeyeharvestfoodbank.R
 
 

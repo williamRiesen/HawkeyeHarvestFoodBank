@@ -8,14 +8,12 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
-import com.md.williamriesen.hawkeyeharvestfoodbank.Item
+import com.md.williamriesen.hawkeyeharvestfoodbank.foodbank.FoodItem
 import com.md.williamriesen.hawkeyeharvestfoodbank.R.*
-import com.md.williamriesen.hawkeyeharvestfoodbank.orderonsite.OnSiteOrderingViewModel
 
 class OnSiteOrderItemListAdapter(
-    var itemList: MutableLiveData<MutableList<Item>>,
+    var foodItemList: MutableLiveData<MutableList<FoodItem>>,
     var viewModel: OnSiteOrderingViewModel
 ) :
     RecyclerView.Adapter<OnSiteOrderItemListAdapter.MyViewHolder>() {
@@ -40,9 +38,9 @@ class OnSiteOrderItemListAdapter(
     }
 
     fun incrementCountOfItem(position: Int) {
-        val myList = itemList.value
+        val myList = foodItemList.value
         myList!![position].qtyOrdered = myList[position].qtyOrdered + 1
-        itemList.value = myList
+        foodItemList.value = myList
         viewModel.points = viewModel.points?.minus(1)
         val selectedCategory = myList[position].category
         val viewModelCategory = viewModel.categoriesList.value!!.find {
@@ -58,10 +56,10 @@ class OnSiteOrderItemListAdapter(
     }
 
     fun decrementCountOfItem(position: Int) {
-        val myList = itemList.value
+        val myList = foodItemList.value
         if (myList?.get(position)?.qtyOrdered!! > 0) {
             myList[position].qtyOrdered = myList[position].qtyOrdered - 1
-            itemList.value = myList
+            foodItemList.value = myList
             viewModel.points = viewModel.points?.plus(1)
             val selectedCategory = myList[position].category
             val viewModelCategory = viewModel.categoriesList.value!!.find {
@@ -78,16 +76,16 @@ class OnSiteOrderItemListAdapter(
     }
 
     private fun checkIfOption(position: Int): Boolean {
-        val limit = itemList.value!![position].limit
-        val qtyOrderedSoFar = itemList.value!![position].qtyOrdered
+        val limit = foodItemList.value!![position].limit
+        val qtyOrderedSoFar = foodItemList.value!![position].qtyOrdered
         val atLimit = qtyOrderedSoFar == limit
-        val pointsNeeded = itemList.value!![position].pointValue!!.toInt()
-        val thisCategory = itemList.value!![position].category
-        val pointsUsed = itemList.value!!.find { item ->
+        val pointsNeeded = foodItemList.value!![position].pointValue!!.toInt()
+        val thisCategory = foodItemList.value!![position].category
+        val pointsUsed = foodItemList.value!!.find { item ->
             Log.d("TAG", "item.name: ${item.name}")
             item.name == thisCategory
         }!!.categoryPointsUsed
-        val pointsAllocated = itemList.value!!.find { item ->
+        val pointsAllocated = foodItemList.value!!.find { item ->
             item.name == thisCategory
         }!!.categoryPointsAllocated
         val pointsAvailable = pointsAllocated - pointsUsed
@@ -103,9 +101,9 @@ class OnSiteOrderItemListAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
         val isCategory =
-            itemList.value!![position].name == itemList.value!![position].category
+            foodItemList.value!![position].name == foodItemList.value!![position].category
         val isBottomBar =
-            itemList.value!![position].name == "Bottom Bar"
+            foodItemList.value!![position].name == "Bottom Bar"
 
         when {
             (isBottomBar) -> {
@@ -113,24 +111,24 @@ class OnSiteOrderItemListAdapter(
             }
             (isCategory) -> {
                 formatAsCategory(holder)
-                val thisCategory = itemList.value!![position].name
+                val thisCategory = foodItemList.value!![position].name
                 holder.textViewItemName.text = thisCategory
                 holder.textViewPointsAllocated.text =
-                    itemList.value!![position].categoryPointsAllocated.toString()
-                holder.textViewPointsUsed.text = itemList.value!!.find { item ->
+                    foodItemList.value!![position].categoryPointsAllocated.toString()
+                holder.textViewPointsUsed.text = foodItemList.value!!.find { item ->
                     item.name == thisCategory
                 }!!.categoryPointsUsed.toString()
-//                itemList.value!![position].categoryPointsUsed.toString()
+//                foodItemList.value!![position].categoryPointsUsed.toString()
             }
             else -> {
                 formatAsItem(holder)
-                if (itemList.value?.get(position)!!.qtyOrdered == 0) {
+                if (foodItemList.value?.get(position)!!.qtyOrdered == 0) {
                     holder.imageButtonRemove.visibility = View.INVISIBLE
                 } else {
                     holder.imageButtonRemove.visibility = View.VISIBLE
                 }
-                holder.textViewItemName.text = itemList.value!![position].name
-                holder.textViewCount.text = itemList.value!![position].qtyOrdered.toString()
+                holder.textViewItemName.text = foodItemList.value!![position].name
+                holder.textViewCount.text = foodItemList.value!![position].qtyOrdered.toString()
 
                 if (checkIfOption(position)) {
                     holder.imageButtonAdd.visibility = View.VISIBLE
@@ -185,8 +183,8 @@ class OnSiteOrderItemListAdapter(
 
     override fun getItemCount(): Int {
         var size = 0
-        if (itemList.value != null) {
-            size = itemList.value?.size!!
+        if (foodItemList.value != null) {
+            size = foodItemList.value?.size!!
         }
         return size
     }

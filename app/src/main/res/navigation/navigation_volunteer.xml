@@ -6,7 +6,7 @@
     app:startDestination="@id/volunteerSignInFragment">
     <fragment
         android:id="@+id/volunteerSignInFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.VolunteerSignInFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.volunteer.VolunteerSignInFragment"
         android:label="VolunteerSignInFragment" >
         <action
             android:id="@+id/action_volunteerSignInFragment_to_packOrderFragment"
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/packOrderFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.PackOrderFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.volunteer.PackOrderFragment"
         android:label="PackOrderFragment" >
         <action
             android:id="@+id/action_packOrderFragment_to_confirmPacked"
@@ -29,15 +29,15 @@
     </fragment>
     <fragment
         android:id="@+id/confirmPacked"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.ConfirmPacked"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.volunteer.ConfirmPacked"
         android:label="fragment_confirm_packed"
         tools:layout="@layout/fragment_confirm_packed" />
     <fragment
         android:id="@+id/noShowFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.NoShowFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.volunteer.NoShowFragment"
         android:label="NoShowFragment" />
     <fragment
         android:id="@+id/displayOrdersListFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.DisplayOrdersListFragment"
+        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.volunteer.DisplayOrdersListFragment"
         android:label="DisplayOrdersListFragment" />
 </navigation>

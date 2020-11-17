@@ -10,19 +10,20 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.iid.FirebaseInstanceId
 import com.md.williamriesen.hawkeyeharvestfoodbank.*
+import com.md.williamriesen.hawkeyeharvestfoodbank.foodbank.*
 import java.util.*
 
 class OnSiteOrderingViewModel : ViewModel() {
 
     var accountID = ""
-    val itemList = MutableLiveData<MutableList<Item>>()
+    val foodItemList = MutableLiveData<MutableList<FoodItem>>()
     var orderID: String? = null
     var isOpen = MutableLiveData<Boolean>(false)
     var familySize = 0
     var orderState: MutableLiveData<String> = MutableLiveData("NONE")
     var lastOrderDate: Date? = null
     val categoriesList = MutableLiveData<MutableList<Category>>()
-    private var savedItemList = mutableListOf<Item>()
+    private var savedItemList = mutableListOf<FoodItem>()
     var points: Int? = null
     val outOfStockNameList: MutableLiveData<MutableList<String>> =
         MutableLiveData(mutableListOf<String>())
@@ -84,7 +85,7 @@ class OnSiteOrderingViewModel : ViewModel() {
         }
 
     fun submitOnSiteOrder(view: View) {
-        val thisOrder = Order(accountID, Date(), itemList.value!!, "SUBMITTED")
+        val thisOrder = Order(accountID, Date(), foodItemList.value!!, "SUBMITTED")
         val filteredOrder = thisOrder.filterOutZeros()
 
         FirebaseInstanceId.getInstance().instanceId
@@ -120,7 +121,7 @@ class OnSiteOrderingViewModel : ViewModel() {
     }
 
     fun saveOrder() {
-        val thisOrder = Order(accountID, Date(), itemList.value!!, "SAVED")
+        val thisOrder = Order(accountID, Date(), foodItemList.value!!, "SAVED")
         val filteredOrder = thisOrder.filterOutZeros()
         val db = FirebaseFirestore.getInstance()
         if (orderID != null) {
@@ -135,10 +136,14 @@ class OnSiteOrderingViewModel : ViewModel() {
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
                 val myObjectCatalog = documentSnapshot.toObject<ObjectCatalog>()
-                val availableItemsList = myObjectCatalog?.itemList?.filter { item ->
-                    item.isAvailable as Boolean
+                if (myObjectCatalog != null) {
+                    Log.d("TAG", "myObjectCatalog.foodItemList: ${myObjectCatalog.foodItemList}")
                 }
-                itemList.value = availableItemsList as MutableList<Item>?
+                val availableItemsList = myObjectCatalog?.foodItemList?.filter { foodItem ->
+                    foodItem.isAvailable as Boolean
+
+                }
+                foodItemList.value = availableItemsList as MutableList<FoodItem>?
                 retrieveCategoriesFromFireStore()
             }
             .addOnFailureListener {
@@ -152,21 +157,21 @@ class OnSiteOrderingViewModel : ViewModel() {
             .addOnSuccessListener { documentSnapshot ->
                 val categoriesListing = documentSnapshot.toObject<CategoriesListing>()
                 categoriesList.value = categoriesListing?.categories as MutableList<Category>
-                generateHeadings()
-                val filteredList = itemList.value?.filter {
+                val filteredList = foodItemList.value?.filter {
                     canAfford(it)
                 } as MutableList
+                foodItemList.value = filteredList
+                generateHeadings()
+                foodItemList.value?.sortWith(
+                    compareBy<FoodItem> { it.categoryId }.thenBy { it.itemID })
 
-                itemList.value = filteredList
-                itemList.value?.sortWith(
-                    compareBy<Item> { it.categoryId }.thenBy { it.itemID })
                 if (!needToStartNewOrder) retrieveSavedOrder()
             }
     }
 
     private fun generateHeadings() {
         categoriesList.value?.forEach { category ->
-            val heading = Item(
+            val heading = FoodItem(
                 0,
                 category.name,
                 category.name,
@@ -177,23 +182,24 @@ class OnSiteOrderingViewModel : ViewModel() {
                 category.id,
                 category.calculatePoints(familySize)
             )
-            itemList.value!!.add(heading)
+            Log.d("TAG","foodItemList.value = ${foodItemList.value}")
+            foodItemList.value!!.add(heading)
         }
     }
 
-    fun canAfford(item: Item): Boolean {
-        Log.d("TAG", "item.name ${item.name}")
-        Log.d("TAG", "item.category ${item.category}")
+    fun canAfford(foodItem: FoodItem): Boolean {
+        Log.d("TAG", "foodItem.name ${foodItem.name}")
+        Log.d("TAG", "foodItem.category ${foodItem.category}")
 
         val thisCategory = categoriesList.value?.find {
-            it.name == item.category
+            it.name == foodItem.category
         }
         Log.d("TAG", "thisCategory.name ${thisCategory!!.name}")
         val pointsAllocated = thisCategory.calculatePoints(familySize)
         Log.d("TAG", "pointsAllocated $pointsAllocated")
-        Log.d("TAG", "pointValue: ${item.pointValue}")
-        Log.d("TAG", "return ${pointsAllocated >= item.pointValue!!}")
-        return pointsAllocated >= item.pointValue!!
+        Log.d("TAG", "pointValue: ${foodItem.pointValue}")
+        Log.d("TAG", "return ${pointsAllocated >= foodItem.pointValue!!}")
+        return pointsAllocated >= foodItem.pointValue!!
     }
 
     private fun retrieveSavedOrder() {
@@ -215,14 +221,14 @@ class OnSiteOrderingViewModel : ViewModel() {
     }
     private fun checkSavedOrderAgainstCurrentOfferings() {
         savedItemList.forEach { savedItem ->
-            val itemToCheck = itemList.value?.find { offeredItem ->
+            val itemToCheck = foodItemList.value?.find { offeredItem ->
                 offeredItem.name == savedItem.name
             }
             if (itemToCheck == null) {
                 outOfStockNameList.value!!.add(savedItem.name!!)
             } else {
                 itemToCheck.qtyOrdered = savedItem.qtyOrdered
-                val categoryToUpdate = itemList.value!!.find { item ->
+                val categoryToUpdate = foodItemList.value!!.find { item ->
                     item.name == itemToCheck.category
                 }
                 categoryToUpdate!!.categoryPointsUsed =

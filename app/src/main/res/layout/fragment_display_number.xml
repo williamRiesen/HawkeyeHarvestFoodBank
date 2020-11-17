@@ -6,7 +6,7 @@ android:id="@+id/display_number"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:background="@color/largeNumbersBackground"
-tools:context=".MainActivity">
+tools:context=".orderoffsite.MainActivity">
 
 <TextView
     android:id="@+id/textViewAccountIdBig"

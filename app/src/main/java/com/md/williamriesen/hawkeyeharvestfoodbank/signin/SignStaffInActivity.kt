@@ -10,10 +10,10 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
-import com.md.williamriesen.hawkeyeharvestfoodbank.MainActivity
-import com.md.williamriesen.hawkeyeharvestfoodbank.ManagerActivity
+import com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.MainActivity
+import com.md.williamriesen.hawkeyeharvestfoodbank.manager.ManagerActivity
 import com.md.williamriesen.hawkeyeharvestfoodbank.R
-import com.md.williamriesen.hawkeyeharvestfoodbank.VolunteerActivity
+import com.md.williamriesen.hawkeyeharvestfoodbank.volunteer.VolunteerActivity
 
 class SignStaffInActivity : AppCompatActivity() {
 
