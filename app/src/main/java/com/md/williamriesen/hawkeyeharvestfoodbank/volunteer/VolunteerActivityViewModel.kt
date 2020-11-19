@@ -77,7 +77,7 @@ class VolunteerActivityViewModel : ViewModel() {
         val db = FirebaseFirestore.getInstance()
         val ordersRef = db.collection("orders")
         val query = ordersRef
-//            .whereGreaterThan("date", startOfTodayTimestamp)
+//            .whereGreaterThan("date", startOfTodayTimestamp)  //For now, look at all submitted orders.
             .whereEqualTo("orderState", "SUBMITTED")
             .get()
             .addOnSuccessListener { querySnapshot ->

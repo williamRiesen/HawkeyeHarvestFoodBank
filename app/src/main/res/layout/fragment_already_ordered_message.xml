@@ -45,13 +45,13 @@
     </androidx.appcompat.widget.Toolbar>
 
     <TextView
-        android:id="@+id/textViewNotPickedUpMessage"
+        android:id="@+id/textViewAlreadyPickedUpMessage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/our_records_show_your_recent_order_was_packed_but_not_picked_up_by_closing_time_and_had_to_be_put_away_please_come_to_the_food_bank_between_1pm_and_3pm_weekdays_to_order_in_person"
+        android:text="Our records show you have picked up an order for this month already. Please return when you are ready next month."
         android:textColor="@color/plainText"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,14 +60,52 @@
         app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
 
     <Button
+        android:id="@+id/button_shop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/shop"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAlreadyPickedUpMessage" />
+
+    <Button
         android:id="@+id/button_exit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:text="@string/exit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNotPickedUpMessage" />
+        app:layout_constraintTop_toBottomOf="@+id/button_shop" />
+
+    <TextView
+        android:id="@+id/textViewShopForNextMonthLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/shop_for_next_month"
+        android:textColor="@color/plainText"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@+id/button_shop"
+        app:layout_constraintTop_toTopOf="@+id/button_shop" />
+
+    <TextView
+        android:id="@+id/textViewWIllComeBackLaterLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/come_back_later"
+        android:textColor="@color/plainText"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@+id/button_exit"
+        app:layout_constraintTop_toTopOf="@+id/button_exit" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,36 +29,37 @@ class NextDayOrderingActivityViewModel : ViewModel() {
     var orderID: String? = null
     val simpleDateFormat = SimpleDateFormat("E, MMM d")
 
-    val nextDayOpen : String?
+    val nextDayOpen: String?
         get() = simpleDateFormat.format(foodBank.nextDayOpen())
 
     val nextDayTakingOrders: String
-    get() = simpleDateFormat.format(foodBank.nextDayTakingOrders())
+        get() = simpleDateFormat.format(foodBank.nextDayTakingOrders())
 
     val nextPickUpDay: String
-    get() = simpleDateFormat.format(foodBank.nextDayOpen(afterTomorrow = true))
+        get() = simpleDateFormat.format(foodBank.nextDayOpen(afterTomorrow = true))
 
-    val nextPreOrderDay : String
-    get() = simpleDateFormat.format(foodBank.nextDayTakingOrders(afterToday = true))
+    val nextPreOrderDay: String
+        get() = simpleDateFormat.format(foodBank.nextDayTakingOrders(afterToday = true))
 
     val returnOnMessage: String
-    get() = "Please return to this app on $nextDayTakingOrders before 5 PM, to place your order for pick up on $nextDayOpen"
+        get() = "Please return to this app on $nextDayTakingOrders before 5 PM, to place your order for pick up on $nextDayOpen"
 
-    val takingOrders : Boolean
-    get() = FoodBank().isTakingNextDayOrders
+    val takingOrders: Boolean
+        get() = FoodBank().isTakingNextDayOrders
 
     val accountNumberForDisplay: String
         get() = accountID.takeLast(4)
 
 
-
-    fun goToNextFragment(pickUpHour24Arg: Int, view: View){
+    fun goToNextFragment(pickUpHour24Arg: Int, view: View) {
         pickUpHour24 = pickUpHour24Arg
-        if (pickUpHour24Arg == 0){
-            Navigation.findNavController(view).navigate(R.id.action_selectPickUpTimeFragment_to_returnAnotherDayFragment)
+        if (pickUpHour24Arg == 0) {
+            Navigation.findNavController(view)
+                .navigate(R.id.action_selectPickUpTimeFragment_to_returnAnotherDayFragment)
 
         } else {
-            Navigation.findNavController(view).navigate(R.id.action_selectPickUpTimeFragment_to_nextDayOrderSelectionFragment)
+            Navigation.findNavController(view)
+                .navigate(R.id.action_selectPickUpTimeFragment_to_nextDayOrderSelectionFragment)
         }
     }
 
@@ -94,8 +95,8 @@ class NextDayOrderingActivityViewModel : ViewModel() {
                 foodItemList.value = filteredList
                 foodItemList.value?.sortWith(
                     compareBy<FoodItem> { it.categoryId }.thenBy { it.itemID })
-                Log.d("TAG","Data retrieval done.")
-                foodItemList.value!!.forEach { item->
+                Log.d("TAG", "Data retrieval done.")
+                foodItemList.value!!.forEach { item ->
                     Log.d("TAG", "${item.name}")
                 }
 
@@ -119,6 +120,7 @@ class NextDayOrderingActivityViewModel : ViewModel() {
             foodItemList.value!!.add(heading)
         }
     }
+
     fun canAfford(foodItem: FoodItem): Boolean {
         val thisCategory = categoriesList.value?.find {
             it.name == foodItem.category
@@ -151,6 +153,8 @@ class NextDayOrderingActivityViewModel : ViewModel() {
         val db = FirebaseFirestore.getInstance()
         if (orderID != null) {
             db.collection(("orders")).document(orderID!!).set(filteredOrder)
+        } else {
+            db.collection(("orders")).document().set(filteredOrder)
                 .addOnSuccessListener {
                     retrieveSavedOrder()
 // Save then immediately retrieve is done this way to obtain orderID //
@@ -159,8 +163,6 @@ class NextDayOrderingActivityViewModel : ViewModel() {
 // but is done this way to fire a rule on the server side which is working and //
 // I would rather not change.
                 }
-        } else {
-            db.collection(("orders")).document().set(filteredOrder)
         }
     }
 
@@ -204,5 +206,4 @@ class NextDayOrderingActivityViewModel : ViewModel() {
                 }
             }
     }
-
 }

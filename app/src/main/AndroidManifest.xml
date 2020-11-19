@@ -10,11 +10,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
-        <activity android:name=".orderonsite.OnSiteOrderActivity">
-        </activity>
+        <activity android:name=".signin.PickUpTomorrowInstructionsActivity"></activity>
+        <activity android:name=".signin.PickUpNowInstructionsActivity" />
+        <activity android:name=".signin.PickUpLaterTodayInstructionsActivity" />
+        <activity android:name=".signin.InProgressOnSiteInstructionsActivity" />
+        <activity android:name=".ErrorMessageActivity" />
+        <activity android:name=".signin.AlreadyServedMessageActivity" />
+        <activity android:name=".signin.NoShowMessageActivity" />
+        <activity android:name=".orderonsite.OnSiteOrderActivity" />
         <activity
             android:name=".communication.DisplayNumberActivity"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape" />
         <activity android:name=".orderfornextday.NextDayOrderActivity" />
         <activity
             android:name=".signin.SignInByAccountActivity"

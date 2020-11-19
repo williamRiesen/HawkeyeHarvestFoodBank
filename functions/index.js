@@ -83,11 +83,65 @@ exports.sendNotificationToFCMToken = functions.firestore.document('orders/{turni
 	}
 });
 
+// exports.updateLastOrderDate = functions.firestore.document('orders/{turnip}').onWrite(async (event) => {
+// 	let accountID = event.after.get('accountID');
+// 	let orderDate = event.after.get('date');
+// 	let orderStateBefore = event.before.get('orderState');
+// 	let orderStateAfter = event.after.get('orderState');
+// 	console.log(accountID)
+// 	console.log(orderDate)
+// 	if (orderStateBefore ==="SAVED" && orderStateAfter === "SUBMITTED"){
+// 		const db = admin.firestore();
+// 		const ref = db.collection('accounts').doc(accountID);
+// 		// const ref = firebase.firestore().collection('accounts').doc(accountID);
+// 		ref.get()
+// 			.then((doc) => {
+// 				console.log("Promise fulfilled");
+//     			if (doc.exists){
+//      	  			 ref.update({lastOrderDate: orderDate});
+//      	  			}
+//  				return null
+//  				}
+//  			)
+ 		 
+// 			.catch(function(error){
+// 				// console.log("Promise rejected")
+
+// 				console.error("Error writing document: ", error);
+// 		});
+// 	}
+// 	if (orderStateAfter === "PACKED" || orderStateAfter === "SUBMITTED" || orderStateAfter === "SAVED"|| orderStateAfter === "NO SHOW"){
+// 		const db = admin.firestore();
+// 		const ref = db.collection('accounts').doc(accountID);
+// 		ref.get()
+// 			.then((doc) => {
+// 				console.log("Promise fulfilled");
+//     			if (doc.exists){
+//      	  			 ref.update({orderState: orderStateAfter});
+//      	  			}
+//  				return null
+//  				}
+//  			)
+ 		 
+// 			.catch(function(error){
+// 				// console.log("Promise rejected")
+
+// 				console.error("Error writing document: ", error);
+// 		});
+// 	}
+// });
+
 exports.updateLastOrderDate = functions.firestore.document('orders/{turnip}').onWrite(async (event) => {
 	let accountID = event.after.get('accountID');
 	let orderDate = event.after.get('date');
 	let orderStateBefore = event.before.get('orderState');
 	let orderStateAfter = event.after.get('orderState');
+	let pickUpHour24 = event.after.get('pickUpHour24');
+	if (pickUpHour24 === null) {
+		lastOrderType = "ON_SITE"
+	} else{
+		lastOrderType = "NEXT_DAY"
+	}
 	console.log(accountID)
 	console.log(orderDate)
 	if (orderStateBefore ==="SAVED" && orderStateAfter === "SUBMITTED"){
@@ -99,6 +153,7 @@ exports.updateLastOrderDate = functions.firestore.document('orders/{turnip}').on
 				console.log("Promise fulfilled");
     			if (doc.exists){
      	  			 ref.update({lastOrderDate: orderDate});
+     	  			 ref.update({lastOrderType: lastOrderType});
      	  			}
  				return null
  				}
@@ -133,7 +188,6 @@ exports.updateLastOrderDate = functions.firestore.document('orders/{turnip}').on
 
 
 
-
 // // set a custom claim for a specific user
 // exports.appointAsManager = functions.https.onRequest(async(req, res) => {
 // 	//Grab the text parameter (email of appointee)
@@ -156,7 +210,9 @@ exports.updateLastOrderDate = functions.firestore.document('orders/{turnip}').on
 //   res.json({result: `Message with ID: ${writeResult.id} added.`});
 //   });
 
-// // set a custom claim for a specific user
+
+
+// set a custom claim for a specific user
 // exports.appointAsVolunteer = functions.https.onRequest(async(req, res) => {
 // 	//Grab the text parameter (email of appointee)
 // 	const appointeeEmail = req.query.text;

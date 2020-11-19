@@ -128,6 +128,14 @@ class OnSiteOrderingViewModel : ViewModel() {
             db.collection(("orders")).document(orderID!!).set(filteredOrder)
         } else {
             db.collection(("orders")).document().set(filteredOrder)
+                .addOnSuccessListener {
+                    retrieveSavedOrder()
+// Save then immediately retrieve is done this way to obtain orderID //
+// which is subsequently used to submit.//
+// The transition from "SAVED" to "SUBMITTED" status is unnecessary on the client side,//
+// but is done this way to fire a rule on the server side which is working and //
+// I would rather not change.
+                }
         }
     }
     fun retrieveObjectCatalogFromFireStore() {

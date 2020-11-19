@@ -84,4 +84,9 @@
     <string name="order_number2">Order Number</string>
     <string name="orderid">OrderID</string>
     <string name="welcome_to_hawkeye_harvest_next_day_ordering">Welcome to Hawkeye Harvest Next Day Ordering!</string>
+    <string name="our_records_show_your_recent_order_was_packed_but_not_picked_up_by_closing_time_and_had_to_be_put_away_please_come_to_the_food_bank_when_it_is_open_to_order_in_person_for_this_month_please_try_this_app_again_next_month">Our records show your recent order was packed but not picked up by closing time and had to be put away. Please come to the food bank when it is open to order in person for this month. Please try this app again next month.</string>
+    <string name="your_order_is_in_progress_and_will_be_brought_out_to_you_shortly">Your order is in progress and will be brought out to you shortly.</string>
+    <string name="your_order_will_be_packed_for_pickup_between_and_today_please_go_to_the_food_bank_at_that_time_your_order_number_is">Your order will be packed for pickup between _ and _ today. Please go to the food bank at that time. Your order number is _</string>
+    <string name="your_order_is_ready_for_pickup_please_go_to_the_food_back_now_and_tell_staff_that_you_have_come_to_pick_up_order_number">Your order is ready for pickup. Please go to the food back now and tell staff that you have come to pick up order number _</string>
+    <string name="your_order_has_been_received_please_go_to_the_food_back_tomorrow_between_and_to_pick_up_your_order">Your order has been received. Please go to the food back tomorrow between _ and _ to pick up your order.</string>
 </resources>

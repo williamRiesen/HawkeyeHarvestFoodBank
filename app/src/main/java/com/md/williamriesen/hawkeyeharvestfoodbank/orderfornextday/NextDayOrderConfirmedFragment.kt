@@ -32,7 +32,7 @@ class NextDayOrderConfirmedFragment : Fragment() {
         val textViewPickUpInstructions = fragment.findViewById<TextView>(R.id.textViewPickUpInstructions)
         val startOfWindow = viewModel.pickUpHour24 - 12
         val endOfWindow = startOfWindow + 1
-        textViewPickUpInstructions.text = "Please go to the food bank between $startOfWindow PM and $endOfWindow PM to pick up your order."
+        textViewPickUpInstructions.text = "Please go to the food bank between $startOfWindow PM and $endOfWindow PM tomorrow to pick up your order."
         val buttonShowNumber = fragment.findViewById<Button>(R.id.buttonShowNumber)
         buttonShowNumber.setOnClickListener {
 //            Navigation.findNavController(it)

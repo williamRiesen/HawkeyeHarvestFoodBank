@@ -10,6 +10,7 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 import com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.MainActivity
 import com.md.williamriesen.hawkeyeharvestfoodbank.manager.ManagerActivity
 import com.md.williamriesen.hawkeyeharvestfoodbank.R
@@ -21,6 +22,7 @@ class SignStaffInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
         createLogInUI()
     }
 

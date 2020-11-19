@@ -13,6 +13,5 @@ class SignInByAccountActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(SignInViewModel::class.java)
         setContentView(R.layout.activity_login_by_account)
-        FirebaseMessaging.getInstance().subscribeToTopic("volunteer")
     }
 }

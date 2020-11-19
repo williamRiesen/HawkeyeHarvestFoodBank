@@ -5,14 +5,21 @@ import java.util.*
 class Order() {
     var accountID: String? = null
     var date: Date? = null
-    var itemList =  mutableListOf<FoodItem>()
-    var orderState: String?  = null
+    var itemList = mutableListOf<FoodItem>()
+    var orderState: String? = null
     var deviceToken: String? = null
     var orderID: String? = null
     var pickUpHour24: Int? = null
     var pickUpMonth: Int? = null
 
-    constructor(accountIDArg: String, dateArg: Date, foodItemListArg: MutableList<FoodItem>, orderStateArg: String, pickUpHour24Arg: Int? = null, pickUpMonthArg: Int? = null) : this() {
+    constructor(
+        accountIDArg: String,
+        dateArg: Date,
+        foodItemListArg: MutableList<FoodItem>,
+        orderStateArg: String,
+        pickUpHour24Arg: Int? = null,
+        pickUpMonthArg: Int? = null
+    ) : this() {
         accountID = accountIDArg
         date = dateArg
         itemList = foodItemListArg
@@ -21,7 +28,7 @@ class Order() {
         pickUpMonth = pickUpMonthArg
     }
 
-   fun filterOutZeros(): Order {
+    fun filterOutZeros(): Order {
         val itemList = itemList
         val filteredList = itemList.filter { item ->
             item.qtyOrdered != 0
