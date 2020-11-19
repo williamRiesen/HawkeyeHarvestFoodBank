@@ -69,6 +69,7 @@ class SignInViewModel() : ViewModel() {
                         } else {
                             "NOT STARTED YET"
                         }
+                        Log.d("TAG","clientState: $clientState")
                         val intent =
                             if (clientState == ClientState.ELIGIBLE_TO_ORDER) {
                                 when {

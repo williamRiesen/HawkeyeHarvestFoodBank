@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.md.williamriesen.hawkeyeharvestfoodbank.R
 import com.md.williamriesen.hawkeyeharvestfoodbank.foodbank.FoodItem
 import com.md.williamriesen.hawkeyeharvestfoodbank.R.*
 
@@ -150,8 +152,8 @@ class OnSiteOrderItemListAdapter(
         holder.textViewPointsAllocated.visibility = View.VISIBLE
         holder.textViewItemName.visibility = View.VISIBLE
         holder.textViewItemName.textSize = 32F
-        holder.textViewItemName.setTextColor(Color.BLACK)
-        holder.textViewItemName.setBackgroundColor(Color.parseColor("#008577"))
+        holder.textViewItemName.setTextColor(ContextCompat.getColor(holder.view.context, R.color.logoLimeGreen))
+        holder.textViewItemName.setBackgroundColor(ContextCompat.getColor(holder.view.context, R.color.colorAccent))
     }
 
     private fun formatAsItem(holder: MyViewHolder) {
