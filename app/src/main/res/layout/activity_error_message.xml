@@ -46,7 +46,7 @@ tools:context=".ErrorMessageActivity">
 </androidx.appcompat.widget.Toolbar>
 
 <TextView
-    android:id="@+id/textViewNotTakingNextDayOrders"
+    android:id="@+id/textViewMessage"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="16dp"

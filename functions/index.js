@@ -154,6 +154,7 @@ exports.updateLastOrderDate = functions.firestore.document('orders/{turnip}').on
     			if (doc.exists){
      	  			 ref.update({lastOrderDate: orderDate});
      	  			 ref.update({lastOrderType: lastOrderType});
+     	  			 ref.update({pickUpHour24: pickUpHour24});
      	  			}
  				return null
  				}

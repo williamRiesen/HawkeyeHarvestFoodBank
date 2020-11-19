@@ -27,6 +27,7 @@ class SignInViewModel() : ViewModel() {
     var lastOrderDate: Date? = null
     var lastOrderType: String? = null
     var clientIsOnSite = false
+    var pickUpHour24 = 0
 
     fun determineClientLocation(accountIdArg: String, view: View, context: Context) {
         accountID = accountIdArg
@@ -59,9 +60,9 @@ class SignInViewModel() : ViewModel() {
                         val timeStamp: Timestamp =
                             documentSnapshot["lastOrderDate"] as Timestamp
                         lastOrderDate = Date(timeStamp.seconds * 1000)
-                        lastOrderType = if (documentSnapshot["lastOrderType"] != null){
+                        lastOrderType = if (documentSnapshot["lastOrderType"] != null) {
                             documentSnapshot["lastOrderType"] as String
-                        }else{
+                        } else {
                             "ON_SITE"
                         }
                         orderState.value = if (documentSnapshot["orderState"] != null) {
@@ -69,7 +70,12 @@ class SignInViewModel() : ViewModel() {
                         } else {
                             "NOT STARTED YET"
                         }
-                        Log.d("TAG","clientState: $clientState")
+                        pickUpHour24 = if (documentSnapshot["pickUpHour24"] != null) {
+                            (documentSnapshot["pickUpHour24"] as Long).toInt()
+                        } else {
+                            0
+                        }
+                        Log.d("TAG", "clientState: $clientState")
                         val intent =
                             if (clientState == ClientState.ELIGIBLE_TO_ORDER) {
                                 when {
@@ -97,6 +103,7 @@ class SignInViewModel() : ViewModel() {
                             documentSnapshot["lastOrderDate"] as Timestamp
                         )
                         intent.putExtra("LAST_ORDER_TYPE", lastOrderType)
+                        intent.putExtra("PICKUP_HOUR24", pickUpHour24)
                         pleaseWait.value = false
                         context.startActivity(intent)
                     } else {
