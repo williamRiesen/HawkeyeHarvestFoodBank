@@ -10,14 +10,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
-        <activity android:name=".signin.PickUpTomorrowInstructionsActivity"></activity>
-        <activity android:name=".signin.PickUpNowInstructionsActivity" />
-        <activity android:name=".signin.PickUpLaterTodayInstructionsActivity" />
-        <activity android:name=".signin.InProgressOnSiteInstructionsActivity" />
-        <activity android:name=".ErrorMessageActivity" />
-        <activity android:name=".signin.AlreadyServedMessageActivity" />
-        <activity android:name=".signin.NoShowMessageActivity" />
-        <activity android:name=".orderonsite.OnSiteOrderActivity" />
+        <activity android:name=".signin.PickUpTomorrowInstructionsActivity">
+            android:screenOrientation="portrait"
+        </activity>
+        <activity android:name=".signin.PickUpNowInstructionsActivity"
+        android:screenOrientation="portrait"/>
+        <activity android:name=".signin.PickUpLaterTodayInstructionsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".signin.InProgressOnSiteInstructionsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ErrorMessageActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".signin.AlreadyServedMessageActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".signin.NoShowMessageActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".orderonsite.OnSiteOrderActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".communication.DisplayNumberActivity"
             android:screenOrientation="landscape" />

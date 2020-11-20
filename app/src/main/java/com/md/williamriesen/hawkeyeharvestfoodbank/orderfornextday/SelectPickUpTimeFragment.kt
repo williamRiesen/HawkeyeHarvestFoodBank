@@ -1,6 +1,7 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank.orderfornextday
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -26,12 +27,15 @@ class SelectPickUpTimeFragment : Fragment() {
         val fragment = inflater.inflate(R.layout.fragment_select_pick_up_time, container, false)
         val radioGroup = fragment.findViewById<RadioGroup>(R.id.radioGroup)
         val buttonNext = fragment.findViewById<Button>(R.id.buttonNext)
+        radioGroup.setOnCheckedChangeListener { group, checkedId ->
+            Log.d("TAG", "radioButton CLicked.")
+            buttonNext.visibility = View.VISIBLE
+        }
         buttonNext.setOnClickListener {
-            val selection = radioGroup.checkedRadioButtonId
-            val pickUpHour24 = when (selection){
-                R.id.radioButton2to3PM ->  14
-                R.id.radioButton3to4PM ->  15
-                else ->  0
+            val pickUpHour24 = when (radioGroup.checkedRadioButtonId) {
+                R.id.radioButton2to3PM -> 14
+                R.id.radioButton3to4PM -> 15
+                else -> 0
             }
             viewModel.goToNextFragment(
                 pickUpHour24, requireView()

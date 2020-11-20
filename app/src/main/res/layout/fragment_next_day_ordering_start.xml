@@ -63,7 +63,7 @@
         android:layout_marginTop="68dp"
         android:layout_marginEnd="16dp"
         android:gravity="center"
-        android:text="@string/welcome_to_hawkeye_harvest_next_day_ordering"
+        android:text="Hawkeye Harvest Next Day Ordering"
         android:textColor="@color/logoHunterGreen"
         android:textSize="36sp"
         android:textStyle="bold"
@@ -71,7 +71,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
-
 
 
     <Button
@@ -83,7 +82,21 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewNextDayInstructions"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:text="You can use this app now to choose what food you would like to pick up tomorrow. You must send your order by touching the yellow grocery cart button before 5 PM today. You need to be sure you can pick up your order TOMORROW between 2 PM and 4 PM."
+        android:textColor="@color/plainText"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonNext"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewWelcome" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewWelcome"
+        app:layout_constraintVertical_bias="0.17000002" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

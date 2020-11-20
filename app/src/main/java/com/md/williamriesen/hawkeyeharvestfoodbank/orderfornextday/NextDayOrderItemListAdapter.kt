@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.md.williamriesen.hawkeyeharvestfoodbank.R
 import com.md.williamriesen.hawkeyeharvestfoodbank.foodbank.FoodItem
 import com.md.williamriesen.hawkeyeharvestfoodbank.R.*
 
@@ -150,7 +152,7 @@ class NextDayOrderItemListAdapter(
         holder.textViewPointsAllocated.visibility = View.VISIBLE
         holder.textViewItemName.visibility = View.VISIBLE
         holder.textViewItemName.textSize = 32F
-        holder.textViewItemName.setTextColor(Color.BLACK)
+        holder.textViewItemName.setTextColor(ContextCompat.getColor(holder.view.context, R.color.logoLimeGreen))
         holder.textViewItemName.setBackgroundColor(Color.parseColor("#008577"))
     }
 
@@ -178,7 +180,7 @@ class NextDayOrderItemListAdapter(
         holder.textViewPointsAllocated.visibility = View.VISIBLE
         holder.textViewPointsAllocated.text = "--"
         holder.textViewItemName.setBackgroundColor(Color.parseColor("#008577"))
-        holder.textViewCount.setTextColor(Color.parseColor("#000000"))
+        holder.textViewItemName.setTextColor(ContextCompat.getColor(holder.view.context, R.color.logoLimeGreen))
     }
 
     override fun getItemCount(): Int {

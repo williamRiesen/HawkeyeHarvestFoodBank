@@ -33,6 +33,7 @@ class AskIfOnSiteFragment : Fragment() {
         }
         val buttonNo = fragment.findViewById<Button>(R.id.buttonNo)
         buttonNo.setOnClickListener {
+            activity?.onBackPressed()
             viewModel.clientIsOnSite = false
             Log.d("TAG", "viewModel.accountID:  ${viewModel.accountID}")
 

@@ -74,6 +74,8 @@
             android:id="@+id/radioButton2to3PM"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
             android:text="Between 2 PM and 3 PM TOMORROW"
             android:textSize="24sp" />
 
@@ -81,6 +83,8 @@
             android:id="@+id/radioButton3to4PM"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
             android:text="Between 3 PM and 4 PM TOMORROW"
             android:textSize="24sp" />
 
@@ -88,6 +92,8 @@
             android:id="@+id/radioButtonNo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
             android:text="I cannot come at these times TOMORROW."
             android:textSize="24sp" />
     </RadioGroup>
@@ -97,6 +103,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Next"
+        android:textSize="24sp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
