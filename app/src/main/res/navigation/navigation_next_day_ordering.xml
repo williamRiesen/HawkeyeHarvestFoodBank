@@ -41,15 +41,7 @@
     <fragment
         android:id="@+id/nextDayOrderConfirmedFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderfornextday.NextDayOrderConfirmedFragment"
-        android:label="NextDayOrderConfirmedFragment" >
-        <action
-            android:id="@+id/action_nextDayOrderConfirmedFragment_to_displayNumberFragment2"
-            app:destination="@id/displayNumberFragment2" />
-    </fragment>
-    <fragment
-        android:id="@+id/displayNumberFragment2"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.communication.DisplayNumberFragment"
-        android:label="DisplayNumberFragment" />
+        android:label="NextDayOrderConfirmedFragment" />
     <fragment
         android:id="@+id/nextDayOrderSelectionFragment"
         android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderfornextday.NextDayOrderSelectionFragment"
@@ -64,6 +56,8 @@
         android:label="NextDayCheckoutFragment" >
         <action
             android:id="@+id/action_nextDayCheckoutFragment_to_nextDayOrderConfirmedFragment"
-            app:destination="@id/nextDayOrderConfirmedFragment" />
+            app:destination="@id/nextDayOrderConfirmedFragment"
+            app:popUpTo="@id/nextDayOrderingStartFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>
