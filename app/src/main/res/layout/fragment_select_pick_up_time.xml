@@ -46,17 +46,15 @@
 
     <TextView
         android:id="@+id/textViewWhenToPickUpLabel"
-        android:layout_width="0dp"
+        android:layout_width="254dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="When can you pick up your food tomorrow?"
         android:textColor="@color/logoHunterGreen"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
+        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
     <RadioGroup
         android:id="@+id/radioGroup"
@@ -109,6 +107,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tool_bar"
+        app:srcCompat="@drawable/ic_clock" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
