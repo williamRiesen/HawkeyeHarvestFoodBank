@@ -29,7 +29,7 @@ class AskIfOnSiteFragment : Fragment() {
             activity?.onBackPressed()
             viewModel.clientIsOnSite = true
             Log.d("TAG", "viewModel.accountID:  ${viewModel.accountID}")
-            viewModel.signIn(viewModel.accountID,viewModel.clientIsOnSite,it.context)
+            viewModel.retrieveClientInformation(viewModel.accountID,viewModel.clientIsOnSite,it.context)
         }
         val buttonNo = fragment.findViewById<Button>(R.id.buttonNo)
         buttonNo.setOnClickListener {
@@ -37,7 +37,7 @@ class AskIfOnSiteFragment : Fragment() {
             viewModel.clientIsOnSite = false
             Log.d("TAG", "viewModel.accountID:  ${viewModel.accountID}")
 
-            viewModel.signIn(viewModel.accountID,viewModel.clientIsOnSite,it.context)
+            viewModel.retrieveClientInformation(viewModel.accountID,viewModel.clientIsOnSite,it.context)
         }
         return fragment
     }

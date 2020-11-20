@@ -8,7 +8,17 @@ android:layout_height="match_parent"
 android:background="@color/fragmentBackground"
 tools:context=".signin.PickUpLaterTodayInstructionsActivity">
 
-<androidx.appcompat.widget.Toolbar
+    <Button
+        android:id="@+id/buttonShowNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/show_number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMessage" />
+
+    <androidx.appcompat.widget.Toolbar
     android:id="@+id/tool_bar"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
@@ -45,31 +55,20 @@ tools:context=".signin.PickUpLaterTodayInstructionsActivity">
 
 </androidx.appcompat.widget.Toolbar>
 
-<TextView
-    android:id="@+id/textViewMessage"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="32dp"
-    android:layout_marginEnd="16dp"
-    android:text="@string/your_order_will_be_packed_for_pickup_between_and_today_please_go_to_the_food_bank_at_that_time_your_order_number_is"
-    android:textColor="@color/plainText"
-    android:textSize="18sp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.5"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
-
-<Button
-    android:id="@+id/button_exit"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="@string/exit"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.458"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/textViewInstructions" />
+    <TextView
+        android:id="@+id/textViewMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:text="Your order will be packed from pickup between _ and _ today. Please go to the food bank at that time. Show the order number on the next screen to food bank staff."
+        android:textColor="@color/plainText"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

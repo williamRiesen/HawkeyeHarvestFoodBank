@@ -76,7 +76,7 @@ class SignInByAccountFragment : Fragment() {
         if (accountID != null && accountID != "") {
             viewModel.accountID = accountID
             if (accountID == "STAFF"){
-                            viewModel.signIn(accountID,true,requireContext())
+                            viewModel.retrieveClientInformation(accountID,true,requireContext())
             } else {
                 viewModel.determineClientLocation(accountID, view, requireContext())
             }

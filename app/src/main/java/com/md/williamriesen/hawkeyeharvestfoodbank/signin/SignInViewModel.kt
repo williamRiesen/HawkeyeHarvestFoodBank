@@ -28,6 +28,7 @@ class SignInViewModel() : ViewModel() {
     var lastOrderType: String? = null
     var clientIsOnSite = false
     var pickUpHour24 = 0
+    var timeStamp: Timestamp? = null
 
     fun determineClientLocation(accountIdArg: String, view: View, context: Context) {
         accountID = accountIdArg
@@ -36,11 +37,11 @@ class SignInViewModel() : ViewModel() {
             Navigation.findNavController(view)
                 .navigate(R.id.action_loginByAccountIdFragment_to_askIfOnSiteFragment)
         } else {
-            signIn(accountID, false, context)
+            retrieveClientInformation(accountID, false, context)
         }
     }
 
-    fun signIn(accountIdArg: String, clientIsOnSiteArg: Boolean, context: Context) {
+    fun retrieveClientInformation(accountIdArg: String, clientIsOnSiteArg: Boolean, context: Context) {
         accountID = accountIdArg
         pleaseWait.value = true
         if (accountID == "STAFF") {
@@ -57,9 +58,9 @@ class SignInViewModel() : ViewModel() {
             docRef.get()
                 .addOnSuccessListener { documentSnapshot ->
                     if (documentSnapshot.exists()) {
-                        val timeStamp: Timestamp =
-                            documentSnapshot["lastOrderDate"] as Timestamp
-                        lastOrderDate = Date(timeStamp.seconds * 1000)
+                        timeStamp = documentSnapshot["lastOrderDate"] as Timestamp
+                        lastOrderDate = Date(timeStamp!!.seconds * 1000)
+                        familySizeFromFireStore = documentSnapshot["familySize"] as Long
                         lastOrderType = if (documentSnapshot["lastOrderType"] != null) {
                             documentSnapshot["lastOrderType"] as String
                         } else {
@@ -76,36 +77,8 @@ class SignInViewModel() : ViewModel() {
                             0
                         }
                         Log.d("TAG", "clientState: $clientState")
-                        val intent =
-                            if (clientState == ClientState.ELIGIBLE_TO_ORDER) {
-                                when {
-                                    FoodBank().isOpen && clientIsOnSiteArg -> Intent(
-                                        context,
-                                        OnSiteOrderActivity::class.java
-                                    )
-                                    else -> Intent(context, NextDayOrderActivity::class.java)
-                                }
-                            } else Intent(context, destinationActivity::class.java)
-                        Log.d("TAG", "intent: $intent")
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                        Log.d("TAG", "accountId: $accountID")
-                        intent.putExtra("ACCOUNT_ID", accountID)
 
-                        Log.d("TAG", "orderState: ${orderState.value}")
-                        intent.putExtra("ORDER_STATE", orderState.value)
-                        familySizeFromFireStore = documentSnapshot["familySize"] as Long
-                        Log.d("TAG", "familySize: ${familySizeFromFireStore}")
-                        intent.putExtra("FAMILY_SIZE", familySizeFromFireStore!!.toInt())
-
-                        Log.d("TAG", "lastOrderDate (from signInActivity): $lastOrderDate")
-                        intent.putExtra(
-                            "LAST_ORDER_DATE_TIMESTAMP",
-                            documentSnapshot["lastOrderDate"] as Timestamp
-                        )
-                        intent.putExtra("LAST_ORDER_TYPE", lastOrderType)
-                        intent.putExtra("PICKUP_HOUR24", pickUpHour24)
-                        pleaseWait.value = false
-                        context.startActivity(intent)
+                        generateIntentAndStartNextActivity(clientIsOnSiteArg, context)
                     } else {
                         Toast.makeText(
                             context,
@@ -119,6 +92,41 @@ class SignInViewModel() : ViewModel() {
                     Log.d("TAG", "Retrieve family size from database failed.")
                 }
         }
+    }
+
+
+    fun generateIntentAndStartNextActivity(clientIsOnSiteArg: Boolean, context: Context) {
+        val intent =
+            if (clientState == ClientState.ELIGIBLE_TO_ORDER) {
+                when {
+                    FoodBank().isOpen && clientIsOnSiteArg -> Intent(
+                        context,
+                        OnSiteOrderActivity::class.java
+                    )
+                    else -> if (FoodBank().isTakingNextDayOrders) {
+                        Intent(context, NextDayOrderActivity::class.java)
+                    } else {
+                        Intent(context, NotTakingOrdersNowMessageActivity::class.java)
+                    }
+                }
+            } else Intent(context, destinationActivity::class.java)
+        Log.d("TAG", "intent: $intent")
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        Log.d("TAG", "accountId: $accountID")
+        intent.putExtra("ACCOUNT_ID", accountID)
+
+        Log.d("TAG", "orderState: ${orderState.value}")
+        intent.putExtra("ORDER_STATE", orderState.value)
+
+        Log.d("TAG", "familySize: ${familySizeFromFireStore}")
+        intent.putExtra("FAMILY_SIZE", familySizeFromFireStore!!.toInt())
+
+        Log.d("TAG", "lastOrderDate (from signInActivity): $lastOrderDate")
+        intent.putExtra("LAST_ORDER_DATE_TIMESTAMP", timeStamp)
+        intent.putExtra("LAST_ORDER_TYPE", lastOrderType)
+        intent.putExtra("PICKUP_HOUR24", pickUpHour24)
+        pleaseWait.value = false
+        context.startActivity(intent)
     }
 
 
@@ -144,6 +152,7 @@ class SignInViewModel() : ViewModel() {
                 else -> "PRIOR_TO_THIS_MONTH"
             }
         }
+
     val clientState: ClientState
         get() =
             when (whenOrdered) {
