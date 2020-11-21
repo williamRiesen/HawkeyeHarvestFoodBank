@@ -7,6 +7,35 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:background="@color/design_default_color_background"
 tools:context=".signin.NotTakingOrdersNowMessageActivity">
+    <TextView
+        android:id="@+id/textViewMessage3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="2. From home. Home orders need to be placed before 5 PM Sunday through Thursday on the day BEFORE you want to pick it up."
+        android:textColor="@color/plainText"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMessage2" />
+
+    <TextView
+        android:id="@+id/textViewMessage2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="1. When you are at the food bank. The food bank is open weekdays 1-4 PM except holidays."
+        android:textColor="@color/plainText"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMessage" />
 
 <TextView
     android:id="@+id/textViewNextDayOpen"
@@ -58,37 +87,37 @@ tools:context=".signin.NotTakingOrdersNowMessageActivity">
 
 </androidx.appcompat.widget.Toolbar>
 
-<TextView
-    android:id="@+id/textViewMessage"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="24dp"
-    android:layout_marginEnd="16dp"
-    android:text="For now, orders by app need to be sent by 5 PM on the day before pickup. In the near future we hope to offer same-day ordering."
-    android:textColor="@color/plainText"
-    android:textSize="24sp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="1.0"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
+    <TextView
+        android:id="@+id/textViewMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:text="You can use this app two ways:"
+        android:textColor="@color/plainText"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
 
-<TextView
-    android:id="@+id/textViewPleaseReturnOn"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="16dp"
-    android:layout_marginEnd="16dp"
-    android:text="Please return to this app one day before pickup. You can sign in before 5 PM on:"
-    android:textColor="@color/plainText"
-    android:textSize="24sp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.0"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/textViewMessage" />
+    <TextView
+        android:id="@+id/textViewPleaseReturnOn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Please return to this app before before 5 PM on:"
+        android:textColor="@color/plainText"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMessage3" />
 
-<TextView
+    <TextView
     android:id="@+id/textViewNextDayTakingOrders"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -115,6 +144,16 @@ tools:context=".signin.NotTakingOrdersNowMessageActivity">
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/textViewNextDayTakingOrders" />
+
+    <Button
+        android:id="@+id/buttonSeeYouThen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="See You Then"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNextDayOpen" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

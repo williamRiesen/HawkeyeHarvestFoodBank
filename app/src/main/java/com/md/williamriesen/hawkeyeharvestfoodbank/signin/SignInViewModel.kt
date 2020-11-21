@@ -80,68 +80,83 @@ class SignInViewModel() : ViewModel() {
                         } else {
                             0
                         }
-                        if (clientState == ClientState.PLACED_ON_SITE) {
-                            clientIsOnSite = true
-                            generateIntentAndStartNextActivity(clientIsOnSite, context)
-                        } else {
-                            clientIsOnSite = false
-                            generateIntentAndStartNextActivity(clientIsOnSite, context)
+                        when {
+                            clientState == ClientState.PLACED_ON_SITE -> {
+                                clientIsOnSite = true
+                                generateIntentAndStartNextActivity(context)
+                            }
+                            clientState == ClientState.ELIGIBLE_TO_ORDER && FoodBank().isOpen -> {
+                                determineClientLocation(accountID, view, context)
+                            }
+                            !FoodBank().isTakingNextDayOrders -> {
+                                clientIsOnSite = false
+                                generateIntentAndStartNextActivity(context)
+                            }
+                            else -> {
+                                determineClientLocation(accountID, view, context)
+                            }
                         }
-                    }else {
-                            Toast.makeText(
-                                context,
-                                "Sorry, Not a valid account.",
-                                Toast.LENGTH_LONG
-                            )
-                                .show()
-                            pleaseWait.value = false
-
-                        }
+                    } else {
+                        Toast.makeText(
+                            context,
+                            "Sorry, Not a valid account.",
+                            Toast.LENGTH_LONG
+                        )
+                            .show()
+                        pleaseWait.value = false
                     }
-                        .addOnFailureListener {
-                            Log.d("TAG", "Retrieve family size from database failed.")
-                        }
+                }
+                .addOnFailureListener {
+                    pleaseWait.value = false
+                    Toast.makeText(
+                        context,
+                        "Check your internet connection.",
+                        Toast.LENGTH_LONG
+                    )
+                        .show()
+
                 }
         }
+    }
 
-
-
-        fun generateIntentAndStartNextActivity(clientIsOnSiteArg: Boolean, context: Context) {
-            val intent =
-                if (clientState == ClientState.ELIGIBLE_TO_ORDER) {
-                    when {
-                        FoodBank().isOpen && clientIsOnSiteArg -> Intent(
-                            context,
-                            OnSiteOrderActivity::class.java
-                        )
-                        else -> if (FoodBank().isTakingNextDayOrders) {
-                            Intent(context, NextDayOrderActivity::class.java)
-                        } else {
-                            Intent(context, NotTakingOrdersNowMessageActivity::class.java)
-                        }
+    fun generateIntentAndStartNextActivity(context: Context) {
+        Log.d("TAG", "clientState: $clientState")
+        Log.d("TAG", "clientIsOnSite: $clientIsOnSite")
+        Log.d("TAG", "isTakingNextDayOrders: ${FoodBank().isTakingNextDayOrders}")
+        val intent =
+            if (clientState == ClientState.ELIGIBLE_TO_ORDER) {
+                when {
+                    FoodBank().isOpen && clientIsOnSite -> Intent(
+                        context,
+                        OnSiteOrderActivity::class.java
+                    )
+                    else -> if (FoodBank().isTakingNextDayOrders) {
+                        Intent(context, NextDayOrderActivity::class.java)
+                    } else {
+                        Intent(context, NotTakingOrdersNowMessageActivity::class.java)
                     }
-                } else Intent(context, destinationActivity::class.java)
-            Log.d("TAG", "intent: $intent")
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            Log.d("TAG", "accountId: $accountID")
-            intent.putExtra("ACCOUNT_ID", accountID)
+                }
+            } else Intent(context, destinationActivity::class.java)
+        Log.d("TAG", "intent: $intent")
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        Log.d("TAG", "accountId: $accountID")
+        intent.putExtra("ACCOUNT_ID", accountID)
 
-            Log.d("TAG", "orderState: ${orderState.value}")
-            intent.putExtra("ORDER_STATE", orderState.value)
+        Log.d("TAG", "orderState: ${orderState.value}")
+        intent.putExtra("ORDER_STATE", orderState.value)
 
-            Log.d("TAG", "familySize: ${familySizeFromFireStore}")
-            intent.putExtra("FAMILY_SIZE", familySizeFromFireStore!!.toInt())
+        Log.d("TAG", "familySize: ${familySizeFromFireStore}")
+        intent.putExtra("FAMILY_SIZE", familySizeFromFireStore!!.toInt())
 
-            Log.d("TAG", "lastOrderDate (from signInActivity): $lastOrderDate")
-            intent.putExtra("LAST_ORDER_DATE_TIMESTAMP", timeStamp)
-            intent.putExtra("LAST_ORDER_TYPE", lastOrderType)
-            intent.putExtra("PICKUP_HOUR24", pickUpHour24)
-            pleaseWait.value = false
-            context.startActivity(intent)
-        }
+        Log.d("TAG", "lastOrderDate (from signInActivity): $lastOrderDate")
+        intent.putExtra("LAST_ORDER_DATE_TIMESTAMP", timeStamp)
+        intent.putExtra("LAST_ORDER_TYPE", lastOrderType)
+        intent.putExtra("PICKUP_HOUR24", pickUpHour24)
+        pleaseWait.value = false
+        context.startActivity(intent)
+    }
 
-
-        private val whenOrdered: String
+    private val whenOrdered: String
         get() {
             val foodBank = FoodBank()
             val startOfToday: Date = foodBank.getCurrentDateWithoutTime()
@@ -164,7 +179,7 @@ class SignInViewModel() : ViewModel() {
             }
         }
 
-        val clientState: ClientState
+    val clientState: ClientState
         get() =
             when (whenOrdered) {
                 "PRIOR_TO_THIS_MONTH" -> ClientState.ELIGIBLE_TO_ORDER
@@ -199,7 +214,7 @@ class SignInViewModel() : ViewModel() {
                 else -> ClientState.ELIGIBLE_TO_ORDER
             }
 
-        val destinationActivity: Activity
+    val destinationActivity: Activity
         get() = when (clientState) {
             ClientState.ELIGIBLE_TO_ORDER -> {
                 if (clientIsOnSite) {
@@ -216,4 +231,4 @@ class SignInViewModel() : ViewModel() {
             ClientState.PICKED_UP -> AlreadyServedMessageActivity()
             ClientState.ERROR_STATE -> ErrorMessageActivity()
         }
-    }
+}

@@ -9,6 +9,36 @@
     tools:context=".orderfornextday.NextDayOrderActivity">
 
     <TextView
+        android:id="@+id/textViewMessage3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="2. From home. Home orders need to be placed before 5 PM Sunday through Thursday on the day BEFORE you want to pick it up."
+        android:textColor="@color/plainText"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMessage2" />
+
+    <TextView
+        android:id="@+id/textViewMessage2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="1. When you are at the food bank. The food bank is open weekdays 1-4 PM except holidays."
+        android:textColor="@color/plainText"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMessage" />
+
+    <TextView
         android:id="@+id/textViewNextDayOpen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -65,7 +95,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:text="For now, orders by app need to be sent by 5 PM on the day before pickup. In the near future we hope to offer same-day ordering."
+        android:text="You can use this app two ways:"
         android:textColor="@color/plainText"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -78,15 +108,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="Please return to this app one day before pickup. You can sign in before 5 PM on:"
+        android:text="Please return to this app one day before before 5 PM on:"
         android:textColor="@color/plainText"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewMessage" />
+        tools:layout_editor_absoluteY="426dp" />
 
     <TextView
         android:id="@+id/textViewNextDayTakingOrders"

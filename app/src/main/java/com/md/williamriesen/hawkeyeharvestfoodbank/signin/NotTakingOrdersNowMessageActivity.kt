@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
 import com.md.williamriesen.hawkeyeharvestfoodbank.R
 import com.md.williamriesen.hawkeyeharvestfoodbank.foodbank.FoodBank
 import com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.MainActivityViewModel
+import kotlinx.android.synthetic.main.activity_not_taking_orders_now_message.*
 import java.text.SimpleDateFormat
 
 class NotTakingOrdersNowMessageActivity : AppCompatActivity() {
@@ -25,6 +27,10 @@ class NotTakingOrdersNowMessageActivity : AppCompatActivity() {
         val textViewNextDayTakingOrders = findViewById<TextView>(R.id.textViewNextDayTakingOrders)
         val nextDayTakingOrders= simpleDateFormat.format(foodBank.nextDayTakingOrders())
         textViewNextDayTakingOrders.text = nextDayTakingOrders
+        val buttonSeeYouThen = findViewById<Button>(R.id.buttonSeeYouThen)
+        buttonSeeYouThen.setOnClickListener {
+            onBackPressed()
+        }
     }
 }
 

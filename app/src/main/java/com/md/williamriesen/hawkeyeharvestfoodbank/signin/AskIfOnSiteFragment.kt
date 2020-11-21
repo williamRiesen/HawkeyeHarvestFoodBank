@@ -27,12 +27,14 @@ class AskIfOnSiteFragment : Fragment() {
         val buttonYes = fragment.findViewById<Button>(R.id.buttonYes)
         buttonYes.setOnClickListener {
             activity?.onBackPressed()
-            viewModel.generateIntentAndStartNextActivity(true,requireContext())
+            viewModel.clientIsOnSite = true
+            viewModel.generateIntentAndStartNextActivity(requireContext())
         }
         val buttonNo = fragment.findViewById<Button>(R.id.buttonNo)
         buttonNo.setOnClickListener {
             activity?.onBackPressed()
-            viewModel.generateIntentAndStartNextActivity(true,requireContext())
+            viewModel.clientIsOnSite = false
+            viewModel.generateIntentAndStartNextActivity(requireContext())
         }
         return fragment
     }

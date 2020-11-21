@@ -8,6 +8,75 @@
     android:background="@color/design_default_color_background"
     tools:context=".orderoffsite.MainActivity">
 
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="When you are done, Press this button up in the corner to check out."
+        android:textColor="@color/plainText"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/floatingButtonCheckout2"
+        app:layout_constraintTop_toTopOf="@+id/floatingButtonCheckout2" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="If you change your mind, use this button to put the food back."
+        android:textColor="@color/plainText"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonRemove2"
+        app:layout_constraintTop_toTopOf="@+id/imageButtonRemove2" />
+
+    <ImageButton
+        android:id="@+id/imageButtonRemove2"
+        android:layout_width="56dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/custom_rounded_corners"
+        android:onClick="onRemoveItem"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/floatingButtonCheckout2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonAdd2"
+        app:srcCompat="@drawable/ic_minus_remove" />
+
+    <ImageButton
+        android:id="@+id/imageButtonAdd2"
+        android:layout_width="56dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/custom_rounded_corners"
+        android:bottomLeftRadius="8dip"
+        android:bottomRightRadius="8dip"
+        android:onClick="onAddItem"
+        android:scaleType="fitCenter"
+        android:topLeftRadius="8dip"
+        android:topRightRadius="8dip"
+        app:layout_constraintBottom_toTopOf="@+id/imageButtonRemove2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMessage"
+        app:srcCompat="@drawable/ic_plus_add" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingButtonCheckout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:clickable="true"
+        android:onClick="onCartButtonClick"
+        app:backgroundTint="#FFEB3B"
+        app:layout_constraintBottom_toTopOf="@+id/buttonReady"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonRemove2"
+        app:srcCompat="@drawable/ic_shopping_cart" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tool_bar"
         android:layout_width="0dp"
@@ -51,13 +120,14 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/instructions_pick_your_food_from_the_list_use_the_plus_button_to_pick_the_food_use_the_minus_button_to_put_it_back_scroll_down_to_see_all_your_choices_when_you_are_done_shopping_push_the_shopping_cart_button_to_save"
+        android:text="HOW TO ORDER:  "
         android:textColor="@color/plainText"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
+        app:layout_constraintTop_toBottomOf="@+id/tool_bar"
+        app:layout_constraintVertical_chainStyle="spread" />
 
     <Button
         android:id="@+id/buttonReady"
@@ -66,8 +136,22 @@
         android:text="@string/ready"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNotTakingNextDayOrders" />
+        app:layout_constraintTop_toBottomOf="@+id/floatingButtonCheckout2" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="On the next screen, use the plus button to put food in your cart."
+        android:textColor="@color/plainText"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageButtonAdd2"
+        app:layout_constraintTop_toTopOf="@+id/imageButtonAdd2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
