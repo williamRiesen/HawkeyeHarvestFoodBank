@@ -75,11 +75,11 @@ class SignInByAccountFragment : Fragment() {
         val accountID = editTextAccountID.text.toString()
         if (accountID != null && accountID != "") {
             viewModel.accountID = accountID
-            if (accountID == "STAFF"){
-                            viewModel.retrieveClientInformation(accountID,true,requireContext())
-            } else {
-                viewModel.determineClientLocation(accountID, view, requireContext())
-            }
+//            if (accountID == "STAFF"){
+                            viewModel.retrieveClientInformation(accountID,view,requireContext())
+//            } else {
+//                viewModel.determineClientLocation(accountID, view, requireContext())
+//            }
         }
     }
 
