@@ -34,18 +34,11 @@ class SignInViewModel() : ViewModel() {
         Navigation.findNavController(view)
             .navigate(R.id.action_loginByAccountIdFragment_to_askIfOnSiteFragment)
 
-//        accountID = accountIdArg
-//        val foodBank = FoodBank()
-//        if (foodBank.isOpen) {
-//            Navigation.findNavController(view)
-//                .navigate(R.id.action_loginByAccountIdFragment_to_askIfOnSiteFragment)
-//        } else {
-//            retrieveClientInformation(accountID, false, context)
-//        }
     }
 
 
     fun retrieveClientInformation(accountIdArg: String, view: View, context: Context) {
+        Log.d("TAG","retrieveClientInformation started...")
         accountID = accountIdArg
         pleaseWait.value = true
         if (accountID == "STAFF") {
@@ -64,6 +57,7 @@ class SignInViewModel() : ViewModel() {
                     if (documentSnapshot.exists()) {
                         timeStamp = documentSnapshot["lastOrderDate"] as Timestamp
                         lastOrderDate = Date(timeStamp!!.seconds * 1000)
+                        Log.d("TAG", "lastOrderDate from retrieval: $lastOrderDate")
                         familySizeFromFireStore = documentSnapshot["familySize"] as Long
                         lastOrderType = if (documentSnapshot["lastOrderType"] != null) {
                             documentSnapshot["lastOrderType"] as String
@@ -80,22 +74,22 @@ class SignInViewModel() : ViewModel() {
                         } else {
                             0
                         }
-                        when {
-                            clientState == ClientState.PLACED_ON_SITE -> {
+                        Log.d("TAG","clientState: $clientState")
+                        if (clientState == ClientState.ELIGIBLE_TO_ORDER){
+                            val foodBank = FoodBank()
+                            if (foodBank.isOpen  && foodBank.isTakingNextDayOrders){
+                                determineClientLocation(accountID,view,context)
+                            } else if (foodBank.isOpen){
                                 clientIsOnSite = true
                                 generateIntentAndStartNextActivity(context)
-                            }
-                            clientState == ClientState.ELIGIBLE_TO_ORDER && FoodBank().isOpen -> {
-                                determineClientLocation(accountID, view, context)
-                            }
-                            !FoodBank().isTakingNextDayOrders -> {
+                            } else {
                                 clientIsOnSite = false
                                 generateIntentAndStartNextActivity(context)
                             }
-                            else -> {
-                                determineClientLocation(accountID, view, context)
-                            }
+                        } else {
+                            generateIntentAndStartNextActivity(context)
                         }
+
                     } else {
                         Toast.makeText(
                             context,

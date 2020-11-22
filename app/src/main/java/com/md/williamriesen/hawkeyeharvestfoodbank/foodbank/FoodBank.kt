@@ -63,28 +63,29 @@ class FoodBank {
     }
 
     val isOpen: Boolean
-    get()=true //for debugging
-//        get() {
-//            val today = getCurrentDateWithoutTime()
-//            val now = Date()
-//            return (
-//                    !isWeekend(today) &&
-//                            !holidaysList.contains(today) &&
-//                            now > openingTime &&
-//                            now < closingTime
-//                    )
-//        }
+        //    get()=true //for debugging
+        get() {
+            val today = getCurrentDateWithoutTime()
+            val now = Date()
+            return (
+                    !isWeekend(today) &&
+                            !holidaysList.contains(today) &&
+                            now > openingTime &&
+                            now < closingTime
+                    )
+        }
 
     val isTakingNextDayOrders: Boolean
-    get() {
-        val today = getCurrentDateWithoutTime()
-        val calendar = Calendar.getInstance()
-        calendar.time = today
-        calendar.add(Calendar.DAY_OF_YEAR, +1)
-        val tomorrow = calendar.time as Date
-        return isOpenOn(tomorrow) && isBeforeFivePM()
-//        return true
-    }
+//    get() {
+//        val today = getCurrentDateWithoutTime()
+//        val calendar = Calendar.getInstance()
+//        calendar.time = today
+//        calendar.add(Calendar.DAY_OF_YEAR, +1)
+//        val tomorrow = calendar.time as Date
+//        return isOpenOn(tomorrow) && isBeforeFivePM()
+//}
+        get() =  true
+
 
     fun isBeforeFivePM(): Boolean{
         val calendar = Calendar.getInstance()
@@ -146,7 +147,10 @@ class FoodBank {
             Category(15, "Eggs",0,12),
             Category(16,"Pudding",0,3),
             Category(17, "Dairy (except milk)",0,1),
-            Category(18, "Bottom Bar", 0, 0)
+            Category(18,"Bread",4,0),
+            Category(19,"Pastries",2,0),
+            Category(20, "Fresh Produce",0,3),
+            Category(21, "Bottom Bar", 0, 0)
         )
         val db = FirebaseFirestore.getInstance()
 
@@ -311,7 +315,24 @@ class FoodBank {
             FoodItem(125,"Sugar Free Chocolate Swirl Pudding","Pudding",1,3,100,true,16),
             FoodItem(126,"Yogurt (9-5oz cups)","Dairy (except milk)",1,100,100,true,17),
             FoodItem(127, "American Cheese (32 oz)","Dairy (except milk)",1,100,100,true,17),
-            FoodItem(128,"Cream Cheese (8 oz)","Dairy (except milk)",1,100,100,true,17)
+            FoodItem(128,"Cream Cheese (8 oz)","Dairy (except milk)",1,100,100,true,17),
+
+            FoodItem(129,"Sliced wheat bread","Bread",1,100,100,true,18),
+            FoodItem(130, "Sliced white bread","Bread",1,100,100,true,18),
+            FoodItem(131,"Whole grain bread", "Bread",1,100,100,true,18),
+            FoodItem(132,"Hot dog buns","Bread",1,100,100,true,18),
+            FoodItem(133, "Hamburger buns", "Bread",1,100,100,true,18),
+            FoodItem(134,"English muffins", "Bread",1,100,100,true,18),
+            FoodItem(135,"Bagels","Bread",1,100,100,true,18),
+
+            FoodItem(136,"Donuts", "Pastries",1,100,100,true,19),
+            FoodItem(137,"Muffins","Pastries",1,100,100,true,19),
+            FoodItem(138, "Cinnamon rolls","Pastries",1,100,100,true,19),
+            FoodItem(139, "Donut holes","Pastries",1,100,100,true,19),
+
+            FoodItem(140, "Green vegetable mix", "Fresh Produce",1,100,100,true,20),
+            FoodItem(141, "Red vegetable mix", "Fresh Produce",1,100,100,true,20),
+            FoodItem(142, "Yellow vegetable mix", "Fresh Produce",1,100,100,true,20)
         )
 
         val db = FirebaseFirestore.getInstance()
