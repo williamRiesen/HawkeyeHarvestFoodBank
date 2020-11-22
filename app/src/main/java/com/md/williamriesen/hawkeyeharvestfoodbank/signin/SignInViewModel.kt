@@ -52,30 +52,30 @@ class SignInViewModel() : ViewModel() {
             // Fetch the user account from the database
             accountService.fetchAccount(accountID)
                 .addOnSuccessListener { account ->
-                    if (account != null) {
-                        clientState = account.clientState
-                        Log.d("TAG","clientState: $clientState")
-                        if (clientState == ClientState.ELIGIBLE_TO_ORDER){
-                            val foodBank = FoodBank()
-                            if (foodBank.isOpen  && foodBank.isTakingNextDayOrders){
-                                determineClientLocation(accountID,view,context)
-                            } else if (foodBank.isOpen){
-                                clientIsOnSite = true
-                                generateIntentAndStartNextActivity(context, clientState)
-                            } else {
-                                clientIsOnSite = false
-                                generateIntentAndStartNextActivity(context, clientState)
-                            }
-                        } else {
-                            generateIntentAndStartNextActivity(context, clientState)
-                        }
-
-                    } else {
+                    if (account == null) {
                         pleaseWait.value = false
                         Toast.makeText(context, "Sorry, Not a valid account.", Toast.LENGTH_LONG)
                             .show()
+                        return@addOnSuccessListener
                     }
 
+                    clientState = account.clientState
+                    Log.d("TAG", "clientState: $clientState")
+                    if (clientState == ClientState.ELIGIBLE_TO_ORDER) {
+                        val foodBank = FoodBank()
+                        if (foodBank.isOpen && foodBank.isTakingNextDayOrders) {
+                            // Requires user to indicate if they are at the food bank or not
+                            determineClientLocation(accountID, view, context)
+                        } else if (foodBank.isOpen) {
+                            clientIsOnSite = true
+                            generateIntentAndStartNextActivity(context, clientState)
+                        } else {
+                            clientIsOnSite = false
+                            generateIntentAndStartNextActivity(context, clientState)
+                        }
+                    } else {
+                        generateIntentAndStartNextActivity(context, clientState)
+                    }
                 }
                 .addOnFailureListener {
                     pleaseWait.value = false
@@ -102,29 +102,11 @@ class SignInViewModel() : ViewModel() {
                         Intent(context, NotTakingOrdersNowMessageActivity::class.java)
                     }
                 }
-            } else Intent(context, getDestinationActivity(clientState)::class.java)
+            } else Intent(context, clientState.getNextActivity(clientIsOnSite))
         Log.d("TAG", "intent: $intent")
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
 
         pleaseWait.value = false
         context.startActivity(intent)
     }
-
-    private fun getDestinationActivity(clientState: ClientState): Activity
-         = when (clientState) {
-            ClientState.ELIGIBLE_TO_ORDER -> {
-                if (clientIsOnSite) {
-                    OnSiteOrderActivity()
-                } else {
-                    NextDayOrderActivity()
-                }
-            }
-            ClientState.PLACED_ON_SITE -> InProgressOnSiteInstructionsActivity()
-            ClientState.PLACED_YESTERDAY_PENDING -> PickUpLaterTodayInstructionsActivity()
-            ClientState.PLACED_YESTERDAY_PACKED -> PickUpNowInstructionsActivity()
-            ClientState.PLACED_TODAY_FOR_TOMORROW -> PickUpTomorrowInstructionsActivity()
-            ClientState.NO_SHOWED -> NoShowMessageActivity()
-            ClientState.PICKED_UP -> AlreadyServedMessageActivity()
-            ClientState.ERROR_STATE -> ErrorMessageActivity()
-        }
 }
