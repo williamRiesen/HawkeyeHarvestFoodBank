@@ -18,7 +18,7 @@ class NextDayOrderingActivityViewModel : ViewModel() {
 
     var accountID = ""
     var lastOrderDate: Date? = null
-    var orderState = "NOT STARTED YET"
+    var orderState = "NOT_STARTED_YET"
     var familySize = 0
     var points: Int? = null
     val foodItemList = MutableLiveData<MutableList<FoodItem>>()

@@ -1,50 +1,47 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank.signin;
 
-import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.md.williamriesen.hawkeyeharvestfoodbank.foodbank.ClientState
-import com.md.williamriesen.hawkeyeharvestfoodbank.foodbank.FoodBank
+import com.md.williamriesen.hawkeyeharvestfoodbank.foodbank.*
 import java.util.*
 
 class Account(
     val accountID: String,
     val familySize: Long,
     val lastOrderDate: Date,
-    val lastOrderType: String,
-    val orderState: String,
+    val lastOrderType: OrderType,
+    val orderState: OrderState,
     val pickUpHour24: Int
 ) {
-
     val clientState: ClientState
         get() =
-            when (whenOrdered) {
-                "PRIOR_TO_THIS_MONTH" -> ClientState.ELIGIBLE_TO_ORDER
-                "EARLIER_THIS_MONTH" -> {
+            when (WhenOrdered.fromDate(lastOrderDate, FoodBank())) {
+                WhenOrdered.PRIOR_TO_THIS_MONTH -> ClientState.ELIGIBLE_TO_ORDER
+                WhenOrdered.EARLIER_THIS_MONTH -> {
                     when (orderState) {
-                        "PACKED" -> ClientState.PICKED_UP
-                        "NO_SHOW" -> ClientState.NO_SHOWED
-                        "SAVED" -> ClientState.ELIGIBLE_TO_ORDER
+                        OrderState.PACKED -> ClientState.PICKED_UP
+                        OrderState.NO_SHOW -> ClientState.NO_SHOWED
+                        OrderState.SAVED -> ClientState.ELIGIBLE_TO_ORDER
                         else -> ClientState.ERROR_STATE
                     }
                 }
-                "YESTERDAY" -> {
+                WhenOrdered.YESTERDAY -> {
                     when (orderState) {
-                        "SUBMITTED" -> ClientState.PLACED_YESTERDAY_PENDING
-                        "PACKED" -> ClientState.PLACED_YESTERDAY_PACKED
-                        "SAVED" -> ClientState.ELIGIBLE_TO_ORDER
-                        "NO_SHOW" -> ClientState.NO_SHOWED
+                        OrderState.SUBMITTED -> ClientState.PLACED_YESTERDAY_PENDING
+                        OrderState.PACKED -> ClientState.PLACED_YESTERDAY_PACKED
+                        OrderState.SAVED -> ClientState.ELIGIBLE_TO_ORDER
+                        OrderState.NO_SHOW -> ClientState.NO_SHOWED
                         else -> ClientState.ERROR_STATE
                     }
                 }
-                "TODAY" -> {
+                WhenOrdered.TODAY -> {
                     when (lastOrderType) {
-                        "NEXT_DAY" -> ClientState.PLACED_TODAY_FOR_TOMORROW
-                        "ON_SITE" -> ClientState.PLACED_ON_SITE
+                        OrderType.NEXT_DAY -> ClientState.PLACED_TODAY_FOR_TOMORROW
+                        OrderType.ON_SITE -> ClientState.PLACED_ON_SITE
                         else -> {
-                            if (orderState == "SAVED") {
+                            if (orderState == OrderState.SAVED) {
                                 ClientState.ELIGIBLE_TO_ORDER
                             } else ClientState.ERROR_STATE
                         }
@@ -52,29 +49,6 @@ class Account(
                 }
                 else -> ClientState.ELIGIBLE_TO_ORDER
             }
-
-    private val whenOrdered: String
-        get() {
-            val foodBank = FoodBank()
-            val startOfToday: Date = foodBank.getCurrentDateWithoutTime()
-            val calendar = Calendar.getInstance()
-            calendar.time = startOfToday
-            calendar.add(Calendar.DAY_OF_YEAR, -1)
-            val startOfYesterday = calendar.time
-            calendar.add(Calendar.DAY_OF_YEAR, 1)
-            calendar.set(Calendar.DAY_OF_MONTH, 1)
-            val startOfThisMonth = calendar.time
-            Log.d(
-                "TAG",
-                "lastOrderDate: $lastOrderDate, startOfToday: $startOfToday, startOfThisMonth: $startOfThisMonth"
-            )
-            return when {
-                lastOrderDate > startOfToday -> "TODAY"
-                lastOrderDate > startOfYesterday -> "YESTERDAY"
-                lastOrderDate > startOfThisMonth -> "EARLIER_THIS_MONTH"
-                else -> "PRIOR_TO_THIS_MONTH"
-            }
-        }
 }
 
 class AccountService(val db: FirebaseFirestore) {
@@ -92,8 +66,8 @@ class AccountService(val db: FirebaseFirestore) {
                 val lastOrderDate = dbToDate(documentSnapshot, "lastOrderDate")
                 val familySize = dbToLong(documentSnapshot, "familySize")
 
-                val lastOrderType = dbToString(documentSnapshot, "lastOrderType", "ON_SITE")
-                val orderState = dbToString(documentSnapshot, "orderState", "NOT STARTED YET")
+                val lastOrderType = OrderType.valueOf(dbToString(documentSnapshot, "lastOrderType", "ON_SITE"))
+                val orderState = OrderState.valueOf(dbToString(documentSnapshot, "orderState", "NOT_STARTED_YET"))
 
                 val pickUpHour24 = dbToInt(documentSnapshot, "pickUpHour24", 0)
 
