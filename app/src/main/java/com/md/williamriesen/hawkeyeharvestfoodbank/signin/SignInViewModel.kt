@@ -21,105 +21,71 @@ import java.util.*
 
 class SignInViewModel() : ViewModel() {
     var accountID = ""
+    var clientState = ClientState.ELIGIBLE_TO_ORDER
     var pleaseWait = MutableLiveData<Boolean>()
-    private var familySizeFromFireStore: Long? = null
-    var orderState: MutableLiveData<String> = MutableLiveData("NONE")
-    var lastOrderDate: Date? = null
-    var lastOrderType: String? = null
     var clientIsOnSite = false
-    var pickUpHour24 = 0
-    var timeStamp: Timestamp? = null
 
     fun determineClientLocation(accountIdArg: String, view: View, context: Context) {
         Navigation.findNavController(view)
             .navigate(R.id.action_loginByAccountIdFragment_to_askIfOnSiteFragment)
-
-//        accountID = accountIdArg
-//        val foodBank = FoodBank()
-//        if (foodBank.isOpen) {
-//            Navigation.findNavController(view)
-//                .navigate(R.id.action_loginByAccountIdFragment_to_askIfOnSiteFragment)
-//        } else {
-//            retrieveClientInformation(accountID, false, context)
-//        }
     }
 
 
-    fun retrieveClientInformation(accountIdArg: String, view: View, context: Context) {
-        accountID = accountIdArg
+    fun retrieveClientInformation(accountID: String, view: View, context: Context) {
         pleaseWait.value = true
+
+        // Handling staff gets a special condition to redirect them to a more secure login. This is
+        // for food bank volunteers and workers
         if (accountID == "STAFF") {
             val intent = Intent(context, SignStaffInActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             pleaseWait.value = false
             context.startActivity(intent)
-        } else {
-            val myFirebaseMessagingService = MyFirebaseMessagingService()
-            val token = myFirebaseMessagingService
-            familySizeFromFireStore = null
-            val db = FirebaseFirestore.getInstance()
-            val docRef = db.collection("accounts").document(accountID)
-            docRef.get()
-                .addOnSuccessListener { documentSnapshot ->
-                    if (documentSnapshot.exists()) {
-                        timeStamp = documentSnapshot["lastOrderDate"] as Timestamp
-                        lastOrderDate = Date(timeStamp!!.seconds * 1000)
-                        familySizeFromFireStore = documentSnapshot["familySize"] as Long
-                        lastOrderType = if (documentSnapshot["lastOrderType"] != null) {
-                            documentSnapshot["lastOrderType"] as String
-                        } else {
-                            "ON_SITE"
-                        }
-                        orderState.value = if (documentSnapshot["orderState"] != null) {
-                            documentSnapshot["orderState"] as String
-                        } else {
-                            "NOT STARTED YET"
-                        }
-                        pickUpHour24 = if (documentSnapshot["pickUpHour24"] != null) {
-                            (documentSnapshot["pickUpHour24"] as Long).toInt()
-                        } else {
-                            0
-                        }
+        }
+        // General case is for food bank customers
+        else {
+            this.accountID = accountID
+
+            // Account Service (this should be injected into the activity eventually)
+            val accountService = AccountService(FirebaseFirestore.getInstance())
+
+            // Fetch the user account from the database
+            accountService.fetchAccount(accountID)
+                .addOnSuccessListener { account ->
+                    if (account != null) {
+                        clientState = account.clientState
                         when {
-                            clientState == ClientState.PLACED_ON_SITE -> {
+                            account.clientState == ClientState.PLACED_ON_SITE -> {
                                 clientIsOnSite = true
-                                generateIntentAndStartNextActivity(context)
+                                generateIntentAndStartNextActivity(context, account.clientState)
                             }
-                            clientState == ClientState.ELIGIBLE_TO_ORDER && FoodBank().isOpen -> {
+                            account.clientState == ClientState.ELIGIBLE_TO_ORDER && FoodBank().isOpen -> {
                                 determineClientLocation(accountID, view, context)
                             }
                             !FoodBank().isTakingNextDayOrders -> {
                                 clientIsOnSite = false
-                                generateIntentAndStartNextActivity(context)
+                                generateIntentAndStartNextActivity(context, account.clientState)
                             }
                             else -> {
                                 determineClientLocation(accountID, view, context)
                             }
                         }
                     } else {
-                        Toast.makeText(
-                            context,
-                            "Sorry, Not a valid account.",
-                            Toast.LENGTH_LONG
-                        )
-                            .show()
                         pleaseWait.value = false
+                        Toast.makeText(context, "Sorry, Not a valid account.", Toast.LENGTH_LONG)
+                            .show()
                     }
+
                 }
                 .addOnFailureListener {
                     pleaseWait.value = false
-                    Toast.makeText(
-                        context,
-                        "Check your internet connection.",
-                        Toast.LENGTH_LONG
-                    )
+                    Toast.makeText(context, "Check your internet connection.", Toast.LENGTH_LONG)
                         .show()
-
                 }
         }
     }
 
-    fun generateIntentAndStartNextActivity(context: Context) {
+    fun generateIntentAndStartNextActivity(context: Context, clientState: ClientState) {
         Log.d("TAG", "clientState: $clientState")
         Log.d("TAG", "clientIsOnSite: $clientIsOnSite")
         Log.d("TAG", "isTakingNextDayOrders: ${FoodBank().isTakingNextDayOrders}")
@@ -136,86 +102,16 @@ class SignInViewModel() : ViewModel() {
                         Intent(context, NotTakingOrdersNowMessageActivity::class.java)
                     }
                 }
-            } else Intent(context, destinationActivity::class.java)
+            } else Intent(context, getDestinationActivity(clientState)::class.java)
         Log.d("TAG", "intent: $intent")
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        Log.d("TAG", "accountId: $accountID")
-        intent.putExtra("ACCOUNT_ID", accountID)
 
-        Log.d("TAG", "orderState: ${orderState.value}")
-        intent.putExtra("ORDER_STATE", orderState.value)
-
-        Log.d("TAG", "familySize: ${familySizeFromFireStore}")
-        intent.putExtra("FAMILY_SIZE", familySizeFromFireStore!!.toInt())
-
-        Log.d("TAG", "lastOrderDate (from signInActivity): $lastOrderDate")
-        intent.putExtra("LAST_ORDER_DATE_TIMESTAMP", timeStamp)
-        intent.putExtra("LAST_ORDER_TYPE", lastOrderType)
-        intent.putExtra("PICKUP_HOUR24", pickUpHour24)
         pleaseWait.value = false
         context.startActivity(intent)
     }
 
-    private val whenOrdered: String
-        get() {
-            val foodBank = FoodBank()
-            val startOfToday: Date = foodBank.getCurrentDateWithoutTime()
-            val calendar = Calendar.getInstance()
-            calendar.time = startOfToday
-            calendar.add(Calendar.DAY_OF_YEAR, -1)
-            val startOfYesterday = calendar.time
-            calendar.add(Calendar.DAY_OF_YEAR, 1)
-            calendar.set(Calendar.DAY_OF_MONTH, 1)
-            val startOfThisMonth = calendar.time
-            Log.d(
-                "TAG",
-                "lastOrderDate: $lastOrderDate, startOfToday: $startOfToday, startOfThisMonth: $startOfThisMonth"
-            )
-            return when {
-                lastOrderDate!! > startOfToday -> "TODAY"
-                lastOrderDate!! > startOfYesterday -> "YESTERDAY"
-                lastOrderDate!! > startOfThisMonth -> "EARLIER_THIS_MONTH"
-                else -> "PRIOR_TO_THIS_MONTH"
-            }
-        }
-
-    val clientState: ClientState
-        get() =
-            when (whenOrdered) {
-                "PRIOR_TO_THIS_MONTH" -> ClientState.ELIGIBLE_TO_ORDER
-                "EARLIER_THIS_MONTH" -> {
-                    when (orderState.value) {
-                        "PACKED" -> ClientState.PICKED_UP
-                        "NO_SHOW" -> ClientState.NO_SHOWED
-                        "SAVED" -> ClientState.ELIGIBLE_TO_ORDER
-                        else -> ClientState.ERROR_STATE
-                    }
-                }
-                "YESTERDAY" -> {
-                    when (orderState.value) {
-                        "SUBMITTED" -> ClientState.PLACED_YESTERDAY_PENDING
-                        "PACKED" -> ClientState.PLACED_YESTERDAY_PACKED
-                        "SAVED" -> ClientState.ELIGIBLE_TO_ORDER
-                        "NO_SHOW" -> ClientState.NO_SHOWED
-                        else -> ClientState.ERROR_STATE
-                    }
-                }
-                "TODAY" -> {
-                    when (lastOrderType) {
-                        "NEXT_DAY" -> ClientState.PLACED_TODAY_FOR_TOMORROW
-                        "ON_SITE" -> ClientState.PLACED_ON_SITE
-                        else -> {
-                            if (orderState.value == "SAVED") {
-                                ClientState.ELIGIBLE_TO_ORDER
-                            } else ClientState.ERROR_STATE
-                        }
-                    }
-                }
-                else -> ClientState.ELIGIBLE_TO_ORDER
-            }
-
-    val destinationActivity: Activity
-        get() = when (clientState) {
+    private fun getDestinationActivity(clientState: ClientState): Activity
+         = when (clientState) {
             ClientState.ELIGIBLE_TO_ORDER -> {
                 if (clientIsOnSite) {
                     OnSiteOrderActivity()
