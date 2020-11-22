@@ -37,10 +37,10 @@ class SignInByAccountActivityTest {
     fun test_that_correct_login_navigates_to_next_activity() {
         onView(withId(R.id.editTextAccountID))
             .perform(click())
-            .perform(typeText("CTT0013"))
+            .perform(typeText("AAA-NOSHOW"))
             .perform(pressImeActionButton())
 
-        Thread.sleep(1000)
+        Thread.sleep(15000)
 
         onView(withId(R.id.textViewNotPickedUpMessage))
             .check(matches(isDisplayed()))

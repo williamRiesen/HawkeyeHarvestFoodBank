@@ -54,22 +54,22 @@ class SignInViewModel() : ViewModel() {
                 .addOnSuccessListener { account ->
                     if (account != null) {
                         clientState = account.clientState
-                        when {
-                            account.clientState == ClientState.PLACED_ON_SITE -> {
+                        Log.d("TAG","clientState: $clientState")
+                        if (clientState == ClientState.ELIGIBLE_TO_ORDER){
+                            val foodBank = FoodBank()
+                            if (foodBank.isOpen  && foodBank.isTakingNextDayOrders){
+                                determineClientLocation(accountID,view,context)
+                            } else if (foodBank.isOpen){
                                 clientIsOnSite = true
-                                generateIntentAndStartNextActivity(context, account.clientState)
-                            }
-                            account.clientState == ClientState.ELIGIBLE_TO_ORDER && FoodBank().isOpen -> {
-                                determineClientLocation(accountID, view, context)
-                            }
-                            !FoodBank().isTakingNextDayOrders -> {
+                                generateIntentAndStartNextActivity(context, clientState)
+                            } else {
                                 clientIsOnSite = false
-                                generateIntentAndStartNextActivity(context, account.clientState)
+                                generateIntentAndStartNextActivity(context, clientState)
                             }
-                            else -> {
-                                determineClientLocation(accountID, view, context)
-                            }
+                        } else {
+                            generateIntentAndStartNextActivity(context, clientState)
                         }
+
                     } else {
                         pleaseWait.value = false
                         Toast.makeText(context, "Sorry, Not a valid account.", Toast.LENGTH_LONG)
