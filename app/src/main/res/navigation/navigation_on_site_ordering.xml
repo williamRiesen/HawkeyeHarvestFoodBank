@@ -43,7 +43,7 @@
         <action
             android:id="@+id/action_onSiteCheckoutFragment_to_onSiteOrderConfirmedFragment"
             app:destination="@id/onSiteOrderConfirmedFragment"
-            app:popUpTo="@id/onSiteOrderSelectionFragment"
+            app:popUpTo="@id/onSiteInstructionsFragment"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
