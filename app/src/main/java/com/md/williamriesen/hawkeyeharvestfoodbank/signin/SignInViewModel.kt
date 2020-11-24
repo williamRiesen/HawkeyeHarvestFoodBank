@@ -124,6 +124,7 @@ class SignInViewModel() : ViewModel() {
         intent.putExtra("LAST_ORDER_DATE", account.lastOrderDate)
         intent.putExtra("FAMILY_SIZE", account.familySize)
         intent.putExtra("ORDER_STATE", account.orderState)
+        intent.putExtra("PICK_UP_HOUR24", account.pickUpHour24)
 
         pleaseWait.value = false
         context.startActivity(intent)

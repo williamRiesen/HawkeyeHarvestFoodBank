@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.google.firebase.Timestamp
 import com.md.williamriesen.hawkeyeharvestfoodbank.R
+import com.md.williamriesen.hawkeyeharvestfoodbank.foodbank.OrderState
 import java.util.*
 
 class OnSiteOrderActivity : AppCompatActivity() {
@@ -17,17 +18,10 @@ class OnSiteOrderActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(OnSiteOrderingViewModel::class.java)
 
-        var accountID = intent.extras?.get("ACCOUNT_ID").toString()
-        var familySize = intent.extras?.get("FAMILY_SIZE")
-        var timeStamp = intent.extras?.get("LAST_ORDER_DATE_TIMESTAMP") as Timestamp
-        val lastOrderDate = Date(timeStamp.seconds * 1000)
-        Log.d("TAG","lastOrderDate received as activity parameter: $lastOrderDate")
-        var orderState = intent.extras?.get("ORDER_STATE") as String
-
-        viewModel.accountID = accountID
-        viewModel.lastOrderDate = lastOrderDate
-        viewModel.orderState.value = orderState
-        viewModel.familySize = familySize as Int
+        viewModel.accountID = intent.extras?.get("ACCOUNT_ID").toString()
+        viewModel.lastOrderDate = intent.extras?.get("LAST_ORDER_DATE") as Date
+        viewModel.orderState.value = intent.extras?.get("ORDER_STATE") as OrderState
+        viewModel.familySize = (intent.extras?.get("FAMILY_SIZE") as Long).toInt()
         viewModel.retrieveObjectCatalogFromFireStore()
         setContentView(R.layout.activity_on_site_ordering)
     }

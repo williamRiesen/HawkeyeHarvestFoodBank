@@ -20,7 +20,7 @@ class OnSiteOrderingViewModel : ViewModel() {
     var orderID: String? = null
     var isOpen = MutableLiveData<Boolean>(false)
     var familySize = 0
-    var orderState: MutableLiveData<String> = MutableLiveData("NONE")
+    var orderState: MutableLiveData<OrderState> = MutableLiveData(OrderState.NOT_STARTED_YET)
     var lastOrderDate: Date? = null
     val categoriesList = MutableLiveData<MutableList<Category>>()
     private var savedItemList = mutableListOf<FoodItem>()
@@ -30,7 +30,7 @@ class OnSiteOrderingViewModel : ViewModel() {
 
 
     private val needToStartNewOrder: Boolean
-        get() = orderState.value == "PACKED" && (!isOpen.value!! || whenOrdered != "TODAY")
+        get() = orderState.value == OrderState.PACKED && (!isOpen.value!! || whenOrdered != "TODAY")
 
     fun shop(view: View) {
         Navigation.findNavController(view)
@@ -66,18 +66,18 @@ class OnSiteOrderingViewModel : ViewModel() {
     val nextFragment: Int
         get() {
             return when (orderState.value) {
-                "SAVED" -> R.id.action_onSiteOrderStartFragment_to_onSiteInstructionsFragment
-                "SUBMITTED" -> {
+                OrderState.SAVED -> R.id.action_onSiteOrderStartFragment_to_onSiteInstructionsFragment
+                OrderState.SUBMITTED -> {
                         R.id.action_onSiteOrderStartFragment_to_onSiteOrderBeingPackedFragment
                 }
-                "PACKED" -> {
+                OrderState.PACKED -> {
                     when (whenOrdered) {
                         "TODAY" -> R.id.action_onSiteOrderStartFragment_to_onSiteOrderReadyFragment
                         "EARLIER_THIS_MONTH" -> R.id.action_onSiteOrderStartFragment_to_onSiteOrderReadyFragment
                         else -> R.id.action_onSiteOrderStartFragment_to_onSiteInstructionsFragment
                     }
                 }
-                "NO SHOW" -> {
+                OrderState.NO_SHOW -> {
                     R.id.action_onSiteOrderStartFragment_to_onSiteInstructionsFragment
                 }
                 else -> R.id.action_onSiteOrderStartFragment_to_onSiteInstructionsFragment
