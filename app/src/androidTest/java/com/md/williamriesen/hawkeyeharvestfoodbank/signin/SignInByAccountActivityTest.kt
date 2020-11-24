@@ -47,10 +47,10 @@ class SignInByAccountActivityTest {
     }
 
     @Test
-    fun test_that_packed_login_navigates_to_() {
+    fun test_that_noshow_login_navigates_to_not_picked_up_message() {
         onView(withId(R.id.editTextAccountID))
             .perform(click())
-            .perform(typeText("AAA-PACKED"))
+            .perform(typeText("AAA-NOSHOW"))
             .perform(pressImeActionButton())
 
         Thread.sleep(5000)
