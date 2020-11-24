@@ -32,12 +32,12 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
 
-        var accountID = intent.extras["ACCOUNT_ID"].toString()
-        var familySize = intent.extras["FAMILY_SIZE"]
-        var timeStamp = intent.extras["LAST_ORDER_DATE_TIMESTAMP"] as Timestamp
+        var accountID = intent.extras?.get("ACCOUNT_ID").toString()
+        var familySize = intent.extras?.get("FAMILY_SIZE")
+        var timeStamp = intent.extras?.get("LAST_ORDER_DATE_TIMESTAMP") as Timestamp
         val lastOrderDate = Date(timeStamp.seconds * 1000)
         Log.d("TAG","lastOrderDate received as activity parameter: $lastOrderDate")
-        var orderState = intent.extras["ORDER_STATE"] as String
+        var orderState = intent.extras?.get("ORDER_STATE") as String
 
         viewModel.accountID = accountID
         viewModel.lastOrderDate = lastOrderDate

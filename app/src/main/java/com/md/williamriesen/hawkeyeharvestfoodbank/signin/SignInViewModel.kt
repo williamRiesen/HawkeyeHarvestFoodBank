@@ -20,6 +20,9 @@ import com.md.williamriesen.hawkeyeharvestfoodbank.orderonsite.OnSiteOrderActivi
 import java.util.*
 
 class SignInViewModel() : ViewModel() {
+    private var currentContext: Context? = null
+    private var currentView: View? = null
+    private var currentAccount: Account? = null
     var accountID = ""
     var clientState = ClientState.ELIGIBLE_TO_ORDER
     var pleaseWait = MutableLiveData<Boolean>()
@@ -33,6 +36,9 @@ class SignInViewModel() : ViewModel() {
 
     fun retrieveClientInformation(accountID: String, view: View, context: Context) {
         pleaseWait.value = true
+        currentView = view
+
+        currentContext = context
 
         // Handling staff gets a special condition to redirect them to a more secure login. This is
         // for food bank volunteers and workers
@@ -58,7 +64,7 @@ class SignInViewModel() : ViewModel() {
                             .show()
                         return@addOnSuccessListener
                     }
-
+                    currentAccount = account
                     clientState = account.clientState
                     Log.d("TAG", "clientState: $clientState")
                     if (clientState == ClientState.ELIGIBLE_TO_ORDER) {
@@ -68,13 +74,13 @@ class SignInViewModel() : ViewModel() {
                             determineClientLocation(accountID, view, context)
                         } else if (foodBank.isOpen) {
                             clientIsOnSite = true
-                            generateIntentAndStartNextActivity(context, clientState)
+                            generateIntentAndStartNextActivity(context, clientState, account)
                         } else {
                             clientIsOnSite = false
-                            generateIntentAndStartNextActivity(context, clientState)
+                            generateIntentAndStartNextActivity(context, clientState, account)
                         }
                     } else {
-                        generateIntentAndStartNextActivity(context, clientState)
+                        generateIntentAndStartNextActivity(context, clientState, account)
                     }
                 }
                 .addOnFailureListener {
@@ -85,7 +91,16 @@ class SignInViewModel() : ViewModel() {
         }
     }
 
-    fun generateIntentAndStartNextActivity(context: Context, clientState: ClientState) {
+    fun reportClientIsOnSite(clientIsOnSiteArg: Boolean) {
+        clientIsOnSite = clientIsOnSiteArg
+        generateIntentAndStartNextActivity(currentContext!!,clientState, currentAccount!!)
+    }
+
+    fun generateIntentAndStartNextActivity(
+        context: Context,
+        clientState: ClientState,
+        account: Account
+    ) {
         Log.d("TAG", "clientState: $clientState")
         Log.d("TAG", "clientIsOnSite: $clientIsOnSite")
         Log.d("TAG", "isTakingNextDayOrders: ${FoodBank().isTakingNextDayOrders}")
@@ -105,8 +120,14 @@ class SignInViewModel() : ViewModel() {
             } else Intent(context, clientState.getNextActivity(clientIsOnSite))
         Log.d("TAG", "intent: $intent")
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.putExtra("ACCOUNT_ID", account.accountID)
+        intent.putExtra("LAST_ORDER_DATE", account.lastOrderDate)
+        intent.putExtra("FAMILY_SIZE", account.familySize)
+        intent.putExtra("ORDER_STATE", account.orderState)
 
         pleaseWait.value = false
         context.startActivity(intent)
     }
+
+
 }

@@ -10,7 +10,7 @@ import com.md.williamriesen.hawkeyeharvestfoodbank.R
 class PickUpTomorrowInstructionsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var pickUpHour24 = intent.extras["PICKUP_HOUR24"] as Int
+        var pickUpHour24 = intent.extras?.get("PICKUP_HOUR24") as Int
         val startOfWindow = pickUpHour24 - 12
         val endOfWindow = startOfWindow + 1
         setContentView(R.layout.activity_pick_up_tomorow_instructions)

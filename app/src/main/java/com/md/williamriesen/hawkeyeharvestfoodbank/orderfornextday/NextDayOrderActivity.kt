@@ -10,6 +10,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.messaging.FirebaseMessaging
 import com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.MainActivityViewModel
 import com.md.williamriesen.hawkeyeharvestfoodbank.R
+import com.md.williamriesen.hawkeyeharvestfoodbank.foodbank.OrderState
 import java.util.*
 
 class NextDayOrderActivity : AppCompatActivity() {
@@ -22,16 +23,10 @@ class NextDayOrderActivity : AppCompatActivity() {
 
         viewModel = ViewModelProviders.of(this).get(NextDayOrderingActivityViewModel::class.java)
 
-        var accountID = intent.extras["ACCOUNT_ID"].toString()
-        var familySize = intent.extras["FAMILY_SIZE"]
-        var timeStamp = intent.extras["LAST_ORDER_DATE_TIMESTAMP"] as Timestamp
-        val lastOrderDate = Date(timeStamp.seconds * 1000)
-        var orderState = intent.extras["ORDER_STATE"] as String
-
-        viewModel.accountID = accountID
-        viewModel.lastOrderDate = lastOrderDate
-        viewModel.orderState = orderState
-        viewModel.familySize = familySize as Int
+        viewModel.accountID = intent.extras?.get("ACCOUNT_ID").toString()
+        viewModel.lastOrderDate = intent.extras?.get("LAST_ORDER_DATE") as Date
+//        viewModel.orderState = intent.extras?.get("ORDER_STATE") as OrderState
+        viewModel.familySize = (intent.extras?.get("FAMILY_SIZE") as Long).toInt()
         viewModel.retrieveObjectCatalogFromFireStore()
     }
 

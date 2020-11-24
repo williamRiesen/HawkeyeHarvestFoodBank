@@ -10,7 +10,7 @@ import com.md.williamriesen.hawkeyeharvestfoodbank.communication.DisplayNumberAc
 class InProgressOnSiteInstructionsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var accountID = intent.extras["ACCOUNT_ID"] as String
+        var accountID = intent.extras?.get("ACCOUNT_ID") as String
         setContentView(R.layout.activity_in_progress_on_site_instructions)
         val buttonShowNumber = findViewById<Button>(R.id.buttonShowNumber)
         buttonShowNumber.setOnClickListener {

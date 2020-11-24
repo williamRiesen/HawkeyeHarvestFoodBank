@@ -13,7 +13,7 @@ class PickUpLaterTodayInstructionsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val accountID = intent.extras?.get("ACCOUNT_ID") as String
-        var pickUpHour24 = intent.extras["PICKUP_HOUR24"] as Int
+        var pickUpHour24 = intent.extras?.get("PICKUP_HOUR24") as Int
         val startOfWindow = pickUpHour24 - 12
         val endOfWindow = startOfWindow + 1
         setContentView(R.layout.activity_pick_up_later_today_instructions)
