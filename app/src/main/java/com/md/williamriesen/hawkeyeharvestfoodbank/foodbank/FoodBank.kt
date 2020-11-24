@@ -63,7 +63,7 @@ class FoodBank {
     }
 
     val isOpen: Boolean
-        //    get()=true //for debugging
+//            get()=true //for debugging
         get() {
             val today = getCurrentDateWithoutTime()
             val now = Date()
@@ -76,15 +76,15 @@ class FoodBank {
         }
 
     val isTakingNextDayOrders: Boolean
-//    get() {
-//        val today = getCurrentDateWithoutTime()
-//        val calendar = Calendar.getInstance()
-//        calendar.time = today
-//        calendar.add(Calendar.DAY_OF_YEAR, +1)
-//        val tomorrow = calendar.time as Date
-//        return isOpenOn(tomorrow) && isBeforeFivePM()
-//}
-        get() =  true
+    get() {
+        val today = getCurrentDateWithoutTime()
+        val calendar = Calendar.getInstance()
+        calendar.time = today
+        calendar.add(Calendar.DAY_OF_YEAR, +1)
+        val tomorrow = calendar.time as Date
+        return isOpenOn(tomorrow) && isBeforeFivePM()
+}
+//        get() =  true
 
 
     fun isBeforeFivePM(): Boolean{

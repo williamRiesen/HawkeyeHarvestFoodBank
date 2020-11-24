@@ -34,13 +34,26 @@ class SignInByAccountActivityTest {
     }
 
     @Test
-    fun test_that_correct_login_navigates_to_next_activity() {
+    fun test_that_noshow_login_navigates_to_noshow_message_screen() {
         onView(withId(R.id.editTextAccountID))
             .perform(click())
             .perform(typeText("AAA-NOSHOW"))
             .perform(pressImeActionButton())
 
-        Thread.sleep(15000)
+        Thread.sleep(5000)
+
+        onView(withId(R.id.textViewNotPickedUpMessage))
+            .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun test_that_packed_login_navigates_to_() {
+        onView(withId(R.id.editTextAccountID))
+            .perform(click())
+            .perform(typeText("AAA-PACKED"))
+            .perform(pressImeActionButton())
+
+        Thread.sleep(5000)
 
         onView(withId(R.id.textViewNotPickedUpMessage))
             .check(matches(isDisplayed()))
