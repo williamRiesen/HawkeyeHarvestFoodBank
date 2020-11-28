@@ -1,10 +1,13 @@
 package com.md.williamriesen.hawkeyeharvestfoodbank.signin;
 
+import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.md.williamriesen.hawkeyeharvestfoodbank.foodbank.*
+import java.lang.Exception
+import java.lang.RuntimeException
 import java.util.*
 
 class Account(
@@ -17,7 +20,7 @@ class Account(
 ) {
     val clientState: ClientState
         get() =
-            when (WhenOrdered.fromDate(lastOrderDate, FoodBank())) {
+            when (lastOrderDate?.let { WhenOrdered.fromDate(it, FoodBank()) }) {
                 WhenOrdered.PRIOR_TO_THIS_MONTH -> ClientState.ELIGIBLE_TO_ORDER
                 WhenOrdered.EARLIER_THIS_MONTH -> {
                     when (orderState) {
@@ -57,28 +60,39 @@ class AccountService(val db: FirebaseFirestore) {
 
         // Create doc reference
         val docRef = db.collection("accounts").document(accountID)
-        // Fetches data
+        Log.d("TAG", "docRef: $docRef")
 
+        // Fetches data
         return docRef.get()
             .continueWith {
-                val documentSnapshot: DocumentSnapshot = it.getResult()!!
+                val documentSnapshot: DocumentSnapshot = it.result!!
+                if (documentSnapshot.exists()) {
+                    Log.d("TAG", "lastOrderDate: ${documentSnapshot["lastOrderDate"]}")
+                    val lastOrderDate = dbToDate(documentSnapshot, "lastOrderDate")
+                    val familySize = dbToLong(documentSnapshot, "familySize")
+                    val lastOrderType =
+                        OrderType.valueOf(dbToString(documentSnapshot, "lastOrderType", "ON_SITE"))
+                    val orderState = OrderState.valueOf(
+                        dbToString(
+                            documentSnapshot,
+                            "orderState",
+                            "NOT_STARTED_YET"
+                        )
+                    )
 
-                val lastOrderDate = dbToDate(documentSnapshot, "lastOrderDate")
-                val familySize = dbToLong(documentSnapshot, "familySize")
+                    val pickUpHour24 = dbToInt(documentSnapshot, "pickUpHour24", 0)
 
-                val lastOrderType = OrderType.valueOf(dbToString(documentSnapshot, "lastOrderType", "ON_SITE"))
-                val orderState = OrderState.valueOf(dbToString(documentSnapshot, "orderState", "NOT_STARTED_YET"))
-
-                val pickUpHour24 = dbToInt(documentSnapshot, "pickUpHour24", 0)
-
-                Account(
-                    accountID,
-                    familySize,
-                    lastOrderDate,
-                    lastOrderType,
-                    orderState,
-                    pickUpHour24
-                )
+                    Account(
+                        accountID,
+                        familySize,
+                        lastOrderDate,
+                        lastOrderType,
+                        orderState,
+                        pickUpHour24
+                    )
+                } else {
+                    throw NoSuchAccountException("No account retrieved with this id.")
+                }
             }
     }
 
@@ -103,4 +117,7 @@ class AccountService(val db: FirebaseFirestore) {
         } else {
             default
         }
+
 }
+
+class NoSuchAccountException(message: String): Exception(message)

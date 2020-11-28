@@ -63,17 +63,17 @@ class FoodBank {
     }
 
     val isOpen: Boolean
-            get()=true //for debugging
-//        get() {
-//            val today = getCurrentDateWithoutTime()
-//            val now = Date()
-//            return (
-//                    !isWeekend(today) &&
-//                            !holidaysList.contains(today) &&
-//                            now > openingTime &&
-//                            now < closingTime
-//                    )
-//        }
+//            get()=true //for debugging
+        get() {
+            val today = getCurrentDateWithoutTime()
+            val now = Date()
+            return (
+                    !isWeekend(today) &&
+                            !holidaysList.contains(today) &&
+                            now > openingTime &&
+                            now < closingTime
+                    )
+        }
 
     val isTakingNextDayOrders: Boolean
     get() {
@@ -90,8 +90,8 @@ class FoodBank {
     fun isBeforeFivePM(): Boolean{
         val calendar = Calendar.getInstance()
         val hour24 = calendar.get(Calendar.HOUR_OF_DAY)
-//        return hour24 < 17
-        return true
+        return hour24 < 17
+//        return true
     }
 
     fun nextDayOpen(afterTomorrow: Boolean = false): Date {
@@ -148,7 +148,7 @@ class FoodBank {
             Category(16,"Pudding",0,3),
             Category(17, "Dairy (except milk)",0,1),
             Category(18,"Bread",4,0),
-            Category(19,"Pastries",2,0),
+            Category(19,"Sweets",2,0),
             Category(20, "Fresh Produce",0,3),
             Category(21, "Bottom Bar", 0, 0)
         )
@@ -325,10 +325,10 @@ class FoodBank {
             FoodItem(134,"English muffins", "Bread",1,100,100,true,18),
             FoodItem(135,"Bagels","Bread",1,100,100,true,18),
 
-            FoodItem(136,"Donuts", "Pastries",1,100,100,true,19),
-            FoodItem(137,"Muffins","Pastries",1,100,100,true,19),
-            FoodItem(138, "Cinnamon rolls","Pastries",1,100,100,true,19),
-            FoodItem(139, "Donut holes","Pastries",1,100,100,true,19),
+            FoodItem(136,"Donuts", "Sweets",1,100,100,true,19),
+            FoodItem(137,"Muffins","Sweets",1,100,100,true,19),
+            FoodItem(138, "Cinnamon rolls","Sweets",1,100,100,true,19),
+            FoodItem(139, "Donut holes","Sweets",1,100,100,true,19),
 
             FoodItem(140, "Green vegetable mix", "Fresh Produce",1,100,100,true,20),
             FoodItem(141, "Red vegetable mix", "Fresh Produce",1,100,100,true,20),

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.md.williamriesen.hawkeyeharvestfoodbank.*
 import com.md.williamriesen.hawkeyeharvestfoodbank.communication.MyFirebaseMessagingService
 import com.md.williamriesen.hawkeyeharvestfoodbank.foodbank.ClientState
@@ -83,17 +84,24 @@ class SignInViewModel() : ViewModel() {
                         generateIntentAndStartNextActivity(context, clientState, account)
                     }
                 }
-                .addOnFailureListener {
+                .addOnFailureListener { exception ->
                     pleaseWait.value = false
-                    Toast.makeText(context, "Check your internet connection.", Toast.LENGTH_LONG)
+                    Log.e("TAG", "exception report",exception)
+                    val errorMessage = when (exception::class) {
+                        NoSuchAccountException::class -> "Not a valid account"
+                        FirebaseFirestoreException::class -> "Unable to connect: please check your internet connection."
+                        else -> "An unknown problem occurred."
+                    }
+                    Toast.makeText(context, errorMessage, Toast.LENGTH_LONG)
                         .show()
+
                 }
         }
     }
 
     fun reportClientIsOnSite(clientIsOnSiteArg: Boolean) {
         clientIsOnSite = clientIsOnSiteArg
-        generateIntentAndStartNextActivity(currentContext!!,clientState, currentAccount!!)
+        generateIntentAndStartNextActivity(currentContext!!, clientState, currentAccount!!)
     }
 
     fun generateIntentAndStartNextActivity(
