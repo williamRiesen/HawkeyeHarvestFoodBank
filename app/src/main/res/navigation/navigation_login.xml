@@ -7,11 +7,11 @@
 
     <fragment
         android:id="@+id/askIfOnSiteFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.signin.AskIfOnSiteFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.signin.AskIfOnSiteFragment"
         android:label="AskIfOnSiteFragment" />
     <fragment
         android:id="@+id/loginByAccountIdFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.signin.SignInByAccountFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.signin.SignInByAccountFragment"
         android:label="LoginByAccountIdFragment" >
         <action
             android:id="@+id/action_loginByAccountIdFragment_to_askIfOnSiteFragment"

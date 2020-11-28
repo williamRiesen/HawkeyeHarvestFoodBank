@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/nextDayOrderingStartFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderfornextday.NextDayOrderingStartFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderfornextday.NextDayOrderingStartFragment"
         android:label="NextDayOrderingStartFragment" >
         <action
             android:id="@+id/action_nextDayOrderingStartFragment_to_notTakingNextDayOrdersFragment"
@@ -21,11 +21,11 @@
     </fragment>
     <fragment
         android:id="@+id/notTakingNextDayOrdersFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderfornextday.NotTakingNextDayOrdersFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderfornextday.NotTakingNextDayOrdersFragment"
         android:label="NotTakingNextDayOrdersFragment" />
     <fragment
         android:id="@+id/selectPickUpTimeFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderfornextday.SelectPickUpTimeFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderfornextday.SelectPickUpTimeFragment"
         android:label="SelectPickUpTimeFragment" >
         <action
             android:id="@+id/action_selectPickUpTimeFragment_to_returnAnotherDayFragment"
@@ -36,15 +36,15 @@
     </fragment>
     <fragment
         android:id="@+id/returnAnotherDayFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderfornextday.ReturnAnotherDayFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderfornextday.ReturnAnotherDayFragment"
         android:label="ReturnAnotherDayFragment" />
     <fragment
         android:id="@+id/nextDayOrderConfirmedFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderfornextday.NextDayOrderConfirmedFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderfornextday.NextDayOrderConfirmedFragment"
         android:label="NextDayOrderConfirmedFragment" />
     <fragment
         android:id="@+id/nextDayOrderSelectionFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderfornextday.NextDayOrderSelectionFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderfornextday.NextDayOrderSelectionFragment"
         android:label="NextDayOrderSelectionFragment" >
         <action
             android:id="@+id/action_nextDayOrderSelectionFragment_to_nextDayCheckoutFragment"
@@ -52,7 +52,7 @@
     </fragment>
     <fragment
         android:id="@+id/nextDayCheckoutFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderfornextday.NextDayCheckoutFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderfornextday.NextDayCheckoutFragment"
         android:label="NextDayCheckoutFragment" >
         <action
             android:id="@+id/action_nextDayCheckoutFragment_to_nextDayOrderConfirmedFragment"

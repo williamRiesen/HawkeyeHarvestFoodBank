@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/selectionFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderfornextday.SelectionFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderfornextday.SelectionFragment"
         android:label="SelectionFragment" >
         <action
             android:id="@+id/action_selectionFragment_to_checkoutFragment"
@@ -24,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/checkoutFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.CheckoutFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderoffsite.CheckoutFragment"
         android:label="CheckoutFragment" >
         <action
             android:id="@+id/action_checkoutFragment_to_orderSavedFragment"
@@ -42,7 +42,7 @@
 
     <fragment
         android:id="@+id/clientStartFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.ClientStartFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderoffsite.ClientStartFragment"
         android:label="fragment_client_start"
         tools:layout="@layout/fragment_client_start" >
         <action
@@ -86,11 +86,11 @@
     </fragment>
     <fragment
         android:id="@+id/orderSavedFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.OrderSavedFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderoffsite.OrderSavedFragment"
         android:label="OrderSavedFragment" />
     <fragment
         android:id="@+id/askWhetherToSubmitSavedOrderFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.AskWhetherToSubmitSavedOrderFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderoffsite.AskWhetherToSubmitSavedOrderFragment"
         android:label="AskWhetherToSubmitSavedOrderFragment" >
         <action
             android:id="@+id/action_askWhetherToSubmitSavedOrderFragment_to_orderSavedFragment"
@@ -103,7 +103,7 @@
     </fragment>
     <fragment
         android:id="@+id/orderSubmittedFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.OrderSubmittedFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderoffsite.OrderSubmittedFragment"
         android:label="OrderSubmittedFragment" >
         <action
             android:id="@+id/action_orderSubmittedFragment_to_displayNumberFragment"
@@ -112,15 +112,15 @@
     </fragment>
     <fragment
         android:id="@+id/outOfStockFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.OutOfStockFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderoffsite.OutOfStockFragment"
         android:label="OutOfStockFragment" />
     <fragment
         android:id="@+id/displayNumberFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.communication.DisplayNumberFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.communication.DisplayNumberFragment"
         android:label="DisplayNumberFragment" />
     <fragment
         android:id="@+id/orderReadyFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.OrderReadyFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderoffsite.OrderReadyFragment"
         android:label="OrderReadyFragment" >
         <action
             android:id="@+id/action_orderReadyFragment_to_displayNumberFragment"
@@ -129,7 +129,7 @@
     </fragment>
     <fragment
         android:id="@+id/orderBeingPackedFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.OrderBeingPackedFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderoffsite.OrderBeingPackedFragment"
         android:label="OrderBeingPackedFragment" >
         <action
             android:id="@+id/action_orderBeingPackedFragment_to_displayNumberFragment"
@@ -138,7 +138,7 @@
     </fragment>
     <fragment
         android:id="@+id/shopVsCheckOutFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.ShopOrCheckOutFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderoffsite.ShopOrCheckOutFragment"
         android:label="shopVsCheckOutFragment" >
         <action
             android:id="@+id/action_shopVsCheckOutFragment_to_selectionFragment"
@@ -151,7 +151,7 @@
     </fragment>
     <fragment
         android:id="@+id/shopForNextMonthFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.ShopForNextMonthFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderoffsite.ShopForNextMonthFragment"
         android:label="ShopForNextMonthFragment" >
         <action
             android:id="@+id/action_shopForNextMonthFragment_to_selectionFragment"
@@ -160,7 +160,7 @@
     </fragment>
     <fragment
         android:id="@+id/reviseSavedOrderOptionFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.ReviseSavedOrderOptionFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderoffsite.ReviseSavedOrderOptionFragment"
         android:label="ReviseSavedOrderOptionFragment" >
         <action
             android:id="@+id/action_reviseSavedOrderOptionFragment_to_selectionFragment"
@@ -169,15 +169,15 @@
     </fragment>
     <fragment
         android:id="@+id/errorMessageFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.ErrorMessageFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderoffsite.ErrorMessageFragment"
         android:label="ErrorMessageFragment" />
     <fragment
         android:id="@+id/notPickedUpFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.NotPickedUpFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderoffsite.NotPickedUpFragment"
         android:label="NotPickedUpFragment" />
     <fragment
         android:id="@+id/instructionsFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.orderoffsite.InstructionsFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderoffsite.InstructionsFragment"
         android:label="InstructionsFragment" >
         <action
             android:id="@+id/action_instructionsFragment_to_selectionFragment"

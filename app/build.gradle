@@ -9,7 +9,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.md.williamriesen.hawkeyeharvestfoodbank"
+        applicationId "com.md.williamriesen.hawkeyeharvest"
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 2

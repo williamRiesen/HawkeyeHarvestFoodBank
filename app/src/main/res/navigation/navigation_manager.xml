@@ -6,6 +6,6 @@
     app:startDestination="@id/updateInventoryFragment">
     <fragment
         android:id="@+id/updateInventoryFragment"
-        android:name="com.md.williamriesen.hawkeyeharvestfoodbank.manager.UpdateInventoryFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.manager.UpdateInventoryFragment"
         android:label="UpdateInventoryFragment" />
 </navigation>

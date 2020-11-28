@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.md.williamriesen.hawkeyeharvestfoodbank">
+    package="com.md.williamriesen.hawkeyeharvest">
 
     <application
         android:name="androidx.multidex.MultiDexApplication"
@@ -10,36 +10,36 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
-        <activity android:name=".signin.NotTakingOrdersNowMessageActivity" />
-        <activity android:name=".signin.PickUpTomorrowInstructionsActivity"
+        <activity android:name="com.md.williamriesen.hawkeyeharvest.signin.NotTakingOrdersNowMessageActivity" />
+        <activity android:name="com.md.williamriesen.hawkeyeharvest.signin.PickUpTomorrowInstructionsActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".signin.PickUpNowInstructionsActivity"
+            android:name="com.md.williamriesen.hawkeyeharvest.signin.PickUpNowInstructionsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".signin.PickUpLaterTodayInstructionsActivity"
+            android:name="com.md.williamriesen.hawkeyeharvest.signin.PickUpLaterTodayInstructionsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".signin.InProgressOnSiteInstructionsActivity"
+            android:name="com.md.williamriesen.hawkeyeharvest.signin.InProgressOnSiteInstructionsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ErrorMessageActivity"
+            android:name="com.md.williamriesen.hawkeyeharvest.ErrorMessageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".signin.AlreadyServedMessageActivity"
+            android:name="com.md.williamriesen.hawkeyeharvest.signin.AlreadyServedMessageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".signin.NoShowMessageActivity"
+            android:name="com.md.williamriesen.hawkeyeharvest.signin.NoShowMessageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".orderonsite.OnSiteOrderActivity"
+            android:name="com.md.williamriesen.hawkeyeharvest.orderonsite.OnSiteOrderActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".communication.DisplayNumberActivity"
+            android:name="com.md.williamriesen.hawkeyeharvest.communication.DisplayNumberActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".orderfornextday.NextDayOrderActivity" />
+        <activity android:name="com.md.williamriesen.hawkeyeharvest.orderfornextday.NextDayOrderActivity" />
         <activity
-            android:name=".signin.SignInByAccountActivity"
+            android:name="com.md.williamriesen.hawkeyeharvest.signin.SignInByAccountActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,31 +48,31 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".signin.SignStaffInActivity"
+            android:name="com.md.williamriesen.hawkeyeharvest.signin.SignStaffInActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".director.DirectorActivity"
+            android:name="com.md.williamriesen.hawkeyeharvest.director.DirectorActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".manager.ManagerActivity"
+            android:name="com.md.williamriesen.hawkeyeharvest.manager.ManagerActivity"
             android:label="Inventory Manager"
-            android:parentActivityName=".orderoffsite.MainActivity"
+            android:parentActivityName="com.md.williamriesen.hawkeyeharvest.orderoffsite.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".volunteer.VolunteerActivity"
+            android:name="com.md.williamriesen.hawkeyeharvest.volunteer.VolunteerActivity"
             android:icon="@drawable/ic_hawkeye_harvest_food_bank_logo"
             android:label="Order Packing"
-            android:parentActivityName=".orderoffsite.MainActivity"
+            android:parentActivityName="com.md.williamriesen.hawkeyeharvest.orderoffsite.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".orderoffsite.MainActivity"
-            android:parentActivityName=".signin.SignInByAccountActivity"
+            android:name="com.md.williamriesen.hawkeyeharvest.orderoffsite.MainActivity"
+            android:parentActivityName="com.md.williamriesen.hawkeyeharvest.signin.SignInByAccountActivity"
             android:screenOrientation="portrait">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".orderoffsite.MainActivity" />
+                android:value="com.md.williamriesen.hawkeyeharvest.orderoffsite.MainActivity" />
         </activity>
 
         <meta-data
@@ -80,7 +80,7 @@
             android:resource="@array/preloaded_fonts" />
 
         <service
-            android:name=".communication.MyFirebaseMessagingService"
+            android:name="com.md.williamriesen.hawkeyeharvest.communication.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
