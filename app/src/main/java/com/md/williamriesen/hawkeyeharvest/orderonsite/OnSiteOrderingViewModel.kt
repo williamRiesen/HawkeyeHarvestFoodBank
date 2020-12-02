@@ -68,7 +68,10 @@ class OnSiteOrderingViewModel : ViewModel() {
             return when (orderState.value) {
                 OrderState.SAVED -> R.id.action_onSiteOrderStartFragment_to_onSiteInstructionsFragment
                 OrderState.SUBMITTED -> {
-                        R.id.action_onSiteOrderStartFragment_to_onSiteOrderBeingPackedFragment
+                    R.id.action_onSiteOrderStartFragment_to_onSiteOrderBeingPackedFragment
+                }
+                OrderState.BEING_PACKED -> {
+                    R.id.action_onSiteOrderStartFragment_to_onSiteOrderBeingPackedFragment
                 }
                 OrderState.PACKED -> {
                     when (whenOrdered) {
@@ -98,7 +101,7 @@ class OnSiteOrderingViewModel : ViewModel() {
                 Log.d("TAG", "token: $token")
 
                 val db = FirebaseFirestore.getInstance()
-                Log.d("TAG","orderID: $orderID")
+                Log.d("TAG", "orderID: $orderID")
                 if (orderID != null) {
                     db.collection(("orders")).document(orderID!!).set(filteredOrder)
                         .addOnSuccessListener {
@@ -138,6 +141,7 @@ class OnSiteOrderingViewModel : ViewModel() {
                 }
         }
     }
+
     fun retrieveObjectCatalogFromFireStore() {
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection("catalogs").document("objectCatalog")
@@ -158,6 +162,7 @@ class OnSiteOrderingViewModel : ViewModel() {
                 Log.d("TAG", "Retrieve objectCatalog from database failed.")
             }
     }
+
     private fun retrieveCategoriesFromFireStore() {
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection("categories").document("categories")
@@ -190,7 +195,7 @@ class OnSiteOrderingViewModel : ViewModel() {
                 category.id,
                 category.calculatePoints(familySize)
             )
-            Log.d("TAG","foodItemList.value = ${foodItemList.value}")
+            Log.d("TAG", "foodItemList.value = ${foodItemList.value}")
             foodItemList.value!!.add(heading)
         }
     }
@@ -227,6 +232,7 @@ class OnSiteOrderingViewModel : ViewModel() {
                 }
             }
     }
+
     private fun checkSavedOrderAgainstCurrentOfferings() {
         savedItemList.forEach { savedItem ->
             val itemToCheck = foodItemList.value?.find { offeredItem ->

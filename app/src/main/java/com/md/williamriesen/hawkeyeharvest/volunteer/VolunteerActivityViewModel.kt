@@ -2,6 +2,7 @@ package com.md.williamriesen.hawkeyeharvest.volunteer
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -44,97 +45,113 @@ class VolunteerActivityViewModel : ViewModel() {
                             val myList = nextOrder?.itemList
                             accountID = nextOrder?.accountID
                             itemsToPackList.value = myList
+                            updateOrderAsBeingPacked(db, nextOrder!!)
                         }
                     }
             }
     }
 
-    fun getTodaysPackedOrdersList() {
-        val foodBank = FoodBank()
-        val today = foodBank.getCurrentDateWithoutTime()
-        val startOfTodayTimestamp = Timestamp(today)
-        val db = FirebaseFirestore.getInstance()
-        val ordersRef = db.collection("orders")
-        val query = ordersRef
-            .whereGreaterThan("date", startOfTodayTimestamp)
-            .whereEqualTo("orderState", "PACKED")
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                if (!querySnapshot.isEmpty) {
-                    todaysPackedOrdersList.value = querySnapshot.toObjects<Order>(Order().javaClass)
-                    querySnapshot.forEachIndexed { index, queryDocumentSnapshot ->
-                        (todaysPackedOrdersList.value as MutableList<Order>)[index].orderID =
-                            queryDocumentSnapshot.id
-                    }
-                }
+    fun updateOrderAsBeingPacked(db: FirebaseFirestore, order: Order) {
+        order.orderState = "BEING_PACKED"
+        Log.d("TAG", "orderID: $orderID")
+        Log.d("TAG", "about to attempt Submit.")
+        db.collection(("orders")).document().set(order)
+            .addOnSuccessListener {
+                Log.d("TAG", "Order has been updated as BEING_PACKED.")
+            }
+            .addOnFailureListener {
+                Log.d("TAG", "Update order as BEING_PACKED failed due to $it")
             }
     }
 
-    fun getTodaysSubmittedOrdersList() {
-        val foodBank = FoodBank()
-        val today = foodBank.getCurrentDateWithoutTime()
-        val startOfTodayTimestamp = Timestamp(today)
-        val db = FirebaseFirestore.getInstance()
-        val ordersRef = db.collection("orders")
-        val query = ordersRef
+
+fun getTodaysPackedOrdersList() {
+    val foodBank = FoodBank()
+    val today = foodBank.getCurrentDateWithoutTime()
+    val startOfTodayTimestamp = Timestamp(today)
+    val db = FirebaseFirestore.getInstance()
+    val ordersRef = db.collection("orders")
+    val query = ordersRef
+        .whereGreaterThan("date", startOfTodayTimestamp)
+        .whereEqualTo("orderState", "PACKED")
+        .get()
+        .addOnSuccessListener { querySnapshot ->
+            if (!querySnapshot.isEmpty) {
+                todaysPackedOrdersList.value = querySnapshot.toObjects<Order>(Order().javaClass)
+                querySnapshot.forEachIndexed { index, queryDocumentSnapshot ->
+                    (todaysPackedOrdersList.value as MutableList<Order>)[index].orderID =
+                        queryDocumentSnapshot.id
+                }
+            }
+        }
+}
+
+fun getTodaysSubmittedOrdersList() {
+    val foodBank = FoodBank()
+    val today = foodBank.getCurrentDateWithoutTime()
+    val startOfTodayTimestamp = Timestamp(today)
+    val db = FirebaseFirestore.getInstance()
+    val ordersRef = db.collection("orders")
+    val query = ordersRef
 //            .whereGreaterThan("date", startOfTodayTimestamp)  //For now, look at all submitted orders.
-            .whereEqualTo("orderState", "SUBMITTED")
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                if (!querySnapshot.isEmpty) {
-                    todaysSubmittedOrdersList.value = querySnapshot.toObjects<Order>(Order().javaClass)
-                    querySnapshot.forEachIndexed { index, queryDocumentSnapshot ->
-                        (todaysSubmittedOrdersList.value as MutableList<Order>)[index].orderID =
-                            queryDocumentSnapshot.id
-                    }
-                }
-                todaysSubmittedOrdersList.value?.sortBy {
-                    it.pickUpHour24
+        .whereEqualTo("orderState", "SUBMITTED")
+        .get()
+        .addOnSuccessListener { querySnapshot ->
+            if (!querySnapshot.isEmpty) {
+                todaysSubmittedOrdersList.value =
+                    querySnapshot.toObjects<Order>(Order().javaClass)
+                querySnapshot.forEachIndexed { index, queryDocumentSnapshot ->
+                    (todaysSubmittedOrdersList.value as MutableList<Order>)[index].orderID =
+                        queryDocumentSnapshot.id
                 }
             }
+            todaysSubmittedOrdersList.value?.sortBy {
+                it.pickUpHour24
+            }
+        }
+}
+
+fun togglePackedState(itemName: String) {
+    val myList = itemsToPackList.value
+    val thisItem = myList?.find { item ->
+        item.name == itemName
     }
-
-        fun togglePackedState(itemName: String) {
-            val myList = itemsToPackList.value
-            val thisItem = myList?.find { item ->
-                item.name == itemName
-            }
-            if (thisItem != null) {
-                thisItem.packed = !thisItem.packed
-            }
-        }
-
-        fun checkIfAllItemsPacked(): Boolean {
-            itemsToPackList.value
-            val itemsOrderedList = itemsToPackList.value!!.filter { item ->
-                item.qtyOrdered != 0
-            }
-            return itemsOrderedList.all { item ->
-                (item.packed)
-            }
-        }
-
-        fun upDateOrderAsPacked(activity: Activity) {
-            val updatedOrder = nextOrder
-            updatedOrder?.orderState = "PACKED"
-            val db = FirebaseFirestore.getInstance()
-            db.collection("orders").document(orderID!!).set(updatedOrder!!)
-                .addOnSuccessListener {
-                    activity.onBackPressed()
-                }
-        }
-
-        fun recordNoShow(orderID: String, context: Context) {
-            val db = FirebaseFirestore.getInstance()
-            db.collection("orders").document(orderID).update("orderState", "NO SHOW")
-                .addOnSuccessListener {
-                    Toast.makeText(
-                        context,
-                        "No Show has been recorded.",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-        }
-
-
+    if (thisItem != null) {
+        thisItem.packed = !thisItem.packed
     }
+}
+
+fun checkIfAllItemsPacked(): Boolean {
+    itemsToPackList.value
+    val itemsOrderedList = itemsToPackList.value!!.filter { item ->
+        item.qtyOrdered != 0
+    }
+    return itemsOrderedList.all { item ->
+        (item.packed)
+    }
+}
+
+fun upDateOrderAsPacked(activity: Activity) {
+    val updatedOrder = nextOrder
+    updatedOrder?.orderState = "PACKED"
+    val db = FirebaseFirestore.getInstance()
+    db.collection("orders").document(orderID!!).set(updatedOrder!!)
+        .addOnSuccessListener {
+            activity.onBackPressed()
+        }
+}
+
+fun recordNoShow(orderID: String, context: Context) {
+    val db = FirebaseFirestore.getInstance()
+    db.collection("orders").document(orderID).update("orderState", "NO SHOW")
+        .addOnSuccessListener {
+            Toast.makeText(
+                context,
+                "No Show has been recorded.",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+}
+
+
+}

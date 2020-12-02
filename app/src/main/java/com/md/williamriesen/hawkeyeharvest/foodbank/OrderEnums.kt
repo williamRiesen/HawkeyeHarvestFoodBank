@@ -7,6 +7,7 @@ enum class OrderState {
     NOT_STARTED_YET,
     SAVED,
     SUBMITTED,
+    BEING_PACKED,
     PACKED,
     NO_SHOW,
 }
