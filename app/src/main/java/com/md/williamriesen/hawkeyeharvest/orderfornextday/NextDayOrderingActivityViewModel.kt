@@ -122,9 +122,11 @@ class NextDayOrderingActivityViewModel : ViewModel() {
     }
 
     fun canAfford(foodItem: FoodItem): Boolean {
+        Log.d("TAG","foodItem.category: ${foodItem.category}")
         val thisCategory = categoriesList.value?.find {
             it.name == foodItem.category
         }
+        Log.d("TAG","thisCategory: ${thisCategory?.name?:"null"}")
         val pointsAllocated = thisCategory!!.calculatePoints(familySize)
         return pointsAllocated >= foodItem.pointValue!!
     }

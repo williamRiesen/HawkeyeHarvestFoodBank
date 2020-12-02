@@ -239,4 +239,27 @@ exports.appointAsVolunteer = functions.https.onRequest(async(req, res) => {
   res.json({result: `Message with ID: ${writeResult.id} added.`});
   });
 
+// USE THIS STRING TO CALL HTTTP REQUEST!  http://localhost:5001/hawkeye-harvest-food-bank/us-central1/appointAsManager?text=williamriesen@gmail.com
+exports.appointAsManager = functions.https.onRequest(async(req, res) => {
+	//Grab the text parameter (email of appointee)
+	const appointeeEmail = req.query.text;
+	admin.auth().getUserByEmail(appointeeEmail).then((user) => {
+		// const currentCustomClaims = user.customClaims;
+		// currentCustomClaims['manager'] = true
+		console.log(user.uid)
+		console.log(user.displayName)
+		const customClaims = {
+			manager: true
+		}
+		return admin.auth().setCustomUserClaims(user.uid, customClaims)
+	})
+	.catch((error) => {
+		console.log(error);
+	})
+	// const writeResult = await admin.firestore().collection('messages').add(appointeeEmail);
+	const writeResult = await admin.firestore().collection('messages').add({appointeeEmail: appointeeEmail});
+  // Send back a message that we've succesfully written the message
+  res.json({result: `Message with ID: ${writeResult.id} added.`});
+  });
+
 

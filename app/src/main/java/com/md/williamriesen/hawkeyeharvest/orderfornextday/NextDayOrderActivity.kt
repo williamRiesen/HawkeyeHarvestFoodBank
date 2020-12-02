@@ -2,6 +2,7 @@ package com.md.williamriesen.hawkeyeharvest.orderfornextday
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
@@ -23,6 +24,7 @@ class NextDayOrderActivity : AppCompatActivity() {
         viewModel.lastOrderDate = intent.extras?.get("LAST_ORDER_DATE") as Date
 //        viewModel.orderState = intent.extras?.get("ORDER_STATE") as OrderState
         viewModel.familySize = (intent.extras?.get("FAMILY_SIZE") as Long).toInt()
+        Log.d("TAG","viewModel.familySize: ${viewModel.familySize}")
         viewModel.retrieveObjectCatalogFromFireStore()
     }
 

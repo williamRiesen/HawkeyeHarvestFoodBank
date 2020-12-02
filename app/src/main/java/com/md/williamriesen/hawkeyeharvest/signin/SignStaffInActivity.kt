@@ -65,6 +65,8 @@ class SignStaffInActivity : AppCompatActivity() {
                     if (token.claims.containsKey("volunteer")) {
                         isVolunteer = token.claims.getValue("volunteer") as Boolean
                     }
+                    Log.d("TAG", "isManager: $isManager")
+                    Log.d("TAG", "isVolunteer: $isVolunteer")
                     when {
                         (isManager) -> {
                             startActivity(Intent(this, ManagerActivity::class.java))
