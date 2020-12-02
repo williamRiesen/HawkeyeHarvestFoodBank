@@ -25,7 +25,7 @@ class PackOrderFragment : Fragment() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this.requireActivity())
             .get(VolunteerActivityViewModel::class.java)
-//        viewModel.getNextOrderFromFireStore()  // commented out due to being called in volunteer sign in fragment
+        viewModel.updateOrderAsBeingPacked(requireActivity())
         viewModel.itemsToPackList.observe(this, Observer { adapterFood.notifyDataSetChanged() })
     }
 

@@ -29,6 +29,7 @@ class VolunteerSignInFragment : Fragment() {
             .get(VolunteerActivityViewModel::class.java)
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

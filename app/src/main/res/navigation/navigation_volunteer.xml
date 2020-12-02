@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_volunteer"
-    app:startDestination="@id/volunteerSignInFragment">
+    app:startDestination="@id/volunteerConfirmExitFragment2">
     <fragment
         android:id="@+id/volunteerSignInFragment"
         android:name="com.md.williamriesen.hawkeyeharvest.volunteer.VolunteerSignInFragment"
@@ -40,4 +40,14 @@
         android:id="@+id/displayOrdersListFragment"
         android:name="com.md.williamriesen.hawkeyeharvest.volunteer.DisplayOrdersListFragment"
         android:label="DisplayOrdersListFragment" />
+    <fragment
+        android:id="@+id/volunteerConfirmExitFragment2"
+        android:name="com.md.williamriesen.hawkeyeharvest.volunteer.VolunteerConfirmExitFragment"
+        android:label="fragment_volunteer_confirm_exit"
+        tools:layout="@layout/fragment_volunteer_confirm_exit"
+        app:startDestination="@id/action_volunteerConfirmExitFragment2_to_volunteerSignInFragment">
+        <action
+            android:id="@+id/action_volunteerConfirmExitFragment2_to_volunteerSignInFragment"
+            app:destination="@id/volunteerSignInFragment" />
+    </fragment>
 </navigation>

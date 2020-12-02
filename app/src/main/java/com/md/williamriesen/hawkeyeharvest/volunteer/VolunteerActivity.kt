@@ -1,7 +1,10 @@
 package com.md.williamriesen.hawkeyeharvest.volunteer
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
@@ -10,8 +13,11 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.foodbank.FoodBank
 import kotlinx.android.synthetic.main.fragment_checkout.view.*
+import kotlin.concurrent.fixedRateTimer
 
 class VolunteerActivity : AppCompatActivity() {
+
+    private var initialEntry = true
 
     private lateinit var viewModel: VolunteerActivityViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,10 +26,13 @@ class VolunteerActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         viewModel = ViewModelProviders.of(this).get(VolunteerActivityViewModel::class.java)
         FirebaseMessaging.getInstance().subscribeToTopic("volunteer")
-        val foodBank = FoodBank()
-        foodBank.sendCategoriesListToFireStore()
-        foodBank.sendObjectCatalogToFireStore()
+
+
+//        val foodBank = FoodBank()
+//        foodBank.sendCategoriesListToFireStore()
+//        foodBank.sendObjectCatalogToFireStore()
     }
+
 
     fun onReadyButtonClicked(view: View) {
         Navigation.findNavController(view)
@@ -38,4 +47,5 @@ class VolunteerActivity : AppCompatActivity() {
             Navigation.findNavController(view).navigate(R.id.action_packOrderFragment_to_confirmPacked)
         }
     }
+
 }

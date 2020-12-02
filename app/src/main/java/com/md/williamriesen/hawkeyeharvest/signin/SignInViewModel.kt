@@ -129,6 +129,7 @@ class SignInViewModel() : ViewModel() {
         intent.putExtra("FAMILY_SIZE", account.familySize)
         intent.putExtra("ORDER_STATE", account.orderState)
         intent.putExtra("PICK_UP_HOUR24", account.pickUpHour24)
+        intent.putExtra("COMING_FROM_SIGN_IN", true)
 
         pleaseWait.value = false
         context.startActivity(intent)
