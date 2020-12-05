@@ -166,7 +166,7 @@ exports.updateLastOrderDate = functions.firestore.document('orders/{turnip}').on
 				console.error("Error writing document: ", error);
 		});
 	}
-	if (orderStateAfter === "PACKED" || orderStateAfter === "SUBMITTED" || orderStateAfter === "SAVED"|| orderStateAfter === "NO SHOW"){
+	if (orderStateAfter === "BEING_PACKED" || orderStateAfter === "PACKED" || orderStateAfter === "SUBMITTED" || orderStateAfter === "SAVED"|| orderStateAfter === "NO SHOW"){
 		const db = admin.firestore();
 		const ref = db.collection('accounts').doc(accountID);
 		ref.get()
@@ -214,25 +214,52 @@ exports.updateLastOrderDate = functions.firestore.document('orders/{turnip}').on
 
 
 // set a custom claim for a specific user
-// exports.appointAsVolunteer = functions.https.onRequest(async(req, res) => {
-// 	//Grab the text parameter (email of appointee)
-// 	const appointeeEmail = req.query.text;
-// 	admin.auth().getUserByEmail(appointeeEmail).then((user) => {
-// 		// const currentCustomClaims = user.customClaims;
-// 		// currentCustomClaims['manager'] = true
-// 		console.log(user.uid)
-// 		console.log(user.displayName)
-// 		const customClaims = {
-// 			volunteer: true
-// 		}
-// 		return admin.auth().setCustomUserClaims(user.uid, customClaims)
-// 	})
-// 	.catch((error) => {
-// 		console.log(error);
-// 	})
-// 	const writeResult = await admin.firestore().collection('messages').add({appointeeEmail, appointeeEmail});
-//   // Send back a message that we've succesfully written the message
-//   res.json({result: `Message with ID: ${writeResult.id} added.`});
-//   });
+
+
+// USE THIS STRING TO CALL HTTTP REQUEST!  http://localhost:5001/hawkeye-harvest-food-bank/us-central1/appointAsVolunteer?text=hhfb50401@gmail.com
+exports.appointAsVolunteer = functions.https.onRequest(async(req, res) => {
+	//Grab the text parameter (email of appointee)
+	const appointeeEmail = req.query.text;
+	admin.auth().getUserByEmail(appointeeEmail).then((user) => {
+		// const currentCustomClaims = user.customClaims;
+		// currentCustomClaims['manager'] = true
+		console.log(user.uid)
+		console.log(user.displayName)
+		const customClaims = {
+			volunteer: true
+		}
+		return admin.auth().setCustomUserClaims(user.uid, customClaims)
+	})
+	.catch((error) => {
+		console.log(error);
+	})
+	// const writeResult = await admin.firestore().collection('messages').add(appointeeEmail);
+	const writeResult = await admin.firestore().collection('messages').add({appointeeEmail: appointeeEmail});
+  // Send back a message that we've succesfully written the message
+  res.json({result: `Message with ID: ${writeResult.id} added.`});
+  });
+
+// USE THIS STRING TO CALL HTTTP REQUEST!  http://localhost:5001/hawkeye-harvest-food-bank/us-central1/appointAsManager?text=williamriesen@gmail.com
+exports.appointAsManager = functions.https.onRequest(async(req, res) => {
+	//Grab the text parameter (email of appointee)
+	const appointeeEmail = req.query.text;
+	admin.auth().getUserByEmail(appointeeEmail).then((user) => {
+		// const currentCustomClaims = user.customClaims;
+		// currentCustomClaims['manager'] = true
+		console.log(user.uid)
+		console.log(user.displayName)
+		const customClaims = {
+			manager: true
+		}
+		return admin.auth().setCustomUserClaims(user.uid, customClaims)
+	})
+	.catch((error) => {
+		console.log(error);
+	})
+	// const writeResult = await admin.firestore().collection('messages').add(appointeeEmail);
+	const writeResult = await admin.firestore().collection('messages').add({appointeeEmail: appointeeEmail});
+  // Send back a message that we've succesfully written the message
+  res.json({result: `Message with ID: ${writeResult.id} added.`});
+  });
 
 

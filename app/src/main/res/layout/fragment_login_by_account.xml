@@ -79,6 +79,7 @@
         android:id="@+id/editTextAccountID"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:contentDescription="Your Account ID here"
         android:ems="10"
         android:imeOptions="actionDone"
         android:inputType="textCapCharacters"

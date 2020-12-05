@@ -1,59 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:id="@+id/textViewOrderReceivedMessage"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/fragmentBackground"
-tools:context=".volunteer.VolunteerActivity">
-
-
-<TextView
-    android:id="@+id/textViewVolunteerSection"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/textViewOrderReceivedMessage"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/fragmentBackground"
-    android:fontFamily="@font/work_sans_medium"
-    android:gravity="center"
-    android:text="@string/volunteer_section"
-    android:textColor="@color/logoHunterGreen"
-    android:textSize="18sp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toEndOf="@+id/imageViewLogoVolunteer"
-    app:layout_constraintTop_toBottomOf="@+id/textViewHawkeyeHarvestVolunteer" />
+    tools:context=".volunteer.VolunteerActivity">
 
-<ImageView
-    android:id="@+id/imageViewLogoVolunteer"
-    android:layout_width="106dp"
-    android:layout_height="91dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="8dp"
-    android:src="@drawable/ic_hawkeye_harvest_food_bank_logo"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
 
-<TextView
-    android:id="@+id/textViewHawkeyeHarvestVolunteer"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:background="@color/fragmentBackground"
-    android:fontFamily="@font/goblin_one"
-    android:gravity="center"
-    android:text="@string/hawkeye_harvest"
-    android:textColor="#0A3711"
-    android:textSize="24sp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toEndOf="@+id/imageViewLogoVolunteer"
-    app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/textViewAccoundID2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AccountID"
+        android:textColor="@color/plainText"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/textViewPickUpTimeLabel2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOrderCount" />
+
+    <TextView
+        android:id="@+id/textViewPickUpTimeLabel2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pick Up Time"
+        android:textColor="@color/plainText"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/textViewOrderSizeTimeLabel2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textViewAccoundID2"
+        app:layout_constraintTop_toTopOf="@+id/textViewAccoundID2" />
+
+    <TextView
+        android:id="@+id/textViewOrderSizeTimeLabel2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Order Size"
+        android:textColor="@color/plainText"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textViewPickUpTimeLabel2"
+        app:layout_constraintTop_toTopOf="@+id/textViewPickUpTimeLabel2" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewOrdersList"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAccoundID2" />
+
+    <TextView
+        android:id="@+id/textViewVolunteerSection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/fragmentBackground"
+        android:fontFamily="@font/work_sans_medium"
+        android:gravity="center"
+        android:text="@string/volunteer_section"
+        android:textColor="@color/logoHunterGreen"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewLogoVolunteer"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHawkeyeHarvestVolunteer" />
+
+    <ImageView
+        android:id="@+id/imageViewLogoVolunteer"
+        android:layout_width="106dp"
+        android:layout_height="91dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_hawkeye_harvest_food_bank_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewHawkeyeHarvestVolunteer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/fragmentBackground"
+        android:fontFamily="@font/goblin_one"
+        android:gravity="center"
+        android:text="@string/hawkeye_harvest"
+        android:textColor="#0A3711"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewLogoVolunteer"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewconfirmPackedMessage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
         android:gravity="bottom"
         android:text="@string/are_you_ready_to_pack_the_next_order"
@@ -62,7 +105,7 @@ tools:context=".volunteer.VolunteerActivity">
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonPreviewOrders" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewOrdersList" />
 
     <Button
         android:id="@+id/buttonConfirmPacked"
@@ -81,7 +124,6 @@ tools:context=".volunteer.VolunteerActivity">
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:text="@string/number_of_orders_needing_to_be_packed"
         android:textColor="@color/plainText"
@@ -123,15 +165,5 @@ tools:context=".volunteer.VolunteerActivity">
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_no_show" />
-
-    <Button
-        android:id="@+id/buttonPreviewOrders"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Preview Orders"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewOrderCount" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
