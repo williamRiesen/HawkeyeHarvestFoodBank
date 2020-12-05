@@ -32,7 +32,12 @@ android {
     }
 }
 
+apply plugin: 'kotlin-kapt'
+
 dependencies {
+    implementation 'com.google.dagger:dagger:2.30.1'
+    kapt 'com.google.dagger:dagger-compiler:2.30.1'
+
     implementation 'com.firebaseui:firebase-ui-firestore:6.3.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
