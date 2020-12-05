@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.foodbank.Order
+import kotlinx.android.synthetic.main.fragment_volunteer_sign_in.*
 
 class VolunteerSignInFragment : Fragment() {
 
@@ -41,18 +42,19 @@ class VolunteerSignInFragment : Fragment() {
         val countObserver = Observer<Int> { newCount: Int ->
             textViewOrderCount.text = newCount.toString()
         }
+        val ordersListObserver= Observer<MutableList<Order>> { orderList ->
+            recyclerViewOrdersList.adapter?.notifyDataSetChanged()
+        }
         val imageButtonNoShow = volunteerSignInFragment.findViewById<ImageButton>(R.id.imageButtonNoShow)
         imageButtonNoShow.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.action_volunteerSignInFragment_to_noShowFragment)
         }
-        val buttonPreviewOrders = volunteerSignInFragment.findViewById<Button>(R.id.buttonPreviewOrders)
-        buttonPreviewOrders.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_volunteerSignInFragment_to_displayOrdersListFragment)
-        }
         val recyclerView = volunteerSignInFragment.findViewById<RecyclerView>(R.id.recyclerViewOrdersList)
 //        setUpRecyclerView(viewModel.todaysSubmittedOrdersList, recyclerView)
 //        viewModel.todaysSubmittedOrdersList.observe(viewLifecycleOwner, Observer { adapter.notifyDataSetChanged() })
+        setUpRecyclerView(viewModel.todaysSubmittedOrdersList, recyclerView)
         viewModel.ordersToPackCount.observe(viewLifecycleOwner, countObserver)
+        viewModel.todaysSubmittedOrdersList.observe(viewLifecycleOwner, ordersListObserver)
         viewModel.getNextOrderFromFireStore()
 //        viewModel.getTodaysSubmittedOrdersList()
         viewModel.setUpSubmittedOrdersListener()
