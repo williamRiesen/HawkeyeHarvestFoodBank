@@ -81,6 +81,7 @@ class VolunteerActivityViewModel : ViewModel() {
             }
     }
 
+
     fun getTodaysSubmittedOrdersList() {
         val foodBank = FoodBank()
         val today = foodBank.getCurrentDateWithoutTime()
@@ -102,6 +103,35 @@ class VolunteerActivityViewModel : ViewModel() {
                 }
                 todaysSubmittedOrdersList.value?.sortBy {
                     it.pickUpHour24
+                }
+            }
+    }
+
+    fun setUpSubmittedOrdersListener() {
+        val foodBank = FoodBank()
+        val today = foodBank.getCurrentDateWithoutTime()
+        val startOfTodayTimestamp = Timestamp(today)
+        val db = FirebaseFirestore.getInstance()
+        val ordersRef = db.collection("orders")
+        val query = ordersRef
+            .whereGreaterThan("date", startOfTodayTimestamp)
+            .whereEqualTo("orderState", "SUBMITTED")
+            .addSnapshotListener { querySnapshot, e ->
+                if (e != null) {
+                    Log.w("TAG", "Listen failed.", e)
+                    return@addSnapshotListener
+                }
+                if (!querySnapshot?.isEmpty!!) {
+                    ordersToPackCount.value = querySnapshot.size()
+                    todaysSubmittedOrdersList.value =
+                        querySnapshot.toObjects<Order>(Order().javaClass)
+                    querySnapshot.forEachIndexed { index, queryDocumentSnapshot ->
+                        (todaysSubmittedOrdersList.value as MutableList<Order>)[index].orderID =
+                            queryDocumentSnapshot.id
+                    }
+                    todaysSubmittedOrdersList.value?.sortBy {
+                        it.pickUpHour24
+                    }
                 }
             }
     }

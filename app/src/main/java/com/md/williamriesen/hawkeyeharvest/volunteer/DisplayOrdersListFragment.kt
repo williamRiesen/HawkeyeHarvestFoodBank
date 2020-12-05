@@ -26,7 +26,7 @@ class DisplayOrdersListFragment : Fragment() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this.requireActivity())
             .get(VolunteerActivityViewModel::class.java)
-        viewModel.getTodaysSubmittedOrdersList()
+//        viewModel.getTodaysSubmittedOrdersList()
         viewModel.todaysSubmittedOrdersList.value?.forEach {
             Log.d("TAG", "accountID: ${it.accountID}, orderSize: ${it.itemList.size}, pickUpHour24: ${it.pickUpHour24}")
         }

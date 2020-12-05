@@ -54,7 +54,8 @@ class VolunteerSignInFragment : Fragment() {
 //        viewModel.todaysSubmittedOrdersList.observe(viewLifecycleOwner, Observer { adapter.notifyDataSetChanged() })
         viewModel.ordersToPackCount.observe(viewLifecycleOwner, countObserver)
         viewModel.getNextOrderFromFireStore()
-        viewModel.getTodaysSubmittedOrdersList()
+//        viewModel.getTodaysSubmittedOrdersList()
+        viewModel.setUpSubmittedOrdersListener()
         return volunteerSignInFragment
     }
 
