@@ -1,7 +1,8 @@
-package com.md.williamriesen.hawkeyeharvest
+package com.md.williamriesen.hawkeyeharvest.signin
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.md.williamriesen.hawkeyeharvest.R
 
 class ErrorMessageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

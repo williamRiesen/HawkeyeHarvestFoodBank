@@ -1,6 +1,6 @@
 package com.md.williamriesen.hawkeyeharvest.foodbank
 
-import com.md.williamriesen.hawkeyeharvest.ErrorMessageActivity
+import com.md.williamriesen.hawkeyeharvest.signin.ErrorMessageActivity
 import com.md.williamriesen.hawkeyeharvest.orderfornextday.NextDayOrderActivity
 import com.md.williamriesen.hawkeyeharvest.orderonsite.OnSiteOrderActivity
 import com.md.williamriesen.hawkeyeharvest.signin.*

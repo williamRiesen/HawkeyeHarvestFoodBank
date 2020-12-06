@@ -20,12 +20,11 @@ class PackOrderFragment : Fragment() {
     private lateinit var adapterFood: FoodItemsToPackAdapter
     private lateinit var viewModel: VolunteerActivityViewModel
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this.requireActivity())
             .get(VolunteerActivityViewModel::class.java)
-        viewModel.updateOrderAsBeingPacked(requireActivity())
+//        viewModel.updateOrderAsBeingPacked(requireActivity())
         viewModel.itemsToPackList.observe(this, Observer { adapterFood.notifyDataSetChanged() })
     }
 

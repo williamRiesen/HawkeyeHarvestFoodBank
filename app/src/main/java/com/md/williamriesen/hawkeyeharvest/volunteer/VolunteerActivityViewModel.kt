@@ -3,12 +3,15 @@ package com.md.williamriesen.hawkeyeharvest.volunteer
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.Navigation
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
+import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.foodbank.FoodBank
 import com.md.williamriesen.hawkeyeharvest.foodbank.FoodItem
 import com.md.williamriesen.hawkeyeharvest.foodbank.Order
@@ -50,10 +53,26 @@ class VolunteerActivityViewModel : ViewModel() {
             }
     }
 
-    fun updateOrderAsBeingPacked(activity: Activity) {
+    fun getOrderFromFiresStore(orderIdArg: String){
+        orderID = orderIdArg
+        Log.d("TAG","orderIdArg at getOrderFromFireStore: $orderIdArg")
+        val db = FirebaseFirestore.getInstance()
+        val orderDocRef = db.collection("orders").document(orderIdArg)
+        orderDocRef.get()
+            .addOnSuccessListener {
+                nextOrder = it.toObject<Order>()
+                val myList = nextOrder?.itemList
+                accountID = nextOrder?.accountID
+                itemsToPackList.value = myList
+                updateOrderAsBeingPacked()
+            }
+    }
+
+    fun updateOrderAsBeingPacked() {
         val updatedOrder = nextOrder
         updatedOrder?.orderState = "BEING_PACKED"
         val db = FirebaseFirestore.getInstance()
+        Log.d("TAG", "orderID from updateOrderAsBeingPacked: $orderID")
         db.collection("orders").document(orderID!!).set(updatedOrder!!)
             .addOnSuccessListener {
                 Log.d("TAG", "Order has been updated as BEING_PACKED.")
@@ -134,6 +153,11 @@ class VolunteerActivityViewModel : ViewModel() {
                     }
                 }
             }
+    }
+    fun packOrder(orderID: String, view: View){
+        Log.d("TAG","orderID argument passed to packOrder: $orderID")
+        getOrderFromFiresStore(orderID)
+        Navigation.findNavController(view).navigate(R.id.action_volunteerSignInFragment_to_packOrderFragment)
     }
 
     fun togglePackedState(itemName: String) {

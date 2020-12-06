@@ -13,6 +13,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.foodbank.FoodBank
 import kotlinx.android.synthetic.main.fragment_checkout.view.*
+import kotlinx.android.synthetic.main.order.*
 import kotlin.concurrent.fixedRateTimer
 
 class VolunteerActivity : AppCompatActivity() {
@@ -46,6 +47,13 @@ class VolunteerActivity : AppCompatActivity() {
         if (viewModel.checkIfAllItemsPacked()){
             Navigation.findNavController(view).navigate(R.id.action_packOrderFragment_to_confirmPacked)
         }
+    }
+
+    fun onPackButtonClicked(view: View){
+        val textViewOrderID = view.findViewById<TextView>(R.id.textViewOrderID)
+        Log.d("TAG", "textViewOrderID.text: $textViewOrderID.text")
+        val orderID = textViewOrderID.text.toString()
+        viewModel.packOrder(orderID, view)
     }
 
 }
