@@ -24,9 +24,11 @@ class VolunteerActivityViewModel : ViewModel() {
     var nextOrder: Order? = null
     var orderID: String? = null
     var ordersToPackCount = MutableLiveData<Int>()
-    var accountID: String? = null
+    var accountID: MutableLiveData<String> = MutableLiveData("")
     var accountNumberForDisplay: String? = ""
-        get() = accountID?.takeLast(4)
+        get() = accountID.value?.takeLast(4)
+    var itemCount = itemsToPackList.value?.size ?: 0
+    var familySize: MutableLiveData<Long> = MutableLiveData(0)
 
 
     fun getNextOrderFromFireStore() {
@@ -46,25 +48,38 @@ class VolunteerActivityViewModel : ViewModel() {
                             orderID = querySnapshot.documents[0].id
                             nextOrder = querySnapshot.documents[0].toObject<Order>()
                             val myList = nextOrder?.itemList
-                            accountID = nextOrder?.accountID
+                            accountID.value = nextOrder?.accountID
                             itemsToPackList.value = myList
                         }
                     }
             }
     }
 
-    fun getOrderFromFiresStore(orderIdArg: String){
+    fun getOrderFromFiresStore(orderIdArg: String) {
         orderID = orderIdArg
-        Log.d("TAG","orderIdArg at getOrderFromFireStore: $orderIdArg")
+        Log.d("TAG", "orderIdArg at getOrderFromFireStore: $orderIdArg")
         val db = FirebaseFirestore.getInstance()
         val orderDocRef = db.collection("orders").document(orderIdArg)
         orderDocRef.get()
             .addOnSuccessListener {
                 nextOrder = it.toObject<Order>()
                 val myList = nextOrder?.itemList
-                accountID = nextOrder?.accountID
+                accountID.value = nextOrder?.accountID
                 itemsToPackList.value = myList
                 updateOrderAsBeingPacked()
+            }
+    }
+
+    fun getFamilySize(accountID: String) {
+        val db = FirebaseFirestore.getInstance()
+        Log.d("TAG", "accountID argument used in getFamilySize: $accountID")
+        val accountDocRef = db.collection("accounts").document(accountID)
+        accountDocRef.get()
+            .addOnSuccessListener {
+                Log.d("TAG", "documentSnapShot: $it")
+                val thisFamilySize = it.getLong("familySize")
+                Log.d("TAG", "familySize within fun getFamilySize: $thisFamilySize")
+                familySize.value = it.get("familySize") as Long
             }
     }
 
@@ -90,13 +105,13 @@ class VolunteerActivityViewModel : ViewModel() {
             .whereEqualTo("orderState", "PACKED")
             .get()
             .addOnSuccessListener { querySnapshot ->
-                if (!querySnapshot.isEmpty) {
-                    todaysPackedOrdersList.value = querySnapshot.toObjects<Order>(Order().javaClass)
-                    querySnapshot.forEachIndexed { index, queryDocumentSnapshot ->
-                        (todaysPackedOrdersList.value as MutableList<Order>)[index].orderID =
-                            queryDocumentSnapshot.id
-                    }
+//                if (!querySnapshot.isEmpty) {
+                todaysPackedOrdersList.value = querySnapshot.toObjects<Order>(Order().javaClass)
+                querySnapshot.forEachIndexed { index, queryDocumentSnapshot ->
+                    (todaysPackedOrdersList.value as MutableList<Order>)[index].orderID =
+                        queryDocumentSnapshot.id
                 }
+//                }
             }
     }
 
@@ -140,25 +155,33 @@ class VolunteerActivityViewModel : ViewModel() {
                     Log.w("TAG", "Listen failed.", e)
                     return@addSnapshotListener
                 }
-                if (!querySnapshot?.isEmpty!!) {
+//                if (!querySnapshot?.isEmpty!!) {
+                if (querySnapshot != null) {
                     ordersToPackCount.value = querySnapshot.size()
-                    todaysSubmittedOrdersList.value =
-                        querySnapshot.toObjects<Order>(Order().javaClass)
-                    querySnapshot.forEachIndexed { index, queryDocumentSnapshot ->
-                        (todaysSubmittedOrdersList.value as MutableList<Order>)[index].orderID =
-                            queryDocumentSnapshot.id
-                    }
-                    todaysSubmittedOrdersList.value?.sortBy {
-                        it.pickUpHour24
-                    }
+                } else {
+                    ordersToPackCount.value = 0
                 }
+                todaysSubmittedOrdersList.value =
+                    querySnapshot?.toObjects<Order>(Order().javaClass)
+                querySnapshot?.forEachIndexed { index, queryDocumentSnapshot ->
+                    (todaysSubmittedOrdersList.value as MutableList<Order>)[index].orderID =
+                        queryDocumentSnapshot.id
+                }
+                todaysSubmittedOrdersList.value?.sortBy {
+                    it.pickUpHour24
+                }
+//                }
             }
     }
-    fun packOrder(orderID: String, view: View){
-        Log.d("TAG","orderID argument passed to packOrder: $orderID")
+
+    fun packOrder(orderID: String, accountID: String, view: View) {
+        Log.d("TAG", "orderID argument passed to packOrder: $orderID")
         getOrderFromFiresStore(orderID)
-        Navigation.findNavController(view).navigate(R.id.action_volunteerSignInFragment_to_packOrderFragment)
+        getFamilySize(accountID)
+        Navigation.findNavController(view)
+            .navigate(R.id.action_volunteerSignInFragment_to_packOrderFragment)
     }
+
 
     fun togglePackedState(itemName: String) {
         val myList = itemsToPackList.value

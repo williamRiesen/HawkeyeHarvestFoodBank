@@ -48,12 +48,4 @@ class VolunteerActivity : AppCompatActivity() {
             Navigation.findNavController(view).navigate(R.id.action_packOrderFragment_to_confirmPacked)
         }
     }
-
-    fun onPackButtonClicked(view: View){
-        val textViewOrderID = view.findViewById<TextView>(R.id.textViewOrderID)
-        Log.d("TAG", "textViewOrderID.text: $textViewOrderID.text")
-        val orderID = textViewOrderID.text.toString()
-        viewModel.packOrder(orderID, view)
-    }
-
 }

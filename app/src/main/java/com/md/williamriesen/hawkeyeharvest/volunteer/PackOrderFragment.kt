@@ -1,10 +1,12 @@
 package com.md.williamriesen.hawkeyeharvest.volunteer
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -36,6 +38,19 @@ class PackOrderFragment : Fragment() {
         val packOrderView = inflater.inflate(R.layout.fragment_pack_order, container, false)
         val recyclerView = packOrderView.findViewById<RecyclerView>(R.id.recyclerviewInventoryForUpdate)
         setUpRecyclerView(viewModel.itemsToPackList, recyclerView)
+        val textViewAccount = packOrderView.findViewById<TextView>(R.id.textViewAccount)
+        textViewAccount.text = viewModel.accountNumberForDisplay
+        val accountListener = Observer<String> { accountID ->
+            textViewAccount.text = accountID.takeLast(4)
+        }
+        viewModel.accountID.observe(viewLifecycleOwner, accountListener)
+        val textViewFamilySize = packOrderView.findViewById<TextView>(R.id.textViewFamilySize)
+        val familySizeObserver = Observer<Long> {familySize ->
+            Log.d("TAG", "familySize within observer: $familySize")
+            Log.d("TAG", "textViewFamilySize: $textViewFamilySize")
+            textViewFamilySize.text = familySize.toString()
+        }
+        viewModel.familySize.observe(viewLifecycleOwner, familySizeObserver)
         return packOrderView
     }
 

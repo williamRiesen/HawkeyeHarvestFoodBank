@@ -11,14 +11,28 @@
 
 
     <TextView
+        android:id="@+id/textViewPackLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pack"
+        android:textColor="@color/plainText"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textViewOrderSizeTimeLabel2"
+        app:layout_constraintTop_toTopOf="@+id/textViewOrderSizeTimeLabel2" />
+
+    <TextView
         android:id="@+id/textViewAccoundID2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="AccountID"
+        android:layout_marginTop="8dp"
+        android:text="Account"
         android:textColor="@color/plainText"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/textViewPickUpTimeLabel2"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewOrderCount" />
 
@@ -28,7 +42,7 @@
         android:layout_height="wrap_content"
         android:text="Pick Up Time"
         android:textColor="@color/plainText"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/textViewOrderSizeTimeLabel2"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textViewAccoundID2"
@@ -38,18 +52,18 @@
         android:id="@+id/textViewOrderSizeTimeLabel2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Order Size"
+        android:text="Size"
         android:textColor="@color/plainText"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/textViewPackLabel"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textViewPickUpTimeLabel2"
         app:layout_constraintTop_toTopOf="@+id/textViewPickUpTimeLabel2" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewOrdersList"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_width="407dp"
+        android:layout_height="395dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewAccoundID2" />
@@ -91,33 +105,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageViewLogoVolunteer"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textViewconfirmPackedMessage"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:gravity="bottom"
-        android:text="@string/are_you_ready_to_pack_the_next_order"
-        android:textColor="@color/plainText"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerViewOrdersList" />
-
-    <Button
-        android:id="@+id/buttonConfirmPacked"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:onClick="onReadyButtonClicked"
-        android:text="@string/ok"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.851"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewconfirmPackedMessage" />
 
     <TextView
         android:id="@+id/textViewOrderCountLabel"
