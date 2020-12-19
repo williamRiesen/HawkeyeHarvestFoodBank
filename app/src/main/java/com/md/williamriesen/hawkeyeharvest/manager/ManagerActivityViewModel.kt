@@ -46,12 +46,16 @@ class ManagerActivityViewModel : ViewModel() {
     }
 
     fun submitUpdatedInventory(context: Context) {
-//        val objectCatalog = ObjectCatalog(itemsToInventoryList.value!!)
-//        val db = FirebaseFirestore.getInstance()
-//        db.collection("catalogs").document("objectCatalog").set(objectCatalog)
-//            .addOnSuccessListener {
-//                Toast.makeText(context, "Inventory Updated.", Toast.LENGTH_LONG).show()
-//            }
+        val foodItemListWithoutHeadings = itemsToInventoryList.value?.filter { foodItem ->
+            foodItem.name != foodItem.category
+        }
+        val newObjectCatalog = ObjectCatalog()
+        newObjectCatalog.foodItemList = foodItemListWithoutHeadings
+        val db = FirebaseFirestore.getInstance()
+        db.collection("catalogs").document("objectCatalog").set(newObjectCatalog)
+            .addOnSuccessListener {
+                Toast.makeText(context, "Inventory Updated.", Toast.LENGTH_LONG).show()
+            }
     }
 
     fun retrieveCategoriesFromFireStore() {
