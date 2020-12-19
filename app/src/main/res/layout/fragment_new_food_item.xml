@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/design_default_color_background"
+    tools:context=".manager.NewFoodItemFragment">
+
+
+    <EditText
+        android:id="@+id/editTextLimit"
+        android:layout_width="108dp"
+        android:layout_height="39dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="@+id/editTextPointValue"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPointValue" />
+
+    <TextView
+        android:id="@+id/textViewLimitLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Limit:"
+        android:textColor="@color/plainText"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/textViewPointValue"
+        app:layout_constraintStart_toStartOf="@+id/textViewPointValue"
+        app:layout_constraintTop_toTopOf="@+id/editTextLimit" />
+
+    <TextView
+        android:id="@+id/textViewPointValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Point Value:"
+        android:textColor="@color/plainText"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/textViewCategoryLabel"
+        app:layout_constraintStart_toStartOf="@+id/textViewCategoryLabel"
+        app:layout_constraintTop_toTopOf="@+id/editTextPointValue" />
+
+    <TextView
+        android:id="@+id/textViewCategoryLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Category:"
+        android:textColor="@color/plainText"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/foodItemNameLabel"
+        app:layout_constraintStart_toStartOf="@+id/foodItemNameLabel"
+        app:layout_constraintTop_toTopOf="@+id/spinnerCategory" />
+
+    <TextView
+        android:id="@+id/foodItemNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Food Item Name:"
+        android:textColor="@color/plainText"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editTextFoodItemName" />
+
+    <TextView
+        android:id="@+id/textViewManagerSection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/fragmentBackground"
+        android:fontFamily="@font/work_sans_medium"
+        android:gravity="center"
+        android:text="Manager Section"
+        android:textColor="@color/logoHunterGreen"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewLogoVolunteer"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHawkeyeHarvestVolunteer" />
+
+    <ImageView
+        android:id="@+id/imageViewLogoVolunteer"
+        android:layout_width="106dp"
+        android:layout_height="91dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_hawkeye_harvest_food_bank_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewHawkeyeHarvestVolunteer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/fragmentBackground"
+        android:fontFamily="@font/goblin_one"
+        android:gravity="center"
+        android:text="@string/hawkeye_harvest"
+        android:textColor="@color/logoHunterGreen"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewLogoVolunteer"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewAddNewFoodItemLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Add New Food Item:"
+        android:textColor="@color/plainText"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewLogoVolunteer" />
+
+    <EditText
+        android:id="@+id/editTextPointValue"
+        android:layout_width="0dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="@+id/spinnerCategory"
+        app:layout_constraintStart_toStartOf="@+id/spinnerCategory"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCategory" />
+
+    <EditText
+        android:id="@+id/editTextFoodItemName"
+        android:layout_width="210dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        app:layout_constraintStart_toEndOf="@+id/foodItemNameLabel"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAddNewFoodItemLabel" />
+
+    <Spinner
+        android:id="@+id/spinnerCategory"
+        android:layout_width="0dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/editTextFoodItemName"
+        app:layout_constraintStart_toStartOf="@+id/editTextFoodItemName"
+        app:layout_constraintTop_toBottomOf="@+id/editTextFoodItemName" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -55,7 +55,7 @@
         android:gravity="bottom"
         android:text="@string/your_order_has_been_packed_please_pull_up_to_the_food_bank_now_show_the_order_number_on_the_next_screen_in_your_car_window"
         android:textColor="@color/plainText"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

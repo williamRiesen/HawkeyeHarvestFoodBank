@@ -67,7 +67,7 @@
         android:gravity="bottom"
         android:text="@string/your_order_has_been_saved_you_may_activate_this_saved_order_using_this_app_any_time_on_or_after"
         android:textColor="@color/plainText"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

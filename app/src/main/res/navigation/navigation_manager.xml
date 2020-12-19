@@ -7,5 +7,14 @@
     <fragment
         android:id="@+id/updateInventoryFragment"
         android:name="com.md.williamriesen.hawkeyeharvest.manager.UpdateInventoryFragment"
-        android:label="UpdateInventoryFragment" />
+        android:label="UpdateInventoryFragment" >
+        <action
+            android:id="@+id/action_updateInventoryFragment_to_newFoodItemFragment"
+            app:destination="@id/newFoodItemFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newFoodItemFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.manager.NewFoodItemFragment"
+        android:label="fragment_new_food_item"
+        tools:layout="@layout/fragment_new_food_item" />
 </navigation>

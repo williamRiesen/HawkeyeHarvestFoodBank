@@ -1,0 +1,39 @@
+package com.md.williamriesen.hawkeyeharvest.manager
+
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import com.md.williamriesen.hawkeyeharvest.R
+
+
+class NewFoodItemFragment : Fragment() {
+
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val fragment =
+         inflater.inflate(R.layout.fragment_new_food_item, container, false)
+        val spinner: Spinner = fragment.findViewById(R.id.spinnerCategory)
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.categories_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            spinner.adapter = adapter
+        }
+        return fragment
+    }
+
+
+
+}

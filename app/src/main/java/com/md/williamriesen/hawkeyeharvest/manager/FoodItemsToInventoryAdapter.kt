@@ -1,11 +1,12 @@
 package com.md.williamriesen.hawkeyeharvest.manager
 
-import android.util.Log
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.md.williamriesen.hawkeyeharvest.R
@@ -17,7 +18,8 @@ class FoodItemsToInventoryAdapter(
 ) : RecyclerView.Adapter<FoodItemsToInventoryAdapter.MyViewHolder>() {
 
     inner class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        var textViewItemToInventoryName: TextView = view.findViewById(R.id.textview_item_to_inventory_name)
+        var textViewItemToInventoryName: TextView =
+            view.findViewById(R.id.textview_item_to_inventory_name)
         var checkBoxIsAvailable: CheckBox = view.findViewById(R.id.checkBoxIsAvailable)
 
 
@@ -34,16 +36,23 @@ class FoodItemsToInventoryAdapter(
         viewType: Int
     ): MyViewHolder {
         val v: View =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_to_update_inventory, parent, false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_to_update_inventory, parent, false)
         return MyViewHolder(v)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
+
         holder.textViewItemToInventoryName.text = itemsToInventoryList.value!![position].name
-        Log.d("TAG", "${itemsToInventoryList.value!![position].name}, position $position, isAvailable " +
-                "${itemsToInventoryList.value!![position].isAvailable}")
         holder.checkBoxIsAvailable.isChecked = itemsToInventoryList.value!![position].isAvailable!!
+        val isCategory =
+            itemsToInventoryList.value!![position].name == itemsToInventoryList.value!![position].category
+        if (isCategory) {
+            formatAsCategory(holder)
+        } else {
+            formatAsItem(holder)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -54,5 +63,27 @@ class FoodItemsToInventoryAdapter(
         return size
     }
 
+    private fun formatAsCategory(holder: MyViewHolder) {
+        holder.checkBoxIsAvailable.visibility = View.INVISIBLE
+        holder.textViewItemToInventoryName.setTextColor(
+            ContextCompat.getColor(holder.view.context, R.color.logoLimeGreen)
+        )
+        holder.textViewItemToInventoryName.setBackgroundColor(
+            ContextCompat.getColor(
+                holder.view.context,
+                R.color.colorAccent
+            )
+        )
+    }
+
+
+    private fun formatAsItem(holder: MyViewHolder) {
+        holder.checkBoxIsAvailable.visibility = View.VISIBLE
+        holder.textViewItemToInventoryName.setTextColor(Color.parseColor("#630293"))
+        holder.textViewItemToInventoryName.setBackgroundColor(Color.WHITE)
+
+    }
 }
+
+
 

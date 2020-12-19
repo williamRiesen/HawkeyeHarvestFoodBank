@@ -53,7 +53,7 @@
         android:layout_marginEnd="16dp"
         android:text="@string/you_have_a_saved_order_are_you_ready_to_pick_up_your_order_now"
         android:textColor="@color/plainText"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/button_yes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -98,7 +98,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:text="@string/check_out"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/button_yes"
         app:layout_constraintTop_toTopOf="@+id/button_yes" />
 
@@ -109,7 +109,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:text="@string/shop_some_more"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/button_shop"
         app:layout_constraintTop_toTopOf="@+id/button_shop" />
 
@@ -120,7 +120,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:text="@string/come_back_later"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/button_exit"
         app:layout_constraintTop_toTopOf="@+id/button_exit" />
 

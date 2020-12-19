@@ -53,7 +53,7 @@
         android:layout_marginEnd="16dp"
         android:text="@string/our_records_show_you_have_picked_up_this_month_s_order_already_you_may_shop_for_next_month_now_and_then_activate_your_order_between_1_and_3_pm_weekdays_next_month"
         android:textColor="@color/plainText"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

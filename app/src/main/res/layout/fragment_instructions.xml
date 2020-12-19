@@ -16,7 +16,7 @@
         android:layout_marginEnd="16dp"
         android:text="When you are done, Press this button up in the corner to check out."
         android:textColor="@color/plainText"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/floatingButtonCheckout2"
         app:layout_constraintTop_toTopOf="@+id/floatingButtonCheckout2" />
@@ -29,7 +29,7 @@
         android:layout_marginEnd="16dp"
         android:text="If you change your mind, use this button to put the food back."
         android:textColor="@color/plainText"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageButtonRemove2"
         app:layout_constraintTop_toTopOf="@+id/imageButtonRemove2" />
@@ -148,7 +148,7 @@
         android:layout_marginEnd="16dp"
         android:text="On the next screen, use the plus button to put food in your cart."
         android:textColor="@color/plainText"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageButtonAdd2"
         app:layout_constraintTop_toTopOf="@+id/imageButtonAdd2" />

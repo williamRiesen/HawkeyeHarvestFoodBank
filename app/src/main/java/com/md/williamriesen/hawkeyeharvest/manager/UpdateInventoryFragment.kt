@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -25,8 +26,9 @@ class UpdateInventoryFragment : Fragment() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this.requireActivity())
             .get(ManagerActivityViewModel::class.java)
-        viewModel.getInventoryFromFirestore()
         viewModel.itemsToInventoryList.observe(this, Observer { adapterFood.notifyDataSetChanged() })
+        viewModel.retrieveCategoriesFromFireStore()
+//        viewModel.getInventoryFromFirestore()
     }
 
     override fun onCreateView(
@@ -39,6 +41,10 @@ class UpdateInventoryFragment : Fragment() {
         val actionButton = updateInventoryView.findViewById<FloatingActionButton>(R.id.floatingActionButton)
         actionButton.setOnClickListener {
             viewModel.submitUpdatedInventory(requireContext())
+        }
+        val actionButtonAddItem = updateInventoryView.findViewById<FloatingActionButton>(R.id.floatingActionButtonAddItem)
+        actionButtonAddItem.setOnClickListener {
+            Navigation.findNavController(it).navigate(R.id.action_updateInventoryFragment_to_newFoodItemFragment)
         }
         return updateInventoryView
     }

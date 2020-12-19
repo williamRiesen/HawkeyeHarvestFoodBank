@@ -53,7 +53,7 @@
         android:layout_marginEnd="16dp"
         android:text="@string/you_have_a_saved_order_your_may_look_at_and_change_your_order_now_if_you_like_the_food_bank_is_closed_now_it_is_open_to_pack_orders_from_1_3_pm_on_weekdays_would_you_like_to_update_your_order"
         android:textColor="@color/plainText"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
