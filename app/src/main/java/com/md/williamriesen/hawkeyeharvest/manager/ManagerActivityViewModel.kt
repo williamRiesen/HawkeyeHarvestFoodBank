@@ -2,7 +2,6 @@ package com.md.williamriesen.hawkeyeharvest.manager
 
 import android.content.Context
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -91,4 +90,21 @@ class ManagerActivityViewModel : ViewModel() {
         }
     }
 
+    fun submitAccount(accountID: String, familySize: String, city: String, county: String, context: Context) {
+        if (accountID == ""){
+            Toast.makeText(context, "Please enter Account ID.", Toast.LENGTH_LONG).show()
+        }
+        else if (familySize == ""){
+            Toast.makeText(context, "Please enter family size.", Toast.LENGTH_LONG).show()
+        }
+        else if (city == ""){
+            Toast.makeText(context, "Please enter city.", Toast.LENGTH_LONG).show()
+        }
+        else if (county == ""){
+            Toast.makeText(context, "Please enter county.", Toast.LENGTH_LONG).show()
+        }
+        else{
+            Toast.makeText(context, "Data validated.", Toast.LENGTH_LONG).show()
+        }
+    }
 }

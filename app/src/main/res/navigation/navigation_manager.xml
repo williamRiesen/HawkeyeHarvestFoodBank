@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_manager"
-    app:startDestination="@id/updateInventoryFragment">
+    app:startDestination="@id/managerStartFragment">
     <fragment
         android:id="@+id/updateInventoryFragment"
         android:name="com.md.williamriesen.hawkeyeharvest.manager.UpdateInventoryFragment"
@@ -17,4 +17,19 @@
         android:name="com.md.williamriesen.hawkeyeharvest.manager.NewFoodItemFragment"
         android:label="fragment_new_food_item"
         tools:layout="@layout/fragment_new_food_item" />
+    <fragment
+        android:id="@+id/managerStartFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.manager.ManagerStartFragment"
+        android:label="ManagerStartFragment" >
+        <action
+            android:id="@+id/action_managerStartFragment_to_updateInventoryFragment"
+            app:destination="@id/updateInventoryFragment" />
+        <action
+            android:id="@+id/action_managerStartFragment_to_addEditAccountFragment"
+            app:destination="@id/addEditAccountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addEditAccountFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.manager.AddEditAccountFragment"
+        android:label="AddEditAccountFragment" />
 </navigation>

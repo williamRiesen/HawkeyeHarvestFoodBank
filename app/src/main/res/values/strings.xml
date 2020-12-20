@@ -98,6 +98,18 @@
     <item>Beans</item>
     <item>Soups</item>
     <item>Processed Tomato</item>
-    <item>Cereal</item>
+    <item>Cereals</item>
+    <item>Sides</item>
+    <item>Pasta</item>
+    <item>Meal Helper</item>
+    <item>Extra</item>
+    <item>Nonedibles</item>
+    <item>Milk</item>
+    <item>Eggs</item>
+    <item>Jello/Pudding</item>
+    <item>Dairy (except milk)</item>
+    <item>Bread</item>
+    <item>Sweets</item>
+    <item>Fresh Produce</item>
 </string-array>
 </resources>

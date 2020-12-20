@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/design_default_color_background"
+    tools:context=".manager.NewFoodItemFragment">
+
+
+    <EditText
+        android:id="@+id/editTextCounty"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:inputType="textCapWords"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/editTextFamilySize"
+        app:layout_constraintTop_toBottomOf="@+id/editTextCity" />
+
+    <EditText
+        android:id="@+id/editTextFamilySize"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="@+id/editTextAccountID"
+        app:layout_constraintTop_toBottomOf="@+id/editTextAccountID" />
+
+    <TextView
+        android:id="@+id/textViewFamilySizeLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Family size:"
+        android:textColor="@color/plainText"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/textViewAccountIDLabel"
+        app:layout_constraintTop_toTopOf="@+id/editTextFamilySize" />
+
+    <TextView
+        android:id="@+id/textViewCityLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="City:"
+        android:textColor="@color/plainText"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/textViewFamilySizeLabel"
+        app:layout_constraintStart_toStartOf="@+id/textViewFamilySizeLabel"
+        app:layout_constraintTop_toTopOf="@+id/editTextCity" />
+
+    <TextView
+        android:id="@+id/textViewCountyLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="County:"
+        android:textColor="@color/plainText"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/textViewCityLabel"
+        app:layout_constraintStart_toStartOf="@+id/textViewCityLabel"
+        app:layout_constraintTop_toTopOf="@+id/editTextCounty" />
+
+    <TextView
+        android:id="@+id/textViewAccountIDLabel"
+        android:layout_width="89dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="AccountID:"
+        android:textColor="@color/plainText"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editTextAccountID" />
+
+    <TextView
+        android:id="@+id/textViewManagerSection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/fragmentBackground"
+        android:fontFamily="@font/work_sans_medium"
+        android:gravity="center"
+        android:text="Manager Section"
+        android:textColor="@color/logoHunterGreen"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewLogoVolunteer"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHawkeyeHarvestVolunteer" />
+
+    <ImageView
+        android:id="@+id/imageViewLogoVolunteer"
+        android:layout_width="106dp"
+        android:layout_height="91dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_hawkeye_harvest_food_bank_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewHawkeyeHarvestVolunteer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/fragmentBackground"
+        android:fontFamily="@font/goblin_one"
+        android:gravity="center"
+        android:text="@string/hawkeye_harvest"
+        android:textColor="@color/logoHunterGreen"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewLogoVolunteer"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewEnterClientDataLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Enter client data:"
+        android:textColor="@color/plainText"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewLogoVolunteer" />
+
+    <EditText
+        android:id="@+id/editTextCity"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:inputType="textCapWords"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/editTextFamilySize"
+        app:layout_constraintTop_toBottomOf="@+id/editTextFamilySize" />
+
+    <EditText
+        android:id="@+id/editTextAccountID"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:inputType="textCapCharacters"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewAccountIDLabel"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEnterClientDataLabel" />
+
+    <TextView
+        android:id="@+id/textViewNoteLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Note: Assign new accountID's in the format &quot;ABC1234.&quot; Existing accounts may be updated by entering existing accountID and updating the remaining fields. All fields (blanks) must be filled in. "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextCounty" />
+
+    <Button
+        android:id="@+id/buttonSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

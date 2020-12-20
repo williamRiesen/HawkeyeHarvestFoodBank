@@ -10,62 +10,84 @@
     tools:context=".manager.NewFoodItemFragment">
 
 
-    <EditText
-        android:id="@+id/editTextLimit"
-        android:layout_width="108dp"
-        android:layout_height="39dp"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintStart_toStartOf="@+id/editTextPointValue"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPointValue" />
+    <Button
+        android:id="@+id/buttonSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textViewLimitLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Limit:"
-        android:textColor="@color/plainText"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/textViewPointValue"
-        app:layout_constraintStart_toStartOf="@+id/textViewPointValue"
+        app:layout_constraintEnd_toEndOf="@+id/textViewItemNameLabel"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/editTextLimit" />
 
-    <TextView
-        android:id="@+id/textViewPointValue"
-        android:layout_width="0dp"
+    <EditText
+        android:id="@+id/editTextLimit"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Point Value:"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="number"
         android:textColor="@color/plainText"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/textViewCategoryLabel"
-        app:layout_constraintStart_toStartOf="@+id/textViewCategoryLabel"
+        app:layout_constraintStart_toEndOf="@+id/textViewItemNameLabel"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPointValue" />
+
+    <EditText
+        android:id="@+id/editTextPointValue"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="number"
+        android:textColor="@color/plainText"
+        app:layout_constraintStart_toEndOf="@+id/textViewItemNameLabel"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCategory" />
+
+    <TextView
+        android:id="@+id/textViewPointValueLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Point value:"
+        app:layout_constraintEnd_toEndOf="@+id/textViewItemNameLabel"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/editTextPointValue" />
 
     <TextView
         android:id="@+id/textViewCategoryLabel"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Category:"
-        android:textColor="@color/plainText"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/foodItemNameLabel"
-        app:layout_constraintStart_toStartOf="@+id/foodItemNameLabel"
+        app:layout_constraintEnd_toEndOf="@+id/textViewItemNameLabel"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/spinnerCategory" />
 
     <TextView
-        android:id="@+id/foodItemNameLabel"
-        android:layout_width="wrap_content"
+        android:id="@+id/textViewItemNameLabel2"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Food Item Name:"
-        android:textColor="@color/plainText"
-        android:textSize="18sp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="e.g. Catfish Fillets 2 lb (Please do not include points and limits within the name. These will be added automatically)."
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editTextFoodItemName" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextName" />
 
     <TextView
         android:id="@+id/textViewManagerSection"
@@ -105,46 +127,49 @@
         app:layout_constraintStart_toEndOf="@+id/imageViewLogoVolunteer"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Spinner
+        android:id="@+id/spinnerCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="37dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@+id/textViewCategoryLabel"
+        app:layout_constraintTop_toBottomOf="@+id/textViewItemNameLabel2" />
+
     <TextView
-        android:id="@+id/textViewAddNewFoodItemLabel"
+        android:id="@+id/textViewAddItemLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Add New Food Item:"
+        android:text="Add a new food item:"
         android:textColor="@color/plainText"
-        android:textSize="18sp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewLogoVolunteer" />
 
-    <EditText
-        android:id="@+id/editTextPointValue"
-        android:layout_width="0dp"
-        android:layout_height="39dp"
+    <TextView
+        android:id="@+id/textViewItemNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="@+id/spinnerCategory"
-        app:layout_constraintStart_toStartOf="@+id/spinnerCategory"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCategory" />
+        android:text="Item name:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editTextName" />
 
     <EditText
-        android:id="@+id/editTextFoodItemName"
-        android:layout_width="210dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        app:layout_constraintStart_toEndOf="@+id/foodItemNameLabel"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAddNewFoodItemLabel" />
-
-    <Spinner
-        android:id="@+id/spinnerCategory"
+        android:id="@+id/editTextName"
         android:layout_width="0dp"
-        android:layout_height="37dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/editTextFoodItemName"
-        app:layout_constraintStart_toStartOf="@+id/editTextFoodItemName"
-        app:layout_constraintTop_toBottomOf="@+id/editTextFoodItemName" />
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textColor="@color/plainText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewItemNameLabel"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAddItemLabel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
