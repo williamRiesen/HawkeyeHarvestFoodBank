@@ -10,6 +10,17 @@
     tools:context=".manager.NewFoodItemFragment">
 
 
+    <TextView
+        android:id="@+id/textViewLimitInstruction"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Use 100 if there is no limit for this item."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/editTextLimit"
+        app:layout_constraintTop_toTopOf="@+id/editTextLimit" />
+
     <Button
         android:id="@+id/buttonSubmit"
         android:layout_width="wrap_content"
@@ -40,6 +51,7 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="number"
+        android:text="100"
         android:textColor="@color/plainText"
         app:layout_constraintStart_toEndOf="@+id/textViewItemNameLabel"
         app:layout_constraintTop_toBottomOf="@+id/editTextPointValue" />
@@ -52,6 +64,7 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="number"
+        android:text="1"
         android:textColor="@color/plainText"
         app:layout_constraintStart_toEndOf="@+id/textViewItemNameLabel"
         app:layout_constraintTop_toBottomOf="@+id/spinnerCategory" />

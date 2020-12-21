@@ -7,10 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
-import com.md.williamriesen.hawkeyeharvest.foodbank.CategoriesListing
-import com.md.williamriesen.hawkeyeharvest.foodbank.Category
-import com.md.williamriesen.hawkeyeharvest.foodbank.ObjectCatalog
-import com.md.williamriesen.hawkeyeharvest.foodbank.FoodItem
+import com.md.williamriesen.hawkeyeharvest.foodbank.*
 
 class ManagerActivityViewModel : ViewModel() {
 
@@ -91,20 +88,67 @@ class ManagerActivityViewModel : ViewModel() {
     }
 
     fun submitAccount(accountID: String, familySize: String, city: String, county: String, context: Context) {
-        if (accountID == ""){
-            Toast.makeText(context, "Please enter Account ID.", Toast.LENGTH_LONG).show()
+
+        if (isValidAccount(accountID,familySize,city,county, context)){
+            val account = Account(accountID,familySize.toInt(),city,county)
+            val db = FirebaseFirestore.getInstance()
+            db.collection("accounts").document(account.accountID).set(account)
         }
-        else if (familySize == ""){
-            Toast.makeText(context, "Please enter family size.", Toast.LENGTH_LONG).show()
+    }
+
+    fun isValidAccount(accountID: String, familySize: String, city: String, county: String, context: Context): Boolean {
+        var valid = false
+        when {
+            accountID == "" -> {
+                Toast.makeText(context, "Please enter Account ID.", Toast.LENGTH_LONG).show()
+            }
+            familySize == "" -> {
+                Toast.makeText(context, "Please enter family size.", Toast.LENGTH_LONG).show()
+            }
+            city == "" -> {
+                Toast.makeText(context, "Please enter city.", Toast.LENGTH_LONG).show()
+            }
+            county == "" -> {
+                Toast.makeText(context, "Please enter county.", Toast.LENGTH_LONG).show()
+            }
+            else -> {
+                Toast.makeText(context, "Data validated.", Toast.LENGTH_LONG).show()
+                valid = true
+            }
         }
-        else if (city == ""){
-            Toast.makeText(context, "Please enter city.", Toast.LENGTH_LONG).show()
+        return valid
+    }
+
+
+    fun submitNewFoodItem(name: String, category: String, pointValue: String, limit: String, context: Context) {
+        if (isValidFoodItem(name,category,pointValue,limit,context)){
+            TODO() // need to determine next unused foodItem number,
+            // need to determine category number from category name
+            // then create new foodItem and submit to firestore
+            //(without messing up the rest of the catalog
         }
-        else if (county == ""){
-            Toast.makeText(context, "Please enter county.", Toast.LENGTH_LONG).show()
+    }
+
+    fun isValidFoodItem(name: String, category: String,pointValue: String,limit: String, context: Context): Boolean {
+        var valid = false
+        when {
+            name == "" -> {
+                Toast.makeText(context, "Please enter name of item to add.", Toast.LENGTH_LONG).show()
+            }
+            category == "" -> {
+                Toast.makeText(context, "Please select category.", Toast.LENGTH_LONG).show()
+            }
+            pointValue == "" -> {
+                Toast.makeText(context, "Please enter point value (usually 1).", Toast.LENGTH_LONG).show()
+            }
+            limit == "" -> {
+                Toast.makeText(context, "Please enter limit (use 100 if no limit).", Toast.LENGTH_LONG).show()
+            }
+            else -> {
+                Toast.makeText(context, "Data validated; update not yet implemented.", Toast.LENGTH_LONG).show()
+                valid = true
+            }
         }
-        else{
-            Toast.makeText(context, "Data validated.", Toast.LENGTH_LONG).show()
-        }
+        return valid
     }
 }
