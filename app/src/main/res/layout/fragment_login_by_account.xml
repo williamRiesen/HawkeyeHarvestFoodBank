@@ -79,28 +79,29 @@
         android:id="@+id/editTextAccountID"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:contentDescription="Your Account ID here"
         android:ems="10"
         android:imeOptions="actionDone"
         android:inputType="textCapCharacters"
         android:textSize="24sp"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewAccountIDLabel"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textViewAccountIDLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewFoodBank" />
 
     <TextView
         android:id="@+id/textViewAccountIDLabel"
-        android:layout_width="282dp"
-        android:layout_height="88dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:gravity="bottom"
         android:text="@string/please_enter_your_account_number"
         android:textSize="18sp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewFoodBank" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextAccountID" />
 
     <Button
         android:id="@+id/buttonNext"

@@ -27,7 +27,7 @@ class UpdateInventoryFragment : Fragment() {
         viewModel = ViewModelProviders.of(this.requireActivity())
             .get(ManagerActivityViewModel::class.java)
         viewModel.itemsToInventoryList.observe(this, Observer { adapterFood.notifyDataSetChanged() })
-        viewModel.retrieveCategoriesFromFireStore()
+        viewModel.retrieveCategoriesFromFireStore(this)
 //        viewModel.getInventoryFromFirestore()
     }
 
