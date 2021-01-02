@@ -15,8 +15,14 @@ import com.md.williamriesen.hawkeyeharvest.foodbank.ClientState
 import com.md.williamriesen.hawkeyeharvest.foodbank.FoodBank
 import com.md.williamriesen.hawkeyeharvest.orderfornextday.NextDayOrderActivity
 import com.md.williamriesen.hawkeyeharvest.orderonsite.OnSiteOrderActivity
+import java.lang.IllegalArgumentException
+import javax.inject.Inject
 
 class SignInViewModel() : ViewModel() {
+    // TODO Injected manually
+    // @Inject
+    var accountService: AccountService? = null
+
     private var currentContext: Context? = null
     private var currentView: View? = null
     private var currentAccount: Account? = null
@@ -50,10 +56,11 @@ class SignInViewModel() : ViewModel() {
             this.accountID = accountID
 
             // Account Service (this should be injected into the activity eventually)
-            val accountService = AccountService(FirebaseFirestore.getInstance())
+            // val accountService = AccountService(FirebaseFirestore.getInstance())
 
             // Fetch the user account from the database
-            accountService.fetchAccount(accountID)
+            // TODO fix this
+            accountService!!.fetchAccount(accountID)
                 .addOnSuccessListener { account ->
                     if (account == null) {
                         pleaseWait.value = false

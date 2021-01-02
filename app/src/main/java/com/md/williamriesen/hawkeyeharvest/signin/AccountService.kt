@@ -6,8 +6,12 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.md.williamriesen.hawkeyeharvest.foodbank.*
+import dagger.Component
+import dagger.Module
+import dagger.Provides
 import java.lang.Exception
 import java.util.*
+import javax.inject.Inject
 
 class Account(
     val accountID: String,
@@ -53,7 +57,24 @@ class Account(
             }
 }
 
-class AccountService(val db: FirebaseFirestore) {
+@Module
+class FireStoreModule {
+
+    @Provides
+    fun provideFireStore(): FirebaseFirestore {
+        val db = FirebaseFirestore.getInstance()
+        db.useEmulator("10.0.2.2", 8080)
+        return db
+    }
+}
+
+
+@Component(modules = [FireStoreModule::class])
+interface AccountComponent {
+    fun  getService(): AccountService
+}
+
+class AccountService @Inject constructor(val db: FirebaseFirestore) {
 
     fun fetchAccount(accountID: String): Task<Account> {
 

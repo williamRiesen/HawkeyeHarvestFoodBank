@@ -153,6 +153,7 @@ class FoodBank {
             Category(21, "Bottom Bar", 0, 0)
         )
         val db = FirebaseFirestore.getInstance()
+        db.useEmulator("10.0.2.2", 8080)
 
         db.collection("categories").document("categories").set(categoriesListing)
             .addOnSuccessListener {
@@ -355,6 +356,8 @@ class FoodBank {
         )
 
         val db = FirebaseFirestore.getInstance()
+        db.useEmulator("10.0.2.2", 8080)
+
         db.collection("catalogs").document("objectCatalog").set(myObjectCatalog)
             .addOnSuccessListener {
                 Log.d("TAG", "Catalog updated--.")

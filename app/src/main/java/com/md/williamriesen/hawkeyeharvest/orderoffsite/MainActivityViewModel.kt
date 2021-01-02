@@ -76,6 +76,8 @@ class MainActivityViewModel() : ViewModel() {
 
     private fun retrieveCategoriesFromFireStore() {
         val db = FirebaseFirestore.getInstance()
+        db.useEmulator("10.0.2.2", 8080)
+
         val docRef = db.collection("categories").document("categories")
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
@@ -95,6 +97,8 @@ class MainActivityViewModel() : ViewModel() {
 
     fun retrieveObjectCatalogFromFireStore() {
         val db = FirebaseFirestore.getInstance()
+        db.useEmulator("10.0.2.2", 8080)
+
         val docRef = db.collection("catalogs").document("objectCatalog")
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
@@ -127,6 +131,8 @@ class MainActivityViewModel() : ViewModel() {
 
     private fun retrieveSavedOrder() {
         val db = FirebaseFirestore.getInstance()
+        db.useEmulator("10.0.2.2", 8080)
+
         val ordersRef = db.collection("orders")
         val query = ordersRef
             .whereEqualTo("accountID", accountID)
@@ -200,6 +206,7 @@ class MainActivityViewModel() : ViewModel() {
 //        val thisOrder = Order(accountID, Date(), itemList.value!!, "SAVED")
 //        val filteredOrder = filterOutZeros(thisOrder)
 //        val db = FirebaseFirestore.getInstance()
+//          db.useEmulator("10.0.2.2", 8080)
 //        if (orderID != null) {
 //            db.collection(("orders")).document(orderID!!).set(filteredOrder)
 //                .addOnSuccessListener {
@@ -251,7 +258,10 @@ class MainActivityViewModel() : ViewModel() {
     fun saveOrderWithoutNavigating() {
         val thisOrder = Order(accountID, Date(), itemList.value!!, "SAVED")
         val filteredOrder = filterOutZeros(thisOrder)
+
         val db = FirebaseFirestore.getInstance()
+        db.useEmulator("10.0.2.2", 8080)
+
         if (orderID != null) {
         } else {
             db.collection(("orders")).document().set(filteredOrder)

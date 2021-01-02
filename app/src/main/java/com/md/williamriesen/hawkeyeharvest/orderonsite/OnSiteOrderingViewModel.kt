@@ -101,6 +101,8 @@ class OnSiteOrderingViewModel : ViewModel() {
                 Log.d("TAG", "token: $token")
 
                 val db = FirebaseFirestore.getInstance()
+                db.useEmulator("10.0.2.2", 8080)
+
                 Log.d("TAG", "orderID: $orderID")
                 if (orderID != null) {
                     db.collection(("orders")).document(orderID!!).set(filteredOrder)
@@ -126,7 +128,10 @@ class OnSiteOrderingViewModel : ViewModel() {
     fun saveOrder() {
         val thisOrder = Order(accountID, Date(), foodItemList.value!!, "SAVED")
         val filteredOrder = thisOrder.filterOutZeros()
+
         val db = FirebaseFirestore.getInstance()
+        db.useEmulator("10.0.2.2", 8080)
+
         if (orderID != null) {
             db.collection(("orders")).document(orderID!!).set(filteredOrder)
         } else {
@@ -144,6 +149,8 @@ class OnSiteOrderingViewModel : ViewModel() {
 
     fun retrieveObjectCatalogFromFireStore() {
         val db = FirebaseFirestore.getInstance()
+        db.useEmulator("10.0.2.2", 8080)
+
         val docRef = db.collection("catalogs").document("objectCatalog")
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
@@ -165,6 +172,8 @@ class OnSiteOrderingViewModel : ViewModel() {
 
     private fun retrieveCategoriesFromFireStore() {
         val db = FirebaseFirestore.getInstance()
+        db.useEmulator("10.0.2.2", 8080)
+
         val docRef = db.collection("categories").document("categories")
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
@@ -217,6 +226,8 @@ class OnSiteOrderingViewModel : ViewModel() {
 
     private fun retrieveSavedOrder() {
         val db = FirebaseFirestore.getInstance()
+        db.useEmulator("10.0.2.2", 8080)
+
         val ordersRef = db.collection("orders")
         val query = ordersRef
             .whereEqualTo("accountID", accountID)

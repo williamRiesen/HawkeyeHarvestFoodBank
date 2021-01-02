@@ -3,7 +3,7 @@
     package="com.md.williamriesen.hawkeyeharvest">
 
     <application
-        android:name="androidx.multidex.MultiDexApplication"
+        android:name="com.md.williamriesen.hawkeyeharvest.HawkeyeHarvestFoodBankApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_hawkeye_harvest_food_bank_logo"
         android:label="@string/app_name"

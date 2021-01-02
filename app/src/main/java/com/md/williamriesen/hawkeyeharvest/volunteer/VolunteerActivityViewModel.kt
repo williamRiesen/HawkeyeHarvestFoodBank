@@ -28,6 +28,8 @@ class VolunteerActivityViewModel : ViewModel() {
 
     fun getNextOrderFromFireStore() {
         val db = FirebaseFirestore.getInstance()
+        db.useEmulator("10.0.2.2", 8080)
+
         val ordersRef = db.collection("orders")
         val queryCount = ordersRef.whereEqualTo("orderState", "SUBMITTED")
             .get()
@@ -53,7 +55,10 @@ class VolunteerActivityViewModel : ViewModel() {
     fun updateOrderAsBeingPacked(activity: Activity) {
         val updatedOrder = nextOrder
         updatedOrder?.orderState = "BEING_PACKED"
+
         val db = FirebaseFirestore.getInstance()
+        db.useEmulator("10.0.2.2", 8080)
+
         db.collection("orders").document(orderID!!).set(updatedOrder!!)
             .addOnSuccessListener {
                 Log.d("TAG", "Order has been updated as BEING_PACKED.")
@@ -65,6 +70,8 @@ class VolunteerActivityViewModel : ViewModel() {
         val today = foodBank.getCurrentDateWithoutTime()
         val startOfTodayTimestamp = Timestamp(today)
         val db = FirebaseFirestore.getInstance()
+        db.useEmulator("10.0.2.2", 8080)
+
         val ordersRef = db.collection("orders")
         val query = ordersRef
             .whereGreaterThan("date", startOfTodayTimestamp)
@@ -86,7 +93,10 @@ class VolunteerActivityViewModel : ViewModel() {
         val foodBank = FoodBank()
         val today = foodBank.getCurrentDateWithoutTime()
         val startOfTodayTimestamp = Timestamp(today)
+
         val db = FirebaseFirestore.getInstance()
+        db.useEmulator("10.0.2.2", 8080)
+
         val ordersRef = db.collection("orders")
         val query = ordersRef
 //            .whereGreaterThan("date", startOfTodayTimestamp)  //For now, look at all submitted orders.
@@ -111,7 +121,10 @@ class VolunteerActivityViewModel : ViewModel() {
         val foodBank = FoodBank()
         val today = foodBank.getCurrentDateWithoutTime()
         val startOfTodayTimestamp = Timestamp(today)
+
         val db = FirebaseFirestore.getInstance()
+        db.useEmulator("10.0.2.2", 8080)
+
         val ordersRef = db.collection("orders")
         val query = ordersRef
             .whereGreaterThan("date", startOfTodayTimestamp)
@@ -159,7 +172,10 @@ class VolunteerActivityViewModel : ViewModel() {
     fun upDateOrderAsPacked(activity: Activity) {
         val updatedOrder = nextOrder
         updatedOrder?.orderState = "PACKED"
+
         val db = FirebaseFirestore.getInstance()
+        db.useEmulator("10.0.2.2", 8080)
+
         db.collection("orders").document(orderID!!).set(updatedOrder!!)
             .addOnSuccessListener {
                 activity.onBackPressed()
@@ -168,6 +184,8 @@ class VolunteerActivityViewModel : ViewModel() {
 
     fun recordNoShow(orderID: String, context: Context) {
         val db = FirebaseFirestore.getInstance()
+        db.useEmulator("10.0.2.2", 8080)
+
         db.collection("orders").document(orderID).update("orderState", "NO SHOW")
             .addOnSuccessListener {
                 Toast.makeText(

@@ -17,6 +17,8 @@ class ManagerActivityViewModel : ViewModel() {
 
     fun retrieveObjectCatalogFromFireStore(view: View) {
         val db = FirebaseFirestore.getInstance()
+        db.useEmulator("10.0.2.2", 8080)
+
         val docRef = db.collection("catalogs").document("objectCatalog")
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
@@ -38,6 +40,8 @@ class ManagerActivityViewModel : ViewModel() {
 
     fun getInventoryFromFirestore() {
         val db = FirebaseFirestore.getInstance()
+        db.useEmulator("10.0.2.2", 8080)
+
         val docRef = db.collection("catalogs").document("objectCatalog")
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
@@ -49,7 +53,12 @@ class ManagerActivityViewModel : ViewModel() {
 
     fun submitUpdatedInventory(context: Context) {
         val objectCatalog = ObjectCatalog(itemsToInventoryList.value!!)
+
         val db = FirebaseFirestore.getInstance()
+        db.useEmulator("10.0.2.2", 8080)
+
+
+
         db.collection("catalogs").document("objectCatalog").set(objectCatalog)
             .addOnSuccessListener {
                 Toast.makeText(context,"Inventory Updated.", Toast.LENGTH_LONG).show()
