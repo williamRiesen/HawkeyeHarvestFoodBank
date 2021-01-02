@@ -58,22 +58,6 @@ class Account(
             }
 }
 
-@Module
-class FireStoreModule {
-
-    @Provides
-    fun provideFireStore(): FirebaseFirestore {
-        val db = FirebaseFirestore.getInstance()
-        db.useEmulator("10.0.2.2", 8080)
-        return db
-    }
-}
-
-@Singleton
-@Component(modules = [FireStoreModule::class])
-interface AccountComponent {
-    fun  getService(): AccountService
-}
 
 @Singleton
 class AccountService @Inject constructor(val db: FirebaseFirestore) {

@@ -9,12 +9,15 @@ import com.md.williamriesen.hawkeyeharvest.HawkeyeHarvestFoodBankApplication
 import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.foodbank.OrderState
 import com.md.williamriesen.hawkeyeharvest.signin.AccountService
+import com.md.williamriesen.hawkeyeharvest.signin.CatalogService
 import java.util.*
 import javax.inject.Inject
 
 class OnSiteOrderActivity : AppCompatActivity() {
     @Inject
-    lateinit var accountService: AccountService;
+    lateinit var accountService: AccountService
+    @Inject
+    lateinit var catalogService: CatalogService
     private lateinit var viewModel: OnSiteOrderingViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,11 +27,13 @@ class OnSiteOrderActivity : AppCompatActivity() {
         // TODO fix lazy inject into component
         viewModel = ViewModelProviders.of(this).get(OnSiteOrderingViewModel::class.java)
         viewModel.accountService = accountService
+        viewModel.catalogService = catalogService
 
         viewModel.lastOrderDate = intent.extras?.get("LAST_ORDER_DATE") as Date
         viewModel.orderState.value = intent.extras?.get("ORDER_STATE") as OrderState
 
-        viewModel.retrieveObjectCatalogFromFireStore()
+        viewModel.init()
+//        viewModel.retrieveObjectCatalogFromFireStore()
         setContentView(R.layout.activity_on_site_ordering)
     }
     fun onCartButtonClick(view: View) {

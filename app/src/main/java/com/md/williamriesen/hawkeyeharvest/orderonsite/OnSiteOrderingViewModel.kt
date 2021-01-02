@@ -13,10 +13,12 @@ import com.md.williamriesen.hawkeyeharvest.*
 import com.md.williamriesen.hawkeyeharvest.foodbank.*
 import com.md.williamriesen.hawkeyeharvest.signin.Account
 import com.md.williamriesen.hawkeyeharvest.signin.AccountService
+import com.md.williamriesen.hawkeyeharvest.signin.CatalogService
 import java.util.*
 
 class OnSiteOrderingViewModel : ViewModel() {
     var accountService: AccountService? = null
+    var catalogService: CatalogService? = null
 
     val foodItemList = MutableLiveData<MutableList<FoodItem>>()
     var orderID: String? = null
@@ -36,6 +38,48 @@ class OnSiteOrderingViewModel : ViewModel() {
 
     private val needToStartNewOrder: Boolean
         get() = orderState.value == OrderState.PACKED && (!isOpen.value!! || whenOrdered != "TODAY")
+
+
+    fun init() {
+        // TODO null safety
+        catalogService!!.fetchCatalog()
+            .addOnSuccessListener { foodItemsList ->
+                var filteredItems = foodItemsList
+                    .filter { it.isAvailable ?: false }
+                    .toMutableList()
+
+                catalogService!!.fetchCategories()
+                    .addOnSuccessListener { categoryList ->
+                        filteredItems.addAll(generateHeadings(categoryList))
+
+                        // Sort list
+                        filteredItems = filteredItems
+                            .filter { canAfford(it, categoryList) }
+                            .sortedWith(
+                                compareBy<FoodItem> { it.categoryId }
+                                    .thenBy { it.itemID }
+                            ) as MutableList<FoodItem>
+
+                        this.foodItemList.value = filteredItems
+                    }
+            }
+    }
+
+    private fun generateHeadings(categoryList: List<Category>): List<FoodItem> {
+        return categoryList.map { category ->
+            FoodItem(
+                0,
+                category.name,
+                category.name,
+                0,
+                0,
+                0,
+                true,
+                category.id,
+                category.calculatePoints((activeAccount?.familySize ?: 0L).toInt())
+            )
+        }
+    }
 
     fun shop(view: View) {
         Navigation.findNavController(view)
@@ -93,7 +137,8 @@ class OnSiteOrderingViewModel : ViewModel() {
         }
 
     fun submitOnSiteOrder(view: View) {
-        val thisOrder = Order(activeAccount?.accountID ?: "", Date(), foodItemList.value!!, "SUBMITTED")
+        val thisOrder =
+            Order(activeAccount?.accountID ?: "", Date(), foodItemList.value!!, "SUBMITTED")
         val filteredOrder = thisOrder.filterOutZeros()
 
         FirebaseInstanceId.getInstance().instanceId
@@ -153,77 +198,16 @@ class OnSiteOrderingViewModel : ViewModel() {
         }
     }
 
-    fun retrieveObjectCatalogFromFireStore() {
-        val db = FirebaseFirestore.getInstance()
-        db.useEmulator("10.0.2.2", 8080)
-
-        val docRef = db.collection("catalogs").document("objectCatalog")
-        docRef.get()
-            .addOnSuccessListener { documentSnapshot ->
-                val myObjectCatalog = documentSnapshot.toObject<ObjectCatalog>()
-                if (myObjectCatalog != null) {
-                    Log.d("TAG", "myObjectCatalog.foodItemList: ${myObjectCatalog.foodItemList}")
-                }
-                val availableItemsList = myObjectCatalog?.foodItemList?.filter { foodItem ->
-                    foodItem.isAvailable as Boolean
-
-                }
-                foodItemList.value = availableItemsList as MutableList<FoodItem>?
-                retrieveCategoriesFromFireStore()
-            }
-            .addOnFailureListener {
-                Log.d("TAG", "Retrieve objectCatalog from database failed.")
-            }
-    }
-
-    private fun retrieveCategoriesFromFireStore() {
-        val db = FirebaseFirestore.getInstance()
-        db.useEmulator("10.0.2.2", 8080)
-
-        val docRef = db.collection("categories").document("categories")
-        docRef.get()
-            .addOnSuccessListener { documentSnapshot ->
-                val categoriesListing = documentSnapshot.toObject<CategoriesListing>()
-                categoriesList.value = categoriesListing?.categories as MutableList<Category>
-                val filteredList = foodItemList.value?.filter {
-                    canAfford(it)
-                } as MutableList
-                foodItemList.value = filteredList
-                generateHeadings()
-                foodItemList.value?.sortWith(
-                    compareBy<FoodItem> { it.categoryId }.thenBy { it.itemID })
-
-                if (!needToStartNewOrder) retrieveSavedOrder()
-            }
-    }
-
-    private fun generateHeadings() {
-        categoriesList.value?.forEach { category ->
-            val heading = FoodItem(
-                0,
-                category.name,
-                category.name,
-                0,
-                0,
-                0,
-                true,
-                category.id,
-                category.calculatePoints((activeAccount?.familySize ?: 0L).toInt())
-            )
-            Log.d("TAG", "foodItemList.value = ${foodItemList.value}")
-            foodItemList.value!!.add(heading)
-        }
-    }
-
-    fun canAfford(foodItem: FoodItem): Boolean {
+    fun canAfford(foodItem: FoodItem, categoryList: List<Category>): Boolean {
         Log.d("TAG", "foodItem.name ${foodItem.name}")
         Log.d("TAG", "foodItem.category ${foodItem.category}")
 
-        val thisCategory = categoriesList.value?.find {
-            it.name == foodItem.category
-        }
+        // TODO Not found case not accounted for
+        val thisCategory = categoryList.find { it.name == foodItem.category }
+
         Log.d("TAG", "thisCategory.name ${thisCategory!!.name}")
-        val pointsAllocated = thisCategory.calculatePoints((activeAccount?.familySize ?: 0L).toInt())
+        val pointsAllocated =
+            thisCategory.calculatePoints((activeAccount?.familySize ?: 0L).toInt())
         Log.d("TAG", "pointsAllocated $pointsAllocated")
         Log.d("TAG", "pointValue: ${foodItem.pointValue}")
         Log.d("TAG", "return ${pointsAllocated >= foodItem.pointValue!!}")
@@ -267,5 +251,4 @@ class OnSiteOrderingViewModel : ViewModel() {
             }
         }
     }
-
 }

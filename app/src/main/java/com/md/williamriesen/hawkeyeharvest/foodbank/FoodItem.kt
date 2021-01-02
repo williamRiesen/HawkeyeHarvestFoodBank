@@ -14,9 +14,17 @@ class FoodItem() {
     var categoryPointsUsed: Int = 0
     var packed: Boolean = false
 
-    constructor(itemID: Int, name: String, category: String, pointValue: Int,
-                limit: Int, numberAvailable: Int, isAvailable: Boolean, categoryId: Int,
-                categoryPointsAllocated: Int =0 , categoryPointsUsed: Int = 0
+    constructor(
+        itemID: Int,
+        name: String,
+        category: String,
+        pointValue: Int,
+        limit: Int,
+        numberAvailable: Int,
+        isAvailable: Boolean,
+        categoryId: Int,
+        categoryPointsAllocated: Int = 0,
+        categoryPointsUsed: Int = 0
     ) : this() {
         this.itemID = itemID
         this.name = name
