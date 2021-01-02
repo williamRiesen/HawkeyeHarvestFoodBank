@@ -25,7 +25,7 @@ class OnSiteOrderingViewModel : ViewModel() {
     var isOpen = MutableLiveData<Boolean>(false)
     var orderState: MutableLiveData<OrderState> = MutableLiveData(OrderState.NOT_STARTED_YET)
     var lastOrderDate: Date? = null
-    val categoriesList = MutableLiveData<MutableList<Category>>()
+    var categoriesList = listOf<Category>()
     private var savedItemList = mutableListOf<FoodItem>()
     var points: Int? = null
     val outOfStockNameList: MutableLiveData<MutableList<String>> =
@@ -50,6 +50,8 @@ class OnSiteOrderingViewModel : ViewModel() {
 
                 catalogService!!.fetchCategories()
                     .addOnSuccessListener { categoryList ->
+                        this.categoriesList = categoryList.toList()
+
                         filteredItems.addAll(generateHeadings(categoryList))
 
                         // Sort list
@@ -198,6 +200,7 @@ class OnSiteOrderingViewModel : ViewModel() {
         }
     }
 
+    // TODO extract onto account object
     fun canAfford(foodItem: FoodItem, categoryList: List<Category>): Boolean {
         Log.d("TAG", "foodItem.name ${foodItem.name}")
         Log.d("TAG", "foodItem.category ${foodItem.category}")
