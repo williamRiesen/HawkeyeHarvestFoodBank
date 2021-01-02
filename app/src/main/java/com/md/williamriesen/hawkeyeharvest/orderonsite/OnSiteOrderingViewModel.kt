@@ -152,8 +152,7 @@ class OnSiteOrderingViewModel : ViewModel() {
                     Log.d("TAG", "myObjectCatalog.foodItemList: ${myObjectCatalog.foodItemList}")
                 }
                 val availableItemsList = myObjectCatalog?.foodItemList?.filter { foodItem ->
-                    foodItem.isAvailable as Boolean
-
+                    foodItem.isAvailable!! && foodItem.numberAvailable!! > 0
                 }
                 foodItemList.value = availableItemsList as MutableList<FoodItem>?
                 retrieveCategoriesFromFireStore()
@@ -177,7 +176,6 @@ class OnSiteOrderingViewModel : ViewModel() {
                 generateHeadings()
                 foodItemList.value?.sortWith(
                     compareBy<FoodItem> { it.categoryId }.thenBy { it.itemID })
-
                 if (!needToStartNewOrder) retrieveSavedOrder()
             }
     }

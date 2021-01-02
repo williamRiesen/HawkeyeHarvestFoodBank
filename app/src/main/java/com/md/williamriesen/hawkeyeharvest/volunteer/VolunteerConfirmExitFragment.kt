@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.md.williamriesen.hawkeyeharvest.R
 
 class VolunteerConfirmExitFragment : Fragment() {
@@ -24,11 +25,17 @@ class VolunteerConfirmExitFragment : Fragment() {
         val buttonDontExit = fragment.findViewById<Button>(R.id.buttonDontExit)
         buttonDontExit.setOnClickListener {
             Navigation.findNavController(it)
-                .navigate(R.id.action_volunteerConfirmExitFragment2_to_volunteerSignInFragment)
+                .navigate(R.id.action_volunteerConfirmExitFragment_to_volunteerSignInFragment)
         }
-
         return fragment
     }
 
-
+    override fun onStart() {
+        if (initialEntry) {
+            initialEntry = false
+            val navController = findNavController()
+            navController.navigate(R.id.action_volunteerConfirmExitFragment_to_volunteerSignInFragment)
+        }
+        super.onStart()
+    }
 }

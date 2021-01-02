@@ -1,10 +1,13 @@
 package com.md.williamriesen.hawkeyeharvest.manager
 
 import android.graphics.Color
+import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
@@ -21,12 +24,17 @@ class FoodItemsToInventoryAdapter(
         var textViewItemToInventoryName: TextView =
             view.findViewById(R.id.textview_item_to_inventory_name)
         var checkBoxIsAvailable: CheckBox = view.findViewById(R.id.checkBoxIsAvailable)
-
+        var editTextNumberAvailable: EditText = view.findViewById(R.id.editTextNumberAvailable)
 
         init {
             checkBoxIsAvailable.setOnClickListener {
                 val item = textViewItemToInventoryName.text
                 viewModel.toggleIsAvailableStatus(item.toString())
+            }
+            editTextNumberAvailable.setOnFocusChangeListener { view, b ->
+                val item = textViewItemToInventoryName.text
+                val numberAvailable = editTextNumberAvailable.text
+                viewModel.updateNumberAvailable(item.toString(), numberAvailable)
             }
         }
     }
@@ -46,12 +54,15 @@ class FoodItemsToInventoryAdapter(
 
         holder.textViewItemToInventoryName.text = itemsToInventoryList.value!![position].name
         holder.checkBoxIsAvailable.isChecked = itemsToInventoryList.value!![position].isAvailable!!
+
         val isCategory =
             itemsToInventoryList.value!![position].name == itemsToInventoryList.value!![position].category
         if (isCategory) {
             formatAsCategory(holder)
         } else {
             formatAsItem(holder)
+            Log.d("TAG", "itemsToInventoryList.value[position].name: ${itemsToInventoryList.value!![position + 1].name}")
+            holder.editTextNumberAvailable.setText(itemsToInventoryList.value!![position].numberAvailable!!.toString())
         }
     }
 
@@ -64,7 +75,8 @@ class FoodItemsToInventoryAdapter(
     }
 
     private fun formatAsCategory(holder: MyViewHolder) {
-        holder.checkBoxIsAvailable.visibility = View.INVISIBLE
+        holder.checkBoxIsAvailable.visibility = View.GONE
+        holder.editTextNumberAvailable.visibility = View.GONE
         holder.textViewItemToInventoryName.setTextColor(
             ContextCompat.getColor(holder.view.context, R.color.logoLimeGreen)
         )
@@ -76,12 +88,11 @@ class FoodItemsToInventoryAdapter(
         )
     }
 
-
     private fun formatAsItem(holder: MyViewHolder) {
         holder.checkBoxIsAvailable.visibility = View.VISIBLE
+        holder.editTextNumberAvailable.visibility = View.VISIBLE
         holder.textViewItemToInventoryName.setTextColor(Color.parseColor("#630293"))
         holder.textViewItemToInventoryName.setBackgroundColor(Color.WHITE)
-
     }
 }
 

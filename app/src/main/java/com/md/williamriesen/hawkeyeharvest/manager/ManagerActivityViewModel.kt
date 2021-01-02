@@ -2,6 +2,7 @@ package com.md.williamriesen.hawkeyeharvest.manager
 
 import android.app.Activity
 import android.content.Context
+import android.text.Editable
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
@@ -21,6 +22,16 @@ class ManagerActivityViewModel : ViewModel() {
     var itemsToInventoryList = MutableLiveData<MutableList<FoodItem>>()
     var preliminaryItemList = mutableListOf<FoodItem>()
     lateinit var categoriesList: MutableList<Category>
+
+    fun updateNumberAvailable(itemName: String, numberAvailable: Editable?) {
+        val myList = itemsToInventoryList.value
+        val thisItem = myList?.find { foodItem ->
+            foodItem.name == itemName
+        }
+        if (thisItem != null){
+            thisItem.numberAvailable = numberAvailable.toString().toInt()
+        }
+    }
 
     fun toggleIsAvailableStatus(itemName: String) {
         val myList = itemsToInventoryList.value
@@ -239,4 +250,6 @@ class ManagerActivityViewModel : ViewModel() {
         }
         return valid
     }
+
+
 }
