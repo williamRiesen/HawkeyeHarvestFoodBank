@@ -11,15 +11,16 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.iid.FirebaseInstanceId
 import com.md.williamriesen.hawkeyeharvest.*
 import com.md.williamriesen.hawkeyeharvest.foodbank.*
+import com.md.williamriesen.hawkeyeharvest.signin.Account
+import com.md.williamriesen.hawkeyeharvest.signin.AccountService
 import java.util.*
 
 class OnSiteOrderingViewModel : ViewModel() {
+    var accountService: AccountService? = null
 
-    var accountID = ""
     val foodItemList = MutableLiveData<MutableList<FoodItem>>()
     var orderID: String? = null
     var isOpen = MutableLiveData<Boolean>(false)
-    var familySize = 0
     var orderState: MutableLiveData<OrderState> = MutableLiveData(OrderState.NOT_STARTED_YET)
     var lastOrderDate: Date? = null
     val categoriesList = MutableLiveData<MutableList<Category>>()
@@ -28,6 +29,10 @@ class OnSiteOrderingViewModel : ViewModel() {
     val outOfStockNameList: MutableLiveData<MutableList<String>> =
         MutableLiveData(mutableListOf<String>())
 
+    // Forwards active account property from the AccountService.
+    // Unsure if this is a great pattern or not.
+    val activeAccount: Account?
+        get() = accountService?.activeAccount
 
     private val needToStartNewOrder: Boolean
         get() = orderState.value == OrderState.PACKED && (!isOpen.value!! || whenOrdered != "TODAY")
@@ -61,7 +66,7 @@ class OnSiteOrderingViewModel : ViewModel() {
             }
         }
     val accountNumberForDisplay: String
-        get() = accountID.takeLast(4)
+        get() = accountService?.activeAccount?.accountID?.takeLast(4) ?: ""
 
     val nextFragment: Int
         get() {
@@ -88,7 +93,7 @@ class OnSiteOrderingViewModel : ViewModel() {
         }
 
     fun submitOnSiteOrder(view: View) {
-        val thisOrder = Order(accountID, Date(), foodItemList.value!!, "SUBMITTED")
+        val thisOrder = Order(activeAccount?.accountID ?: "", Date(), foodItemList.value!!, "SUBMITTED")
         val filteredOrder = thisOrder.filterOutZeros()
 
         FirebaseInstanceId.getInstance().instanceId
@@ -126,7 +131,8 @@ class OnSiteOrderingViewModel : ViewModel() {
     }
 
     fun saveOrder() {
-        val thisOrder = Order(accountID, Date(), foodItemList.value!!, "SAVED")
+        // TODO fix this
+        val thisOrder = Order(activeAccount?.accountID ?: "", Date(), foodItemList.value!!, "SAVED")
         val filteredOrder = thisOrder.filterOutZeros()
 
         val db = FirebaseFirestore.getInstance()
@@ -202,7 +208,7 @@ class OnSiteOrderingViewModel : ViewModel() {
                 0,
                 true,
                 category.id,
-                category.calculatePoints(familySize)
+                category.calculatePoints((activeAccount?.familySize ?: 0L).toInt())
             )
             Log.d("TAG", "foodItemList.value = ${foodItemList.value}")
             foodItemList.value!!.add(heading)
@@ -217,7 +223,7 @@ class OnSiteOrderingViewModel : ViewModel() {
             it.name == foodItem.category
         }
         Log.d("TAG", "thisCategory.name ${thisCategory!!.name}")
-        val pointsAllocated = thisCategory.calculatePoints(familySize)
+        val pointsAllocated = thisCategory.calculatePoints((activeAccount?.familySize ?: 0L).toInt())
         Log.d("TAG", "pointsAllocated $pointsAllocated")
         Log.d("TAG", "pointValue: ${foodItem.pointValue}")
         Log.d("TAG", "return ${pointsAllocated >= foodItem.pointValue!!}")
@@ -230,7 +236,7 @@ class OnSiteOrderingViewModel : ViewModel() {
 
         val ordersRef = db.collection("orders")
         val query = ordersRef
-            .whereEqualTo("accountID", accountID)
+            .whereEqualTo("accountID", activeAccount?.accountID ?: "")
             .whereEqualTo("orderState", "SAVED")
             .orderBy("date", Query.Direction.DESCENDING).limit(1)
             .get()

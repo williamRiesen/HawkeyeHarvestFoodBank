@@ -131,6 +131,9 @@ class SignInViewModel() : ViewModel() {
             } else Intent(context, clientState.getNextActivity(clientIsOnSite))
         Log.d("TAG", "intent: $intent")
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+
+        // Legacy Passing just in case an existing activity is still using this.
+        // New code should instead use the "activeAccount" property on the AccountService
         intent.putExtra("ACCOUNT_ID", account.accountID)
         intent.putExtra("LAST_ORDER_DATE", account.lastOrderDate)
         intent.putExtra("FAMILY_SIZE", account.familySize)

@@ -31,11 +31,11 @@ class OnSiteOrderConfirmedFragment : Fragment() {
         val textViewPickUpInstructions = fragment.findViewById<TextView>(R.id.textViewPickUpInstructions)
         textViewPickUpInstructions.text = "Please show this screen to the staff so they know you have finished your order."
         val textViewPickUpInstructions2 = fragment.findViewById<TextView>(R.id.textViewPickUpInstructions2)
-        textViewPickUpInstructions2.text = "Your order number is ${viewModel.accountID}"
+        textViewPickUpInstructions2.text = "Your order number is ${viewModel.activeAccount?.accountID ?: ""}"
         val buttonShowNumber = fragment.findViewById<Button>(R.id.buttonShowNumber)
         buttonShowNumber.setOnClickListener {
             val intent = Intent(context,DisplayNumberActivity::class.java)
-            intent.putExtra("ACCOUNT_ID", viewModel.accountID)
+            intent.putExtra("ACCOUNT_ID", viewModel.activeAccount?.accountID ?: "")
             context?.startActivity(intent)
         }
         return fragment

@@ -12,6 +12,7 @@ import dagger.Provides
 import java.lang.Exception
 import java.util.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
 class Account(
     val accountID: String,
@@ -68,14 +69,18 @@ class FireStoreModule {
     }
 }
 
-
+@Singleton
 @Component(modules = [FireStoreModule::class])
 interface AccountComponent {
     fun  getService(): AccountService
 }
 
+@Singleton
 class AccountService @Inject constructor(val db: FirebaseFirestore) {
 
+    var activeAccount: Account? = null
+
+    // TODO WARNING this call will implicitly set the active account
     fun fetchAccount(accountID: String): Task<Account> {
 
         // Create doc reference
@@ -102,7 +107,7 @@ class AccountService @Inject constructor(val db: FirebaseFirestore) {
 
                     val pickUpHour24 = dbToInt(documentSnapshot, "pickUpHour24", 0)
 
-                    Account(
+                    var account = Account(
                         accountID,
                         familySize,
                         lastOrderDate,
@@ -110,6 +115,11 @@ class AccountService @Inject constructor(val db: FirebaseFirestore) {
                         orderState,
                         pickUpHour24
                     )
+
+                    // Set account as active
+                    activeAccount = account
+
+                    account
                 } else {
                     throw NoSuchAccountException("No account retrieved with this id.")
                 }
