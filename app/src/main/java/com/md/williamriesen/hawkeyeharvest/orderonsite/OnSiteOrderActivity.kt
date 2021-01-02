@@ -10,6 +10,7 @@ import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.foodbank.OrderState
 import com.md.williamriesen.hawkeyeharvest.signin.AccountService
 import com.md.williamriesen.hawkeyeharvest.signin.CatalogService
+import com.md.williamriesen.hawkeyeharvest.signin.OrderService
 import java.util.*
 import javax.inject.Inject
 
@@ -18,6 +19,9 @@ class OnSiteOrderActivity : AppCompatActivity() {
     lateinit var accountService: AccountService
     @Inject
     lateinit var catalogService: CatalogService
+    @Inject
+    lateinit var orderService: OrderService
+
     private lateinit var viewModel: OnSiteOrderingViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +32,7 @@ class OnSiteOrderActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this).get(OnSiteOrderingViewModel::class.java)
         viewModel.accountService = accountService
         viewModel.catalogService = catalogService
+        viewModel.orderService = orderService
 
         viewModel.lastOrderDate = intent.extras?.get("LAST_ORDER_DATE") as Date
         viewModel.orderState.value = intent.extras?.get("ORDER_STATE") as OrderState
