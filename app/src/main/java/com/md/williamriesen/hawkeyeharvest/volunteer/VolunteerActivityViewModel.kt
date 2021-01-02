@@ -12,8 +12,10 @@ import com.google.firebase.firestore.ktx.toObject
 import com.md.williamriesen.hawkeyeharvest.foodbank.FoodBank
 import com.md.williamriesen.hawkeyeharvest.foodbank.FoodItem
 import com.md.williamriesen.hawkeyeharvest.foodbank.Order
+import com.md.williamriesen.hawkeyeharvest.signin.OrderService
 
 class VolunteerActivityViewModel : ViewModel() {
+    var orderService: OrderService? = null
 
     var itemsToPackList = MutableLiveData<MutableList<FoodItem>>()
     var todaysSubmittedOrdersList = MutableLiveData<MutableList<Order>>()
@@ -27,28 +29,16 @@ class VolunteerActivityViewModel : ViewModel() {
 
 
     fun getNextOrderFromFireStore() {
-        val db = FirebaseFirestore.getInstance()
-        db.useEmulator("10.0.2.2", 8080)
-
-        val ordersRef = db.collection("orders")
-        val queryCount = ordersRef.whereEqualTo("orderState", "SUBMITTED")
-            .get()
+        orderService!!.getNextOrder()
             .addOnSuccessListener {
-                ordersToPackCount.value = it.size()
-                if (ordersToPackCount.value!! > 0) {
+                if (it != null) {
+                    nextOrder = it
+
+                    orderID = it.orderID
+                    accountID = it.accountID
+
+                    itemsToPackList.value = it.itemList
                 }
-                val query = ordersRef.whereEqualTo("orderState", "SUBMITTED")
-                    .orderBy("date").limit(1)
-                    .get()
-                    .addOnSuccessListener { querySnapshot ->
-                        if (querySnapshot.size() > 0) {
-                            orderID = querySnapshot.documents[0].id
-                            nextOrder = querySnapshot.documents[0].toObject<Order>()
-                            val myList = nextOrder?.itemList
-                            accountID = nextOrder?.accountID
-                            itemsToPackList.value = myList
-                        }
-                    }
             }
     }
 
@@ -56,10 +46,7 @@ class VolunteerActivityViewModel : ViewModel() {
         val updatedOrder = nextOrder
         updatedOrder?.orderState = "BEING_PACKED"
 
-        val db = FirebaseFirestore.getInstance()
-        db.useEmulator("10.0.2.2", 8080)
-
-        db.collection("orders").document(orderID!!).set(updatedOrder!!)
+        orderService!!.saveOrder(updatedOrder!!)
             .addOnSuccessListener {
                 Log.d("TAG", "Order has been updated as BEING_PACKED.")
             }
@@ -118,35 +105,10 @@ class VolunteerActivityViewModel : ViewModel() {
     }
 
     fun setUpSubmittedOrdersListener() {
-        val foodBank = FoodBank()
-        val today = foodBank.getCurrentDateWithoutTime()
-        val startOfTodayTimestamp = Timestamp(today)
-
-        val db = FirebaseFirestore.getInstance()
-        db.useEmulator("10.0.2.2", 8080)
-
-        val ordersRef = db.collection("orders")
-        val query = ordersRef
-            .whereGreaterThan("date", startOfTodayTimestamp)
-            .whereEqualTo("orderState", "SUBMITTED")
-            .addSnapshotListener { querySnapshot, e ->
-                if (e != null) {
-                    Log.w("TAG", "Listen failed.", e)
-                    return@addSnapshotListener
-                }
-                if (!querySnapshot?.isEmpty!!) {
-                    ordersToPackCount.value = querySnapshot.size()
-                    todaysSubmittedOrdersList.value =
-                        querySnapshot.toObjects<Order>(Order().javaClass)
-                    querySnapshot.forEachIndexed { index, queryDocumentSnapshot ->
-                        (todaysSubmittedOrdersList.value as MutableList<Order>)[index].orderID =
-                            queryDocumentSnapshot.id
-                    }
-                    todaysSubmittedOrdersList.value?.sortBy {
-                        it.pickUpHour24
-                    }
-                }
-            }
+        orderService!!.listenForOrders { size: Int, orderList: List<Order> ->
+            ordersToPackCount.value = size
+            todaysSubmittedOrdersList.value = orderList.sortedBy { it.pickUpHour24 }.toMutableList()
+        }
     }
 
     fun togglePackedState(itemName: String) {
@@ -173,10 +135,7 @@ class VolunteerActivityViewModel : ViewModel() {
         val updatedOrder = nextOrder
         updatedOrder?.orderState = "PACKED"
 
-        val db = FirebaseFirestore.getInstance()
-        db.useEmulator("10.0.2.2", 8080)
-
-        db.collection("orders").document(orderID!!).set(updatedOrder!!)
+        orderService!!.saveOrder(updatedOrder!!)
             .addOnSuccessListener {
                 activity.onBackPressed()
             }

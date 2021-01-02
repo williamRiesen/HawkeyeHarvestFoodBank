@@ -10,27 +10,33 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.google.firebase.messaging.FirebaseMessaging
+import com.md.williamriesen.hawkeyeharvest.HawkeyeHarvestFoodBankApplication
 import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.foodbank.FoodBank
+import com.md.williamriesen.hawkeyeharvest.signin.OrderService
 import kotlinx.android.synthetic.main.fragment_checkout.view.*
+import javax.inject.Inject
 import kotlin.concurrent.fixedRateTimer
 
 class VolunteerActivity : AppCompatActivity() {
+    @Inject
+    lateinit var orderService: OrderService
 
     private var initialEntry = true
 
     private lateinit var viewModel: VolunteerActivityViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        (applicationContext as HawkeyeHarvestFoodBankApplication).appComponent.inject(this)
+
         setContentView(R.layout.activity_volunteer)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         viewModel = ViewModelProviders.of(this).get(VolunteerActivityViewModel::class.java)
+        viewModel.orderService = orderService
+
+        // TODO what is this?
         FirebaseMessaging.getInstance().subscribeToTopic("volunteer")
-
-
-//        val foodBank = FoodBank()
-//        foodBank.sendCategoriesListToFireStore()
-//        foodBank.sendObjectCatalogToFireStore()
     }
 
 

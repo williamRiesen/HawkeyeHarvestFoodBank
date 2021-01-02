@@ -5,6 +5,7 @@ import com.md.williamriesen.hawkeyeharvest.orderonsite.OnSiteOrderActivity
 import com.md.williamriesen.hawkeyeharvest.signin.FireStoreModule
 import com.md.williamriesen.hawkeyeharvest.signin.SignInByAccountActivity
 import com.md.williamriesen.hawkeyeharvest.signin.SignInByAccountFragment
+import com.md.williamriesen.hawkeyeharvest.volunteer.VolunteerActivity
 import dagger.Component
 import javax.inject.Singleton
 
@@ -19,6 +20,7 @@ interface ApplicationComponent {
     fun inject(activity: SignInByAccountActivity)
     fun inject(activity: OnSiteOrderActivity)
     fun inject(fragment: SignInByAccountFragment)
+    fun inject(fragment: VolunteerActivity)
 }
 
 class HawkeyeHarvestFoodBankApplication : Application() {
