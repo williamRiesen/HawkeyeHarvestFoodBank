@@ -9,12 +9,15 @@ import androidx.navigation.Navigation
 import com.google.firebase.messaging.FirebaseMessaging
 import com.md.williamriesen.hawkeyeharvest.HawkeyeHarvestFoodBankApplication
 import com.md.williamriesen.hawkeyeharvest.R
+import com.md.williamriesen.hawkeyeharvest.signin.AccountService
 import com.md.williamriesen.hawkeyeharvest.signin.OrderService
 import kotlinx.android.synthetic.main.fragment_checkout.view.*
 import javax.inject.Inject
 
 
 class VolunteerActivity : AppCompatActivity() {
+    @Inject
+    lateinit var accountService: AccountService
     @Inject
     lateinit var orderService: OrderService
 
@@ -30,7 +33,10 @@ class VolunteerActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         viewModel = ViewModelProviders.of(this).get(VolunteerActivityViewModel::class.java)
+        viewModel.accountService = accountService
         viewModel.orderService = orderService
+        viewModel.setUpSubmittedOrdersListener()
+
 
         // TODO what is this?
         FirebaseMessaging.getInstance().subscribeToTopic("volunteer")

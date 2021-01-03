@@ -63,17 +63,17 @@ class FoodBank {
     }
 
     val isOpen: Boolean
-//        get() = true //for debugging
-        get() {
-            val today = getCurrentDateWithoutTime()
-            val now = Date()
-            return (
-                    !isWeekend(today) &&
-                            !holidaysList.contains(today) &&
-                            now > openingTime &&
-                            now < closingTime
-                    )
-        }
+        get() = true //for debugging
+//        get() {
+//            val today = getCurrentDateWithoutTime()
+//            val now = Date()
+//            return (
+//                    !isWeekend(today) &&
+//                            !holidaysList.contains(today) &&
+//                            now > openingTime &&
+//                            now < closingTime
+//                    )
+//        }
 
     val isTakingNextDayOrders: Boolean
         get() {

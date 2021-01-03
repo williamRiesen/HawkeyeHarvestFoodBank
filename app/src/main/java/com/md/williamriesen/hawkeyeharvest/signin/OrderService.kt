@@ -18,6 +18,17 @@ class OrderService @Inject constructor(
     private val messaging: FirebaseMessaging
 ) {
 
+    fun fetchOrder(orderId: String): Task<Order> {
+        val orderDocRef = db.collection("orders").document(orderId)
+        return orderDocRef.get()
+            .continueWith {
+                val documentSnapshot: DocumentSnapshot = it.result!!
+                val order = documentSnapshot.toObject<Order>()!!
+                order.orderID = documentSnapshot.id
+                order
+            }
+    }
+
     fun saveOrder(order: Order): Task<Order> {
         val filteredOrder = order.filterOutZeros()
 
@@ -72,7 +83,11 @@ class OrderService @Inject constructor(
                 }
                 if (!querySnapshot?.isEmpty!!) {
                     val size = querySnapshot.size()
-                    val orderList = querySnapshot.toObjects<Order>()
+                    val orderList = querySnapshot.map {
+                        val order = it.toObject<Order>()
+                        order.orderID = it.id
+                        order
+                    }
                     eventListener(size, orderList)
                 } else {
                     eventListener(0, emptyList())
@@ -97,4 +112,5 @@ class OrderService @Inject constructor(
                 }
             }
     }
+
 }

@@ -59,6 +59,8 @@ class ManagerActivityViewModel : ViewModel() {
 
     private fun getInventoryFromFirestore(fragment: UpdateInventoryFragment) {
         val db = FirebaseFirestore.getInstance()
+        db.useEmulator("10.0.2.2", 8080)
+
         val docRef = db.collection("catalogs").document("objectCatalog")
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
@@ -85,7 +87,10 @@ class ManagerActivityViewModel : ViewModel() {
         }
         val newObjectCatalog = ObjectCatalog()
         newObjectCatalog.foodItemList = foodItemListWithoutHeadings
+
         val db = FirebaseFirestore.getInstance()
+        db.useEmulator("10.0.2.2", 8080)
+
         db.collection("catalogs").document("objectCatalog").set(newObjectCatalog)
             .addOnSuccessListener {
                 Toast.makeText(context, "Inventory Updated.", Toast.LENGTH_LONG).show()
@@ -94,6 +99,8 @@ class ManagerActivityViewModel : ViewModel() {
 
     fun retrieveCategoriesFromFireStore(fragment: UpdateInventoryFragment) {
         val db = FirebaseFirestore.getInstance()
+        db.useEmulator("10.0.2.2", 8080)
+
         val docRef = db.collection("categories").document("categories")
         docRef.get()
             .addOnSuccessListener { documentSnapshot ->
@@ -135,7 +142,10 @@ class ManagerActivityViewModel : ViewModel() {
 
         if (isValidAccount(accountID, familySize, city, county, context)) {
             val account = Account(accountID, familySize.toInt(), city, county)
+
             val db = FirebaseFirestore.getInstance()
+            db.useEmulator("10.0.2.2", 8080)
+
             db.collection("accounts").document(account.accountID).set(account)
         }
     }

@@ -3,18 +3,23 @@ package com.md.williamriesen.hawkeyeharvest.volunteer
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.Navigation
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
+import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.foodbank.FoodBank
 import com.md.williamriesen.hawkeyeharvest.foodbank.FoodItem
 import com.md.williamriesen.hawkeyeharvest.foodbank.Order
+import com.md.williamriesen.hawkeyeharvest.signin.AccountService
 import com.md.williamriesen.hawkeyeharvest.signin.OrderService
 
 class VolunteerActivityViewModel : ViewModel() {
+    var accountService: AccountService? = null
     var orderService: OrderService? = null
 
     var itemsToPackList = MutableLiveData<MutableList<FoodItem>>()
@@ -47,29 +52,37 @@ class VolunteerActivityViewModel : ViewModel() {
     fun getOrderFromFiresStore(orderIdArg: String) {
         orderID = orderIdArg
         Log.d("TAG", "orderIdArg at getOrderFromFireStore: $orderIdArg")
-        val db = FirebaseFirestore.getInstance()
-        val orderDocRef = db.collection("orders").document(orderIdArg)
-        orderDocRef.get()
+
+        orderService!!.fetchOrder(orderIdArg)
             .addOnSuccessListener {
-                nextOrder = it.toObject<Order>()
-                val myList = nextOrder?.itemList
-                accountID.value = nextOrder?.accountID
-                itemsToPackList.value = myList
+                nextOrder = it
+                accountID.value = it.accountID
+                itemsToPackList.value = it.itemList
+
                 updateOrderAsBeingPacked()
             }
     }
 
     fun getFamilySize(accountID: String) {
-        val db = FirebaseFirestore.getInstance()
-        Log.d("TAG", "accountID argument used in getFamilySize: $accountID")
-        val accountDocRef = db.collection("accounts").document(accountID)
-        accountDocRef.get()
+        accountService!!.fetchAccount(accountID)
             .addOnSuccessListener {
-                Log.d("TAG", "documentSnapShot: $it")
-                val thisFamilySize = it.getLong("familySize")
-                Log.d("TAG", "familySize within fun getFamilySize: $thisFamilySize")
-                familySize.value = it.get("familySize") as Long
+                Log.d("TAG", "familySize within fun getFamilySize: ${it.familySize}")
+                familySize.value = it.familySize
             }
+
+//        val db = FirebaseFirestore.getInstance()
+//        db.useEmulator("10.0.2.2", 8080)
+//
+//
+//        Log.d("TAG", "accountID argument used in getFamilySize: $accountID")
+//        val accountDocRef = db.collection("accounts").document(accountID)
+//        accountDocRef.get()
+//            .addOnSuccessListener {
+//                Log.d("TAG", "documentSnapShot: $it")
+//                val thisFamilySize = it.getLong("familySize")
+//                Log.d("TAG", "familySize within fun getFamilySize: $thisFamilySize")
+//                familySize.value = it.get("familySize") as Long
+//            }
     }
 
     fun updateOrderAsBeingPacked() {
@@ -141,6 +154,14 @@ class VolunteerActivityViewModel : ViewModel() {
         }
     }
 
+    fun packOrder(orderID: String, accountID: String, view: View) {
+        Log.d("TAG", "orderID argument passed to packOrder: $orderID")
+        getOrderFromFiresStore(orderID)
+        getFamilySize(accountID)
+        Navigation.findNavController(view)
+            .navigate(R.id.action_volunteerSignInFragment_to_packOrderFragment)
+    }
+
     fun togglePackedState(itemName: String) {
         val myList = itemsToPackList.value
         val thisItem = myList?.find { item ->
@@ -184,6 +205,4 @@ class VolunteerActivityViewModel : ViewModel() {
                 ).show()
             }
     }
-
-
 }

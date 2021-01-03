@@ -26,8 +26,7 @@ class CatalogService @Inject constructor(private val db: FirebaseFirestore) {
                     Log.d("TAG", "myObjectCatalog.foodItemList: ${myObjectCatalog.foodItemList}")
                 }
                 val availableItemsList = myObjectCatalog?.foodItemList?.filter { foodItem ->
-                    foodItem.isAvailable as Boolean
-
+                    foodItem.isAvailable!! && foodItem.numberAvailable!! > 0
                 }
 
                 availableItemsList
