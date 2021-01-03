@@ -6,6 +6,19 @@
     android:layout_height="wrap_content"
     android:background="@color/fragmentBackground">
 
+    <EditText
+        android:id="@+id/editTextNumberAvailable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="3"
+        android:gravity="center"
+        android:inputType="number"
+        android:textColor="@color/plainText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview_item_to_inventory_name" />
+
     <TextView
         android:id="@+id/textview_item_to_inventory_name"
         android:layout_width="0dp"

@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +20,19 @@ class OrdersToPackAdapter(
     inner class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         var textViewOrderSize: TextView = view.findViewById(R.id.textViewOrderSize)
         var textViewAccountID: TextView = view.findViewById(R.id.textViewAccountID)
+        var textViewFullAccountID: TextView = view.findViewById(R.id.textViewFullAccountID)
         var textViewPickUpHour24: TextView = view.findViewById(R.id.textViewPickUpHour24)
+        var textViewOrderID: TextView = view.findViewById(R.id.textViewOrderID)
+        var buttonPack: Button = view.findViewById(R.id.buttonPack)
+
+
+        init {
+            buttonPack.setOnClickListener {
+                Log.d("TAG","orderID: ${textViewOrderID.text}")
+                val accountID = textViewFullAccountID.text.toString()
+                viewModel.packOrder(textViewOrderID.text.toString(), accountID, view)
+            }
+        }
     }
 
     override fun onCreateViewHolder(
@@ -32,16 +45,20 @@ class OrdersToPackAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.textViewAccountID.text = todaysSubmittedOrdersList.value!![position].accountID
+        holder.textViewAccountID.text = todaysSubmittedOrdersList.value!![position].accountID!!.takeLast(4)
+        holder.textViewFullAccountID.text = todaysSubmittedOrdersList.value!![position].accountID
         holder.textViewOrderSize.text =
             todaysSubmittedOrdersList.value!![position].itemList.size.toString()
         val pickUpHour24: Int = todaysSubmittedOrdersList.value!![position]?.pickUpHour24 ?: 0
         val pickUpHour12 = when {
             (pickUpHour24 > 12) -> (pickUpHour24 - 12).toString() + " PM"
             (pickUpHour24 == 12) -> "12 Noon"
+            (pickUpHour24 == 0) -> "On Site"
             else -> "$pickUpHour24 AM"
         }
+        val orderID = todaysSubmittedOrdersList.value!![position].orderID
         holder.textViewPickUpHour24.text = pickUpHour12.toString()
+        holder.textViewOrderID.text = orderID
     }
 
     override fun getItemCount(): Int {

@@ -131,6 +131,49 @@ exports.sendNotificationToFCMToken = functions.firestore.document('orders/{turni
 // 	}
 // });
 
+exports.decrementInventory = functions.firestore.document('orders/{orderId}').onWrite(async (event) => {
+
+	const db = admin.firestore();
+	const ref = db.collection('catalogs').doc('objectCatalog');
+	ref.get()
+		.then((doc) => {
+			let priorItemList = doc.get('foodItemList')
+			let orderedItemList = event.after.get('itemList');
+			orderedItemList.forEach(foodItem => {
+				let numberAvailable = foodItem['numberAvailable'];
+				let name = foodItem['name']
+				let qtyOrdered = foodItem['qtyOrdered']
+				if (numberAvailable !== 100) {
+					const thisItem = priorItemList.find(element => element['name'] === name);
+					let index = priorItemList.findIndex(element => element['name'] === name)
+					let numberAvailableBefore = (thisItem['numberAvailable']);
+					let numberAvailableAfter = numberAvailableBefore - qtyOrdered
+					thisItem['numberAvailable'] = numberAvailableAfter
+						priorItemList[index] = thisItem
+				}
+			});
+			ref.update({foodItemList: priorItemList})
+			return null
+		})
+		.catch(function(error){
+				console.error("Error writing document: ", error);
+		});
+	});
+
+
+// // Always change the value of "/hello" to "world!"
+// exports.hello = functions.firestore.document('orders/{orderId}').onWrite(async (event) => {
+// 	const ref = db.collection('tests').doc('returnTimeTest');
+//   // set() returns a promise. We keep the function alive by returning it.
+//   return ref.set('world!').then(() => {
+//     console.log('Write succeeded!');
+//   });
+// });
+
+
+
+
+
 exports.updateLastOrderDate = functions.firestore.document('orders/{turnip}').onWrite(async (event) => {
 	let accountID = event.after.get('accountID');
 	let orderDate = event.after.get('date');
@@ -142,15 +185,15 @@ exports.updateLastOrderDate = functions.firestore.document('orders/{turnip}').on
 	} else{
 		lastOrderType = "NEXT_DAY"
 	}
-	console.log(accountID)
-	console.log(orderDate)
+	// console.log(accountID)
+	// console.log(orderDate)
 	if (orderStateBefore ==="SAVED" && orderStateAfter === "SUBMITTED"){
 		const db = admin.firestore();
 		const ref = db.collection('accounts').doc(accountID);
 		// const ref = firebase.firestore().collection('accounts').doc(accountID);
 		ref.get()
 			.then((doc) => {
-				console.log("Promise fulfilled");
+				// console.log("Promise fulfilled");
     			if (doc.exists){
      	  			 ref.update({lastOrderDate: orderDate});
      	  			 ref.update({lastOrderType: lastOrderType});

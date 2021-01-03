@@ -7,6 +7,7 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:background="@color/design_default_color_background"
 tools:context=".signin.NotTakingOrdersNowMessageActivity">
+
     <TextView
         android:id="@+id/textViewMessage3"
         android:layout_width="0dp"
@@ -16,7 +17,7 @@ tools:context=".signin.NotTakingOrdersNowMessageActivity">
         android:layout_marginEnd="16dp"
         android:text="2. From home. Home orders need to be placed before 5 PM Sunday through Thursday on the day BEFORE you want to pick it up."
         android:textColor="@color/plainText"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,25 +32,25 @@ tools:context=".signin.NotTakingOrdersNowMessageActivity">
         android:layout_marginEnd="16dp"
         android:text="1. When you are at the food bank. The food bank is open weekdays 1-4 PM except holidays."
         android:textColor="@color/plainText"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewMessage" />
 
-<TextView
-    android:id="@+id/textViewNextDayOpen"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="16dp"
-    android:layout_marginEnd="16dp"
-    android:text="Next Day Open"
-    android:textColor="@color/colorPrimary"
-    android:textSize="24sp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/textViewToPlaceOrderFor" />
+    <TextView
+        android:id="@+id/textViewNextDayOpen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="Next Day Open"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewToPlaceOrderFor" />
 
 <androidx.appcompat.widget.Toolbar
     android:id="@+id/tool_bar"
@@ -96,7 +97,7 @@ tools:context=".signin.NotTakingOrdersNowMessageActivity">
         android:layout_marginEnd="16dp"
         android:text="You can use this app two ways:"
         android:textColor="@color/plainText"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -111,39 +112,39 @@ tools:context=".signin.NotTakingOrdersNowMessageActivity">
         android:layout_marginEnd="16dp"
         android:text="Please return to this app before before 5 PM on:"
         android:textColor="@color/plainText"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewMessage3" />
 
     <TextView
-    android:id="@+id/textViewNextDayTakingOrders"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="16dp"
-    android:layout_marginEnd="16dp"
-    android:text="Next Day Taking Orders"
-    android:textColor="@color/colorPrimary"
-    android:textSize="24sp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/textViewPleaseReturnOn" />
+        android:id="@+id/textViewNextDayTakingOrders"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="Next Day Taking Orders"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPleaseReturnOn" />
 
-<TextView
-    android:id="@+id/textViewToPlaceOrderFor"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="16dp"
-    android:layout_marginEnd="16dp"
-    android:text="to place an order for:"
-    android:textColor="@color/plainText"
-    android:textSize="24sp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/textViewNextDayTakingOrders" />
+    <TextView
+        android:id="@+id/textViewToPlaceOrderFor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="to place an order for:"
+        android:textColor="@color/plainText"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNextDayTakingOrders" />
 
     <Button
         android:id="@+id/buttonSeeYouThen"

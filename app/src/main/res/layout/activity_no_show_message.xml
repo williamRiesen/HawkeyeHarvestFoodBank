@@ -44,20 +44,20 @@ tools:context=".signin.NoShowMessageActivity">
 
 </androidx.appcompat.widget.Toolbar>
 
-<TextView
-    android:id="@+id/textViewNotPickedUpMessage"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="32dp"
-    android:layout_marginEnd="16dp"
-    android:text="@string/our_records_show_your_recent_order_was_packed_but_not_picked_up_by_closing_time_and_had_to_be_put_away_please_come_to_the_food_bank_when_it_is_open_to_order_in_person_for_this_month_please_try_this_app_again_next_month"
-    android:textColor="@color/plainText"
-    android:textSize="24sp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.5"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
+    <TextView
+        android:id="@+id/textViewNotPickedUpMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/our_records_show_your_recent_order_was_packed_but_not_picked_up_by_closing_time_and_had_to_be_put_away_please_come_to_the_food_bank_when_it_is_open_to_order_in_person_for_this_month_please_try_this_app_again_next_month"
+        android:textColor="@color/plainText"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
 
     <Button
         android:id="@+id/button_exit"

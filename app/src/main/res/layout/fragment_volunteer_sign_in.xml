@@ -3,7 +3,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/textViewOrderReceivedMessage"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fragmentBackground"
@@ -14,11 +14,11 @@
         android:id="@+id/textViewAccoundID2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="AccountID"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Account"
         android:textColor="@color/plainText"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/textViewPickUpTimeLabel2"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewOrderCount" />
 
@@ -26,36 +26,35 @@
         android:id="@+id/textViewPickUpTimeLabel2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pick Up Time"
+        android:layout_marginStart="120dp"
+        android:text="Pick Up"
         android:textColor="@color/plainText"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/textViewOrderSizeTimeLabel2"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textViewAccoundID2"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textViewAccoundID2" />
 
     <TextView
         android:id="@+id/textViewOrderSizeTimeLabel2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Order Size"
+        android:layout_marginStart="240dp"
+        android:text="Size"
         android:textColor="@color/plainText"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textViewPickUpTimeLabel2"
-        app:layout_constraintTop_toTopOf="@+id/textViewPickUpTimeLabel2" />
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textViewAccoundID2" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewOrdersList"
         android:layout_width="0dp"
-        android:layout_height="100dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageButtonNoShow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewAccoundID2" />
 
     <TextView
-        android:id="@+id/textViewVolunteerSection"
+        android:id="@+id/textViewManagerSection"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/fragmentBackground"
@@ -93,33 +92,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textViewconfirmPackedMessage"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:gravity="bottom"
-        android:text="@string/are_you_ready_to_pack_the_next_order"
-        android:textColor="@color/plainText"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerViewOrdersList" />
-
-    <Button
-        android:id="@+id/buttonConfirmPacked"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:onClick="onReadyButtonClicked"
-        android:text="@string/ok"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.851"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewconfirmPackedMessage" />
-
-    <TextView
         android:id="@+id/textViewOrderCountLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -127,7 +99,7 @@
         android:layout_marginEnd="32dp"
         android:text="@string/number_of_orders_needing_to_be_packed"
         android:textColor="@color/plainText"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

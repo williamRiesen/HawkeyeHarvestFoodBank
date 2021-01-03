@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/design_default_color_background"
+    tools:context=".manager.NewFoodItemFragment">
+
+
+    <TextView
+        android:id="@+id/textViewLimitInstruction"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Use 100 if there is no limit for this item."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/editTextLimit"
+        app:layout_constraintTop_toTopOf="@+id/editTextLimit" />
+
+    <Button
+        android:id="@+id/buttonSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Submit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextLimit" />
+
+    <TextView
+        android:id="@+id/textViewLimitLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Limit:"
+        app:layout_constraintEnd_toEndOf="@+id/textViewItemNameLabel"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editTextLimit" />
+
+    <EditText
+        android:id="@+id/editTextLimit"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text="100"
+        android:textColor="@color/plainText"
+        app:layout_constraintStart_toEndOf="@+id/textViewItemNameLabel"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPointValue" />
+
+    <EditText
+        android:id="@+id/editTextPointValue"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text="1"
+        android:textColor="@color/plainText"
+        app:layout_constraintStart_toEndOf="@+id/textViewItemNameLabel"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCategory" />
+
+    <TextView
+        android:id="@+id/textViewPointValueLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Point value:"
+        app:layout_constraintEnd_toEndOf="@+id/textViewItemNameLabel"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editTextPointValue" />
+
+    <TextView
+        android:id="@+id/textViewCategoryLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Category:"
+        app:layout_constraintEnd_toEndOf="@+id/textViewItemNameLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spinnerCategory" />
+
+    <TextView
+        android:id="@+id/textViewItemNameLabel2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="e.g. Catfish Fillets 2 lb (Please do not include points and limits within the name. These will be added automatically)."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextName" />
+
+    <TextView
+        android:id="@+id/textViewManagerSection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/fragmentBackground"
+        android:fontFamily="@font/work_sans_medium"
+        android:gravity="center"
+        android:text="Manager Section"
+        android:textColor="@color/logoHunterGreen"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewLogoVolunteer"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHawkeyeHarvestVolunteer" />
+
+    <ImageView
+        android:id="@+id/imageViewLogoVolunteer"
+        android:layout_width="106dp"
+        android:layout_height="91dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_hawkeye_harvest_food_bank_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewHawkeyeHarvestVolunteer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/fragmentBackground"
+        android:fontFamily="@font/goblin_one"
+        android:gravity="center"
+        android:text="@string/hawkeye_harvest"
+        android:textColor="@color/logoHunterGreen"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewLogoVolunteer"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinnerCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="37dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@+id/textViewCategoryLabel"
+        app:layout_constraintTop_toBottomOf="@+id/textViewItemNameLabel2" />
+
+    <TextView
+        android:id="@+id/textViewAddItemLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Add a new food item:"
+        android:textColor="@color/plainText"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewLogoVolunteer" />
+
+    <TextView
+        android:id="@+id/textViewItemNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Item name:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editTextName" />
+
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textColor="@color/plainText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewItemNameLabel"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAddItemLabel" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

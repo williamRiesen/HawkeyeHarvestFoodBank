@@ -15,7 +15,7 @@
         android:layout_marginTop="8dp"
         android:text="nextPickUpDay"
         android:textColor="@color/colorPrimary"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewIfYouWantToPickUpOn" />
@@ -28,7 +28,7 @@
         android:layout_marginEnd="16dp"
         android:text="Please return to this App when you are ready. You can sign in before 5 PM on:"
         android:textColor="@color/plainText"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -79,7 +79,7 @@
         android:layout_marginEnd="16dp"
         android:text="At this time we can only do App orders one day before pickup. We hope to have more flexibility in the future. "
         android:textColor="@color/plainText"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
@@ -91,7 +91,7 @@
         android:layout_marginTop="8dp"
         android:text="nextPreOrderDay"
         android:textColor="@color/colorPrimary"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewReturnAnotherDay2" />
@@ -105,7 +105,7 @@
         android:layout_marginEnd="16dp"
         android:text="If you want to pick up on:"
         android:textColor="@color/plainText"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewNextPreOrderDay" />

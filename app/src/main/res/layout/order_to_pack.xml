@@ -10,33 +10,67 @@
         android:id="@+id/textViewPickUpHour24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pick up time:"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="8dp"
+        android:text="Pick up"
         android:textColor="@color/colorPrimary"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/textViewOrderSize"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textViewAccountID" />
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewAccountID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="accountID"
         android:textColor="@color/colorPrimary"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/textViewPickUpHour24"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="0dp" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewFullAccountID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="fullAccountID"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewOrderSize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="orderSize"
+        android:layout_marginStart="240dp"
+        android:layout_marginTop="8dp"
+        android:text="size"
         android:textColor="@color/colorPrimary"
-        android:textSize="24sp"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewOrderID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="orderID"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonPack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="Pack"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textViewPickUpHour24" />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

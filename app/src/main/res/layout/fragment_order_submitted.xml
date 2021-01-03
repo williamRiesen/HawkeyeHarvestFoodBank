@@ -3,7 +3,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/textViewOrderReceivedMessage"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fragmentBackground"
@@ -56,7 +56,7 @@
         android:gravity="bottom"
         android:text="@string/your_order_has_been_placed_and_will_be_packed_shortly_please_proceed_to_the_food_bank_location_to_pick_up_show_the_order_number_on_the_next_screen_in_your_car_window_at_pickup"
         android:textColor="@color/plainText"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,12 +66,11 @@
         android:id="@+id/buttonOK2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:text="OK"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewOrderRecievedMessage" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewOrderNumber" />
 
     <ImageView
         android:id="@+id/imageViewCheckMark"

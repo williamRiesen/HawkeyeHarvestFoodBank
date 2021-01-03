@@ -9,7 +9,7 @@ import com.md.williamriesen.hawkeyeharvest.volunteer.VolunteerActivity
 import dagger.Component
 import javax.inject.Singleton
 
-const val openingHour24 = 8
+const val openingHour24 = 12
 const val openingMinute = 45
 const val closingHour24 = 16
 const val closingMinute = 30

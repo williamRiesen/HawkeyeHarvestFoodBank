@@ -72,7 +72,7 @@ class NextDayOrderingActivityViewModel : ViewModel() {
             .addOnSuccessListener { documentSnapshot ->
                 val myObjectCatalog = documentSnapshot.toObject<ObjectCatalog>()
                 val availableItemsList = myObjectCatalog?.foodItemList?.filter { item ->
-                    item.isAvailable as Boolean
+                    item.isAvailable!! && item.numberAvailable!! > 0
                 }
                 foodItemList.value = availableItemsList as MutableList<FoodItem>?
                 retrieveCategoriesFromFireStore()

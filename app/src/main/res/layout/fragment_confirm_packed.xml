@@ -3,7 +3,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
-android:id="@+id/textViewOrderReceivedMessage"
+android:id="@+id/constraintLayout"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:background="@color/design_default_color_background"
@@ -27,7 +27,7 @@ tools:context=".orderoffsite.MainActivity">
         app:layout_constraintTop_toBottomOf="@+id/textViewVolunteerSection" />
 
     <TextView
-    android:id="@+id/textViewVolunteerSection"
+    android:id="@+id/textViewManagerSection"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:background="@color/fragmentBackground"
@@ -64,33 +64,16 @@ tools:context=".orderoffsite.MainActivity">
     app:layout_constraintStart_toEndOf="@+id/imageViewLogoVolunteer"
     app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textViewconfirmPackedMessage"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:gravity="bottom"
-        android:text="@string/hit_confirm_to_finalize_this_order_or_the_phone_back_button_to_recheck"
-        android:textColor="@color/plainText"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewOrderNumber" />
-
     <Button
         android:id="@+id/buttonConfirmPacked"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/confirm"
+        android:text="Next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewconfirmPackedMessage"
-        app:layout_constraintVertical_bias="0.875" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewOrderNumber" />
 
     <TextView
         android:id="@+id/textViewOrderNumber"

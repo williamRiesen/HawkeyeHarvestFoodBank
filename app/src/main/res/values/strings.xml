@@ -90,4 +90,27 @@
     <string name="your_order_is_ready_for_pickup_please_go_to_the_food_back_now_and_tell_staff_that_you_have_come_to_pick_up_order_number">Your order is ready for pickup. Please go to the food back now and tell staff that you have come to pick up order number _</string>
     <string name="your_order_has_been_received_please_go_to_the_food_back_tomorrow_between_and_to_pick_up_your_order">Your order has been received. Please go to the food back tomorrow between _ and _ to pick up your order.</string>
     <string name="please_go_to_the_food_bank_between_and_tomorrow_to_pick_up_your_order">Please go to the food bank between _ and _ tomorrow to pick up your order.</string>
+<string-array name="categories_array">
+    <item>Meat</item>
+    <item>Protein</item>
+    <item>Vegetables</item>
+    <item>Fruits</item>
+    <item>Beans</item>
+    <item>Soups</item>
+    <item>Processed Tomato</item>
+    <item>Cereals</item>
+    <item>Sides</item>
+    <item>Pasta</item>
+    <item>Meal Helper</item>
+    <item>Extra</item>
+    <item>Nonedibles</item>
+    <item>Milk</item>
+    <item>Eggs</item>
+    <item>Jello/Pudding</item>
+    <item>Dairy (except milk)</item>
+    <item>Bread</item>
+    <item>Sweets</item>
+    <item>Fresh Produce</item>
+    <item>Specials</item>
+</string-array>
 </resources>

@@ -47,7 +47,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:onClick="onCheckBoxClicked"
         android:scaleX="1.5"
         android:scaleY="1.5"
         app:layout_constraintEnd_toEndOf="parent"

@@ -23,7 +23,7 @@
             android:name="com.md.williamriesen.hawkeyeharvest.signin.InProgressOnSiteInstructionsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.md.williamriesen.hawkeyeharvest.ErrorMessageActivity"
+            android:name="com.md.williamriesen.hawkeyeharvest.signin.ErrorMessageActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.md.williamriesen.hawkeyeharvest.signin.AlreadyServedMessageActivity"
