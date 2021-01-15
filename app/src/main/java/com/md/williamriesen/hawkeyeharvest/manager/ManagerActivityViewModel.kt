@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.md.williamriesen.hawkeyeharvest.R
@@ -132,11 +133,17 @@ class ManagerActivityViewModel : ViewModel() {
         county: String,
         context: Context
     ) {
-
         if (isValidAccount(accountID, familySize, city, county, context)) {
             val account = Account(accountID, familySize.toInt(), city, county)
             val db = FirebaseFirestore.getInstance()
             db.collection("accounts").document(account.accountID).set(account)
+                .addOnSuccessListener {
+                    Toast.makeText(context, "Account $accountID updated.", Toast.LENGTH_LONG).show()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(context, "Update failed with error $it", Toast.LENGTH_LONG).show()
+                }
+
         }
     }
 
@@ -251,5 +258,18 @@ class ManagerActivityViewModel : ViewModel() {
         return valid
     }
 
+    fun sendReport (view: View) {
+        val db = FirebaseFirestore.getInstance()
+        val data = mapOf(Pair("command", "send"))
+        db.collection("triggers").document("sendReport")
+            .set(data)
+            .addOnSuccessListener {
+                Toast.makeText(
+                    view.context,
+                    "Report request sent!",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+    }
 
 }

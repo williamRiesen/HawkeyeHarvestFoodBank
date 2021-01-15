@@ -5,17 +5,22 @@ service cloud.firestore {
       allow  read: if true;
       allow write: if false;
     }
-  	match /categories/{category} {
-  		allow read: if true;
+    match /categories/{category} {
+      allow read: if true;
       allow write: if false;
   }
-    	match /catalogs/{catalog} {
-  		allow read: if true;
-      allow write: if true;
+      match /catalogs/{catalog} {
+      allow read: if true;
+      allow write: if request.auth.token.manager == true;
   }
-      match /orderss/{order} {
+      match /orders/{order} {
       allow read: if true;
       allow write: if true;
   }
+      match /triggers/{trigger} {
+      allow read: if true;
+      allow write: if request.auth.token.manager == true;
+  }
+
 }
 }

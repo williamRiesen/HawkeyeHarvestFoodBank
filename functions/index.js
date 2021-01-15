@@ -4,34 +4,48 @@ const nodemailer = require('nodemailer');
 const cors = require('cors')({origin: true});
 admin.initializeApp(functions.config().firebase);
 
-// let transporter = nodemailer.createTransport({
-//     service: 'gmail',
-//     auth: {
-//         user: 'william.riesen@gmail.com',
-//         pass: 'Tanzend0g!'
-//     }
-// });
 
-// exports.sendMailOrderSubmitted = functions.firestore.document('orders/{turnip}').onWrite(async (event) => {
-//     // cors(req, res, () => {
-//         const mailOptions = {
-//             from: 'Your Account Name <yourgmailaccount@gmail.com>', // Something like: Jane Doe <janedoe@gmail.com>
-//             to: 'william.riesen@gmail.com',
-//             subject: 'Food Bank Order Recieved',
-//             html: `<p style="font-size: 16px;">Pickle Riiiiiiiiiiiiiiiick!!</p>
-//                 <br />
-//                 <img src="https://images.prod.meredith.com/product/fc8754735c8a9b4aebb786278e7265a5/1538025388228/l/rick-and-morty-pickle-rick-sticker" />
-//             ` // email content in HTML
-//         };
-//         // returning result
-//         return transporter.sendMail(mailOptions, (erro, info) => {
-//             if(erro){
-//                 return res.send(erro.toString());
-//             }
-//             return res.send('email sent.');
-//         });
-//     // });    
-// });
+let transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, 
+    auth: {
+        user: 'williamriesen@gmail.com', 
+        pass: 'Tanzend0g!' 
+    }
+});
+
+exports.sendMail = functions.firestore.document('triggers/{trigger}').onWrite(async (event) => {
+
+        const db = admin.firestore();
+		const ref = db.collection('reports').doc('report');
+		let mailOptions = {
+			from: '',
+			to: 'williamriesen@gmail.com',
+			subject: '',
+			text: ''
+		}
+		ref.get()
+		.then((doc) => {
+        	mailOptions = {
+          	  from: 'Your Account Name <williamriesen@gmail.com>', 
+         	  to: 'williamriesen@gmail.com',
+         	  subject: 'Hawkeye Harvest Report',
+          	  text: doc.get('Month') + "\r\n" +
+          	  	doc.get('Year') + "\r\n" +
+          	  	doc.get('totalOrders')
+        	};
+       		return transporter.sendMail(mailOptions)
+       	})
+       	.then((error, info) => {
+            if(error){
+                return console.log(error.toString());
+            }
+            return console.log('Sended');
+        })
+        .catch(error => console.error(error))
+});
+
 
 exports.sendOrderToPackNotification = functions.firestore.document('orders/{uid}').onWrite(async (event) => {
     //let docID = event.after.id;
@@ -83,93 +97,68 @@ exports.sendNotificationToFCMToken = functions.firestore.document('orders/{turni
 	}
 });
 
-// exports.updateLastOrderDate = functions.firestore.document('orders/{turnip}').onWrite(async (event) => {
-// 	let accountID = event.after.get('accountID');
-// 	let orderDate = event.after.get('date');
-// 	let orderStateBefore = event.before.get('orderState');
-// 	let orderStateAfter = event.after.get('orderState');
-// 	console.log(accountID)
-// 	console.log(orderDate)
-// 	if (orderStateBefore ==="SAVED" && orderStateAfter === "SUBMITTED"){
-// 		const db = admin.firestore();
-// 		const ref = db.collection('accounts').doc(accountID);
-// 		// const ref = firebase.firestore().collection('accounts').doc(accountID);
-// 		ref.get()
-// 			.then((doc) => {
-// 				console.log("Promise fulfilled");
-//     			if (doc.exists){
-//      	  			 ref.update({lastOrderDate: orderDate});
-//      	  			}
-//  				return null
-//  				}
-//  			)
- 		 
-// 			.catch(function(error){
-// 				// console.log("Promise rejected")
-
-// 				console.error("Error writing document: ", error);
-// 		});
-// 	}
-// 	if (orderStateAfter === "PACKED" || orderStateAfter === "SUBMITTED" || orderStateAfter === "SAVED"|| orderStateAfter === "NO SHOW"){
-// 		const db = admin.firestore();
-// 		const ref = db.collection('accounts').doc(accountID);
-// 		ref.get()
-// 			.then((doc) => {
-// 				console.log("Promise fulfilled");
-//     			if (doc.exists){
-//      	  			 ref.update({orderState: orderStateAfter});
-//      	  			}
-//  				return null
-//  				}
-//  			)
- 		 
-// 			.catch(function(error){
-// 				// console.log("Promise rejected")
-
-// 				console.error("Error writing document: ", error);
-// 		});
-// 	}
-// });
 
 exports.decrementInventory = functions.firestore.document('orders/{orderId}').onWrite(async (event) => {
-
-	const db = admin.firestore();
-	const ref = db.collection('catalogs').doc('objectCatalog');
-	ref.get()
-		.then((doc) => {
-			let priorItemList = doc.get('foodItemList')
-			let orderedItemList = event.after.get('itemList');
-			orderedItemList.forEach(foodItem => {
-				let numberAvailable = foodItem['numberAvailable'];
-				let name = foodItem['name']
-				let qtyOrdered = foodItem['qtyOrdered']
-				if (numberAvailable !== 100) {
-					const thisItem = priorItemList.find(element => element['name'] === name);
-					let index = priorItemList.findIndex(element => element['name'] === name)
-					let numberAvailableBefore = (thisItem['numberAvailable']);
-					let numberAvailableAfter = numberAvailableBefore - qtyOrdered
-					thisItem['numberAvailable'] = numberAvailableAfter
+	let orderStateBefore = event.before.get('orderState');
+	let orderStateAfter = event.after.get('orderState');
+	if (orderStateBefore !== "SUBMITTED" && orderStateAfter === "SUBMITTED"){
+		const db = admin.firestore();
+		const ref = db.collection('catalogs').doc('objectCatalog');
+		ref.get()
+			.then((doc) => {
+				let priorItemList = doc.get('foodItemList')
+				let orderedItemList = event.after.get('itemList');
+				orderedItemList.forEach(foodItem => {
+					let numberAvailable = foodItem['numberAvailable'];
+					let name = foodItem['name']
+					let qtyOrdered = foodItem['qtyOrdered']
+					if (numberAvailable !== 100) {
+						const thisItem = priorItemList.find(element => element['name'] === name);
+						let index = priorItemList.findIndex(element => element['name'] === name)
+						let numberAvailableBefore = (thisItem['numberAvailable']);
+						let numberAvailableAfter = numberAvailableBefore - qtyOrdered
+						thisItem['numberAvailable'] = numberAvailableAfter
 						priorItemList[index] = thisItem
-				}
+					}
+				});
+				ref.update({foodItemList: priorItemList})
+				return null
+			})
+			.catch(function(error){
+					console.error("Error writing document: ", error);
 			});
-			ref.update({foodItemList: priorItemList})
-			return null
-		})
-		.catch(function(error){
-				console.error("Error writing document: ", error);
-		});
+		}
 	});
 
 
-// // Always change the value of "/hello" to "world!"
-// exports.hello = functions.firestore.document('orders/{orderId}').onWrite(async (event) => {
-// 	const ref = db.collection('tests').doc('returnTimeTest');
-//   // set() returns a promise. We keep the function alive by returning it.
-//   return ref.set('world!').then(() => {
-//     console.log('Write succeeded!');
-//   });
-// });
-
+// exports.decrementInventory = functions.firestore.document('orders/{orderId}').onWrite(async (event) => {
+// //TESTED WORKING FUNCTION -- KEEP FOR BACKUP!
+// 	const db = admin.firestore();
+// 	const ref = db.collection('catalogs').doc('objectCatalog');
+// 	ref.get()
+// 		.then((doc) => {
+// 			let priorItemList = doc.get('foodItemList')
+// 			let orderedItemList = event.after.get('itemList');
+// 			orderedItemList.forEach(foodItem => {
+// 				let numberAvailable = foodItem['numberAvailable'];
+// 				let name = foodItem['name']
+// 				let qtyOrdered = foodItem['qtyOrdered']
+// 				if (numberAvailable !== 100) {
+// 					const thisItem = priorItemList.find(element => element['name'] === name);
+// 					let index = priorItemList.findIndex(element => element['name'] === name)
+// 					let numberAvailableBefore = (thisItem['numberAvailable']);
+// 					let numberAvailableAfter = numberAvailableBefore - qtyOrdered
+// 					thisItem['numberAvailable'] = numberAvailableAfter
+// 						priorItemList[index] = thisItem
+// 				}
+// 			});
+// 			ref.update({foodItemList: priorItemList})
+// 			return null
+// 		})
+// 		.catch(function(error){
+// 				console.error("Error writing document: ", error);
+// 		});
+// 	});
 
 
 
@@ -223,40 +212,42 @@ exports.updateLastOrderDate = functions.firestore.document('orders/{turnip}').on
  			)
  		 
 			.catch(function(error){
-				// console.log("Promise rejected")
-
 				console.error("Error writing document: ", error);
 		});
+	}
+	if (orderStateBefore !== "PACKED" && orderStateAfter === "PACKED") {
+		//when order is packed, update cumulative report:
+		incrementReport(accountID)
 	}
 });
 
 
 
-// // set a custom claim for a specific user
-// exports.appointAsManager = functions.https.onRequest(async(req, res) => {
-// 	//Grab the text parameter (email of appointee)
-// 	const appointeeEmail = req.query.text;
-// 	admin.auth().getUserByEmail(appointeeEmail).then((user) => {
-// 		// const currentCustomClaims = user.customClaims;
-// 		// currentCustomClaims['manager'] = true
-// 		console.log(user.uid)
-// 		console.log(user.displayName)
-// 		const customClaims = {
-// 			manager: true
-// 		}
-// 		return admin.auth().setCustomUserClaims(user.uid, customClaims)
-// 	})
-// 	.catch((error) => {
-// 		console.log(error);
-// 	})
-// 	const writeResult = await admin.firestore().collection('messages').add({appointeeEmail, appointeeEmail});
-//   // Send back a message that we've succesfully written the message
-//   res.json({result: `Message with ID: ${writeResult.id} added.`});
-//   });
+function incrementReport(thisAccountID){
+	const db = admin.firestore();
+	const refAccount = db.collection('accounts').doc(thisAccountID);
+	const refReport = db.collection('reports').doc('report');
+	let city = '';
+	let county = '';
+	let familySize = 0;
+	refAccount.get()
+	.then(doc => {
+		city = doc.get('city');
+		county = doc.get('county');
+		familySize = doc.get('familySize');
+		return refReport.get()
+	})
+	.then(doc => {
+		let totalOrders = doc.get('totalOrders');
+		totalOrders += 1
+		refReport.update({totalOrders: totalOrders})
+		return null
+	})
+	.catch(error => console.error(error))
+}
 
 
 
-// set a custom claim for a specific user
 
 
 // USE THIS STRING TO CALL HTTTP REQUEST!  http://localhost:5001/hawkeye-harvest-food-bank/us-central1/appointAsVolunteer?text=hhfb50401@gmail.com
