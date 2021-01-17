@@ -15,6 +15,7 @@ import com.md.williamriesen.hawkeyeharvest.foodbank.ClientState
 import com.md.williamriesen.hawkeyeharvest.foodbank.FoodBank
 import com.md.williamriesen.hawkeyeharvest.orderfornextday.NextDayOrderActivity
 import com.md.williamriesen.hawkeyeharvest.orderonsite.OnSiteOrderActivity
+import com.md.williamriesen.hawkeyeharvest.scanner.ScanActivity
 
 class SignInViewModel() : ViewModel() {
     private var currentContext: Context? = null
@@ -41,6 +42,12 @@ class SignInViewModel() : ViewModel() {
         // for food bank volunteers and workers
         if (accountID == "STAFF") {
             val intent = Intent(context, SignStaffInActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            pleaseWait.value = false
+            context.startActivity(intent)
+        }
+        if (accountID == "SCAN") {
+            val intent = Intent(context, ScanActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             pleaseWait.value = false
             context.startActivity(intent)
