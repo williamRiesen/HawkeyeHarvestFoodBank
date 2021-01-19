@@ -74,8 +74,8 @@ class ScanActivity : AppCompatActivity() {
             // Pass image to an ML Kit Vision API
             val options = BarcodeScannerOptions.Builder()
                 .setBarcodeFormats(
-                    Barcode.FORMAT_ALL_FORMATS
-//                    Barcode.FORMAT_PDF417
+//                    Barcode.FORMAT_ALL_FORMATS
+                    Barcode.FORMAT_PDF417
                 )
                 .build()
 

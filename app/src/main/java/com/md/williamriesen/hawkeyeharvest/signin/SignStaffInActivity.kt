@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.md.williamriesen.hawkeyeharvest.orderoffsite.MainActivity
 import com.md.williamriesen.hawkeyeharvest.manager.ManagerActivity
 import com.md.williamriesen.hawkeyeharvest.R
+import com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet.SecureTabletOrderActivity
 import com.md.williamriesen.hawkeyeharvest.volunteer.VolunteerActivity
 
 class SignStaffInActivity : AppCompatActivity() {
@@ -69,7 +70,8 @@ class SignStaffInActivity : AppCompatActivity() {
                     Log.d("TAG", "isVolunteer: $isVolunteer")
                     when {
                         (isManager) -> {
-                            startActivity(Intent(this, ManagerActivity::class.java))
+//                            startActivity(Intent(this, ManagerActivity::class.java))  //Save this line for when special supervisor role is assigned
+                            startActivity(Intent(this,SecureTabletOrderActivity::class.java))
                         }
                         (isVolunteer) -> {
                             startActivity(Intent(this, VolunteerActivity::class.java))

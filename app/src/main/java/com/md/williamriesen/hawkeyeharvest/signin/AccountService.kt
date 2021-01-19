@@ -116,7 +116,6 @@ class AccountService(val db: FirebaseFirestore) {
         } else {
             default
         }
-
 }
 
 class NoSuchAccountException(message: String): Exception(message)
