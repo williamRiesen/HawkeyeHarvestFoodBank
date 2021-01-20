@@ -55,6 +55,6 @@ class SecureTabletOrderSelectionFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        viewModel.saveOrder()
+        viewModel.saveOrder(requireView())
     }
 }

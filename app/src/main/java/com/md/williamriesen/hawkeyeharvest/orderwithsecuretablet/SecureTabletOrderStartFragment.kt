@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
 import androidx.lifecycle.ViewModelProviders
@@ -29,6 +30,15 @@ class SecureTabletOrderStartFragment : Fragment() {
         val fragment = inflater.inflate(R.layout.fragment_secure_tablet_order_start, container, false)
         val buttonGo = fragment.findViewById<Button>(R.id.buttonGo)
         val editTextAccountNumber = fragment.findViewById<EditText>(R.id.editTextAccountNumber)
+        editTextAccountNumber.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                viewModel.lookUpAccount(editTextAccountNumber.text.toString().toInt(), requireContext(),
+                    requireView()
+                )
+            }
+            false
+        }
+
         buttonGo.setOnClickListener {
             viewModel.lookUpAccount(editTextAccountNumber.text.toString().toInt(), requireContext(),
                 requireView()

@@ -46,12 +46,12 @@ class SignInViewModel() : ViewModel() {
             pleaseWait.value = false
             context.startActivity(intent)
         }
-        if (accountID == "SCAN") {
-            val intent = Intent(context, ScanActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            pleaseWait.value = false
-            context.startActivity(intent)
-        }
+//        if (accountID == "SCAN") {
+//            val intent = Intent(context, ScanActivity::class.java)
+//            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//            pleaseWait.value = false
+//            context.startActivity(intent)
+//        }
         // General case is for food bank customers
         else {
             this.accountID = accountID

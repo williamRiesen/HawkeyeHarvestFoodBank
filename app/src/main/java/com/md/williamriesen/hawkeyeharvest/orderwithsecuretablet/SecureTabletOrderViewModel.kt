@@ -111,7 +111,7 @@ class SecureTabletOrderViewModel : ViewModel() {
             .addOnSuccessListener { documentSnapshot ->
                 val myObjectCatalog = documentSnapshot.toObject<ObjectCatalog>()
                 if (myObjectCatalog != null) {
-                    Log.d("TAG", "myObjectCatalog.foodItemList: ${myObjectCatalog.foodItemList}")
+//                    Log.d("TAG", "myObjectCatalog.foodItemList: ${myObjectCatalog.foodItemList}")
                 }
                 val availableItemsList = myObjectCatalog?.foodItemList?.filter { foodItem ->
                     foodItem.isAvailable!! && foodItem.numberAvailable!! > 0
@@ -138,8 +138,9 @@ class SecureTabletOrderViewModel : ViewModel() {
                 generateHeadings(view)
                 foodItemList.value?.sortWith(
                     compareBy<FoodItem> { it.categoryId }.thenBy { it.itemID })
-                if (!needToStartNewOrder) retrieveSavedOrder()
-
+                if (!needToStartNewOrder) retrieveSavedOrder(view)
+                Navigation.findNavController(view)
+                    .navigate(R.id.action_secureTabletOrderStartFragment_to_secureTabletOrderSelectionFragment)
             }
     }
 
@@ -176,7 +177,7 @@ class SecureTabletOrderViewModel : ViewModel() {
         return pointsAllocated >= foodItem.pointValue!!
     }
 
-    private fun retrieveSavedOrder() {
+    private fun retrieveSavedOrder(view: View) {
         val db = FirebaseFirestore.getInstance()
         val ordersRef = db.collection("orders")
         val query = ordersRef
@@ -191,6 +192,8 @@ class SecureTabletOrderViewModel : ViewModel() {
                     orderID = querySnapshot.documents[0].id
                     checkSavedOrderAgainstCurrentOfferings()
                 }
+//                Navigation.findNavController(view)
+//                    .navigate(R.id.action_secureTabletOrderStartFragment_to_secureTabletOrderSelectionFragment)
             }
     }
 
@@ -212,7 +215,7 @@ class SecureTabletOrderViewModel : ViewModel() {
         }
     }
 
-    fun saveOrder() {
+    fun saveOrder(view: View) {
         val thisOrder = Order(accountID, Date(), foodItemList.value!!, "SAVED")
         val filteredOrder = thisOrder.filterOutZeros()
         val db = FirebaseFirestore.getInstance()
@@ -221,7 +224,7 @@ class SecureTabletOrderViewModel : ViewModel() {
         } else {
             db.collection(("orders")).document().set(filteredOrder)
                 .addOnSuccessListener {
-                    retrieveSavedOrder()
+                    retrieveSavedOrder(view)
 // Save then immediately retrieve is done this way to obtain orderID //
 // which is subsequently used to submit.//
 // The transition from "SAVED" to "SUBMITTED" status is unnecessary on the client side,//
