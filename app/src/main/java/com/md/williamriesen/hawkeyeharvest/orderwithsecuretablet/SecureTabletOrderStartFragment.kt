@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.orderonsite.OnSiteOrderingViewModel
 
@@ -29,7 +30,13 @@ class SecureTabletOrderStartFragment : Fragment() {
         val buttonGo = fragment.findViewById<Button>(R.id.buttonGo)
         val editTextAccountNumber = fragment.findViewById<EditText>(R.id.editTextAccountNumber)
         buttonGo.setOnClickListener {
-            viewModel.lookUpAccount(editTextAccountNumber.text.toString().toInt(), requireContext())
+            viewModel.lookUpAccount(editTextAccountNumber.text.toString().toInt(), requireContext(),
+                requireView()
+            )
+        }
+        val buttonShow = fragment.findViewById<Button>(R.id.buttonShow)
+        buttonShow.setOnClickListener {
+            Navigation.findNavController(it).navigate(R.id.action_secureTabletOrderStartFragment_to_secureTabletOrderSelectionFragment)
         }
         return fragment
     }

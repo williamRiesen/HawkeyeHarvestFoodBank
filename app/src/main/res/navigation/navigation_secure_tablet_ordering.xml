@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_secure_tablet_ordering"
     app:startDestination="@id/secureTabletOrderStartFragment">
 
     <fragment
         android:id="@+id/secureTabletOrderStartFragment"
         android:name="com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet.SecureTabletOrderStartFragment"
-        android:label="SecureTabletOrderStartFragment" />
+        android:label="SecureTabletOrderStartFragment" >
+        <action
+            android:id="@+id/action_secureTabletOrderStartFragment_to_secureTabletOrderSelectionFragment"
+            app:destination="@id/secureTabletOrderSelectionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/secureTabletOrderSelectionFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet.SecureTabletOrderSelectionFragment"
+        android:label="SecureTabletOrderSelectionFragment" />
 </navigation>
