@@ -8,7 +8,7 @@ import java.util.*
 
 class FoodBank {
 
-    private fun makeDate(month: Int, day: Int, year: Int): Date {
+    fun makeDate(month: Int, day: Int, year: Int): Date {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.MONTH, month)
         calendar.set(Calendar.DAY_OF_MONTH, day)

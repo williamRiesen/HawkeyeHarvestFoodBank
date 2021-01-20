@@ -14,6 +14,7 @@ import com.google.firebase.firestore.ktx.toObject
 import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.foodbank.*
 import com.md.williamriesen.hawkeyeharvest.orderonsite.OnSiteOrderingViewModel
+import java.sql.Timestamp
 import java.util.*
 
 class SecureTabletOrderViewModel : ViewModel() {
@@ -69,7 +70,28 @@ class SecureTabletOrderViewModel : ViewModel() {
                         val document = querySnapshot.documents[0]
                         accountID = document.id
                         familySize = (document.get("familySize") as Long).toInt()
-                        retrieveObjectCatalogFromFireStore()
+                        val orderStateString = document.get("orderState") as String
+                        val timeStamp =
+                            document.get("lastOrderDate") as com.google.firebase.Timestamp
+                        val lastOrderDate = Date(timeStamp.seconds * 1000)
+
+
+                        val calendar = Calendar.getInstance()
+                        val thisMonth = calendar[Calendar.MONTH]
+                        val thisYear = calendar[Calendar.YEAR]
+                        val startOfMonth = FoodBank().makeDate(thisMonth, 1, thisYear)
+                        Log.d ("TAG", "accountID $accountID")
+                        val orderedAlready =
+                            lastOrderDate > startOfMonth && orderStateString != "SAVED"
+
+                        if (orderedAlready) {
+                            Log.d("TAG","ordered already")
+                            Navigation.findNavController(view)
+                                .navigate(R.id.action_secureTabletOrderStartFragment_to_alreadyOrderedMessageFragment)
+                        } else {
+                            Log.d("TAG","Not ordered already: $orderStateString")
+                            retrieveObjectCatalogFromFireStore(view)
+                        }
                     }
 
 
@@ -82,7 +104,7 @@ class SecureTabletOrderViewModel : ViewModel() {
             }
     }
 
-    fun retrieveObjectCatalogFromFireStore() {
+    fun retrieveObjectCatalogFromFireStore(view: View) {
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection("catalogs").document("objectCatalog")
         docRef.get()
@@ -95,14 +117,14 @@ class SecureTabletOrderViewModel : ViewModel() {
                     foodItem.isAvailable!! && foodItem.numberAvailable!! > 0
                 }
                 foodItemList.value = availableItemsList as MutableList<FoodItem>?
-                retrieveCategoriesFromFireStore()
+                retrieveCategoriesFromFireStore(view)
             }
             .addOnFailureListener {
                 Log.d("TAG", "Retrieve objectCatalog from database failed.")
             }
     }
 
-    private fun retrieveCategoriesFromFireStore() {
+    private fun retrieveCategoriesFromFireStore(view: View) {
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection("categories").document("categories")
         docRef.get()
@@ -113,14 +135,15 @@ class SecureTabletOrderViewModel : ViewModel() {
                     canAfford(it)
                 } as MutableList
                 foodItemList.value = filteredList
-                generateHeadings()
+                generateHeadings(view)
                 foodItemList.value?.sortWith(
                     compareBy<FoodItem> { it.categoryId }.thenBy { it.itemID })
                 if (!needToStartNewOrder) retrieveSavedOrder()
 
             }
     }
-    private fun generateHeadings() {
+
+    private fun generateHeadings(view: View) {
         categoriesList.value?.forEach { category ->
             val heading = FoodItem(
                 0,
@@ -152,6 +175,7 @@ class SecureTabletOrderViewModel : ViewModel() {
         Log.d("TAG", "return ${pointsAllocated >= foodItem.pointValue!!}")
         return pointsAllocated >= foodItem.pointValue!!
     }
+
     private fun retrieveSavedOrder() {
         val db = FirebaseFirestore.getInstance()
         val ordersRef = db.collection("orders")
@@ -169,6 +193,7 @@ class SecureTabletOrderViewModel : ViewModel() {
                 }
             }
     }
+
     private fun checkSavedOrderAgainstCurrentOfferings() {
         savedItemList.forEach { savedItem ->
             val itemToCheck = foodItemList.value?.find { offeredItem ->
@@ -205,6 +230,7 @@ class SecureTabletOrderViewModel : ViewModel() {
                 }
         }
     }
+
     val outOfStockNameList: MutableLiveData<MutableList<String>> =
         MutableLiveData(mutableListOf<String>())
 

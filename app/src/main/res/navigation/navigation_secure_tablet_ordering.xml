@@ -12,9 +12,16 @@
         <action
             android:id="@+id/action_secureTabletOrderStartFragment_to_secureTabletOrderSelectionFragment"
             app:destination="@id/secureTabletOrderSelectionFragment" />
+        <action
+            android:id="@+id/action_secureTabletOrderStartFragment_to_alreadyOrderedMessageFragment"
+            app:destination="@id/alreadyOrderedMessageFragment" />
     </fragment>
     <fragment
         android:id="@+id/secureTabletOrderSelectionFragment"
         android:name="com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet.SecureTabletOrderSelectionFragment"
         android:label="SecureTabletOrderSelectionFragment" />
+    <fragment
+        android:id="@+id/alreadyOrderedMessageFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.signin.AlreadyOrderedMessageFragment"
+        android:label="AlreadyOrderedMessageFragment" />
 </navigation>
