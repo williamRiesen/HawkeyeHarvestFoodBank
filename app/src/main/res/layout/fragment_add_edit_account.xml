@@ -10,6 +10,32 @@
     tools:context=".manager.NewFoodItemFragment">
 
 
+    <TextView
+        android:id="@+id/textViewZipCodeLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Zip Code:"
+        android:textColor="@color/plainText"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/textViewFamilySizeLabel"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textViewFamilySizeLabel"
+        app:layout_constraintTop_toTopOf="@+id/editTextZipCode" />
+
+    <EditText
+        android:id="@+id/editTextZipCode"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:ems="5"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/editTextFamilySize"
+        app:layout_constraintTop_toBottomOf="@+id/editTextFamilySize" />
+
     <EditText
         android:id="@+id/editTextCounty"
         android:layout_width="0dp"
@@ -86,7 +112,7 @@
         android:background="@color/fragmentBackground"
         android:fontFamily="@font/work_sans_medium"
         android:gravity="center"
-        android:text="Manager Section"
+        android:text="Staff Only Section"
         android:textColor="@color/logoHunterGreen"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -138,18 +164,20 @@
         android:ems="10"
         android:inputType="textCapWords"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/editTextFamilySize"
-        app:layout_constraintTop_toBottomOf="@+id/editTextFamilySize" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextZipCode" />
 
     <EditText
         android:id="@+id/editTextAccountID"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:ems="10"
+        android:ems="6"
         android:inputType="textCapCharacters"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewAccountIDLabel"
         app:layout_constraintTop_toBottomOf="@+id/textViewEnterClientDataLabel" />

@@ -65,7 +65,7 @@
         app:layout_constraintTop_toTopOf="@+id/textViewOrderRecievedMessage" />
 
     <TextView
-        android:id="@+id/textViewOrderNumber"
+        android:id="@+id/textViewOutOfStockItemName"
         android:layout_width="282dp"
         android:layout_height="88dp"
         android:gravity="bottom"

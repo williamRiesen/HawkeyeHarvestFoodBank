@@ -7,18 +7,30 @@ android:id="@+id/constraintLayout"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:background="@color/design_default_color_background"
-tools:context=".orderoffsite.MainActivity">
+  tools:context=".volunteer.ConfirmOutOfStockFragment">
 
+
+    <TextView
+        android:id="@+id/textViewGoBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:text="Go back."
+        android:textColor="@color/plainText"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/buttonNo"
+        app:layout_constraintTop_toTopOf="@+id/buttonNo" />
 
     <TextView
         android:id="@+id/textViewconfirmOutOfStockMessage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:gravity="bottom"
-        android:text="Thank you for packing this order, number:"
+        android:text="Are you out of this item?"
         android:textColor="@color/plainText"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,7 +38,7 @@ tools:context=".orderoffsite.MainActivity">
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewLogoVolunteer" />
 
-    <TextView
+<TextView
     android:id="@+id/textViewManagerSection"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
@@ -64,28 +76,50 @@ tools:context=".orderoffsite.MainActivity">
     app:layout_constraintStart_toEndOf="@+id/imageViewLogoVolunteer"
     app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/buttonConfirmPacked"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Next"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewOrderNumber" />
-
     <TextView
         android:id="@+id/textViewOutOfStockItemName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="@string/order_number"
         android:textColor="@color/colorPrimary"
-        android:textSize="48sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewconfirmPackedMessage2" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewconfirmOutOfStockMessage" />
+
+    <Button
+        android:id="@+id/buttonYes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:text="Yes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOutOfStockItemName" />
+
+    <Button
+        android:id="@+id/buttonNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:text="No"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonYes" />
+
+    <TextView
+        android:id="@+id/textViewRemoveFromList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:text="Remove from list."
+        android:textColor="@color/plainText"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/buttonYes"
+        app:layout_constraintTop_toTopOf="@+id/buttonYes" />
 </androidx.constraintlayout.widget.ConstraintLayout>

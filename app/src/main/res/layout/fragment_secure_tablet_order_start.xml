@@ -6,14 +6,68 @@
     android:layout_height="match_parent"
     tools:context=".orderwithsecuretablet.SecureTabletOrderActivity">
 
+    <TextView
+        android:id="@+id/textViewPrompt2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:text="Or, if creating a new account, use the button below:"
+        android:textColor="@color/plainText"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextAccountNumber" />
+
+    <TextView
+        android:id="@+id/textViewManagerSection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/fragmentBackground"
+        android:fontFamily="@font/work_sans_medium"
+        android:gravity="center"
+        android:text="Staff Only Section"
+        android:textColor="@color/logoHunterGreen"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewLogoVolunteer"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHawkeyeHarvestVolunteer" />
+
+    <ImageView
+        android:id="@+id/imageViewLogoVolunteer"
+        android:layout_width="106dp"
+        android:layout_height="91dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_hawkeye_harvest_food_bank_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewHawkeyeHarvestVolunteer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/fragmentBackground"
+        android:fontFamily="@font/goblin_one"
+        android:gravity="center"
+        android:text="@string/hawkeye_harvest"
+        android:textColor="@color/logoHunterGreen"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewLogoVolunteer"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
-        android:id="@+id/buttonShow"
+        android:id="@+id/buttonRunNumberUpdate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Show"
+        android:layout_marginTop="272dp"
+        android:text="Update numbers"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.526"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonGo" />
 
@@ -22,26 +76,28 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:text="Food Bank Staff Only:  Enter the four digit Client Account number"
+        android:text="To start the ordering process, enter client account number:"
         android:textColor="@color/plainText"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewLogoVolunteer" />
 
     <EditText
         android:id="@+id/editTextAccountNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:gravity="right"
         android:inputType="number"
         android:maxLength="4"
         android:minEms="2"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.34"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewPrompt" />
 
@@ -49,9 +105,19 @@
         android:id="@+id/buttonGo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:text="Go"
+        app:layout_constraintStart_toEndOf="@+id/editTextAccountNumber"
+        app:layout_constraintTop_toTopOf="@+id/editTextAccountNumber" />
+
+    <Button
+        android:id="@+id/buttonNewAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="New Account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAccountNumber" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonGo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

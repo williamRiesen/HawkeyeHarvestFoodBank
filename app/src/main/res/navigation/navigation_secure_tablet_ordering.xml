@@ -15,13 +15,37 @@
         <action
             android:id="@+id/action_secureTabletOrderStartFragment_to_alreadyOrderedMessageFragment"
             app:destination="@id/alreadyOrderedMessageFragment" />
+        <action
+            android:id="@+id/action_secureTabletOrderStartFragment_to_addEditAccountFragment2"
+            app:destination="@id/addEditAccountFragment2" />
     </fragment>
     <fragment
         android:id="@+id/secureTabletOrderSelectionFragment"
         android:name="com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet.SecureTabletOrderSelectionFragment"
-        android:label="SecureTabletOrderSelectionFragment" />
+        android:label="SecureTabletOrderSelectionFragment" >
+        <action
+            android:id="@+id/action_secureTabletOrderSelectionFragment_to_secureTabletOrderCheckoutFragment"
+            app:destination="@id/secureTabletOrderCheckoutFragment" />
+    </fragment>
     <fragment
         android:id="@+id/alreadyOrderedMessageFragment"
         android:name="com.md.williamriesen.hawkeyeharvest.signin.AlreadyOrderedMessageFragment"
         android:label="AlreadyOrderedMessageFragment" />
+    <fragment
+        android:id="@+id/secureTabletOrderCheckoutFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet.SecureTabletOrderCheckoutFragment"
+        android:label="SecureTabletOrderCheckoutFragment" >
+        <action
+            android:id="@+id/action_secureTabletOrderCheckoutFragment_to_secureTabletOrderConfirmAndReset"
+            app:destination="@id/secureTabletOrderConfirmAndReset"
+            app:popUpTo="@id/secureTabletOrderStartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/secureTabletOrderConfirmAndReset"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet.SecureTabletOrderConfirmAndReset"
+        android:label="SecureTabletOrderConfirmAndReset" />
+    <fragment
+        android:id="@+id/addEditAccountFragment2"
+        android:name="com.md.williamriesen.hawkeyeharvest.manager.AddEditAccountFragment"
+        android:label="AddEditAccountFragment" />
 </navigation>

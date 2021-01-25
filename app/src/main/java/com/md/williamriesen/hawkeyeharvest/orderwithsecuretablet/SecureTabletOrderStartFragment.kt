@@ -44,9 +44,13 @@ class SecureTabletOrderStartFragment : Fragment() {
                 requireView()
             )
         }
-        val buttonShow = fragment.findViewById<Button>(R.id.buttonShow)
-        buttonShow.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_secureTabletOrderStartFragment_to_secureTabletOrderSelectionFragment)
+        val buttonAddEditAccount = fragment.findViewById<Button>(R.id.buttonNewAccount)
+        buttonAddEditAccount.setOnClickListener {
+            Navigation.findNavController(it).navigate(R.id.action_secureTabletOrderStartFragment_to_addEditAccountFragment2)
+        }
+        val buttonUpdateNumbers = fragment.findViewById<Button>(R.id.buttonRunNumberUpdate)
+        buttonUpdateNumbers.setOnClickListener {
+            viewModel.updateNumbers()
         }
         return fragment
     }

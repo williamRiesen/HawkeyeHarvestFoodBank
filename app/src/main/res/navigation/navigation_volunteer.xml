@@ -26,6 +26,9 @@
             android:id="@+id/action_packOrderFragment_to_confirmPacked"
             app:destination="@id/confirmPacked"
             app:popUpTo="@id/volunteerSignInFragment" />
+        <action
+            android:id="@+id/action_packOrderFragment_to_confirmOutOfStockFragment"
+            app:destination="@id/confirmOutOfStockFragment" />
     </fragment>
     <fragment
         android:id="@+id/confirmPacked"
@@ -50,4 +53,9 @@
             android:id="@+id/action_volunteerConfirmExitFragment_to_volunteerSignInFragment"
             app:destination="@id/volunteerSignInFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/confirmOutOfStockFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.volunteer.ConfirmOutOfStockFragment"
+        android:label="fragment_confirm_out_of_stock"
+        tools:layout="@layout/fragment_confirm_out_of_stock" />
 </navigation>

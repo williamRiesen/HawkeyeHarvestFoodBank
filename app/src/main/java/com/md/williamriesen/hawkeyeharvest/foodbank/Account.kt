@@ -7,6 +7,7 @@ class Account(
     val familySize: Int,
     val city: String,
     val county: String,
+    val accountNumber: Int?,
     val lastOrderDate: Date = julyFirst2020(),
     val lastOrderType: String = "ON_SITE",
     val orderType: String = "PACKED",

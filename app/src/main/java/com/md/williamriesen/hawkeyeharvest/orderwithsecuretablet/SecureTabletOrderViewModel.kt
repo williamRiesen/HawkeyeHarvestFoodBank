@@ -1,20 +1,21 @@
 package com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet
 
-import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.iid.FirebaseInstanceId
 import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.foodbank.*
-import com.md.williamriesen.hawkeyeharvest.orderonsite.OnSiteOrderingViewModel
-import java.sql.Timestamp
 import java.util.*
 
 class SecureTabletOrderViewModel : ViewModel() {
@@ -70,7 +71,7 @@ class SecureTabletOrderViewModel : ViewModel() {
                         val document = querySnapshot.documents[0]
                         accountID = document.id
                         familySize = (document.get("familySize") as Long).toInt()
-                        val orderStateString = document.get("orderState") as String
+                        val orderStateString = document.get("orderState") as String?
                         val timeStamp =
                             document.get("lastOrderDate") as com.google.firebase.Timestamp
                         val lastOrderDate = Date(timeStamp.seconds * 1000)
@@ -80,16 +81,16 @@ class SecureTabletOrderViewModel : ViewModel() {
                         val thisMonth = calendar[Calendar.MONTH]
                         val thisYear = calendar[Calendar.YEAR]
                         val startOfMonth = FoodBank().makeDate(thisMonth, 1, thisYear)
-                        Log.d ("TAG", "accountID $accountID")
+                        Log.d("TAG", "accountID $accountID")
                         val orderedAlready =
                             lastOrderDate > startOfMonth && orderStateString != "SAVED"
 
                         if (orderedAlready) {
-                            Log.d("TAG","ordered already")
                             Navigation.findNavController(view)
                                 .navigate(R.id.action_secureTabletOrderStartFragment_to_alreadyOrderedMessageFragment)
+
                         } else {
-                            Log.d("TAG","Not ordered already: $orderStateString")
+                            Log.d("TAG", "Not ordered already: $orderStateString")
                             retrieveObjectCatalogFromFireStore(view)
                         }
                     }
@@ -97,7 +98,7 @@ class SecureTabletOrderViewModel : ViewModel() {
 
                     else -> Toast.makeText(
                         context,
-                        "Multiple matches, should not be: please contact Dr. Riesen.",
+                        "Multiple matches: this should not be. Please contact Dr. Riesen.",
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -232,6 +233,64 @@ class SecureTabletOrderViewModel : ViewModel() {
 // I would rather not change.
                 }
         }
+    }
+
+    fun submitOnSiteOrder(view: View, activity: FragmentActivity) {
+        val thisOrder = Order(accountID, Date(), foodItemList.value!!, "SUBMITTED")
+        val filteredOrder = thisOrder.filterOutZeros()
+
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener {
+                if (!it.isSuccessful) {
+                    Log.d("TAG", "getInstanceID failed ${it.exception}")
+                }
+                val token = it.result?.token
+                filteredOrder.deviceToken = token
+                Log.d("TAG", "token: $token")
+
+                val db = FirebaseFirestore.getInstance()
+                Log.d("TAG", "orderID: $orderID")
+                if (orderID != null) {
+                    db.collection(("orders")).document(orderID!!).set(filteredOrder)
+                        .addOnSuccessListener {
+                            Log.d("TAG", "Order submitted.")
+                            activity.finish()
+                            val intent = Intent(activity,SecureTabletOrderActivity::class.java)
+                            startActivity(activity,intent,null)
+                        }
+                } else {
+                    Log.d("TAG", "about to attempt Submit.")
+                    db.collection(("orders")).document().set(filteredOrder)
+                        .addOnSuccessListener {
+                            Log.d("TAG", "filteredOrder $filteredOrder")
+                            Log.d("TAG", "Order submitted.")
+                            activity.finish()
+                            val intent = Intent(activity,SecureTabletOrderActivity::class.java)
+                            startActivity(activity,intent,null)
+                        }
+                        .addOnFailureListener {
+                            Log.d("TAG", "Submit failed due to $it")
+                        }
+                }
+            }
+    }
+
+    fun updateNumbers() {
+        Log.d("TAG", "updateNumbers() execution started.")
+        val db = FirebaseFirestore.getInstance()
+        val accountsRef = db.collection("accounts")
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    Log.d("TAG", "accountID: $document.id")
+                    val thisAccountNumber = (document.id).takeLast(4).toIntOrNull()
+                    Log.d("TAG", "number: $thisAccountNumber")
+                    if (thisAccountNumber != null) {
+                        val thisDocument = db.collection("accounts").document(document.id)
+                        thisDocument.update("accountNumber", thisAccountNumber)
+                    }
+                }
+            }
     }
 
     val outOfStockNameList: MutableLiveData<MutableList<String>> =

@@ -51,7 +51,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:text="Our records show you have picked up an order for this month already. Please return when you are ready next month."
+        android:text="Our records show you have picked up an order for this month already. Please return when you are ready next month. If in doubt please see the manager."
         android:textColor="@color/plainText"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"

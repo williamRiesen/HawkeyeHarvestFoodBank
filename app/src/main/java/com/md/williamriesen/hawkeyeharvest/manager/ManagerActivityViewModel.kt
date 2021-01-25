@@ -134,7 +134,8 @@ class ManagerActivityViewModel : ViewModel() {
         context: Context
     ) {
         if (isValidAccount(accountID, familySize, city, county, context)) {
-            val account = Account(accountID, familySize.toInt(), city, county)
+            val accountNumber = accountID.takeLast(4).toIntOrNull()
+            val account = Account(accountID, familySize.toInt(), city, county, accountNumber)
             val db = FirebaseFirestore.getInstance()
             db.collection("accounts").document(account.accountID).set(account)
                 .addOnSuccessListener {
@@ -143,7 +144,6 @@ class ManagerActivityViewModel : ViewModel() {
                 .addOnFailureListener {
                     Toast.makeText(context, "Update failed with error $it", Toast.LENGTH_LONG).show()
                 }
-
         }
     }
 
