@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
@@ -14,9 +15,12 @@ import com.google.firebase.firestore.ktx.toObject
 import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.foodbank.FoodBank
 import com.md.williamriesen.hawkeyeharvest.foodbank.FoodItem
+import com.md.williamriesen.hawkeyeharvest.foodbank.ObjectCatalog
 import com.md.williamriesen.hawkeyeharvest.foodbank.Order
 
 class VolunteerActivityViewModel : ViewModel() {
+
+    var itemToMarkOutOfStock = MutableLiveData("")
 
     var itemsToPackList = MutableLiveData<MutableList<FoodItem>>()
     var todaysSubmittedOrdersList = MutableLiveData<MutableList<Order>>()
@@ -222,6 +226,32 @@ class VolunteerActivityViewModel : ViewModel() {
                     "No Show has been recorded.",
                     Toast.LENGTH_LONG
                 ).show()
+            }
+    }
+
+    fun markOutOfStock(context: Context) {
+        val db = FirebaseFirestore.getInstance()
+        val docRef = db.collection("catalogs").document("objectCatalog")
+        docRef.get()
+            .addOnSuccessListener {documentSnapshot ->
+                val workingCatalog = documentSnapshot.toObject<ObjectCatalog>()
+                workingCatalog?.foodItemList?.find {
+                    it.name == itemToMarkOutOfStock.value
+                }
+                    ?.isAvailable = false
+                if (workingCatalog != null) {
+                    db.collection("catalogs").document("objectCatalog5").set(workingCatalog)
+                        .addOnSuccessListener {
+                            Toast.makeText(
+                                context,
+                                "Inventory has been updated.",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                        .addOnFailureListener {
+                            Log.d("TAG", "Mark out of stock failed with exception: $it")
+                        }
+                }
             }
     }
 

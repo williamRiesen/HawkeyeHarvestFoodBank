@@ -8,13 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
+import android.widget.ProgressBar
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.md.williamriesen.hawkeyeharvest.R
-import com.md.williamriesen.hawkeyeharvest.foodbank.FoodBank
 import com.md.williamriesen.hawkeyeharvest.foodbank.ZipCodeIndex
+import kotlinx.android.synthetic.main.activity_secure_tablet_order.*
 import kotlinx.android.synthetic.main.fragment_add_edit_account.*
 
 
@@ -56,16 +57,33 @@ class AddEditAccountFragment : Fragment() {
             )
             false
         }
+        val progressBar = fragment.findViewById<ProgressBar>(R.id.progressBarAccountAddEdit)
+        val pleaseWaitObserver = Observer<Boolean> {
+            if (it) {
+                progressBar.visibility = View.VISIBLE
+                buttonSubmit.visibility = View.INVISIBLE
+                textViewNoteLabel.visibility = View.INVISIBLE
+
+            } else {
+                progressBar.visibility = View.INVISIBLE
+                buttonSubmit.visibility = View.VISIBLE
+                textViewNoteLabel.visibility = View.VISIBLE
+            }
+        }
+        viewModel.pleaseWait.observe(viewLifecycleOwner, pleaseWaitObserver)
+
+
         val buttonSubmit = fragment.findViewById<Button>(R.id.buttonSubmit)
         buttonSubmit.setOnClickListener {
+            viewModel.pleaseWait.value = true
             viewModel.submitAccount(
                 editTextAccountID.text.toString(),
                 editTextFamilySize.text.toString(),
                 editTextCity.text.toString(),
                 editTextCounty.text.toString(),
-                requireContext()
+                requireContext(),
+                requireActivity()
             )
-            requireActivity().onBackPressed()
         }
         return fragment
     }

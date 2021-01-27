@@ -2,24 +2,27 @@ package com.md.williamriesen.hawkeyeharvest.manager
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.text.Editable
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.navigation.Navigation
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.foodbank.*
-import kotlinx.android.synthetic.main.fragment_update_inventory.view.*
+import com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet.SecureTabletOrderActivity
 
 class ManagerActivityViewModel : ViewModel() {
 
+    var pleaseWait = MutableLiveData<Boolean>(false)
     var itemsToInventoryList = MutableLiveData<MutableList<FoodItem>>()
     var preliminaryItemList = mutableListOf<FoodItem>()
     lateinit var categoriesList: MutableList<Category>
@@ -131,7 +134,8 @@ class ManagerActivityViewModel : ViewModel() {
         familySize: String,
         city: String,
         county: String,
-        context: Context
+        context: Context,
+        activity: FragmentActivity
     ) {
         if (isValidAccount(accountID, familySize, city, county, context)) {
             val accountNumber = accountID.takeLast(4).toIntOrNull()
@@ -139,6 +143,11 @@ class ManagerActivityViewModel : ViewModel() {
             val db = FirebaseFirestore.getInstance()
             db.collection("accounts").document(account.accountID).set(account)
                 .addOnSuccessListener {
+                    pleaseWait.value = false
+                    activity.finish()
+                    val intent = Intent(activity, SecureTabletOrderActivity::class.java)
+                    intent.putExtra("accountNumber", accountNumber);
+                    ContextCompat.startActivity(activity, intent, null)
                     Toast.makeText(context, "Account $accountID updated.", Toast.LENGTH_LONG).show()
                 }
                 .addOnFailureListener {

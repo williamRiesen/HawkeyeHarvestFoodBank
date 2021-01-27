@@ -29,6 +29,8 @@ class SecureTabletOrderViewModel : ViewModel() {
     var orderState: MutableLiveData<OrderState> = MutableLiveData(OrderState.NOT_STARTED_YET)
     var lastOrderDate: Date? = null
     var points: Int? = null
+    var pleaseWait = false
+    var startupAccountNumber: Int? = null
 
     private val needToStartNewOrder: Boolean
         get() = orderState.value == OrderState.PACKED && (!isOpen.value!! || whenOrdered != "TODAY")
