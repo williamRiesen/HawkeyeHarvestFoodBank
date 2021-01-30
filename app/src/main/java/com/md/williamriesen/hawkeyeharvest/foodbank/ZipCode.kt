@@ -8,6 +8,9 @@ class ZipCode(val zip: Int, val city: String, val county: String) {
 class ZipCodeIndex() {
 
     val zipCodeList = listOf<ZipCode>(
+        ZipCode(50006,"Alden", "Hardin"),
+        ZipCode(50071, "Dows", "Wright"),
+        ZipCode(50126, "Iowa Falls", "Hardin"),
         ZipCode(50401, "Mason City", "Cerro Gordo"),
         ZipCode(50402,"Mason City","Cerro Gordo"),
         ZipCode(50420,"Alexander","Franklin"),
@@ -64,7 +67,29 @@ class ZipCodeIndex() {
         ZipCode(50481,"Toeterville","Mitchell"),
         ZipCode(50482,"Ventura","Cerro Gordo"),
         ZipCode(50483,"Wesley","Kossuth"),
-        ZipCode(50484,"Woden","Hancock")
+        ZipCode(50484,"Woden","Hancock"),
+        ZipCode(50511,"Algona","Kossuth"),
+        ZipCode(50525, "Clarion", "Wright"),
+        ZipCode(50542, "Goldfield", "Wright"),
+        ZipCode(50603,"Alta Vista", "Chickasaw"),
+        ZipCode(50517, "Bancroft","Kossuth"),
+        ZipCode(50556, "Leyard","Kossuth"),
+        ZipCode(50559, "Lone Rock","Kossuth"),
+        ZipCode(50533, "Eagle Grove", "Wright"),
+        ZipCode(50539, "Fenton", "Kossuth"),
+        ZipCode(50590, "Swea City", "Kossuth"),
+        ZipCode(50595, "Webster City", "Kossuth"),
+        ZipCode(50611, "Bristow", "Hamilton"),
+        ZipCode(50616, "Charles City", "Floyd"),
+        ZipCode(50625,"Dumont", "Butler"),
+        ZipCode(50627,"Eldora", "Hardin"),
+        ZipCode(50633,"Geneva", "Franklin"),
+        ZipCode(50645,"Iona", "Chickasaw"),
+        ZipCode(50658,"Nashua", "Chickasaw"),
+        ZipCode(50659,"New Hampton", "Chickasaw"),
+        ZipCode(50653,"Marble Rock", "Floyd"),
+        ZipCode(51556, "Madole", "Harrison"),
+        ZipCode(52136,"Cresco", "Howard")
     )
 
     fun lookUpCity(zip: Int): String {

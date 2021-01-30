@@ -57,6 +57,10 @@ class SecureTabletOrderStartFragment : Fragment() {
         buttonUpdateNumbers.setOnClickListener {
             viewModel.updateNumbers()
         }
+        val buttonInventory = fragment.findViewById<Button>(R.id.buttonInventory)
+        buttonInventory.setOnClickListener {
+            Navigation.findNavController(it).navigate(R.id.action_secureTabletOrderStartFragment_to_updateInventoryFragment2)
+        }
         Log.d("TAG", "startupAccountNumber: ${viewModel.startupAccountNumber}")
         if (viewModel.startupAccountNumber != null) {
             editTextAccountNumber.setText(viewModel.startupAccountNumber.toString())

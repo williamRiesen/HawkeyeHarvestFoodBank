@@ -18,6 +18,9 @@
         <action
             android:id="@+id/action_secureTabletOrderStartFragment_to_addEditAccountFragment2"
             app:destination="@id/addEditAccountFragment2" />
+        <action
+            android:id="@+id/action_secureTabletOrderStartFragment_to_updateInventoryFragment2"
+            app:destination="@id/updateInventoryFragment2" />
     </fragment>
     <fragment
         android:id="@+id/secureTabletOrderSelectionFragment"
@@ -48,4 +51,8 @@
         android:id="@+id/addEditAccountFragment2"
         android:name="com.md.williamriesen.hawkeyeharvest.manager.AddEditAccountFragment"
         android:label="AddEditAccountFragment" />
+    <fragment
+        android:id="@+id/updateInventoryFragment2"
+        android:name="com.md.williamriesen.hawkeyeharvest.manager.UpdateInventoryFragment"
+        android:label="UpdateInventoryFragment" />
 </navigation>

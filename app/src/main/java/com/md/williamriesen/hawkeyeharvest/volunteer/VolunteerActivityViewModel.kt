@@ -240,7 +240,7 @@ class VolunteerActivityViewModel : ViewModel() {
                 }
                     ?.isAvailable = false
                 if (workingCatalog != null) {
-                    db.collection("catalogs").document("objectCatalog5").set(workingCatalog)
+                    db.collection("catalogs").document("objectCatalog").set(workingCatalog)
                         .addOnSuccessListener {
                             Toast.makeText(
                                 context,

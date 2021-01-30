@@ -11,6 +11,21 @@ android:background="@color/design_default_color_background"
 
 
     <TextView
+        android:id="@+id/textViewOutOfStockItemName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="Out of Stock Item"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewconfirmOutOfStockMessage" />
+
+    <TextView
         android:id="@+id/textViewGoBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,21 +90,6 @@ android:background="@color/design_default_color_background"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toEndOf="@+id/imageViewLogoVolunteer"
     app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textViewOutOfStockItemName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:text="Out of Stock Item"
-        android:textColor="@color/colorPrimary"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewconfirmOutOfStockMessage" />
 
     <Button
         android:id="@+id/buttonYes"

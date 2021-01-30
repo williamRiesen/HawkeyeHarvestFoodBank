@@ -1,6 +1,7 @@
 package com.md.williamriesen.hawkeyeharvest.volunteer
 
 import android.app.Activity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +30,9 @@ class FoodItemsToPackAdapter(
                 val item = textViewItemToPackName.text
                 viewModel.togglePackedState(item.toString())
                 if (viewModel.checkIfAllItemsPacked()) {
+
+                    val nav = Navigation.findNavController(view)
+                    Log.d("TAG","NavController: $nav")
                     Navigation.findNavController(view)
                         .navigate(R.id.action_packOrderFragment_to_confirmPacked)
                 }
