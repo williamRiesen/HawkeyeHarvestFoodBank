@@ -6,19 +6,25 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.foodbank.FoodItem
+import java.util.*
+import kotlin.collections.ArrayList
 
 class FoodItemsToInventoryAdapter(
     private val itemsToInventoryList: MutableLiveData<MutableList<FoodItem>>,
     var viewModel: ManagerActivityViewModel
-) : RecyclerView.Adapter<FoodItemsToInventoryAdapter.MyViewHolder>() {
+) : RecyclerView.Adapter<FoodItemsToInventoryAdapter.MyViewHolder>(), Filterable {
+
+
+
+
+//        itemsToInventoryList.value
+//    var filteredInventoryList = listOf("One", "Two", "Three", "Four")
 
     inner class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         var textViewItemToInventoryName: TextView =
@@ -51,27 +57,88 @@ class FoodItemsToInventoryAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
+        holder.textViewItemToInventoryName.text =
+            viewModel.filteredInventoryList.value!![position].name
+//        holder.checkBoxIsAvailable.isChecked =
+//            filteredInventoryList.value?.get(position)?.isAvailable ?: false
 
-        holder.textViewItemToInventoryName.text = itemsToInventoryList.value!![position].name
-        holder.checkBoxIsAvailable.isChecked = itemsToInventoryList.value!![position].isAvailable!!
+//        val isCategory =
+//            inventoryFilterList!![position].name == inventoryFilterList!![position].category
+//        if (isCategory) {
+//            formatAsCategory(holder)
+//        } else {
+//            formatAsItem(holder)
+//            Log.d(
+//                "TAG",
+//                "itemsToInventoryList.value[position].name: ${itemsToInventoryList.value!![position + 1].name}"
+//            )
+//            holder.editTextNumberAvailable.setText(inventoryFilterList!![position].numberAvailable!!.toString())
+//        }
 
-        val isCategory =
-            itemsToInventoryList.value!![position].name == itemsToInventoryList.value!![position].category
-        if (isCategory) {
-            formatAsCategory(holder)
-        } else {
-            formatAsItem(holder)
-            Log.d("TAG", "itemsToInventoryList.value[position].name: ${itemsToInventoryList.value!![position + 1].name}")
-            holder.editTextNumberAvailable.setText(itemsToInventoryList.value!![position].numberAvailable!!.toString())
-        }
+//        holder.textViewItemToInventoryName.text = itemsToInventoryList.value!![position].name
+//        holder.checkBoxIsAvailable.isChecked = itemsToInventoryList.value!![position].isAvailable!!
+//
+//        val isCategory =
+//            itemsToInventoryList.value!![position].name == itemsToInventoryList.value!![position].category
+//        if (isCategory) {
+//            formatAsCategory(holder)
+//        } else {
+//            formatAsItem(holder)
+//            Log.d(
+//                "TAG",
+//                "itemsToInventoryList.value[position].name: ${itemsToInventoryList.value!![position + 1].name}"
+//            )
+//            holder.editTextNumberAvailable.setText(itemsToInventoryList.value!![position].numberAvailable!!.toString())
+//        }
     }
 
     override fun getItemCount(): Int {
+//        var size = 0
+//        if (itemsToInventoryList.value != null) {
+//            size = itemsToInventoryList.value!!.size
+//        }
+//        return size
+
+//        return testFilterList.size
+
         var size = 0
-        if (itemsToInventoryList.value != null) {
-            size = itemsToInventoryList.value!!.size
+        if (viewModel.filteredInventoryList != null) {
+            size = viewModel.filteredInventoryList.value!!.size
         }
+        Log.d("TAG", "size: $size")
         return size
+
+
+    }
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val charSearch = constraint.toString()
+                if (charSearch.isEmpty()) {
+                    viewModel.filteredInventoryList = itemsToInventoryList.value as MutableLiveData<MutableList<FoodItem>>
+                } else {
+                    val resultList = ArrayList<FoodItem>()
+                    for (row in viewModel.filteredInventoryList.value!!) {
+                        if (row.name!!.toLowerCase(Locale.ROOT)
+                                ?.contains(charSearch.toLowerCase(Locale.ROOT))!!
+                        ) {
+                            resultList.add(row)
+                        }
+                    }
+                    viewModel.filteredInventoryList.value = resultList
+                }
+                val filterResults = FilterResults()
+                filterResults.values = viewModel.filteredInventoryList
+                return filterResults
+            }
+
+            @Suppress("UNCHECKED_CAST")
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                viewModel.filteredInventoryList = results?.values as MutableLiveData<MutableList<FoodItem>>
+                notifyDataSetChanged()
+            }
+        }
     }
 
     private fun formatAsCategory(holder: MyViewHolder) {

@@ -24,6 +24,11 @@ class ManagerActivityViewModel : ViewModel() {
 
     var pleaseWait = MutableLiveData<Boolean>(false)
     var itemsToInventoryList = MutableLiveData<MutableList<FoodItem>>()
+    var filteredInventoryList = MutableLiveData<MutableList<FoodItem>>(mutableListOf(
+        FoodItem(300,"Whole Eel","Meat", 1, 1, 100, true,1),
+        FoodItem(301, "Squid Burgers", "Meat",1,100,100,true,1),
+        FoodItem(302,"Crabby Patties", "Meat", 1,100,100,true,1)
+    ))
     var preliminaryItemList = mutableListOf<FoodItem>()
     lateinit var categoriesList: MutableList<Category>
 
@@ -75,6 +80,8 @@ class ManagerActivityViewModel : ViewModel() {
                     compareBy<FoodItem> { it.categoryId }.thenBy { it.itemID }
                 )
                 itemsToInventoryList.value = preliminaryItemList
+                filteredInventoryList = itemsToInventoryList
+
 
                 val progressBar = fragment.view?.findViewById<ProgressBar>(R.id.progressBar2)
                 progressBar?.visibility = View.INVISIBLE

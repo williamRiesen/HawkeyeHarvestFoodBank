@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
+import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -15,6 +17,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.foodbank.FoodItem
+import kotlinx.android.synthetic.main.activity_secure_tablet_order.*
+import kotlinx.android.synthetic.main.fragment_update_inventory.*
 
 
 class UpdateInventoryFragment : Fragment() {
@@ -45,6 +49,19 @@ class UpdateInventoryFragment : Fragment() {
         actionButtonAddItem.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.action_updateInventoryFragment_to_newFoodItemFragment)
         }
+        val search = updateInventoryView.findViewById<androidx.appcompat.widget.SearchView>(R.id.searchView)
+        search.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapterFood.filter.filter(newText)
+                return false
+            }
+        })
+
+
         return updateInventoryView
     }
 
