@@ -59,21 +59,21 @@ class FoodItemsToInventoryAdapter(
 
         holder.textViewItemToInventoryName.text =
             viewModel.filteredInventoryList.value!![position].name
-//        holder.checkBoxIsAvailable.isChecked =
-//            filteredInventoryList.value?.get(position)?.isAvailable ?: false
+        holder.checkBoxIsAvailable.isChecked =
+            viewModel.filteredInventoryList.value!![position].isAvailable!!
 
-//        val isCategory =
-//            inventoryFilterList!![position].name == inventoryFilterList!![position].category
-//        if (isCategory) {
-//            formatAsCategory(holder)
-//        } else {
-//            formatAsItem(holder)
+        val isCategory =
+            viewModel.filteredInventoryList.value!![position].name == viewModel.filteredInventoryList.value!![position].category
+        if (isCategory) {
+            formatAsCategory(holder)
+        } else {
+            formatAsItem(holder)
 //            Log.d(
 //                "TAG",
 //                "itemsToInventoryList.value[position].name: ${itemsToInventoryList.value!![position + 1].name}"
 //            )
-//            holder.editTextNumberAvailable.setText(inventoryFilterList!![position].numberAvailable!!.toString())
-//        }
+            holder.editTextNumberAvailable.setText(viewModel.filteredInventoryList.value!![position].numberAvailable!!.toString())
+        }
 
 //        holder.textViewItemToInventoryName.text = itemsToInventoryList.value!![position].name
 //        holder.checkBoxIsAvailable.isChecked = itemsToInventoryList.value!![position].isAvailable!!
@@ -102,9 +102,7 @@ class FoodItemsToInventoryAdapter(
 //        return testFilterList.size
 
         var size = 0
-        if (viewModel.filteredInventoryList != null) {
-            size = viewModel.filteredInventoryList.value!!.size
-        }
+        size = viewModel.filteredInventoryList.value!!.size
         Log.d("TAG", "size: $size")
         return size
 
