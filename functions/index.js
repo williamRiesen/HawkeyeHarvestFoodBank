@@ -28,7 +28,7 @@ exports.sendMail = functions.firestore.document('triggers/{trigger}').onWrite(as
 		ref.get()
 		.then((doc) => {
         	mailOptions = {
-          	  from: 'Your Account Name <williamriesen@gmail.com>', 
+          	  from: 'William Riesen <williamriesen@gmail.com>', 
          	  to: 'williamriesen@gmail.com',
          	  subject: 'Hawkeye Harvest Report',
           	  text: doc.get('Month') + "\r\n" +
@@ -47,55 +47,55 @@ exports.sendMail = functions.firestore.document('triggers/{trigger}').onWrite(as
 });
 
 
-exports.sendOrderToPackNotification = functions.firestore.document('orders/{uid}').onWrite(async (event) => {
-    //let docID = event.after.id;
-    // let title = event.after.get('title');
-    // let content = event.after.get('content');
-    var message = {
-        "notification" : {
-            "title" : "NEW ORDER RECEIVED",
-            "body" : "A new order is ready to pack.",
-        },
-        "topic" : "volunteer",
-        "android": {
-        	"notification":{
-        		"sound": "default"
-        	}
-        }
-    };
-    let orderState = event.after.get('orderState');
-    if (orderState === "SUBMITTED") {
-    	let response = await admin.messaging().send(message);
-    	console.log(response);
-	}
-});
+// exports.sendOrderToPackNotification = functions.firestore.document('orders/{uid}').onWrite(async (event) => {
+//     //let docID = event.after.id;
+//     // let title = event.after.get('title');
+//     // let content = event.after.get('content');
+//     var message = {
+//         "notification" : {
+//             "title" : "NEW ORDER RECEIVED",
+//             "body" : "A new order is ready to pack.",
+//         },
+//         "topic" : "volunteer",
+//         "android": {
+//         	"notification":{
+//         		"sound": "default"
+//         	}
+//         }
+//     };
+//     let orderState = event.after.get('orderState');
+//     if (orderState === "SUBMITTED") {
+//     	let response = await admin.messaging().send(message);
+//     	console.log(response);
+// 	}
+// });
 
-exports.sendNotificationToFCMToken = functions.firestore.document('orders/{turnip}').onWrite(async (event) => {
-    // const uid = event.after.get('userUid');
-    // const title = event.after.get('title');
-    // const content = event.after.get('content');
-    // let userDoc = await admin.firestore().doc(`users/${uid}`).get();
-    // let fcmToken = userDoc.get('fcm');
+// exports.sendNotificationToFCMToken = functions.firestore.document('orders/{turnip}').onWrite(async (event) => {
+//     // const uid = event.after.get('userUid');
+//     // const title = event.after.get('title');
+//     // const content = event.after.get('content');
+//     // let userDoc = await admin.firestore().doc(`users/${uid}`).get();
+//     // let fcmToken = userDoc.get('fcm');
 
-    let deviceToken = event.after.get('deviceToken');
-        var message = {
-        "notification" : {
-            "title" : "ORDER PACKED",
-            "body" : "Your order is ready to pick up.",
-        },
-        "token": deviceToken,
-        "android": {
-        	"notification":{
-        		"sound": "default"
-        	}
-        }
-    };
-        let orderState = event.after.get('orderState');
-    if (orderState === "PACKED") {
-    	let response = await admin.messaging().send(message);
-    	console.log(response);
-	}
-});
+//     let deviceToken = event.after.get('deviceToken');
+//         var message = {
+//         "notification" : {
+//             "title" : "ORDER PACKED",
+//             "body" : "Your order is ready to pick up.",
+//         },
+//         "token": deviceToken,
+//         "android": {
+//         	"notification":{
+//         		"sound": "default"
+//         	}
+//         }
+//     };
+//         let orderState = event.after.get('orderState');
+//     if (orderState === "PACKED") {
+//     	let response = await admin.messaging().send(message);
+//     	console.log(response);
+// 	}
+// });
 
 
 exports.decrementInventory = functions.firestore.document('orders/{orderId}').onWrite(async (event) => {

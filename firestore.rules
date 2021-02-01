@@ -3,7 +3,7 @@ service cloud.firestore {
   match /databases/{database}/documents {
     match /accounts/{accountID} {
       allow  read: if true;
-      allow write: if false;
+      allow write: if request.auth.token.manager == true;
     }
   	match /categories/{category} {
   		allow read: if true;
@@ -11,7 +11,7 @@ service cloud.firestore {
   }
     	match /catalogs/{catalog} {
   		allow read: if true;
-      allow write: if request.auth.token.manager == true;
+      allow write: if request.auth.token.manager == true || request.auth.token.volunteer == true;
   }
       match /orders/{order} {
       allow read: if true;

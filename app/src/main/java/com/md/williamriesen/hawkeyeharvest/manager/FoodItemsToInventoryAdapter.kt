@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
@@ -20,12 +21,6 @@ class FoodItemsToInventoryAdapter(
     var viewModel: ManagerActivityViewModel
 ) : RecyclerView.Adapter<FoodItemsToInventoryAdapter.MyViewHolder>(), Filterable {
 
-
-
-
-//        itemsToInventoryList.value
-//    var filteredInventoryList = listOf("One", "Two", "Three", "Four")
-
     inner class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         var textViewItemToInventoryName: TextView =
             view.findViewById(R.id.textview_item_to_inventory_name)
@@ -35,12 +30,13 @@ class FoodItemsToInventoryAdapter(
         init {
             checkBoxIsAvailable.setOnClickListener {
                 val item = textViewItemToInventoryName.text
-                viewModel.toggleIsAvailableStatus(item.toString())
+                viewModel.toggleIsAvailableStatus(item.toString(),it.context)
             }
+
             editTextNumberAvailable.setOnFocusChangeListener { view, b ->
                 val item = textViewItemToInventoryName.text
                 val numberAvailable = editTextNumberAvailable.text
-                viewModel.updateNumberAvailable(item.toString(), numberAvailable)
+                viewModel.updateNumberAvailable(item.toString(), numberAvailable,view.context)
             }
         }
     }
@@ -68,42 +64,15 @@ class FoodItemsToInventoryAdapter(
             formatAsCategory(holder)
         } else {
             formatAsItem(holder)
-//            Log.d(
-//                "TAG",
-//                "itemsToInventoryList.value[position].name: ${itemsToInventoryList.value!![position + 1].name}"
-//            )
             holder.editTextNumberAvailable.setText(viewModel.filteredInventoryList.value!![position].numberAvailable!!.toString())
         }
-
-//        holder.textViewItemToInventoryName.text = itemsToInventoryList.value!![position].name
-//        holder.checkBoxIsAvailable.isChecked = itemsToInventoryList.value!![position].isAvailable!!
-//
-//        val isCategory =
-//            itemsToInventoryList.value!![position].name == itemsToInventoryList.value!![position].category
-//        if (isCategory) {
-//            formatAsCategory(holder)
-//        } else {
-//            formatAsItem(holder)
-//            Log.d(
-//                "TAG",
-//                "itemsToInventoryList.value[position].name: ${itemsToInventoryList.value!![position + 1].name}"
-//            )
-//            holder.editTextNumberAvailable.setText(itemsToInventoryList.value!![position].numberAvailable!!.toString())
-//        }
     }
 
     override fun getItemCount(): Int {
-//        var size = 0
-//        if (itemsToInventoryList.value != null) {
-//            size = itemsToInventoryList.value!!.size
-//        }
-//        return size
-
-//        return testFilterList.size
-
         var size = 0
         size = viewModel.filteredInventoryList.value!!.size
         Log.d("TAG", "size: $size")
+        viewModel.showNewItemButton.value = size == 0
         return size
 
 
@@ -113,27 +82,33 @@ class FoodItemsToInventoryAdapter(
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charSearch = constraint.toString()
+                var resultList = MutableLiveData<MutableList<FoodItem>>(mutableListOf())
                 if (charSearch.isEmpty()) {
-                    viewModel.filteredInventoryList = itemsToInventoryList.value as MutableLiveData<MutableList<FoodItem>>
+                    resultList = itemsToInventoryList
+//                    viewModel.filteredInventoryList = itemsToInventoryList.value as MutableLiveData<MutableList<FoodItem>>
                 } else {
-                    val resultList = ArrayList<FoodItem>()
-                    for (row in viewModel.filteredInventoryList.value!!) {
+                    for (row in viewModel.itemsToInventoryList.value!!) {
                         if (row.name!!.toLowerCase(Locale.ROOT)
-                                ?.contains(charSearch.toLowerCase(Locale.ROOT))!!
+                            .contains(charSearch.toLowerCase(Locale.ROOT))
                         ) {
-                            resultList.add(row)
+                            Log.d("TAG", "row: ${row.name}")
+                            Log.d("TAG", "resultList: ${resultList.value}")
+                            resultList.value!!.add(row)
                         }
                     }
-                    viewModel.filteredInventoryList.value = resultList
+                  viewModel.searchString = charSearch
                 }
+
+//                }
                 val filterResults = FilterResults()
-                filterResults.values = viewModel.filteredInventoryList
+                filterResults.values = resultList
                 return filterResults
             }
 
             @Suppress("UNCHECKED_CAST")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                viewModel.filteredInventoryList = results?.values as MutableLiveData<MutableList<FoodItem>>
+                viewModel.filteredInventoryList =
+                    results?.values as MutableLiveData<MutableList<FoodItem>>
                 notifyDataSetChanged()
             }
         }

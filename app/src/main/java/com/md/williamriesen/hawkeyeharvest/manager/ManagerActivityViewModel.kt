@@ -22,33 +22,33 @@ import com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet.SecureTabletOrd
 
 class ManagerActivityViewModel : ViewModel() {
 
+    var searchString = ""
+    var showNewItemButton: MutableLiveData<Boolean> = MutableLiveData(false)
     var pleaseWait = MutableLiveData<Boolean>(false)
     var itemsToInventoryList = MutableLiveData<MutableList<FoodItem>>()
-    var filteredInventoryList = MutableLiveData<MutableList<FoodItem>>(mutableListOf(
-        FoodItem(300,"Whole Eel","Meat", 1, 1, 100, true,1),
-        FoodItem(301, "Squid Burgers", "Meat",1,100,100,true,1),
-        FoodItem(302,"Crabby Patties", "Meat", 1,100,100,true,1)
-    ))
+    var filteredInventoryList = MutableLiveData<MutableList<FoodItem>>(mutableListOf())
     var preliminaryItemList = mutableListOf<FoodItem>()
     lateinit var categoriesList: MutableList<Category>
 
-    fun updateNumberAvailable(itemName: String, numberAvailable: Editable?) {
+    fun updateNumberAvailable(itemName: String, numberAvailable: Editable?,context: Context) {
         val myList = itemsToInventoryList.value
         val thisItem = myList?.find { foodItem ->
             foodItem.name == itemName
         }
         if (thisItem != null){
             thisItem.numberAvailable = numberAvailable.toString().toInt()
+            submitUpdatedInventory(context)
         }
     }
 
-    fun toggleIsAvailableStatus(itemName: String) {
+    fun toggleIsAvailableStatus(itemName: String, context: Context) {
         val myList = itemsToInventoryList.value
         val thisItem = myList?.find { item ->
             item.name == itemName
         }
         if (thisItem != null) {
             thisItem.isAvailable = !thisItem.isAvailable!!
+            submitUpdatedInventory(context)
         }
     }
 
@@ -86,7 +86,7 @@ class ManagerActivityViewModel : ViewModel() {
                 val progressBar = fragment.view?.findViewById<ProgressBar>(R.id.progressBar2)
                 progressBar?.visibility = View.INVISIBLE
                 val buttonAddFoodItem = fragment.view?.findViewById<FloatingActionButton>(R.id.floatingActionButtonAddItem)
-                buttonAddFoodItem?.visibility = View.VISIBLE
+//                buttonAddFoodItem?.visibility = View.VISIBLE
             }
     }
 

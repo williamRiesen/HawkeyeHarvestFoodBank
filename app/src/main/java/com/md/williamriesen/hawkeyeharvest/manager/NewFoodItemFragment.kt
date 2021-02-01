@@ -41,6 +41,8 @@ class NewFoodItemFragment : Fragment() {
             spinner.adapter = adapter
         }
         val editTextItemName = fragment.findViewById<EditText>(R.id.editTextName)
+        editTextItemName.requestFocus()
+        editTextItemName.append(viewModel.searchString)
         val spinnerCategory = fragment.findViewById<Spinner>(R.id.spinnerCategory)
         val editTextPointValue = fragment.findViewById<EditText>(R.id.editTextPointValue)
         val editTextLimit = fragment.findViewById<EditText>(R.id.editTextLimit)
