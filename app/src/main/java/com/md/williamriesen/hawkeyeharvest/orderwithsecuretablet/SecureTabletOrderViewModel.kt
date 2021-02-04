@@ -5,6 +5,7 @@ import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
@@ -19,7 +20,10 @@ import com.md.williamriesen.hawkeyeharvest.foodbank.*
 import java.util.*
 
 class SecureTabletOrderViewModel : ViewModel() {
+    var currentAccountNumber: Int? = null
     var accountID = ""
+    var city = ""
+    var county = ""
     val foodItemList = MutableLiveData<MutableList<FoodItem>>()
     val categoriesList = MutableLiveData<MutableList<Category>>()
     var familySize = 0
@@ -29,7 +33,9 @@ class SecureTabletOrderViewModel : ViewModel() {
     var orderState: MutableLiveData<OrderState> = MutableLiveData(OrderState.NOT_STARTED_YET)
     var lastOrderDate: Date? = null
     var points: Int? = null
-    var pleaseWait = false
+
+    //    var pleaseWait = false
+    var pleaseWait = MutableLiveData<Boolean>(false)
     var startupAccountNumber: Int? = null
 
     private val needToStartNewOrder: Boolean
@@ -53,6 +59,7 @@ class SecureTabletOrderViewModel : ViewModel() {
                 else -> "PRIOR_TO_THIS_MONTH"
             }
         }
+
 
     fun lookUpAccount(accountNumber: Int, context: Context, view: View) {
 
@@ -106,6 +113,7 @@ class SecureTabletOrderViewModel : ViewModel() {
                 }
             }
     }
+
 
     fun retrieveObjectCatalogFromFireStore(view: View) {
         val db = FirebaseFirestore.getInstance()
@@ -257,8 +265,8 @@ class SecureTabletOrderViewModel : ViewModel() {
                         .addOnSuccessListener {
                             Log.d("TAG", "Order submitted.")
                             activity.finish()
-                            val intent = Intent(activity,SecureTabletOrderActivity::class.java)
-                            startActivity(activity,intent,null)
+                            val intent = Intent(activity, SecureTabletOrderActivity::class.java)
+                            startActivity(activity, intent, null)
                         }
                 } else {
                     Log.d("TAG", "about to attempt Submit.")
@@ -267,8 +275,8 @@ class SecureTabletOrderViewModel : ViewModel() {
                             Log.d("TAG", "filteredOrder $filteredOrder")
                             Log.d("TAG", "Order submitted.")
                             activity.finish()
-                            val intent = Intent(activity,SecureTabletOrderActivity::class.java)
-                            startActivity(activity,intent,null)
+                            val intent = Intent(activity, SecureTabletOrderActivity::class.java)
+                            startActivity(activity, intent, null)
                         }
                         .addOnFailureListener {
                             Log.d("TAG", "Submit failed due to $it")
@@ -293,6 +301,64 @@ class SecureTabletOrderViewModel : ViewModel() {
                     }
                 }
             }
+    }
+
+    fun submitNewAccount(
+        accountID: String,
+        familySize: String,
+        city: String,
+        county: String,
+        context: Context,
+        activity: FragmentActivity
+    ) {
+        if (isValidAccount(accountID, familySize, city, county, context)) {
+            val accountNumber = accountID.takeLast(4).toIntOrNull()
+            val account = Account(accountID, familySize.toInt(), city, county, accountNumber)
+            val db = FirebaseFirestore.getInstance()
+            db.collection("accounts").document(account.accountID).set(account)
+                .addOnSuccessListener {
+                    pleaseWait.value = false
+                    activity.finish()
+                    val intent = Intent(activity, SecureTabletOrderActivity::class.java)
+                    intent.putExtra("accountNumber", accountNumber);
+                    ContextCompat.startActivity(activity, intent, null)
+                    Toast.makeText(context, "Account $accountID updated.", Toast.LENGTH_LONG)
+                        .show()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(context, "Update failed with error $it", Toast.LENGTH_LONG)
+                        .show()
+                }
+        }
+    }
+
+    fun isValidAccount(
+        accountID: String,
+        familySize: String,
+        city: String,
+        county: String,
+        context: Context
+    ): Boolean {
+        var valid = false
+        when {
+            accountID == "" -> {
+                Toast.makeText(context, "Please enter Account ID.", Toast.LENGTH_LONG).show()
+            }
+            familySize == "" -> {
+                Toast.makeText(context, "Please enter family size.", Toast.LENGTH_LONG).show()
+            }
+            city == "" -> {
+                Toast.makeText(context, "Please enter city.", Toast.LENGTH_LONG).show()
+            }
+            county == "" -> {
+                Toast.makeText(context, "Please enter county.", Toast.LENGTH_LONG).show()
+            }
+            else -> {
+                Toast.makeText(context, "Data validated.", Toast.LENGTH_LONG).show()
+                valid = true
+            }
+        }
+        return valid
     }
 
     val outOfStockNameList: MutableLiveData<MutableList<String>> =

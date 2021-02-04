@@ -9,9 +9,9 @@ class ZipCodeIndex() {
 
     val zipCodeList = listOf<ZipCode>(
         ZipCode(50006,"Alden", "Hardin"),
-        ZipCode(50071, "Dows", "Wright"),
-        ZipCode(50126, "Iowa Falls", "Hardin"),
-        ZipCode(50401, "Mason City", "Cerro Gordo"),
+        ZipCode(50071,"Dows", "Wright"),
+        ZipCode(50126,"Iowa Falls", "Hardin"),
+        ZipCode(50401,"Mason City", "Cerro Gordo"),
         ZipCode(50402,"Mason City","Cerro Gordo"),
         ZipCode(50420,"Alexander","Franklin"),
         ZipCode(50421,"Belmond","Wright"),

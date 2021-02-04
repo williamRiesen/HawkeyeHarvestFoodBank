@@ -9,10 +9,13 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.orderonsite.OnSiteOrderingViewModel
+import com.md.williamriesen.hawkeyeharvest.reports.MonthReport
+import com.md.williamriesen.hawkeyeharvest.reports.ReportCreator
 
 class SecureTabletOrderStartFragment : Fragment() {
 
@@ -64,6 +67,23 @@ class SecureTabletOrderStartFragment : Fragment() {
         Log.d("TAG", "startupAccountNumber: ${viewModel.startupAccountNumber}")
         if (viewModel.startupAccountNumber != null) {
             editTextAccountNumber.setText(viewModel.startupAccountNumber.toString())
+        }
+        val buttonCreateMonthReport = fragment.findViewById<Button>(R.id.buttonCreateMonthReport)
+        buttonCreateMonthReport.setOnClickListener {
+            ReportCreator().createMonthReport()
+        }
+        val buttonEditAccount = fragment.findViewById<Button>(R.id.buttonEditAccount)
+        buttonEditAccount.setOnClickListener {
+            val accountNumber = editTextAccountNumber.text.toString().toIntOrNull()
+            if (accountNumber != null){
+                viewModel.currentAccountNumber = accountNumber
+                Navigation.findNavController(it).navigate(R.id.action_secureTabletOrderStartFragment_to_addEditAccountFragment2)
+            } else {
+                Toast.makeText(
+                    context,"Please provide account number.",Toast.LENGTH_LONG
+                ).show()
+                editTextAccountNumber.requestFocus()
+            }
         }
         return fragment
     }
