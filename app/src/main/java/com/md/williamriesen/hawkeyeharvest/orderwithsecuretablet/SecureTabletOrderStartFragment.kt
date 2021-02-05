@@ -53,6 +53,7 @@ class SecureTabletOrderStartFragment : Fragment() {
         }
         val buttonAddEditAccount = fragment.findViewById<Button>(R.id.buttonNewAccount)
         buttonAddEditAccount.setOnClickListener {
+            viewModel.currentAccountNumber = null
             Navigation.findNavController(it)
                 .navigate(R.id.action_secureTabletOrderStartFragment_to_addEditAccountFragment2)
         }

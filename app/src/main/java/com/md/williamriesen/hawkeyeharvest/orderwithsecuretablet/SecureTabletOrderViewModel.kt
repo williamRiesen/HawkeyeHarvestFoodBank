@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
@@ -33,6 +34,7 @@ class SecureTabletOrderViewModel : ViewModel() {
     var orderState: MutableLiveData<OrderState> = MutableLiveData(OrderState.NOT_STARTED_YET)
     var lastOrderDate: Date? = null
     var points: Int? = null
+    var account: Account? = null
 
     //    var pleaseWait = false
     var pleaseWait = MutableLiveData<Boolean>(false)
@@ -78,7 +80,21 @@ class SecureTabletOrderViewModel : ViewModel() {
                     ).show()
                     1 -> {
                         val document = querySnapshot.documents[0]
-                        accountID = document.id
+                        val timestamp = document.get("lastOrderDate") as Timestamp
+                        val date = Date(timestamp.seconds * 1000)
+                        account = Account(
+                            document.id,
+                            (document.get("familySize") as Long).toInt(),
+                            document.get("city") as String,
+                            document.get("county") as String,
+                            (document.get("accountNumber") as Long).toInt(),
+                            date,
+                            document.get("lastOrderType") as String,
+                            document.get("orderState") as String,
+                            (document.get("pickUpHour24") as Long?)?.toInt() ?: 0
+                        )
+
+
                         familySize = (document.get("familySize") as Long).toInt()
                         val orderStateString = document.get("orderState") as String?
                         val timeStamp =
@@ -330,6 +346,36 @@ class SecureTabletOrderViewModel : ViewModel() {
                         .show()
                 }
         }
+    }
+
+    fun submitEditedAccount(
+        familySize: Int,
+        city: String,
+        county: String,
+        context: Context,
+        activity: FragmentActivity
+    ) {
+        account?.familySize = familySize
+        account?.city = city
+        account?.county = county
+        val db = FirebaseFirestore.getInstance()
+        val accountNumber = accountID.takeLast(4).toIntOrNull()
+        Log.d("TAG","account from submitEditedAccount: ${account?.familySize}")
+        if (account != null)
+            db.collection("accounts").document(account!!.accountID).set(account!!)
+                .addOnSuccessListener {
+                    pleaseWait.value = false
+                    activity.finish()
+                    val intent = Intent(activity, SecureTabletOrderActivity::class.java)
+                    intent.putExtra("accountNumber", accountNumber)
+                    startActivity(activity, intent, null)
+                    Toast.makeText(context, "Account $accountID updated.", Toast.LENGTH_LONG)
+                        .show()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(context, "Update failed with error $it", Toast.LENGTH_LONG)
+                        .show()
+                }
     }
 
     fun isValidAccount(
