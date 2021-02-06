@@ -360,7 +360,7 @@ class SecureTabletOrderViewModel : ViewModel() {
         account?.county = county
         val db = FirebaseFirestore.getInstance()
         val accountNumber = accountID.takeLast(4).toIntOrNull()
-        Log.d("TAG","account from submitEditedAccount: ${account?.familySize}")
+        Log.d("TAG", "account from submitEditedAccount: ${account?.familySize}")
         if (account != null)
             db.collection("accounts").document(account!!.accountID).set(account!!)
                 .addOnSuccessListener {
@@ -407,7 +407,37 @@ class SecureTabletOrderViewModel : ViewModel() {
         return valid
     }
 
-    val outOfStockNameList: MutableLiveData<MutableList<String>> =
-        MutableLiveData(mutableListOf<String>())
+    fun resetOrder(accountNumber: Int, context: Context, view: View) {
+        val db = FirebaseFirestore.getInstance()
+        val accountsRef = db.collection("accounts")
+        Log.d("TAG", "ready to look up account using number $accountNumber")
+        val query = accountsRef
+            .whereEqualTo("accountNumber", accountNumber)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                when (querySnapshot.size()) {
+                    0 -> Toast.makeText(
+                        context,
+                        "No match found for this number.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    1 -> {
+                        accountID = querySnapshot.documents[0].id
+                        db.collection("accounts").document(accountID).update(
+                            "orderState",
+                            "SAVED"
+                        )
+                    }
+                    else -> Toast.makeText(
+                        context,
+                        "Multiple matches: this should not be. Please contact Dr. Riesen.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+    }
+
+val outOfStockNameList: MutableLiveData<MutableList<String>> =
+    MutableLiveData(mutableListOf<String>())
 
 }

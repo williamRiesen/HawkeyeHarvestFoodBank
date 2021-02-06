@@ -100,6 +100,7 @@ class AddEditAccountFragment : Fragment() {
                 requireActivity()
             )
         }
+
         return fragment
     }
 

@@ -86,6 +86,19 @@ class SecureTabletOrderStartFragment : Fragment() {
                 editTextAccountNumber.requestFocus()
             }
         }
+        val buttonReset =
+            fragment.findViewById<Button>(R.id.buttonReset)
+        buttonReset.setOnClickListener {
+            val accountNumber = editTextAccountNumber.text.toString().toIntOrNull()
+            if (accountNumber != null){
+                viewModel.resetOrder(accountNumber, requireContext(), requireView())
+            } else {
+                Toast.makeText(
+                    context,"Please provide account number.",Toast.LENGTH_LONG
+                ).show()
+                editTextAccountNumber.requestFocus()
+            }
+        }
         return fragment
     }
 }
