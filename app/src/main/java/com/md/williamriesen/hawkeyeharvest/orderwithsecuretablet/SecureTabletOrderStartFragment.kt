@@ -91,7 +91,7 @@ class SecureTabletOrderStartFragment : Fragment() {
         buttonReset.setOnClickListener {
             val accountNumber = editTextAccountNumber.text.toString().toIntOrNull()
             if (accountNumber != null){
-                viewModel.resetOrder(accountNumber, requireContext(), requireView())
+//                viewModel.resetOrder(accountNumber, requireContext(), requireView())
             } else {
                 Toast.makeText(
                     context,"Please provide account number.",Toast.LENGTH_LONG

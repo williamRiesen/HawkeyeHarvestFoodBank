@@ -36,7 +36,7 @@ class ConfirmOutOfStockFragment : Fragment() {
         }
         val buttonYes = fragment.findViewById<Button>(R.id.buttonYes)
         buttonYes.setOnClickListener {
-            viewModel.markOutOfStock(requireContext())
+            viewModel.markOutOfStock(textViewOutOfStockItemName.text.toString(), requireContext())
             requireActivity().onBackPressed()
         }
         return fragment

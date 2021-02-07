@@ -5,7 +5,6 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
@@ -229,14 +228,14 @@ class VolunteerActivityViewModel : ViewModel() {
             }
     }
 
-    fun markOutOfStock(context: Context) {
+    fun markOutOfStock(nameOfItemToMarkAsOutOfStock: String, context: Context) {
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection("catalogs").document("objectCatalog")
         docRef.get()
             .addOnSuccessListener {documentSnapshot ->
                 val workingCatalog = documentSnapshot.toObject<ObjectCatalog>()
                 workingCatalog?.foodItemList?.find {
-                    it.name == itemToMarkOutOfStock.value
+                    it.name == nameOfItemToMarkAsOutOfStock
                 }
                     ?.isAvailable = false
                 if (workingCatalog != null) {

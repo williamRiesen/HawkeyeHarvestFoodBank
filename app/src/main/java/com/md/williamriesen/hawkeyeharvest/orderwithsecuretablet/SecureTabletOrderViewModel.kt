@@ -82,6 +82,7 @@ class SecureTabletOrderViewModel : ViewModel() {
                         val document = querySnapshot.documents[0]
                         val timestamp = document.get("lastOrderDate") as Timestamp
                         val date = Date(timestamp.seconds * 1000)
+                        accountID = document.id
                         account = Account(
                             document.id,
                             (document.get("familySize") as Long).toInt(),
@@ -430,7 +431,7 @@ class SecureTabletOrderViewModel : ViewModel() {
                             .addOnSuccessListener {
                                 db.collection("orders")
                                     .whereEqualTo("accountID", accountID)
-//                                    .orderBy("date", Query.Direction.DESCENDING)
+                                    .orderBy("date", Query.Direction.DESCENDING)
                                     .limit(1)
                                     .get()
                                     .addOnSuccessListener {
