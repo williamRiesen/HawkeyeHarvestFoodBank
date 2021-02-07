@@ -165,7 +165,7 @@ class FoodBank {
     fun sendObjectCatalogToFireStore() {
         val myObjectCatalog = ObjectCatalog()
         myObjectCatalog.catalogName = "myCatalog"
-        myObjectCatalog.foodItemList = listOf(
+        myObjectCatalog.foodItemList = mutableListOf(
             FoodItem(8, "Pork Chops 1lb (Limit 2)", "Meat", 1, 2, 100, false, 1),
             FoodItem(9, "Pork & Bacon Sausage 1.5lb", "Meat", 1, 100, 100, false, 1),
             FoodItem(10, "Ground Beef 2lb (Limit 2)", "Meat", 2, 2, 100, true, 1),

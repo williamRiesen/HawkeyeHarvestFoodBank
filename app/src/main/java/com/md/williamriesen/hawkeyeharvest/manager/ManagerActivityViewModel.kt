@@ -3,12 +3,14 @@ package com.md.williamriesen.hawkeyeharvest.manager
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.text.Editable
 import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
@@ -30,17 +32,20 @@ class ManagerActivityViewModel : ViewModel() {
     var preliminaryItemList = mutableListOf<FoodItem>()
     lateinit var categoriesList: MutableList<Category>
 
-    fun updateNumberAvailable(itemName: String, numberAvailable: Editable?,context: Context) {
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun updateNumberAvailable(itemName: String, numberAvailable: Editable?, context: Context) {
         val myList = itemsToInventoryList.value
         val thisItem = myList?.find { foodItem ->
             foodItem.name == itemName
         }
-        if (thisItem != null){
+        if (thisItem != null) {
             thisItem.numberAvailable = numberAvailable.toString().toInt()
-            submitUpdatedInventory(context)
+            updateFoodItem(thisItem, context)
+//            submitUpdatedInventory(context)
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     fun toggleIsAvailableStatus(itemName: String, context: Context) {
         val myList = itemsToInventoryList.value
         val thisItem = myList?.find { item ->
@@ -48,8 +53,30 @@ class ManagerActivityViewModel : ViewModel() {
         }
         if (thisItem != null) {
             thisItem.isAvailable = !thisItem.isAvailable!!
-            submitUpdatedInventory(context)
+//            submitUpdatedInventory(context)
+            updateFoodItem(thisItem, context)
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun updateFoodItem(updatedFoodItem: FoodItem, context: Context) {
+        //retrieve latest catalog (may have been updated by others since last read)
+        val db = FirebaseFirestore.getInstance()
+        db.collection("catalogs").document("objectCatalog")
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                val catalog = documentSnapshot.toObject(ObjectCatalog::class.java)
+
+                //replace old with new foodItem within the local catalog
+                catalog?.foodItemList!!.removeIf {
+                    it.name == updatedFoodItem.name
+                }
+                catalog.foodItemList!!.add(updatedFoodItem)
+                db.collection("catalogs").document("objectCatalog").set(catalog)
+                    .addOnSuccessListener {
+                        Toast.makeText(context,"Inventory Updated.",Toast.LENGTH_LONG).show()
+                    }
+            }
     }
 
     private fun getNextFoodItemNumber(): Int {
@@ -85,7 +112,8 @@ class ManagerActivityViewModel : ViewModel() {
 
                 val progressBar = fragment.view?.findViewById<ProgressBar>(R.id.progressBar2)
                 progressBar?.visibility = View.INVISIBLE
-                val buttonAddFoodItem = fragment.view?.findViewById<FloatingActionButton>(R.id.floatingActionButtonAddItem)
+                val buttonAddFoodItem =
+                    fragment.view?.findViewById<FloatingActionButton>(R.id.floatingActionButtonAddItem)
 //                buttonAddFoodItem?.visibility = View.VISIBLE
             }
     }
@@ -95,7 +123,7 @@ class ManagerActivityViewModel : ViewModel() {
             foodItem.name != foodItem.category
         }
         val newObjectCatalog = ObjectCatalog()
-        newObjectCatalog.foodItemList = foodItemListWithoutHeadings
+        newObjectCatalog.foodItemList = foodItemListWithoutHeadings as MutableList<FoodItem>?
         val db = FirebaseFirestore.getInstance()
         db.collection("catalogs").document("objectCatalog").set(newObjectCatalog)
             .addOnSuccessListener {
@@ -158,7 +186,8 @@ class ManagerActivityViewModel : ViewModel() {
                     Toast.makeText(context, "Account $accountID updated.", Toast.LENGTH_LONG).show()
                 }
                 .addOnFailureListener {
-                    Toast.makeText(context, "Update failed with error $it", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Update failed with error $it", Toast.LENGTH_LONG)
+                        .show()
                 }
         }
     }
@@ -274,7 +303,7 @@ class ManagerActivityViewModel : ViewModel() {
         return valid
     }
 
-    fun sendReport (view: View) {
+    fun sendReport(view: View) {
         val db = FirebaseFirestore.getInstance()
         val data = mapOf(Pair("command", "send"))
         db.collection("triggers").document("sendReport")

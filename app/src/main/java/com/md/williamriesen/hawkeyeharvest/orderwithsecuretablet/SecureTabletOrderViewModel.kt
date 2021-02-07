@@ -427,15 +427,36 @@ class SecureTabletOrderViewModel : ViewModel() {
                             "orderState",
                             "SAVED"
                         )
+                            .addOnSuccessListener {
+                                db.collection("orders")
+                                    .whereEqualTo("accountID", accountID)
+//                                    .orderBy("date", Query.Direction.DESCENDING)
+                                    .limit(1)
+                                    .get()
+                                    .addOnSuccessListener {
+                                        if (!it.isEmpty) {
+                                            val orderID = it.documents[0].id
+                                            db.collection("orders").document(orderID)
+                                                .update("orderState", "SAVED")
+                                                .addOnSuccessListener {
+                                                    Toast.makeText(
+                                                        context,
+                                                        "Order has been restored.",
+                                                        Toast.LENGTH_LONG
+                                                    ).show()
+                                                }
+                                        }
+                                    }
                     }
-                    else -> Toast.makeText(
-                        context,
-                        "Multiple matches: this should not be. Please contact Dr. Riesen.",
-                        Toast.LENGTH_LONG
-                    ).show()
                 }
+                else -> Toast.makeText(
+                context,
+                "Multiple matches: this should not be. Please contact Dr. Riesen.",
+                Toast.LENGTH_LONG
+                ).show()
             }
     }
+}
 
 val outOfStockNameList: MutableLiveData<MutableList<String>> =
     MutableLiveData(mutableListOf<String>())

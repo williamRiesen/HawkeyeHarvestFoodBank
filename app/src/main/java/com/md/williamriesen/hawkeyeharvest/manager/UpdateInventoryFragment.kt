@@ -1,5 +1,6 @@
 package com.md.williamriesen.hawkeyeharvest.manager
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.SearchView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -36,6 +38,7 @@ class UpdateInventoryFragment : Fragment() {
         viewModel.itemsToInventoryList.observe(this, Observer { adapterFood.notifyDataSetChanged() })
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,7 +54,19 @@ class UpdateInventoryFragment : Fragment() {
         setUpRecyclerView(viewModel.itemsToInventoryList, recyclerView)
         val actionButton = updateInventoryView.findViewById<FloatingActionButton>(R.id.floatingActionButton)
         actionButton.setOnClickListener {
-            viewModel.submitUpdatedInventory(requireContext())
+            val foodItem = FoodItem (
+                308,
+                "Party Dip",
+                "Specials",
+                1,
+                100,
+                100,
+                false,
+                21
+            )
+            viewModel.updateFoodItem(foodItem, requireContext())
+            viewModel.retrieveCategoriesFromFireStore(this)
+//            viewModel.submitUpdatedInventory(requireContext())
         }
         val actionButtonAddItem = updateInventoryView.findViewById<FloatingActionButton>(R.id.floatingActionButtonAddItem)
         actionButtonAddItem.setOnClickListener {

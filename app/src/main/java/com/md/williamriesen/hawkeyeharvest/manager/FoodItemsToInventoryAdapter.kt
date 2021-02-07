@@ -1,6 +1,7 @@
 package com.md.williamriesen.hawkeyeharvest.manager
 
 import android.graphics.Color
+import android.os.Build
 import android.text.Editable
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +23,7 @@ class FoodItemsToInventoryAdapter(
     var viewModel: ManagerActivityViewModel
 ) : RecyclerView.Adapter<FoodItemsToInventoryAdapter.MyViewHolder>(), Filterable {
 
+    @RequiresApi(Build.VERSION_CODES.N)
     inner class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         var textViewItemToInventoryName: TextView =
             view.findViewById(R.id.textview_item_to_inventory_name)
@@ -30,17 +33,20 @@ class FoodItemsToInventoryAdapter(
         init {
             checkBoxIsAvailable.setOnClickListener {
                 val item = textViewItemToInventoryName.text
-                viewModel.toggleIsAvailableStatus(item.toString(),it.context)
+                viewModel.toggleIsAvailableStatus(item.toString(), it.context)
             }
 
-            editTextNumberAvailable.setOnFocusChangeListener { view, b ->
-                val item = textViewItemToInventoryName.text
-                val numberAvailable = editTextNumberAvailable.text
-                viewModel.updateNumberAvailable(item.toString(), numberAvailable,view.context)
+            editTextNumberAvailable.setOnFocusChangeListener { view, hasFocus ->
+                if (!hasFocus) {
+                    val item = textViewItemToInventoryName.text
+                    val numberAvailable = editTextNumberAvailable.text
+                    viewModel.updateNumberAvailable(item.toString(), numberAvailable, view.context)
+                }
             }
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -89,14 +95,14 @@ class FoodItemsToInventoryAdapter(
                 } else {
                     for (row in viewModel.itemsToInventoryList.value!!) {
                         if (row.name!!.toLowerCase(Locale.ROOT)
-                            .contains(charSearch.toLowerCase(Locale.ROOT))
+                                .contains(charSearch.toLowerCase(Locale.ROOT))
                         ) {
                             Log.d("TAG", "row: ${row.name}")
                             Log.d("TAG", "resultList: ${resultList.value}")
                             resultList.value!!.add(row)
                         }
                     }
-                  viewModel.searchString = charSearch
+                    viewModel.searchString = charSearch
                 }
 
 //                }
