@@ -3,12 +3,8 @@ package com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
 import com.md.williamriesen.hawkeyeharvest.R
-import com.md.williamriesen.hawkeyeharvest.manager.ManagerActivityViewModel
-import com.md.williamriesen.hawkeyeharvest.orderonsite.OnSiteOrderingViewModel
 
 class SecureTabletOrderActivity : AppCompatActivity() {
 
@@ -16,14 +12,15 @@ class SecureTabletOrderActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_secure_tablet_order)
+
         viewModel = ViewModelProviders.of(this).get(SecureTabletOrderViewModel::class.java)
         val startupAccountNumberString = intent.extras?.get("accountNumber").toString()
         Log.d("TAG", "startupAccountNumberString: $startupAccountNumberString")
-        viewModel.startupAccountNumber = startupAccountNumberString?.toIntOrNull()
+//        viewModel.startupAccountNumber = startupAccountNumberString?.toIntOrNull()
     }
 
-    fun onCartButtonClick(view: View) {
-        Navigation.findNavController(view)
-            .navigate(R.id.action_secureTabletOrderSelectionFragment_to_secureTabletOrderCheckoutFragment)
-    }
+//    fun onCartButtonClick(view: View) {
+//        Navigation.findNavController(view)
+//            .navigate(R.id.action_secureTabletOrderSelectionFragment_to_secureTabletOrderCheckoutFragment)
+//    }
 }

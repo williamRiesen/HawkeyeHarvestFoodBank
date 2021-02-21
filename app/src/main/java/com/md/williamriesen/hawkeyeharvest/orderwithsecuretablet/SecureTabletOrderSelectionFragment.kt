@@ -13,11 +13,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.firestore.FirebaseFirestore
 import com.md.williamriesen.hawkeyeharvest.foodbank.FoodItem
 import com.md.williamriesen.hawkeyeharvest.R
-import com.md.williamriesen.hawkeyeharvest.foodbank.Order
-import java.util.*
 
 class SecureTabletOrderSelectionFragment : Fragment() {
 
@@ -32,7 +29,7 @@ class SecureTabletOrderSelectionFragment : Fragment() {
         activity?.actionBar?.setHomeButtonEnabled(true)
         activity?.actionBar?.setDisplayHomeAsUpEnabled(true)
         viewModel = ViewModelProviders.of(this.requireActivity()).get(SecureTabletOrderViewModel::class.java)
-        viewModel.foodItemList.observe(this, Observer { adapter.notifyDataSetChanged() })
+        viewModel.foodItems.observe(this, Observer { adapter.notifyDataSetChanged() })
         requireActivity().onBackPressedDispatcher.addCallback(this){
             //empty body disables back button
         }
@@ -44,7 +41,7 @@ class SecureTabletOrderSelectionFragment : Fragment() {
     ): View? {
         val selectionView = inflater.inflate(R.layout.fragment_selection, container, false)
         val recyclerView = selectionView.findViewById<RecyclerView>(R.id.recyclerviewChoices)
-        setUpRecyclerView(viewModel.foodItemList, recyclerView)
+        setUpRecyclerView(viewModel.foodItems, recyclerView)
         return selectionView
     }
 
@@ -59,6 +56,6 @@ class SecureTabletOrderSelectionFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        viewModel.saveOrder(requireView())
+        viewModel.saveOrder()
     }
 }

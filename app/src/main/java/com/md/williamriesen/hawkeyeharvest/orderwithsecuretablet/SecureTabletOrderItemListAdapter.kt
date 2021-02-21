@@ -45,7 +45,7 @@ class SecureTabletOrderItemListAdapter(
         foodItemList.value = myList
         viewModel.points = viewModel.points?.minus(1)
         val selectedCategory = myList[position].category
-        val viewModelCategory = viewModel.categoriesList.value!!.find {
+        val viewModelCategory = viewModel.categories.value!!.find {
             it.name == selectedCategory
         }
         viewModelCategory!!.pointsUsed =
@@ -64,7 +64,7 @@ class SecureTabletOrderItemListAdapter(
             foodItemList.value = myList
             viewModel.points = viewModel.points?.plus(1)
             val selectedCategory = myList[position].category
-            val viewModelCategory = viewModel.categoriesList.value!!.find {
+            val viewModelCategory = viewModel.categories.value!!.find {
                 it.name == selectedCategory
             }
             viewModelCategory!!.pointsUsed =

@@ -13,8 +13,6 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.md.williamriesen.hawkeyeharvest.R
-import com.md.williamriesen.hawkeyeharvest.orderonsite.OnSiteOrderingViewModel
-import com.md.williamriesen.hawkeyeharvest.reports.MonthReport
 import com.md.williamriesen.hawkeyeharvest.reports.ReportCreator
 
 class SecureTabletOrderStartFragment : Fragment() {
@@ -22,6 +20,7 @@ class SecureTabletOrderStartFragment : Fragment() {
     lateinit var viewModel: SecureTabletOrderViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("TAG","onCreateStarted")
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this.requireActivity())
             .get(SecureTabletOrderViewModel::class.java)
@@ -31,39 +30,52 @@ class SecureTabletOrderStartFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("TAG", "Starting onCreateView")
         val fragment =
             inflater.inflate(R.layout.fragment_secure_tablet_order_start, container, false)
         val buttonGo = fragment.findViewById<Button>(R.id.buttonGo)
         val editTextAccountNumber = fragment.findViewById<EditText>(R.id.editTextAccountNumber)
         editTextAccountNumber.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                viewModel.lookUpAccount(
-                    editTextAccountNumber.text.toString().toInt(), requireContext(),
-                    requireView()
-                )
+                val accountNumber = editTextAccountNumber.text.toString().toIntOrNull()
+                if (accountNumber != null) {
+                    viewModel.go(
+                        accountNumber, requireView()
+                    )
+                } else {
+                    Toast.makeText(
+                        context, "Please provide account number.", Toast.LENGTH_LONG
+                    ).show()
+                    editTextAccountNumber.requestFocus()
+                }
             }
             false
         }
 
         buttonGo.setOnClickListener {
-            viewModel.lookUpAccount(
-                editTextAccountNumber.text.toString().toInt(), requireContext(),
-                requireView()
-            )
+            val accountNumber = editTextAccountNumber.text.toString().toIntOrNull()
+            if (accountNumber != null) {
+                viewModel.go(
+                    accountNumber, requireView()
+                )
+            } else {
+                Toast.makeText(
+                    context, "Please provide account number.", Toast.LENGTH_LONG
+                ).show()
+                editTextAccountNumber.requestFocus()
+            }
         }
         val buttonAddEditAccount = fragment.findViewById<Button>(R.id.buttonNewAccount)
         buttonAddEditAccount.setOnClickListener {
-            viewModel.currentAccountNumber = null
+            viewModel.accountNumber = null
             Navigation.findNavController(it)
                 .navigate(R.id.action_secureTabletOrderStartFragment_to_addEditAccountFragment2)
         }
-        val buttonUpdateNumbers = fragment.findViewById<Button>(R.id.buttonRunNumberUpdate)
-        buttonUpdateNumbers.setOnClickListener {
-            viewModel.updateNumbers()
-        }
+
         val buttonInventory = fragment.findViewById<Button>(R.id.buttonInventory)
         buttonInventory.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_secureTabletOrderStartFragment_to_updateInventoryFragment2)
+            Navigation.findNavController(it)
+                .navigate(R.id.action_secureTabletOrderStartFragment_to_updateInventoryFragment2)
         }
         Log.d("TAG", "startupAccountNumber: ${viewModel.startupAccountNumber}")
         if (viewModel.startupAccountNumber != null) {
@@ -76,12 +88,13 @@ class SecureTabletOrderStartFragment : Fragment() {
         val buttonEditAccount = fragment.findViewById<Button>(R.id.buttonEditAccount)
         buttonEditAccount.setOnClickListener {
             val accountNumber = editTextAccountNumber.text.toString().toIntOrNull()
-            if (accountNumber != null){
-                viewModel.currentAccountNumber = accountNumber
-                Navigation.findNavController(it).navigate(R.id.action_secureTabletOrderStartFragment_to_addEditAccountFragment2)
+            if (accountNumber != null) {
+                viewModel.accountNumber = accountNumber
+                Navigation.findNavController(it)
+                    .navigate(R.id.action_secureTabletOrderStartFragment_to_addEditAccountFragment2)
             } else {
                 Toast.makeText(
-                    context,"Please provide account number.",Toast.LENGTH_LONG
+                    context, "Please provide account number.", Toast.LENGTH_LONG
                 ).show()
                 editTextAccountNumber.requestFocus()
             }
@@ -90,11 +103,11 @@ class SecureTabletOrderStartFragment : Fragment() {
             fragment.findViewById<Button>(R.id.buttonReset)
         buttonReset.setOnClickListener {
             val accountNumber = editTextAccountNumber.text.toString().toIntOrNull()
-            if (accountNumber != null){
-//                viewModel.resetOrder(accountNumber, requireContext(), requireView())
+            if (accountNumber != null) {
+                viewModel.resetOrder(accountNumber, requireView())
             } else {
                 Toast.makeText(
-                    context,"Please provide account number.",Toast.LENGTH_LONG
+                    context, "Please provide account number.", Toast.LENGTH_LONG
                 ).show()
                 editTextAccountNumber.requestFocus()
             }

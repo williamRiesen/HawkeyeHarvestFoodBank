@@ -46,7 +46,11 @@
     <fragment
         android:id="@+id/secureTabletOrderConfirmAndReset"
         android:name="com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet.SecureTabletOrderConfirmAndReset"
-        android:label="SecureTabletOrderConfirmAndReset" />
+        android:label="SecureTabletOrderConfirmAndReset" >
+        <action
+            android:id="@+id/action_secureTabletOrderConfirmAndReset_to_outOfStockFragment2"
+            app:destination="@id/outOfStockFragment2" />
+    </fragment>
     <fragment
         android:id="@+id/addEditAccountFragment2"
         android:name="com.md.williamriesen.hawkeyeharvest.manager.AddEditAccountFragment"
@@ -63,4 +67,8 @@
         android:id="@+id/createNewItemFragment2"
         android:name="com.md.williamriesen.hawkeyeharvest.manager.NewFoodItemFragment"
         android:label="CreateNewItemFragment" />
+    <fragment
+        android:id="@+id/outOfStockFragment2"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderoffsite.OutOfStockFragment"
+        android:label="OutOfStockFragment" />
 </navigation>

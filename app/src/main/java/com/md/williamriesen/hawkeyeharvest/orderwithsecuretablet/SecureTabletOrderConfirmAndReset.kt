@@ -42,11 +42,11 @@ class SecureTabletOrderConfirmAndReset : Fragment() {
             "Please return this tablet to food bank staff; they will place your order."
         val textViewPickUpInstructions2 =
             fragment.findViewById<TextView>(R.id.textViewPickUpInstructions2)
-        textViewPickUpInstructions2.text = "Your order number is ${viewModel.accountID.takeLast(4)}"
+        textViewPickUpInstructions2.text = "Your order number is ${viewModel.account.accountID.takeLast(4)}"
         val buttonShowNumber = fragment.findViewById<Button>(R.id.buttonShowNumber)
         buttonShowNumber.setOnClickListener {
             val intent = Intent(context, DisplayNumberActivity::class.java)
-            intent.putExtra("ACCOUNT_ID", viewModel.accountID)
+            intent.putExtra("ACCOUNT_ID", viewModel.account.accountID)
             context?.startActivity(intent)
         }
         val editTextPushPassword = fragment.findViewById<EditText>(R.id.editTextPushPassword)
@@ -54,8 +54,7 @@ class SecureTabletOrderConfirmAndReset : Fragment() {
             Log.d("TAG","text entered: ${textView.text}")
             if (textView.text.toString() == pushPassword) {
                 Log.d("TAG","Now submitting...")
-                viewModel.submitOnSiteOrder(requireView(),requireActivity())
-//                requireActivity().supportFragmentManager.popBackStack()
+                viewModel.processOrder(requireView())
             }
             false
 

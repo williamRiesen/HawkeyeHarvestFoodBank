@@ -5,461 +5,398 @@ import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
-import com.google.firebase.Timestamp
+import com.google.android.gms.tasks.Continuation
+import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.iid.InstanceIdResult
 import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.foodbank.*
 import java.util.*
 
+
 class SecureTabletOrderViewModel : ViewModel() {
-    var currentAccountNumber: Int? = null
-    var accountID = ""
-    var city = ""
-    var county = ""
-    val foodItemList = MutableLiveData<MutableList<FoodItem>>()
-    val categoriesList = MutableLiveData<MutableList<Category>>()
-    var familySize = 0
-    private var savedItemList = mutableListOf<FoodItem>()
-    var orderID: String? = null
-    var isOpen = MutableLiveData<Boolean>(false)
-    var orderState: MutableLiveData<OrderState> = MutableLiveData(OrderState.NOT_STARTED_YET)
-    var lastOrderDate: Date? = null
-    var points: Int? = null
-    var account: Account? = null
-
-    //    var pleaseWait = false
+//
+    var account = Account("", 0, "", "", 0)
+    var accountNumber: Int? = null
+    val categories = MutableLiveData<MutableList<Category>>()
+//    val db = FirebaseFirestore.getInstance()
+    val foodItems = MutableLiveData<MutableList<FoodItem>>(mutableListOf())
+//    var order = Order("", Date(), mutableListOf(FoodItem()), "")
+//    private var orderID: String? = null
+//    var orderState: MutableLiveData<OrderState> = MutableLiveData(OrderState.NOT_STARTED_YET)
+    val outOfStockItems = MutableLiveData<MutableList<OutOfStockItem>>()
     var pleaseWait = MutableLiveData<Boolean>(false)
+    var points: Int? = null
     var startupAccountNumber: Int? = null
-
-    private val needToStartNewOrder: Boolean
-        get() = orderState.value == OrderState.PACKED && (!isOpen.value!! || whenOrdered != "TODAY")
-
-    private val whenOrdered: String
-        get() {
-            val foodBank = FoodBank()
-            val startOfToday: Date = foodBank.getCurrentDateWithoutTime()
-            val calendar = Calendar.getInstance()
-            calendar.time = startOfToday
-            calendar.set(Calendar.DAY_OF_MONTH, 1)
-            val startOfThisMonth = calendar.time
-            Log.d(
-                "TAG",
-                "lastOrderDate: $lastOrderDate, startOfToday: $startOfToday, startOfThisMonth: $startOfThisMonth"
-            )
-            return when {
-                lastOrderDate!! > startOfToday -> "TODAY"
-                lastOrderDate!! > startOfThisMonth -> "EARLIER_THIS_MONTH"
-                else -> "PRIOR_TO_THIS_MONTH"
-            }
-        }
-
-
-    fun lookUpAccount(accountNumber: Int, context: Context, view: View) {
-
-        val db = FirebaseFirestore.getInstance()
-        val accountsRef = db.collection("accounts")
-        Log.d("TAG", "ready to look up account using number $accountNumber")
-        val query = accountsRef
-            .whereEqualTo("accountNumber", accountNumber)
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                when (querySnapshot.size()) {
-                    0 -> Toast.makeText(
-                        context,
-                        "No match found for this number.",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    1 -> {
-                        val document = querySnapshot.documents[0]
-                        val timestamp = document.get("lastOrderDate") as Timestamp
-                        val date = Date(timestamp.seconds * 1000)
-                        accountID = document.id
-                        account = Account(
-                            document.id,
-                            (document.get("familySize") as Long).toInt(),
-                            document.get("city") as String,
-                            document.get("county") as String,
-                            (document.get("accountNumber") as Long).toInt(),
-                            date,
-                            document.get("lastOrderType") as String,
-                            document.get("orderState") as String,
-                            (document.get("pickUpHour24") as Long?)?.toInt() ?: 0
-                        )
-
-
-                        familySize = (document.get("familySize") as Long).toInt()
-                        val orderStateString = document.get("orderState") as String?
-                        val timeStamp =
-                            document.get("lastOrderDate") as com.google.firebase.Timestamp
-                        val lastOrderDate = Date(timeStamp.seconds * 1000)
-
-
-                        val calendar = Calendar.getInstance()
-                        val thisMonth = calendar[Calendar.MONTH]
-                        val thisYear = calendar[Calendar.YEAR]
-                        val startOfMonth = FoodBank().makeDate(thisMonth, 1, thisYear)
-                        Log.d("TAG", "accountID $accountID")
-                        val orderedAlready =
-                            lastOrderDate > startOfMonth && orderStateString != "SAVED"
-
-                        if (orderedAlready) {
-                            Navigation.findNavController(view)
-                                .navigate(R.id.action_secureTabletOrderStartFragment_to_alreadyOrderedMessageFragment)
-
-                        } else {
-                            Log.d("TAG", "Not ordered already: $orderStateString")
-                            retrieveObjectCatalogFromFireStore(view)
-                        }
-                    }
-
-
-                    else -> Toast.makeText(
-                        context,
-                        "Multiple matches: this should not be. Please contact Dr. Riesen.",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
+//    var view: View? = null
+//
+//
+    fun saveOrder() {
+//        assembleOrderAs("SAVED")
+//        sendOrderToFirestore
+//            .continueWith { retrieveOrder }
+//            .continueWith { transcribeOrderID }
     }
-
-
-    fun retrieveObjectCatalogFromFireStore(view: View) {
-        val db = FirebaseFirestore.getInstance()
-        val docRef = db.collection("catalogs").document("objectCatalog")
-        docRef.get()
-            .addOnSuccessListener { documentSnapshot ->
-                val myObjectCatalog = documentSnapshot.toObject<ObjectCatalog>()
-                if (myObjectCatalog != null) {
-//                    Log.d("TAG", "myObjectCatalog.foodItemList: ${myObjectCatalog.foodItemList}")
-                }
-                val availableItemsList = myObjectCatalog?.foodItemList?.filter { foodItem ->
-                    foodItem.isAvailable!! && foodItem.numberAvailable!! > 0
-                }
-                foodItemList.value = availableItemsList as MutableList<FoodItem>?
-                retrieveCategoriesFromFireStore(view)
-            }
-            .addOnFailureListener {
-                Log.d("TAG", "Retrieve objectCatalog from database failed.")
-            }
+//
+//    private val sendOrderToFirestore: Task<Void> =
+//        db.collection(("orders")).document(orderID ?: "").set(order)
+//
+//
+//    private val retrieveOrder =
+//        db.collection("orders")
+//            .whereEqualTo("accountID", account.accountID)
+//            .whereEqualTo("orderState", "SAVED")
+//            .orderBy("date", Query.Direction.DESCENDING).limit(1)
+//            .get()
+//
+//    private val transcribeOrderID = Continuation<QuerySnapshot, Unit> { task ->
+//        if (task.result.size() > 0) {
+//            orderID = task.result.documents[0].id
+//        }
+//    }
+//
+//
+    fun processOrder(viewArg: View) {
+//        view = viewArg
+//        retrieveInventory()
+//            .continueWith { task ->
+//                val retrievedInventory = task.result.get("foodItemList") as List<FoodItem>
+//                updateFoodItemListUsing(retrievedInventory)
+//                separateOutOfStockItems()
+//                if (outOfStockItems.value!!.isEmpty()) {
+//                    assembleOrderAs("SUBMITTED")
+//                    submit(order)
+//                } else {
+//                    askClientForAlternativeChoices()
+//                }
+//            }
     }
-
-    private fun retrieveCategoriesFromFireStore(view: View) {
-        val db = FirebaseFirestore.getInstance()
-        val docRef = db.collection("categories").document("categories")
-        docRef.get()
-            .addOnSuccessListener { documentSnapshot ->
-                val categoriesListing = documentSnapshot.toObject<CategoriesListing>()
-                categoriesList.value = categoriesListing?.categories as MutableList<Category>
-                val filteredList = foodItemList.value?.filter {
-                    canAfford(it)
-                } as MutableList
-                foodItemList.value = filteredList
-                generateHeadings(view)
-                foodItemList.value?.sortWith(
-                    compareBy<FoodItem> { it.categoryId }.thenBy { it.itemID })
-                if (!needToStartNewOrder) retrieveSavedOrder(view)
-                Navigation.findNavController(view)
-                    .navigate(R.id.action_secureTabletOrderStartFragment_to_secureTabletOrderSelectionFragment)
-            }
+//
+//    private fun retrieveInventory(): Task<DocumentSnapshot> {
+//        return db.collection("catalogs").document("objectCatalog").get()
+//    }
+//
+//    private fun updateFoodItemListUsing(retrievedList: List<FoodItem>) {
+//        foodItems.value!!.forEach { foodListItem ->
+//            if (foodListItem.isFoundIn(retrievedList)) {
+//                foodListItem.updateUsing(retrievedList)
+//            } else {
+//                foodListItem.isAvailable = false
+//            }
+//        }
+//    }
+//
+//    private fun updateFoodItemListUsing(order: Order) {
+//        order.itemList.forEach { orderedFoodItem ->
+//            foodItems.value?.find { viewModelFoodItem ->
+//                viewModelFoodItem.name == orderedFoodItem.name
+//            }!!.qtyOrdered = orderedFoodItem.qtyOrdered
+//        }
+//    }
+//
+//    private fun separateOutOfStockItems() {
+//        outOfStockItems.value?.clear()
+//        foodItems.value?.forEach {
+//            if (it.qtyOrdered > 0 && !it.isAvailable!!) {
+//                outOfStockItems.value?.add(OutOfStockItem(it.name!!, it.qtyOrdered))
+//                refundPointsFor(it)
+//                it.qtyOrdered = 0
+//            }
+//        }
+//    }
+//
+//    private fun assembleOrderAs(orderState: String) {
+//        order = Order(account.accountID, Date(), foodItems.value!!, orderState)
+//        order.filterOutZeros()
+//    }
+//
+//    private fun submit(orderArg: Order) {
+//        order = orderArg
+//        FirebaseInstanceId.getInstance().instanceId
+//            .continueWith(getToken)
+//            .continueWithTask { sendOrderToFirestore }
+//            .continueWith { returnToStart() }
+//    }
+//
+//    private val getToken = Continuation<InstanceIdResult, Unit> {
+//        order.deviceToken = it.result.token
+//        it.result
+//    }
+//
+//
+//    private fun refundPointsFor(foodItem: FoodItem) {
+//        val categoryOfItem = foodItems.value?.find {
+//            it.name == foodItem.name
+//        }?.category
+//        categories.value?.find { category ->
+//            categoryOfItem == category.name
+//        }!!.pointsUsed -= foodItem.qtyOrdered
+//    }
+//
+//    private fun askClientForAlternativeChoices() {
+//        Navigation.findNavController(view!!)
+//            .navigate(R.id.action_secureTabletOrderConfirmAndReset_to_outOfStockFragment2)
+//    }
+//
+//
+    fun go(accountNumber: Int, viewArg: View) {
+//        Log.d("TAG", "Starting Go function")
+////        view = viewArg
+////        lookUpAccount(accountNumber)
+////            .continueWith(validateAccount)
+////            .continueWith { validAccount ->
+////                if (validAccount.result != null) {
+////                    account = validAccount.result!!
+////                    if (orderedAlready()) {
+////                        navigateToAlreadyOrderedMessage()
+////                    } else {
+////                        prepareSelections()
+////                    }
+////                }
+////            }
     }
-
-    private fun generateHeadings(view: View) {
-        categoriesList.value?.forEach { category ->
-            val heading = FoodItem(
-                0,
-                category.name,
-                category.name,
-                0,
-                0,
-                0,
-                true,
-                category.id,
-                category.calculatePoints(familySize)
-            )
-            Log.d("TAG", "foodItemList.value = ${foodItemList.value}")
-            foodItemList.value!!.add(heading)
-        }
+//
+//    private fun lookUpAccount(accountNumber: Int) =
+//        db.collection("accounts").whereEqualTo("accountNumber", accountNumber).get()
+//
+//    private val validateAccount = Continuation<QuerySnapshot, Account?> { task ->
+//        val accountFetchResult = task.result
+//        if (isUniqueMatch(accountFetchResult)) {
+//            task.result.documents[0].toObject(Account::class.java)
+//        } else {
+//            null
+//        }
+//    }
+//
+//    private fun isUniqueMatch(querySnapshot: QuerySnapshot): Boolean {
+//        return when (querySnapshot.size()) {
+//            0 -> {
+//                toast("No match found for this number.")
+//                false
+//            }
+//            1 -> true
+//
+//            else -> {
+//                toast("Multiple matches: this should not be. Please contact Dr. Riesen.")
+//                false
+//            }
+//        }
+//    }
+//
+//    private fun orderedAlready(): Boolean {
+//        val calendar = Calendar.getInstance()
+//        val thisMonth = calendar[Calendar.MONTH]
+//        val thisYear = calendar[Calendar.YEAR]
+//        val startOfMonth = FoodBank().makeDate(thisMonth, 1, thisYear)
+//        return (account.lastOrderDate > startOfMonth
+//                && account.orderState != "SAVED")
+//    }
+//
+//    private fun navigateToAlreadyOrderedMessage() {
+//        Navigation.findNavController(view!!)
+//            .navigate(R.id.action_secureTabletOrderStartFragment_to_alreadyOrderedMessageFragment)
+//    }
+//
+//
+//    private fun prepareSelections() {
+//        getInventoryFromFirestore
+//            .continueWith(transcribeInventoryToViewModel)
+//            .continueWithTask { getCategoriesFromFireStore }
+//            .continueWith(insertCategoriesIntoFoodListAndSort)
+//            .continueWithTask { retrieveSavedOrder }
+//            .continueWith(unpackAndCheckSavedOrder)
+//            .continueWith { someItemsAreOutOfStock ->
+//                if (someItemsAreOutOfStock.result) {
+//                    askClientForAlternativeChoices()
+//                } else {
+//                    navigateToSelectionFragment()
+//                }
+//            }
+//    }
+//
+//    private val unpackAndCheckSavedOrder = Continuation<QuerySnapshot, Boolean> { task ->
+//        var someItemsAreOutOfStock = false
+//        if (task.result.size() > 0) {
+//            orderID = task.result.documents[0].id
+//            val order = task.result.documents[0].toObject<Order>()
+//            updateFoodItemListUsing(order!!)
+//            separateOutOfStockItems()
+//            someItemsAreOutOfStock = !outOfStockItems.value.isNullOrEmpty()
+//        }
+//        someItemsAreOutOfStock
+//    }
+//
+//
+//    private val getInventoryFromFirestore =
+//        db.collection("catalogs").document("objectCatalog").get()
+//
+//    private val transcribeInventoryToViewModel = Continuation<DocumentSnapshot, Unit> {
+//        val inventory = it.result.toObject<ObjectCatalog>()
+//        val availableItems = inventory?.foodItemList?.filter { foodItem ->
+//            foodItem.isAvailable!! && foodItem.numberAvailable!! > 0
+//        }
+//        foodItems.value = availableItems as MutableList<FoodItem>
+//    }
+//
+//    private val getCategoriesFromFireStore =
+//        db.collection("categories").document("categories").get()
+//
+//    private val insertCategoriesIntoFoodListAndSort =
+//        Continuation<DocumentSnapshot, Unit> { task ->
+//            val categoriesListing = task.result.toObject<CategoriesListing>()
+//            categories.value =
+//                categoriesListing?.categories as MutableList<Category>
+//            val filteredList = foodItems.value?.filter {
+//                canAfford(it)
+//            } as MutableList
+//            foodItems.value = filteredList
+//            generateHeadings()
+//            foodItems.value?.sortWith(
+//                compareBy<FoodItem> { it.categoryId }.thenBy { it.itemID }
+//            )
+//        }
+//
+//    private fun navigateToSelectionFragment() {
+//        Navigation.findNavController(view!!)
+//            .navigate(R.id.action_secureTabletOrderStartFragment_to_secureTabletOrderSelectionFragment)
+//    }
+//
+//    private fun generateHeadings() {
+//        categories.value?.forEach { category ->
+//            val heading = FoodItem(
+//                0,
+//                category.name,
+//                category.name,
+//                0,
+//                0,
+//                0,
+//                true,
+//                category.id,
+//                category.calculatePoints(account.familySize)
+//            )
+//            foodItems.value!!.add(heading)
+//        }
+//    }
+//
+//    private fun canAfford(foodItem: FoodItem): Boolean {
+//        val thisCategory = categories.value?.find {
+//            it.name == foodItem.category
+//        }
+//        val pointsAllocated = thisCategory!!.calculatePoints(account.familySize)
+//        return pointsAllocated >= foodItem.pointValue!!
+//    }
+//
+//
+//    private val retrieveSavedOrder =
+//        db.collection("orders")
+//            .whereEqualTo("accountID", account.accountID)
+//            .whereEqualTo("orderState", "SAVED")
+//            .orderBy("date", Query.Direction.DESCENDING)
+//            .limit(1)
+//            .get()
+//
+//
+    fun sendAccountToFirestore(accountArg: Account, viewArg: View) {
+//        view = viewArg
+//        if (isValidAccount(accountArg)) account = accountArg
+//        account.accountNumber = account.accountID.takeLast(4).toInt()
+//        db.collection("accounts").document(account.accountID).set(account)
+//            .addOnSuccessListener {
+//                pleaseWait.value = false
+//                toast("Account ${account.accountID} updated.")
+//                returnToStart("accountNumber", accountNumber)
+//            }
+//            .addOnFailureListener {
+//                pleaseWait.value = false
+//                toast("Update failed with error $it")
+//            }
     }
-
-    fun canAfford(foodItem: FoodItem): Boolean {
-        Log.d("TAG", "foodItem.name ${foodItem.name}")
-        Log.d("TAG", "foodItem.category ${foodItem.category}")
-
-        val thisCategory = categoriesList.value?.find {
-            it.name == foodItem.category
-        }
-        Log.d("TAG", "thisCategory.name ${thisCategory!!.name}")
-        val pointsAllocated = thisCategory.calculatePoints(familySize)
-        Log.d("TAG", "pointsAllocated $pointsAllocated")
-        Log.d("TAG", "pointValue: ${foodItem.pointValue}")
-        Log.d("TAG", "return ${pointsAllocated >= foodItem.pointValue!!}")
-        return pointsAllocated >= foodItem.pointValue!!
+//
+//
+//    private fun returnToStart(extraName: String? = null, extraString: Int? = null) {
+//
+//        val activity = view!!.context as FragmentActivity
+//        activity.finish()
+//        val intent = Intent(activity, SecureTabletOrderActivity::class.java)
+//        if (extraName != null) {
+//            intent.putExtra(extraName, extraString)
+//        }
+//        startActivity(activity, intent, null)
+//    }
+//
+//
+//    private fun isValidAccount(accountArg: Account): Boolean {
+//        var valid = false
+//        when {
+//            accountArg.accountID == "" -> toast("Please enter Account ID.")
+//            accountArg.familySize == 0 -> toast("Please enter family size.")
+//            accountArg.city == "" -> toast("Please enter city.")
+//            accountArg.county == "" -> toast("Please enter county.")
+//            accountArg.accountNumber == 0 -> toast("Account ID must end with four digits.")
+//            else -> {
+//                toast("Data validated.")
+//                valid = true
+//            }
+//        }
+//        return valid
+//    }
+//
+//
+    fun resetOrder(accountNumber: Int, viewArg: View) {
+//        view = viewArg
+//        retrieveAccountFromFirestore
+//            .continueWith(inspectAccountAndIfValidResetToSaved)
+//            .continueWith(retrieveLastOrderForThisAcount)
+//            .continueWith(resetOrder)
+//            .continueWith(toastOrderRestored)
     }
-
-    private fun retrieveSavedOrder(view: View) {
-        val db = FirebaseFirestore.getInstance()
-        val ordersRef = db.collection("orders")
-        val query = ordersRef
-            .whereEqualTo("accountID", accountID)
-            .whereEqualTo("orderState", "SAVED")
-            .orderBy("date", Query.Direction.DESCENDING).limit(1)
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                if (querySnapshot.size() > 0) {
-                    val savedOrder = querySnapshot.documents[0].toObject<Order>()
-                    savedItemList = savedOrder?.itemList!!
-                    orderID = querySnapshot.documents[0].id
-                    checkSavedOrderAgainstCurrentOfferings()
-                }
-//                Navigation.findNavController(view)
-//                    .navigate(R.id.action_secureTabletOrderStartFragment_to_secureTabletOrderSelectionFragment)
-            }
-    }
-
-    private fun checkSavedOrderAgainstCurrentOfferings() {
-        savedItemList.forEach { savedItem ->
-            val itemToCheck = foodItemList.value?.find { offeredItem ->
-                offeredItem.name == savedItem.name
-            }
-            if (itemToCheck == null) {
-                outOfStockNameList.value!!.add(savedItem.name!!)
-            } else {
-                itemToCheck.qtyOrdered = savedItem.qtyOrdered
-                val categoryToUpdate = foodItemList.value!!.find { item ->
-                    item.name == itemToCheck.category
-                }
-                categoryToUpdate!!.categoryPointsUsed =
-                    categoryToUpdate.categoryPointsUsed + itemToCheck.pointValue!! * itemToCheck.qtyOrdered
-            }
-        }
-    }
-
-    fun saveOrder(view: View) {
-        val thisOrder = Order(accountID, Date(), foodItemList.value!!, "SAVED")
-        val filteredOrder = thisOrder.filterOutZeros()
-        val db = FirebaseFirestore.getInstance()
-        if (orderID != null) {
-            db.collection(("orders")).document(orderID!!).set(filteredOrder)
-        } else {
-            db.collection(("orders")).document().set(filteredOrder)
-                .addOnSuccessListener {
-                    retrieveSavedOrder(view)
-// Save then immediately retrieve is done this way to obtain orderID //
-// which is subsequently used to submit.//
-// The transition from "SAVED" to "SUBMITTED" status is unnecessary on the client side,//
-// but is done this way to fire a rule on the server side which is working and //
-// I would rather not change.
-                }
-        }
-    }
-
-    fun submitOnSiteOrder(view: View, activity: FragmentActivity) {
-        val thisOrder = Order(accountID, Date(), foodItemList.value!!, "SUBMITTED")
-        val filteredOrder = thisOrder.filterOutZeros()
-
-        FirebaseInstanceId.getInstance().instanceId
-            .addOnCompleteListener {
-                if (!it.isSuccessful) {
-                    Log.d("TAG", "getInstanceID failed ${it.exception}")
-                }
-                val token = it.result?.token
-                filteredOrder.deviceToken = token
-                Log.d("TAG", "token: $token")
-
-                val db = FirebaseFirestore.getInstance()
-                Log.d("TAG", "orderID: $orderID")
-                if (orderID != null) {
-                    db.collection(("orders")).document(orderID!!).set(filteredOrder)
-                        .addOnSuccessListener {
-                            Log.d("TAG", "Order submitted.")
-                            activity.finish()
-                            val intent = Intent(activity, SecureTabletOrderActivity::class.java)
-                            startActivity(activity, intent, null)
-                        }
-                } else {
-                    Log.d("TAG", "about to attempt Submit.")
-                    db.collection(("orders")).document().set(filteredOrder)
-                        .addOnSuccessListener {
-                            Log.d("TAG", "filteredOrder $filteredOrder")
-                            Log.d("TAG", "Order submitted.")
-                            activity.finish()
-                            val intent = Intent(activity, SecureTabletOrderActivity::class.java)
-                            startActivity(activity, intent, null)
-                        }
-                        .addOnFailureListener {
-                            Log.d("TAG", "Submit failed due to $it")
-                        }
-                }
-            }
-    }
-
-    fun updateNumbers() {
-        Log.d("TAG", "updateNumbers() execution started.")
-        val db = FirebaseFirestore.getInstance()
-        val accountsRef = db.collection("accounts")
-            .get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
-                    Log.d("TAG", "accountID: $document.id")
-                    val thisAccountNumber = (document.id).takeLast(4).toIntOrNull()
-                    Log.d("TAG", "number: $thisAccountNumber")
-                    if (thisAccountNumber != null) {
-                        val thisDocument = db.collection("accounts").document(document.id)
-                        thisDocument.update("accountNumber", thisAccountNumber)
-                    }
-                }
-            }
-    }
-
-    fun submitNewAccount(
-        accountID: String,
-        familySize: String,
-        city: String,
-        county: String,
-        context: Context,
-        activity: FragmentActivity
-    ) {
-        if (isValidAccount(accountID, familySize, city, county, context)) {
-            val accountNumber = accountID.takeLast(4).toIntOrNull()
-            val account = Account(accountID, familySize.toInt(), city, county, accountNumber)
-            val db = FirebaseFirestore.getInstance()
-            db.collection("accounts").document(account.accountID).set(account)
-                .addOnSuccessListener {
-                    pleaseWait.value = false
-                    activity.finish()
-                    val intent = Intent(activity, SecureTabletOrderActivity::class.java)
-                    intent.putExtra("accountNumber", accountNumber);
-                    ContextCompat.startActivity(activity, intent, null)
-                    Toast.makeText(context, "Account $accountID updated.", Toast.LENGTH_LONG)
-                        .show()
-                }
-                .addOnFailureListener {
-                    Toast.makeText(context, "Update failed with error $it", Toast.LENGTH_LONG)
-                        .show()
-                }
-        }
-    }
-
-    fun submitEditedAccount(
-        familySize: Int,
-        city: String,
-        county: String,
-        context: Context,
-        activity: FragmentActivity
-    ) {
-        account?.familySize = familySize
-        account?.city = city
-        account?.county = county
-        val db = FirebaseFirestore.getInstance()
-        val accountNumber = accountID.takeLast(4).toIntOrNull()
-        Log.d("TAG", "account from submitEditedAccount: ${account?.familySize}")
-        if (account != null)
-            db.collection("accounts").document(account!!.accountID).set(account!!)
-                .addOnSuccessListener {
-                    pleaseWait.value = false
-                    activity.finish()
-                    val intent = Intent(activity, SecureTabletOrderActivity::class.java)
-                    intent.putExtra("accountNumber", accountNumber)
-                    startActivity(activity, intent, null)
-                    Toast.makeText(context, "Account $accountID updated.", Toast.LENGTH_LONG)
-                        .show()
-                }
-                .addOnFailureListener {
-                    Toast.makeText(context, "Update failed with error $it", Toast.LENGTH_LONG)
-                        .show()
-                }
-    }
-
-    fun isValidAccount(
-        accountID: String,
-        familySize: String,
-        city: String,
-        county: String,
-        context: Context
-    ): Boolean {
-        var valid = false
-        when {
-            accountID == "" -> {
-                Toast.makeText(context, "Please enter Account ID.", Toast.LENGTH_LONG).show()
-            }
-            familySize == "" -> {
-                Toast.makeText(context, "Please enter family size.", Toast.LENGTH_LONG).show()
-            }
-            city == "" -> {
-                Toast.makeText(context, "Please enter city.", Toast.LENGTH_LONG).show()
-            }
-            county == "" -> {
-                Toast.makeText(context, "Please enter county.", Toast.LENGTH_LONG).show()
-            }
-            else -> {
-                Toast.makeText(context, "Data validated.", Toast.LENGTH_LONG).show()
-                valid = true
-            }
-        }
-        return valid
-    }
-
-    fun resetOrder(accountNumber: Int, context: Context, view: View) {
-        val db = FirebaseFirestore.getInstance()
-        val accountsRef = db.collection("accounts")
-        Log.d("TAG", "ready to look up account using number $accountNumber")
-        val query = accountsRef
-            .whereEqualTo("accountNumber", accountNumber)
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                when (querySnapshot.size()) {
-                    0 -> Toast.makeText(
-                        context,
-                        "No match found for this number.",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    1 -> {
-                        accountID = querySnapshot.documents[0].id
-                        db.collection("accounts").document(accountID).update(
-                            "orderState",
-                            "SAVED"
-                        )
-                            .addOnSuccessListener {
-                                db.collection("orders")
-                                    .whereEqualTo("accountID", accountID)
-                                    .orderBy("date", Query.Direction.DESCENDING)
-                                    .limit(1)
-                                    .get()
-                                    .addOnSuccessListener {
-                                        if (!it.isEmpty) {
-                                            val orderID = it.documents[0].id
-                                            db.collection("orders").document(orderID)
-                                                .update("orderState", "SAVED")
-                                                .addOnSuccessListener {
-                                                    Toast.makeText(
-                                                        context,
-                                                        "Order has been restored.",
-                                                        Toast.LENGTH_LONG
-                                                    ).show()
-                                                }
-                                        }
-                                    }
-                    }
-                }
-                else -> Toast.makeText(
-                context,
-                "Multiple matches: this should not be. Please contact Dr. Riesen.",
-                Toast.LENGTH_LONG
-                ).show()
-            }
-    }
-}
-
-val outOfStockNameList: MutableLiveData<MutableList<String>> =
-    MutableLiveData(mutableListOf<String>())
-
+//
+//    private val retrieveAccountFromFirestore = db.collection("accounts")
+//        .whereEqualTo("accountNumber", accountNumber).get()
+//
+//    private val inspectAccountAndIfValidResetToSaved =
+//        Continuation<QuerySnapshot, Unit> { task ->
+//            if (isUniqueMatch(task.result)) {
+//                account.accountID = task.result.documents[0].id
+//                db.collection("accounts").document(account.accountID).update(
+//                    "orderState",
+//                    "SAVED"
+//                )
+//            }
+//        }
+//
+//    private val retrieveLastOrderForThisAcount = Continuation<Unit, QuerySnapshot> {
+//        db.collection("orders")
+//            .whereEqualTo("accountID", account.accountID)
+//            .orderBy("date", Query.Direction.DESCENDING)
+//            .limit(1)
+//            .get()
+//            .result
+//    }
+//
+//    private val resetOrder = Continuation<QuerySnapshot, Unit> { task ->
+//        if (task.result.isEmpty) {
+//            val orderID = task.result.documents[0].id
+//            db.collection("orders").document(orderID)
+//                .update("orderState", "SAVED")
+//        }
+//    }
+//
+//    private val toastOrderRestored = Continuation<Unit, Unit> { task ->
+//        if (task.isSuccessful) toast("Order has been restored.")
+//    }
+//
+//    private fun toast(string: String) {
+//        Toast.makeText(view!!.context, string, Toast.LENGTH_LONG).show()
+//    }
 }

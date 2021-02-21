@@ -70,7 +70,7 @@ class SignStaffInActivity : AppCompatActivity() {
                     Log.d("TAG", "isVolunteer: $isVolunteer")
                     when {
                         (isManager) -> {
-//                            startActivity(Intent(this, ManagerActivity::class.java))  //Save this line for when special supervisor role is assigned
+                            Log.d("TAG","going to Start Activity")
                             startActivity(Intent(this,SecureTabletOrderActivity::class.java))
                         }
                         (isVolunteer) -> {

@@ -29,4 +29,18 @@ class FoodItem() {
         this.categoryPointsAllocated = categoryPointsAllocated
         this.categoryPointsUsed = categoryPointsUsed
     }
+
+    fun isFoundIn(list: List<FoodItem>): Boolean{
+        return list.any {
+            it.name == name
+        }
+    }
+
+    fun updateUsing(list: List<FoodItem>): Unit{
+        val retrievedItem = list.find{
+            it.name == name
+        }
+        isAvailable = retrievedItem!!.isAvailable
+        numberAvailable = retrievedItem.numberAvailable
+    }
 }

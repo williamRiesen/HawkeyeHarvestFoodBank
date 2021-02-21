@@ -41,21 +41,15 @@ class AddEditAccountFragment : Fragment() {
         val editTextCity = fragment.findViewById<EditText>(R.id.editTextCity)
         val editTextCounty = fragment.findViewById<EditText>(R.id.editTextCounty)
         val editTextZipCode = fragment.findViewById<EditText>(R.id.editTextZipCode)
-        editTextZipCode.setOnEditorActionListener { textView, i, keyEvent ->
+        editTextZipCode.setOnEditorActionListener { textView, _, _ ->
             val zip = textView.text.toString().toIntOrNull()
             editTextCity.setText(
-                if (zip != null) {
-                    ZipCodeIndex().lookUpCity(zip)
-                } else {
-                    ""
-                }
+                if (zip != null) ZipCodeIndex().lookUpCity(zip)
+                 else ""
             )
             editTextCounty.setText(
-                if (zip != null) {
-                    ZipCodeIndex().lookUpCounty(zip)
-                } else {
-                    ""
-                }
+                if (zip != null) ZipCodeIndex().lookUpCounty(zip)
+                else ""
             )
             false
         }
@@ -77,40 +71,38 @@ class AddEditAccountFragment : Fragment() {
 
         val buttonSubmitNewAccount = fragment.findViewById<Button>(R.id.buttonSubmitNewAccount)
         buttonSubmitNewAccount.setOnClickListener {
-            viewModel.submitNewAccount(
+            val newAccount = Account(
                 editTextAccountID.text.toString(),
-                editTextFamilySize.text.toString(),
+                editTextFamilySize.text.toString().toIntOrNull()?:0,
                 editTextCity.text.toString(),
                 editTextCounty.text.toString(),
-                requireContext(),
-                requireActivity()
+                editTextAccountID.text.toString().takeLast(4).toIntOrNull()?:0
             )
+            viewModel.sendAccountToFirestore(newAccount,it)
         }
 
         val buttonSubmitEditedAccount =
             fragment.findViewById<Button>(R.id.buttonSubmitEditedAccount)
         buttonSubmitEditedAccount.setOnClickListener {
-            viewModel.pleaseWait.value = true
-
-            viewModel.submitEditedAccount(
-                editTextFamilySize.text.toString().toInt(),
+            val editedAccount = Account(
+                viewModel.account.accountID,
+                editTextFamilySize.text.toString().toIntOrNull()?:0,
                 editTextCity.text.toString(),
                 editTextCounty.text.toString(),
-                requireContext(),
-                requireActivity()
+                viewModel.account.accountID.takeLast(4).toIntOrNull()?:0
             )
+            viewModel.sendAccountToFirestore(editedAccount, it)
         }
-
         return fragment
     }
 
     override fun onStart() {
         val db = FirebaseFirestore.getInstance()
         super.onStart()
-        if (viewModel.currentAccountNumber != null) {
+        if (viewModel.accountNumber != null) {
             val db = FirebaseFirestore.getInstance()
             val query = db.collection("accounts")
-                .whereEqualTo("accountNumber", viewModel.currentAccountNumber)
+                .whereEqualTo("accountNumber", viewModel.accountNumber)
                 .get()
                 .addOnSuccessListener { querySnapshot ->
                     when (querySnapshot.size()) {
@@ -187,7 +179,7 @@ class AddEditAccountFragment : Fragment() {
         }
     }
 
-    fun getRandomString(length: Int): String {
+    private fun getRandomString(length: Int): String {
         val allowedChars = ('A'..'Z')
         return (1..length)
             .map { allowedChars.random() }

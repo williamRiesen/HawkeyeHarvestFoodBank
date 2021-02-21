@@ -34,53 +34,74 @@ class ReportCreator {
         }
     }
 
-
-    fun createMonthReport() {
-        val startOfMonth = FoodBank().makeDate(Calendar.FEBRUARY, 3, 2021)
+    fun createMonthReport2() {
+        val startOfMonth = FoodBank().makeDate(Calendar.JANUARY, 1, 2021)
+        val startOfNextMonth = FoodBank().makeDate(Calendar.FEBRUARY, 1, 2021)
         val timeStampStart: Timestamp = Timestamp(startOfMonth)
+        val timeStampEnd: Timestamp = Timestamp(startOfNextMonth)
         val ordersRef = db.collection("orders")
         val accountsRef = db.collection("accounts")
         ordersRef.whereGreaterThanOrEqualTo("date", timeStampStart)
+            .whereLessThan("date", timeStampEnd)
 //            .limit(3)
             .get()
-            .addOnSuccessListener { querySnapshot ->
-                var documentCount = querySnapshot.size()
-                Log.d("TAG", "querySnapshot.size: ${querySnapshot.size()}")
-                val orders = querySnapshot.toObjects(Order().javaClass)
-                orders.forEach { order ->
-                    if (order.orderState != "SAVED" ) {
-                        accountsRef.document(order.accountID!!).get()
-                            .addOnSuccessListener { accountDocSnapshot ->
-                                Log.d("TAG", "AccountID ${order.accountID}, orderState: ${order.orderState}")
-                                val thisCityRow = monthReport.find { reportRow ->
-                                    reportRow.city == accountDocSnapshot["city"].toString()
-                                }
-                                if (thisCityRow != null) {
-//                                    Log.d("TAG", "Found row with city: ${thisCityRow.city}")
-                                    thisCityRow.families += 1
-                                    val persons = accountDocSnapshot["familySize"].toString()
-                                        .toInt()
-                                    thisCityRow.persons += persons
-                                    totalFamilies += 1
-                                    totalPersons += persons
 
-                                }
-//                                Log.d("TAG", "documentCount: $documentCount")
-                                documentCount -= 1
-                                if (documentCount == 0) {
-                                    Log.d("TAG", "Final report: $monthReport")
+
+    }
+
+        fun createMonthReport() {
+            val startOfMonth = FoodBank().makeDate(Calendar.JANUARY, 1, 2021)
+            val startOfNextMonth = FoodBank().makeDate(Calendar.FEBRUARY, 1, 2021)
+            val timeStampStart: Timestamp = Timestamp(startOfMonth)
+            val timeStampEnd: Timestamp = Timestamp(startOfNextMonth)
+            val ordersRef = db.collection("orders")
+            val accountsRef = db.collection("accounts")
+            ordersRef.whereGreaterThanOrEqualTo("date", timeStampStart)
+                .whereLessThan("date", timeStampEnd)
+//            .limit(3)
+                .get()
+                .addOnSuccessListener { querySnapshot ->
+                    var documentCount = querySnapshot.size()
+                    Log.d("TAG", "querySnapshot.size: ${querySnapshot.size()}")
+                    val orders = querySnapshot.toObjects(Order().javaClass)
+                    orders.forEach { order ->
+                        if (order.orderState != "SAVED") {
+                            accountsRef.document(order.accountID!!).get()
+                                .addOnSuccessListener { accountDocSnapshot ->
                                     Log.d(
                                         "TAG",
-                                        "Total families: $totalFamilies, Total persons: $totalPersons"
+                                        "AccountID ${order.accountID}, date: ${order.date}, orderState: ${order.orderState}"
                                     )
-                                }
-                            }
-                    } else documentCount -= 1
-                }
+                                    val thisCityRow = monthReport.find { reportRow ->
+                                        reportRow.city == accountDocSnapshot["city"].toString()
+                                    }
+                                    if (thisCityRow != null) {
+//                                    Log.d("TAG", "Found row with city: ${thisCityRow.city}")
+                                        thisCityRow.families += 1
+                                        val persons = accountDocSnapshot["familySize"].toString()
+                                            .toInt()
+                                        thisCityRow.persons += persons
+                                        totalFamilies += 1
+                                        totalPersons += persons
 
-            }
+                                    }
+//                                Log.d("TAG", "documentCount: $documentCount")
+                                    documentCount -= 1
+                                    if (documentCount == 0) {
+                                        Log.d("TAG", "Final report: $monthReport")
+                                        Log.d(
+                                            "TAG",
+                                            "Total families: $totalFamilies, Total persons: $totalPersons"
+                                        )
+                                    }
+                                }
+                        } else documentCount -= 1
+                    }
+
+                }
+        }
     }
-}
+
 
 
 
