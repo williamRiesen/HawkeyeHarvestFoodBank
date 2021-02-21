@@ -25,21 +25,23 @@ import java.util.*
 
 
 class SecureTabletOrderViewModel : ViewModel() {
-//
+    //
     var account = Account("", 0, "", "", 0)
     var accountNumber: Int? = null
     val categories = MutableLiveData<MutableList<Category>>()
-//    val db = FirebaseFirestore.getInstance()
+    val db = FirebaseFirestore.getInstance()
     val foodItems = MutableLiveData<MutableList<FoodItem>>(mutableListOf())
-//    var order = Order("", Date(), mutableListOf(FoodItem()), "")
+
+    //    var order = Order("", Date(), mutableListOf(FoodItem()), "")
 //    private var orderID: String? = null
 //    var orderState: MutableLiveData<OrderState> = MutableLiveData(OrderState.NOT_STARTED_YET)
     val outOfStockItems = MutableLiveData<MutableList<OutOfStockItem>>()
     var pleaseWait = MutableLiveData<Boolean>(false)
     var points: Int? = null
     var startupAccountNumber: Int? = null
-//    var view: View? = null
-//
+    var view: View? = null
+
+    //
 //
     fun saveOrder() {
 //        assembleOrderAs("SAVED")
@@ -47,7 +49,8 @@ class SecureTabletOrderViewModel : ViewModel() {
 //            .continueWith { retrieveOrder }
 //            .continueWith { transcribeOrderID }
     }
-//
+
+    //
 //    private val sendOrderToFirestore: Task<Void> =
 //        db.collection(("orders")).document(orderID ?: "").set(order)
 //
@@ -81,7 +84,8 @@ class SecureTabletOrderViewModel : ViewModel() {
 //                }
 //            }
     }
-//
+
+    //
 //    private fun retrieveInventory(): Task<DocumentSnapshot> {
 //        return db.collection("catalogs").document("objectCatalog").get()
 //    }
@@ -150,62 +154,72 @@ class SecureTabletOrderViewModel : ViewModel() {
 //
 //
     fun go(accountNumber: Int, viewArg: View) {
-//        Log.d("TAG", "Starting Go function")
-////        view = viewArg
-////        lookUpAccount(accountNumber)
-////            .continueWith(validateAccount)
-////            .continueWith { validAccount ->
-////                if (validAccount.result != null) {
-////                    account = validAccount.result!!
-////                    if (orderedAlready()) {
-////                        navigateToAlreadyOrderedMessage()
-////                    } else {
-////                        prepareSelections()
-////                    }
-////                }
-////            }
+        view = viewArg
+        lookUpAccount(accountNumber)
+            .continueWith(validateAccount)
+            .continueWith { validAccount ->
+                if (validAccount.result != null) {
+
+
+                    account = validAccount.result!!
+                    Log.d("TAG", "account.lastOrderDate: ${account.lastOrderDate}")
+                    if (orderedAlready()) {
+                        Log.d("TAG", "ordered already.")
+                        navigateToAlreadyOrderedMessage()
+                    } else {
+                        Log.d("TAG", "not ordered already.")
+//                        prepareSelections()
+                    }
+                }
+            }
     }
-//
-//    private fun lookUpAccount(accountNumber: Int) =
-//        db.collection("accounts").whereEqualTo("accountNumber", accountNumber).get()
-//
-//    private val validateAccount = Continuation<QuerySnapshot, Account?> { task ->
-//        val accountFetchResult = task.result
-//        if (isUniqueMatch(accountFetchResult)) {
-//            task.result.documents[0].toObject(Account::class.java)
-//        } else {
-//            null
-//        }
-//    }
-//
-//    private fun isUniqueMatch(querySnapshot: QuerySnapshot): Boolean {
-//        return when (querySnapshot.size()) {
-//            0 -> {
-//                toast("No match found for this number.")
-//                false
-//            }
-//            1 -> true
-//
-//            else -> {
-//                toast("Multiple matches: this should not be. Please contact Dr. Riesen.")
-//                false
-//            }
-//        }
-//    }
-//
-//    private fun orderedAlready(): Boolean {
-//        val calendar = Calendar.getInstance()
-//        val thisMonth = calendar[Calendar.MONTH]
-//        val thisYear = calendar[Calendar.YEAR]
-//        val startOfMonth = FoodBank().makeDate(thisMonth, 1, thisYear)
-//        return (account.lastOrderDate > startOfMonth
-//                && account.orderState != "SAVED")
-//    }
-//
-//    private fun navigateToAlreadyOrderedMessage() {
-//        Navigation.findNavController(view!!)
-//            .navigate(R.id.action_secureTabletOrderStartFragment_to_alreadyOrderedMessageFragment)
-//    }
+
+
+    //
+    private fun lookUpAccount(accountNumber: Int) =
+        db.collection("accounts").whereEqualTo("accountNumber", accountNumber).get()
+
+    private val validateAccount = Continuation<QuerySnapshot, Account?> { task ->
+        val accountFetchResult = task.result
+        Log.d("TAG", "isUniqueMatch: ${isUniqueMatch(accountFetchResult)}")
+        if (isUniqueMatch(accountFetchResult)) {
+            task.result.documents[0].toObject(Account::class.java)
+        } else {
+            null
+        }
+    }
+
+    private fun isUniqueMatch(querySnapshot: QuerySnapshot): Boolean {
+        return when (querySnapshot.size()) {
+            0 -> {
+                toast("No match found for this number.")
+                false
+            }
+            1 -> true
+
+            else -> {
+                toast("Multiple matches: this should not be. Please contact Dr. Riesen.")
+                false
+            }
+        }
+    }
+
+    private fun orderedAlready(): Boolean {
+        val calendar = Calendar.getInstance()
+        val thisMonth = calendar[Calendar.MONTH]
+        val thisYear = calendar[Calendar.YEAR]
+        val startOfMonth = FoodBank().makeDate(thisMonth, 1, thisYear)
+        Log.d("TAG", "lastOrderDate: ${account.lastOrderDate}")
+        Log.d("TAG", "startOfMonth: $startOfMonth")
+        return (account.lastOrderDate > startOfMonth
+                && account.orderState != "SAVED")
+    }
+
+
+    private fun navigateToAlreadyOrderedMessage() {
+        Navigation.findNavController(view!!)
+            .navigate(R.id.action_secureTabletOrderStartFragment_to_alreadyOrderedMessageFragment)
+    }
 //
 //
 //    private fun prepareSelections() {
@@ -321,7 +335,8 @@ class SecureTabletOrderViewModel : ViewModel() {
 //                toast("Update failed with error $it")
 //            }
     }
-//
+
+    //
 //
 //    private fun returnToStart(extraName: String? = null, extraString: Int? = null) {
 //
@@ -360,7 +375,8 @@ class SecureTabletOrderViewModel : ViewModel() {
 //            .continueWith(resetOrder)
 //            .continueWith(toastOrderRestored)
     }
-//
+
+    //
 //    private val retrieveAccountFromFirestore = db.collection("accounts")
 //        .whereEqualTo("accountNumber", accountNumber).get()
 //
@@ -396,7 +412,7 @@ class SecureTabletOrderViewModel : ViewModel() {
 //        if (task.isSuccessful) toast("Order has been restored.")
 //    }
 //
-//    private fun toast(string: String) {
-//        Toast.makeText(view!!.context, string, Toast.LENGTH_LONG).show()
-//    }
+    private fun toast(string: String) {
+        Toast.makeText(view!!.context, string, Toast.LENGTH_LONG).show()
+    }
 }

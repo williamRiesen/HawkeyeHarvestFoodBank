@@ -11,7 +11,7 @@ class Account() {
     var lastOrderDate: Date = julyFirst2020()
     var lastOrderType: String = "ON_SITE"
     var orderState: String = "PACKED"
-    var pickUpHour24: Int = 0
+    var pickUpHour24: Int? = null
 
     constructor(
         accountIdArg: String,
