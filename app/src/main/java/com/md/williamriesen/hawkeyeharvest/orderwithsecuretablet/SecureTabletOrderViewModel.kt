@@ -33,8 +33,9 @@ class SecureTabletOrderViewModel : ViewModel() {
     val foodItems = MutableLiveData<MutableList<FoodItem>>(mutableListOf())
 
     //    var order = Order("", Date(), mutableListOf(FoodItem()), "")
-//    private var orderID: String? = null
-//    var orderState: MutableLiveData<OrderState> = MutableLiveData(OrderState.NOT_STARTED_YET)
+    private var orderID: String? = null
+
+    //    var orderState: MutableLiveData<OrderState> = MutableLiveData(OrderState.NOT_STARTED_YET)
     val outOfStockItems = MutableLiveData<MutableList<OutOfStockItem>>()
     var pleaseWait = MutableLiveData<Boolean>(false)
     var points: Int? = null
@@ -90,36 +91,36 @@ class SecureTabletOrderViewModel : ViewModel() {
 //        return db.collection("catalogs").document("objectCatalog").get()
 //    }
 //
-//    private fun updateFoodItemListUsing(retrievedList: List<FoodItem>) {
-//        foodItems.value!!.forEach { foodListItem ->
-//            if (foodListItem.isFoundIn(retrievedList)) {
-//                foodListItem.updateUsing(retrievedList)
-//            } else {
-//                foodListItem.isAvailable = false
-//            }
-//        }
-//    }
-//
-//    private fun updateFoodItemListUsing(order: Order) {
-//        order.itemList.forEach { orderedFoodItem ->
-//            foodItems.value?.find { viewModelFoodItem ->
-//                viewModelFoodItem.name == orderedFoodItem.name
-//            }!!.qtyOrdered = orderedFoodItem.qtyOrdered
-//        }
-//    }
-//
-//    private fun separateOutOfStockItems() {
-//        outOfStockItems.value?.clear()
-//        foodItems.value?.forEach {
-//            if (it.qtyOrdered > 0 && !it.isAvailable!!) {
-//                outOfStockItems.value?.add(OutOfStockItem(it.name!!, it.qtyOrdered))
-//                refundPointsFor(it)
-//                it.qtyOrdered = 0
-//            }
-//        }
-//    }
-//
-//    private fun assembleOrderAs(orderState: String) {
+    private fun updateFoodItemListUsing(retrievedList: List<FoodItem>) {
+        foodItems.value!!.forEach { foodListItem ->
+            if (foodListItem.isFoundIn(retrievedList)) {
+                foodListItem.updateUsing(retrievedList)
+            } else {
+                foodListItem.isAvailable = false
+            }
+        }
+    }
+
+    private fun updateFoodItemListUsing(order: Order) {
+        order.itemList.forEach { orderedFoodItem ->
+            foodItems.value?.find { viewModelFoodItem ->
+                viewModelFoodItem.name == orderedFoodItem.name
+            }!!.qtyOrdered = orderedFoodItem.qtyOrdered
+        }
+    }
+
+    private fun separateOutOfStockItems() {
+        outOfStockItems.value?.clear()
+        foodItems.value?.forEach {
+            if (it.qtyOrdered > 0 && !it.isAvailable!!) {
+                outOfStockItems.value?.add(OutOfStockItem(it.name!!, it.qtyOrdered))
+                refundPointsFor(it)
+                it.qtyOrdered = 0
+            }
+        }
+    }
+
+    //    private fun assembleOrderAs(orderState: String) {
 //        order = Order(account.accountID, Date(), foodItems.value!!, orderState)
 //        order.filterOutZeros()
 //    }
@@ -138,21 +139,21 @@ class SecureTabletOrderViewModel : ViewModel() {
 //    }
 //
 //
-//    private fun refundPointsFor(foodItem: FoodItem) {
-//        val categoryOfItem = foodItems.value?.find {
-//            it.name == foodItem.name
-//        }?.category
-//        categories.value?.find { category ->
-//            categoryOfItem == category.name
-//        }!!.pointsUsed -= foodItem.qtyOrdered
-//    }
-//
-//    private fun askClientForAlternativeChoices() {
-//        Navigation.findNavController(view!!)
-//            .navigate(R.id.action_secureTabletOrderConfirmAndReset_to_outOfStockFragment2)
-//    }
-//
-//
+    private fun refundPointsFor(foodItem: FoodItem) {
+        val categoryOfItem = foodItems.value?.find {
+            it.name == foodItem.name
+        }?.category
+        categories.value?.find { category ->
+            categoryOfItem == category.name
+        }!!.pointsUsed -= foodItem.qtyOrdered
+    }
+
+        private fun askClientForAlternativeChoices() {
+        Navigation.findNavController(view!!)
+            .navigate(R.id.action_secureTabletOrderConfirmAndReset_to_outOfStockFragment2)
+    }
+
+
     fun go(accountNumber: Int, viewArg: View) {
         view = viewArg
         lookUpAccount(accountNumber)
@@ -168,7 +169,7 @@ class SecureTabletOrderViewModel : ViewModel() {
                         navigateToAlreadyOrderedMessage()
                     } else {
                         Log.d("TAG", "not ordered already.")
-//                        prepareSelections()
+                        prepareSelections()
                     }
                 }
             }
@@ -220,106 +221,106 @@ class SecureTabletOrderViewModel : ViewModel() {
         Navigation.findNavController(view!!)
             .navigate(R.id.action_secureTabletOrderStartFragment_to_alreadyOrderedMessageFragment)
     }
-//
-//
-//    private fun prepareSelections() {
-//        getInventoryFromFirestore
-//            .continueWith(transcribeInventoryToViewModel)
-//            .continueWithTask { getCategoriesFromFireStore }
-//            .continueWith(insertCategoriesIntoFoodListAndSort)
-//            .continueWithTask { retrieveSavedOrder }
-//            .continueWith(unpackAndCheckSavedOrder)
-//            .continueWith { someItemsAreOutOfStock ->
-//                if (someItemsAreOutOfStock.result) {
-//                    askClientForAlternativeChoices()
-//                } else {
-//                    navigateToSelectionFragment()
-//                }
-//            }
-//    }
-//
-//    private val unpackAndCheckSavedOrder = Continuation<QuerySnapshot, Boolean> { task ->
-//        var someItemsAreOutOfStock = false
-//        if (task.result.size() > 0) {
-//            orderID = task.result.documents[0].id
-//            val order = task.result.documents[0].toObject<Order>()
-//            updateFoodItemListUsing(order!!)
-//            separateOutOfStockItems()
-//            someItemsAreOutOfStock = !outOfStockItems.value.isNullOrEmpty()
-//        }
-//        someItemsAreOutOfStock
-//    }
-//
-//
-//    private val getInventoryFromFirestore =
-//        db.collection("catalogs").document("objectCatalog").get()
-//
-//    private val transcribeInventoryToViewModel = Continuation<DocumentSnapshot, Unit> {
-//        val inventory = it.result.toObject<ObjectCatalog>()
-//        val availableItems = inventory?.foodItemList?.filter { foodItem ->
-//            foodItem.isAvailable!! && foodItem.numberAvailable!! > 0
-//        }
-//        foodItems.value = availableItems as MutableList<FoodItem>
-//    }
-//
-//    private val getCategoriesFromFireStore =
-//        db.collection("categories").document("categories").get()
-//
-//    private val insertCategoriesIntoFoodListAndSort =
-//        Continuation<DocumentSnapshot, Unit> { task ->
-//            val categoriesListing = task.result.toObject<CategoriesListing>()
-//            categories.value =
-//                categoriesListing?.categories as MutableList<Category>
-//            val filteredList = foodItems.value?.filter {
-//                canAfford(it)
-//            } as MutableList
-//            foodItems.value = filteredList
-//            generateHeadings()
-//            foodItems.value?.sortWith(
-//                compareBy<FoodItem> { it.categoryId }.thenBy { it.itemID }
-//            )
-//        }
-//
-//    private fun navigateToSelectionFragment() {
-//        Navigation.findNavController(view!!)
-//            .navigate(R.id.action_secureTabletOrderStartFragment_to_secureTabletOrderSelectionFragment)
-//    }
-//
-//    private fun generateHeadings() {
-//        categories.value?.forEach { category ->
-//            val heading = FoodItem(
-//                0,
-//                category.name,
-//                category.name,
-//                0,
-//                0,
-//                0,
-//                true,
-//                category.id,
-//                category.calculatePoints(account.familySize)
-//            )
-//            foodItems.value!!.add(heading)
-//        }
-//    }
-//
-//    private fun canAfford(foodItem: FoodItem): Boolean {
-//        val thisCategory = categories.value?.find {
-//            it.name == foodItem.category
-//        }
-//        val pointsAllocated = thisCategory!!.calculatePoints(account.familySize)
-//        return pointsAllocated >= foodItem.pointValue!!
-//    }
-//
-//
-//    private val retrieveSavedOrder =
-//        db.collection("orders")
-//            .whereEqualTo("accountID", account.accountID)
-//            .whereEqualTo("orderState", "SAVED")
-//            .orderBy("date", Query.Direction.DESCENDING)
-//            .limit(1)
-//            .get()
-//
-//
+
+
+    private fun prepareSelections() {
+        getInventoryFromFirestore
+            .continueWith(transcribeInventoryToViewModel)
+            .continueWithTask { getCategoriesFromFireStore }
+            .continueWith(insertCategoriesIntoFoodListAndSort)
+            .continueWithTask { retrieveSavedOrder }
+            .continueWith(unpackAndCheckSavedOrder)
+            .continueWith { someItemsAreOutOfStock ->
+                if (someItemsAreOutOfStock.result) {
+                    askClientForAlternativeChoices()
+                } else {
+                    navigateToSelectionFragment()
+                }
+            }
+    }
+
+    private val unpackAndCheckSavedOrder = Continuation<QuerySnapshot, Boolean> { task ->
+        var someItemsAreOutOfStock = false
+        if (task.result.size() > 0) {
+            orderID = task.result.documents[0].id
+            val order = task.result.documents[0].toObject<Order>()
+            updateFoodItemListUsing(order!!)
+            separateOutOfStockItems()
+            someItemsAreOutOfStock = !outOfStockItems.value.isNullOrEmpty()
+        }
+        someItemsAreOutOfStock
+    }
+
+
+    private val getInventoryFromFirestore =
+        db.collection("catalogs").document("objectCatalog").get()
+
+    private val transcribeInventoryToViewModel = Continuation<DocumentSnapshot, Unit> {
+        val inventory = it.result.toObject<ObjectCatalog>()
+        val availableItems = inventory?.foodItemList?.filter { foodItem ->
+            foodItem.isAvailable!! && foodItem.numberAvailable!! > 0
+        }
+        foodItems.value = availableItems as MutableList<FoodItem>
+    }
+
+    private val getCategoriesFromFireStore =
+        db.collection("categories").document("categories").get()
+
+    private val insertCategoriesIntoFoodListAndSort =
+        Continuation<DocumentSnapshot, Unit> { task ->
+            val categoriesListing = task.result.toObject<CategoriesListing>()
+            categories.value =
+                categoriesListing?.categories as MutableList<Category>
+            val filteredList = foodItems.value?.filter {
+                canAfford(it)
+            } as MutableList
+            foodItems.value = filteredList
+            generateHeadings()
+            foodItems.value?.sortWith(
+                compareBy<FoodItem> { it.categoryId }.thenBy { it.itemID }
+            )
+        }
+
+    private fun navigateToSelectionFragment() {
+        Navigation.findNavController(view!!)
+            .navigate(R.id.action_secureTabletOrderStartFragment_to_secureTabletOrderSelectionFragment)
+    }
+
+    private fun generateHeadings() {
+        categories.value?.forEach { category ->
+            val heading = FoodItem(
+                0,
+                category.name,
+                category.name,
+                0,
+                0,
+                0,
+                true,
+                category.id,
+                category.calculatePoints(account.familySize)
+            )
+            foodItems.value!!.add(heading)
+        }
+    }
+
+    private fun canAfford(foodItem: FoodItem): Boolean {
+        val thisCategory = categories.value?.find {
+            it.name == foodItem.category
+        }
+        val pointsAllocated = thisCategory!!.calculatePoints(account.familySize)
+        return pointsAllocated >= foodItem.pointValue!!
+    }
+
+
+    private val retrieveSavedOrder =
+        db.collection("orders")
+            .whereEqualTo("accountID", account.accountID)
+            .whereEqualTo("orderState", "SAVED")
+            .orderBy("date", Query.Direction.DESCENDING)
+            .limit(1)
+            .get()
+
+
     fun sendAccountToFirestore(accountArg: Account, viewArg: View) {
 //        view = viewArg
 //        if (isValidAccount(accountArg)) account = accountArg
