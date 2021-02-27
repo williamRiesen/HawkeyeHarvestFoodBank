@@ -183,7 +183,8 @@ class SecureTabletOrderViewModel : ViewModel() {
                         prepareSelections()
                     }
                 }
-            }
+            }.addOnSuccessListener { toast("Go routine completed successfully.") }
+            .addOnFailureListener { toast("Go routine failed: $it") }
     }
 
 
@@ -194,10 +195,11 @@ class SecureTabletOrderViewModel : ViewModel() {
         val accountFetchResult = task.result
         Log.d("TAG", "isUniqueMatch: ${isUniqueMatch(accountFetchResult)}")
         if (isUniqueMatch(accountFetchResult)) {
-            Log.d("TAG", "account.accountID: ${account.accountID}")
+
             val retrievedAccount = task.result.documents[0].toObject(Account::class.java)
             retrievedAccount!!.accountID = task.result.documents[0].id
             account = retrievedAccount
+
             true
         } else {
             false
@@ -238,11 +240,19 @@ class SecureTabletOrderViewModel : ViewModel() {
 
 
     private fun prepareSelections() {
+        Log.d("TAG", "account.accountID: ${account.accountID}")
         getInventoryFromFirestore
             .continueWith(transcribeInventoryToViewModel)
             .continueWithTask { getCategoriesFromFireStore }
             .continueWith(insertCategoriesIntoFoodListAndSort)
-            .continueWithTask { retrieveSavedOrder }
+            .continueWithTask {
+                db.collection("orders")
+                    .whereEqualTo("accountID", account.accountID)
+                    .whereEqualTo("orderState", "SAVED")
+                    .orderBy("date", Query.Direction.DESCENDING)
+                    .limit(1)
+                    .get()
+                 }
             .continueWith(unpackAndCheckSavedOrder)
             .continueWith { someItemsAreOutOfStock ->
                 if (someItemsAreOutOfStock.result) {
@@ -255,6 +265,9 @@ class SecureTabletOrderViewModel : ViewModel() {
 
     private val unpackAndCheckSavedOrder = Continuation<QuerySnapshot, Boolean> { task ->
         var someItemsAreOutOfStock = false
+        Log.d("TAG","retrievedOrderQuery.isComplete: ${task.isComplete}")
+        Log.d("TAG","retrievedOrderQuery.size: ${task.result.size()}")
+        Log.d("TAG", "retrieved orderID: ${task.result.documents[0].id}")
         if (task.result.size() > 0) {
             orderID = task.result.documents[0].id
             val order = task.result.documents[0].toObject<Order>()
@@ -326,14 +339,15 @@ class SecureTabletOrderViewModel : ViewModel() {
     }
 
 
-    private val retrieveSavedOrder =
+    private val retrieveSavedOrder = {
+        Log.d("TAG", "account.accountID: ${account.accountID}")
         db.collection("orders")
-            .whereEqualTo("accountID", account.accountID)
+            .whereEqualTo("accountID", "QQC0064")
             .whereEqualTo("orderState", "SAVED")
             .orderBy("date", Query.Direction.DESCENDING)
             .limit(1)
             .get()
-
+    }
 
     fun sendAccountToFirestore(accountArg: Account, viewArg: View) {
         view = viewArg
