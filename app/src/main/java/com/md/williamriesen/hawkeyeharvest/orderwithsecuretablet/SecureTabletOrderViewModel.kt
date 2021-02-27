@@ -1,38 +1,34 @@
 package com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet
 
-import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.android.gms.tasks.TaskCompletionSource
+import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.iid.InstanceIdResult
 import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.foodbank.*
 import java.util.*
+import kotlin.Exception
 
 
 class SecureTabletOrderViewModel : ViewModel() {
-    //
+
     var account = Account("", 0, "", "", 0)
     var accountNumber: Int? = null
     val categories = MutableLiveData<MutableList<Category>>()
     val db = FirebaseFirestore.getInstance()
     val foodItems = MutableLiveData<MutableList<FoodItem>>(mutableListOf())
-
-    //    var order = Order("", Date(), mutableListOf(FoodItem()), "")
+    var order = Order("", Date(), mutableListOf(FoodItem()), "")
     private var orderID: String? = null
 
     //    var orderState: MutableLiveData<OrderState> = MutableLiveData(OrderState.NOT_STARTED_YET)
@@ -42,40 +38,37 @@ class SecureTabletOrderViewModel : ViewModel() {
     var startupAccountNumber: Int? = null
     var view: View? = null
 
-    //
-//
-    fun saveOrder() {
-//        assembleOrderAs("SAVED")
-//        sendOrderToFirestore
-//            .continueWith { retrieveOrder }
-//            .continueWith { transcribeOrderID }
+
+    fun saveOrder(fragment: Fragment) {
+        view = fragment.view
+        assembleOrderAs("SAVED")
+        if (orderID == null) {
+            val newOrderDocumentRef = db.collection("orders").document()
+            orderID = newOrderDocumentRef.id
+            newOrderDocumentRef.set(order)
+        } else {
+            db.collection("orders").document(orderID!!).set(order)
+        }
+            .addOnSuccessListener {
+                toast("Order saved.")
+            }
+            .addOnFailureListener {
+                toast("Save failed with exception: $it")
+            }
     }
 
-    //
-//    private val sendOrderToFirestore: Task<Void> =
-//        db.collection(("orders")).document(orderID ?: "").set(order)
-//
-//
-//    private val retrieveOrder =
-//        db.collection("orders")
-//            .whereEqualTo("accountID", account.accountID)
-//            .whereEqualTo("orderState", "SAVED")
-//            .orderBy("date", Query.Direction.DESCENDING).limit(1)
-//            .get()
-//
-//    private val transcribeOrderID = Continuation<QuerySnapshot, Unit> { task ->
-//        if (task.result.size() > 0) {
-//            orderID = task.result.documents[0].id
-//        }
-//    }
-//
-//
+
     fun processOrder(viewArg: View) {
-//        view = viewArg
-//        retrieveInventory()
-//            .continueWith { task ->
-//                val retrievedInventory = task.result.get("foodItemList") as List<FoodItem>
-//                updateFoodItemListUsing(retrievedInventory)
+        view = viewArg
+        retrieveInventory()
+            .continueWith { task ->
+                val retrievedInventory = task.result.toObject(ObjectCatalog::class.java)
+                val retrievedFoodItems = retrievedInventory?.foodItemList
+                Log.d("TAG", "retrievedInventory: $retrievedInventory")
+                if (retrievedFoodItems != null) {
+                    updateFoodItemListUsing(retrievedFoodItems)
+                }
+                Log.d("TAG", "FoodItems updated.")
 //                separateOutOfStockItems()
 //                if (outOfStockItems.value!!.isEmpty()) {
 //                    assembleOrderAs("SUBMITTED")
@@ -83,15 +76,21 @@ class SecureTabletOrderViewModel : ViewModel() {
 //                } else {
 //                    askClientForAlternativeChoices()
 //                }
-//            }
+            }
+            .addOnSuccessListener {
+                toast("Inventory updated.")
+            }
+            .addOnFailureListener {
+                toast("Inventory retrieval failed with: $it")
+            }
     }
 
-    //
-//    private fun retrieveInventory(): Task<DocumentSnapshot> {
-//        return db.collection("catalogs").document("objectCatalog").get()
-//    }
-//
-    private fun updateFoodItemListUsing(retrievedList: List<FoodItem>) {
+
+    private fun retrieveInventory(): Task<DocumentSnapshot> {
+        return db.collection("catalogs").document("objectCatalog").get()
+    }
+
+    private fun updateFoodItemListUsing(retrievedList: MutableList<FoodItem>) {
         foodItems.value!!.forEach { foodListItem ->
             if (foodListItem.isFoundIn(retrievedList)) {
                 foodListItem.updateUsing(retrievedList)
@@ -120,12 +119,12 @@ class SecureTabletOrderViewModel : ViewModel() {
         }
     }
 
-    //    private fun assembleOrderAs(orderState: String) {
-//        order = Order(account.accountID, Date(), foodItems.value!!, orderState)
-//        order.filterOutZeros()
-//    }
-//
-//    private fun submit(orderArg: Order) {
+    private fun assembleOrderAs(orderState: String) {
+        Log.d("TAG", "account.accountID in assembleOrder: ${account.accountID}")
+        order = Order(account.accountID, Date(), foodItems.value!!, orderState).filterOutZeros()
+    }
+
+    //    private fun submit(orderArg: Order) {
 //        order = orderArg
 //        FirebaseInstanceId.getInstance().instanceId
 //            .continueWith(getToken)
@@ -148,7 +147,7 @@ class SecureTabletOrderViewModel : ViewModel() {
         }!!.pointsUsed -= foodItem.qtyOrdered
     }
 
-        private fun askClientForAlternativeChoices() {
+    private fun askClientForAlternativeChoices() {
         Navigation.findNavController(view!!)
             .navigate(R.id.action_secureTabletOrderConfirmAndReset_to_outOfStockFragment2)
     }
@@ -158,11 +157,8 @@ class SecureTabletOrderViewModel : ViewModel() {
         view = viewArg
         lookUpAccount(accountNumber)
             .continueWith(validateAccount)
-            .continueWith { validAccount ->
-                if (validAccount.result != null) {
-
-
-                    account = validAccount.result!!
+            .continueWith { isValidAccount ->
+                if (isValidAccount.result) {
                     Log.d("TAG", "account.lastOrderDate: ${account.lastOrderDate}")
                     if (orderedAlready()) {
                         Log.d("TAG", "ordered already.")
@@ -176,17 +172,20 @@ class SecureTabletOrderViewModel : ViewModel() {
     }
 
 
-    //
     private fun lookUpAccount(accountNumber: Int) =
         db.collection("accounts").whereEqualTo("accountNumber", accountNumber).get()
 
-    private val validateAccount = Continuation<QuerySnapshot, Account?> { task ->
+    private val validateAccount = Continuation<QuerySnapshot, Boolean> { task ->
         val accountFetchResult = task.result
         Log.d("TAG", "isUniqueMatch: ${isUniqueMatch(accountFetchResult)}")
         if (isUniqueMatch(accountFetchResult)) {
-            task.result.documents[0].toObject(Account::class.java)
+            Log.d("TAG", "account.accountID: ${account.accountID}")
+            val retrievedAccount = task.result.documents[0].toObject(Account::class.java)
+            retrievedAccount!!.accountID = task.result.documents[0].id
+            account = retrievedAccount
+            true
         } else {
-            null
+            false
         }
     }
 
@@ -322,84 +321,105 @@ class SecureTabletOrderViewModel : ViewModel() {
 
 
     fun sendAccountToFirestore(accountArg: Account, viewArg: View) {
-//        view = viewArg
-//        if (isValidAccount(accountArg)) account = accountArg
-//        account.accountNumber = account.accountID.takeLast(4).toInt()
-//        db.collection("accounts").document(account.accountID).set(account)
-//            .addOnSuccessListener {
-//                pleaseWait.value = false
-//                toast("Account ${account.accountID} updated.")
-//                returnToStart("accountNumber", accountNumber)
-//            }
-//            .addOnFailureListener {
-//                pleaseWait.value = false
-//                toast("Update failed with error $it")
-//            }
+        view = viewArg
+        if (isValidAccount(accountArg)) account = accountArg
+        account.accountNumber = account.accountID.takeLast(4).toInt()
+        db.collection("accounts").document(account.accountID).set(account)
+            .addOnSuccessListener {
+                pleaseWait.value = false
+                toast("Account ${account.accountID} updated.")
+                returnToStart("accountNumber", accountNumber)
+            }
+            .addOnFailureListener {
+                pleaseWait.value = false
+                toast("Update failed with error $it")
+            }
     }
 
-    //
-//
-//    private fun returnToStart(extraName: String? = null, extraString: Int? = null) {
-//
-//        val activity = view!!.context as FragmentActivity
-//        activity.finish()
-//        val intent = Intent(activity, SecureTabletOrderActivity::class.java)
-//        if (extraName != null) {
-//            intent.putExtra(extraName, extraString)
-//        }
-//        startActivity(activity, intent, null)
-//    }
-//
-//
-//    private fun isValidAccount(accountArg: Account): Boolean {
-//        var valid = false
-//        when {
-//            accountArg.accountID == "" -> toast("Please enter Account ID.")
-//            accountArg.familySize == 0 -> toast("Please enter family size.")
-//            accountArg.city == "" -> toast("Please enter city.")
-//            accountArg.county == "" -> toast("Please enter county.")
-//            accountArg.accountNumber == 0 -> toast("Account ID must end with four digits.")
-//            else -> {
-//                toast("Data validated.")
-//                valid = true
-//            }
-//        }
-//        return valid
-//    }
-//
-//
+
+    private fun returnToStart(extraName: String? = null, extraString: Int? = null) {
+
+        val activity = view!!.context as FragmentActivity
+        activity.finish()
+        val intent = Intent(activity, SecureTabletOrderActivity::class.java)
+        if (extraName != null) {
+            intent.putExtra(extraName, extraString)
+        }
+        startActivity(activity, intent, null)
+    }
+
+
+    private fun isValidAccount(accountArg: Account): Boolean {
+        var valid = false
+        when {
+            accountArg.accountID == "" -> toast("Please enter Account ID.")
+            accountArg.familySize == 0 -> toast("Please enter family size.")
+            accountArg.city == "" -> toast("Please enter city.")
+            accountArg.county == "" -> toast("Please enter county.")
+            accountArg.accountNumber == 0 -> toast("Account ID must end with four digits.")
+            else -> {
+                toast("Data validated.")
+                valid = true
+            }
+        }
+        return valid
+    }
+
+
     fun resetOrder(accountNumber: Int, viewArg: View) {
-//        view = viewArg
-//        retrieveAccountFromFirestore
-//            .continueWith(inspectAccountAndIfValidResetToSaved)
-//            .continueWith(retrieveLastOrderForThisAcount)
-//            .continueWith(resetOrder)
-//            .continueWith(toastOrderRestored)
+        view = viewArg
+        db.collection("accounts")
+            .whereEqualTo("accountNumber", accountNumber).get()
+            .continueWith {
+                val retrievedAccountID = if (it.result.isEmpty) "No account found with this number."
+                else it.result.documents[0].id
+                retrievedAccountID
+            }
+            .continueWithTask {
+                db.collection("orders")
+                    .whereEqualTo("accountID", it.result)
+                    .orderBy("date", Query.Direction.DESCENDING)
+                    .limit(1)
+                    .get()
+            }.continueWith {
+                if (it.result.isEmpty) throw Exception("No account found for this number.")
+                else {
+                    db.collection("orders")
+                        .document(it.result.documents[0].id)
+                        .update("orderState", "SAVED")
+                }
+            }
+            .addOnSuccessListener {
+                toast("Order has been restored.")
+            }
+            .addOnFailureListener {
+                toast("Reset failed: $it")
+            }
     }
 
-    //
-//    private val retrieveAccountFromFirestore = db.collection("accounts")
-//        .whereEqualTo("accountNumber", accountNumber).get()
-//
-//    private val inspectAccountAndIfValidResetToSaved =
-//        Continuation<QuerySnapshot, Unit> { task ->
-//            if (isUniqueMatch(task.result)) {
-//                account.accountID = task.result.documents[0].id
-//                db.collection("accounts").document(account.accountID).update(
-//                    "orderState",
-//                    "SAVED"
-//                )
-//            }
-//        }
-//
-//    private val retrieveLastOrderForThisAcount = Continuation<Unit, QuerySnapshot> {
-//        db.collection("orders")
-//            .whereEqualTo("accountID", account.accountID)
-//            .orderBy("date", Query.Direction.DESCENDING)
-//            .limit(1)
-//            .get()
-//            .result
-//    }
+
+    private val inspectAccountAndIfValidResetToSaved =
+        Continuation<QuerySnapshot, Unit> { task ->
+
+        }
+
+//    private val resetAccountToSaved =
+//        db.collection("accounts").document(account.accountID).update(
+//            "orderState",
+//            "SAVED"
+//        )
+
+
+//    private val retrieveLastOrderForThisAccount = Continuation<Unit, QuerySnapshot> {
+
+    private val retrieveLastOrderForThisAccount =
+        db.collection("orders")
+            .whereEqualTo("accountID", account.accountID)
+            .orderBy("date", Query.Direction.DESCENDING)
+            .limit(1)
+            .get()
+//}
+
 //
 //    private val resetOrder = Continuation<QuerySnapshot, Unit> { task ->
 //        if (task.result.isEmpty) {
@@ -409,11 +429,38 @@ class SecureTabletOrderViewModel : ViewModel() {
 //        }
 //    }
 //
-//    private val toastOrderRestored = Continuation<Unit, Unit> { task ->
-//        if (task.isSuccessful) toast("Order has been restored.")
-//    }
-//
+
+
     private fun toast(string: String) {
         Toast.makeText(view!!.context, string, Toast.LENGTH_LONG).show()
     }
+
+    fun breadAndSweets(accountNumber: Int, viewArg: View) {
+        view = viewArg
+        lookUpAccount(accountNumber)
+            .continueWith(validateAccount)
+            .continueWith { isValidAccount ->
+                if (isValidAccount.result) {
+                    val breadAndSweets = mapOf(
+                        "accountID" to account.accountID,
+                        "date" to Date()
+                    )
+                    db.collection("breadAndSweets").document()
+                        .set(breadAndSweets)
+                        .addOnSuccessListener {
+                            toast("Bread and sweets pickup recorded.")
+                        }
+                        .addOnFailureListener {
+                            toast("Write failed: $it")
+                        }
+                } else {
+                    toast("Invalid account.")
+                }
+            }
+            .addOnFailureListener {
+                toast("Unable to retrieve account: $it")
+            }
+    }
 }
+
+

@@ -17,6 +17,9 @@ service cloud.firestore {
       allow read: if true;
       allow write: if true;
   }
-
+      match /breadAndSweets/{breadAndSweets}{
+            allow  read: if true;
+      allow write: if request.auth.token.manager == true;
+    }
 }
 }

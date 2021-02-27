@@ -7,21 +7,6 @@
     tools:context=".orderwithsecuretablet.SecureTabletOrderActivity">
 
     <TextView
-        android:id="@+id/textViewPrompt2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:text="Or, if creating a new account, use the button below:"
-        android:textColor="@color/plainText"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAccountNumber" />
-
-    <TextView
         android:id="@+id/textViewManagerSection"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -105,9 +90,8 @@
         android:id="@+id/buttonGo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Go"
+        android:text="Food"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/editTextAccountNumber"
         app:layout_constraintTop_toTopOf="@+id/editTextAccountNumber" />
 
@@ -115,18 +99,19 @@
         android:id="@+id/buttonNewAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="16dp"
         android:text="New Account"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.204"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonGo" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextAccountNumber" />
 
     <TextView
         android:id="@+id/textViewInventoryLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:text="Functions below for TRAINED PERSONNEL ONLY"
         android:textColor="@color/plainText"
@@ -170,8 +155,19 @@
         android:id="@+id/buttonReset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="Reset"
-        app:layout_constraintStart_toEndOf="@+id/buttonGo"
-        app:layout_constraintTop_toTopOf="@+id/buttonGo" />
+        app:layout_constraintEnd_toEndOf="@+id/buttonBreadAndSweets"
+        app:layout_constraintStart_toStartOf="@+id/buttonBreadAndSweets"
+        app:layout_constraintTop_toBottomOf="@+id/buttonBreadAndSweets" />
+
+    <Button
+        android:id="@+id/buttonBreadAndSweets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Br &amp; Sw"
+        app:layout_constraintEnd_toEndOf="@+id/buttonGo"
+        app:layout_constraintStart_toStartOf="@+id/buttonGo"
+        app:layout_constraintTop_toBottomOf="@+id/buttonGo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

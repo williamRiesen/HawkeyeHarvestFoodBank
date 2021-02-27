@@ -3,7 +3,9 @@ package com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import com.md.williamriesen.hawkeyeharvest.R
 
 class SecureTabletOrderActivity : AppCompatActivity() {
@@ -19,8 +21,8 @@ class SecureTabletOrderActivity : AppCompatActivity() {
 //        viewModel.startupAccountNumber = startupAccountNumberString?.toIntOrNull()
     }
 
-//    fun onCartButtonClick(view: View) {
-//        Navigation.findNavController(view)
-//            .navigate(R.id.action_secureTabletOrderSelectionFragment_to_secureTabletOrderCheckoutFragment)
-//    }
+    fun onCartButtonClick(view: View) {
+        Navigation.findNavController(view)
+            .navigate(R.id.action_secureTabletOrderSelectionFragment_to_secureTabletOrderCheckoutFragment)
+    }
 }
