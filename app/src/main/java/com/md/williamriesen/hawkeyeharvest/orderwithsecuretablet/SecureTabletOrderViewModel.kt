@@ -15,6 +15,8 @@ import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.TaskCompletionSource
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.iid.InstanceIdResult
 import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.foodbank.*
 import java.util.*
@@ -32,7 +34,8 @@ class SecureTabletOrderViewModel : ViewModel() {
     private var orderID: String? = null
 
     //    var orderState: MutableLiveData<OrderState> = MutableLiveData(OrderState.NOT_STARTED_YET)
-    val outOfStockItems = MutableLiveData<MutableList<OutOfStockItem>>(mutableListOf<OutOfStockItem>())
+    val outOfStockItems =
+        MutableLiveData<MutableList<OutOfStockItem>>(mutableListOf<OutOfStockItem>())
     var pleaseWait = MutableLiveData<Boolean>(false)
     var points: Int? = null
     var startupAccountNumber: Int? = null
@@ -72,8 +75,7 @@ class SecureTabletOrderViewModel : ViewModel() {
                 separateOutOfStockItems()
                 if (outOfStockItems.value!!.isEmpty()) {
                     assembleOrderAs("SUBMITTED")
-                    toast("Order assembled.")
-//                    submit(order)
+                    submit(order)
                 } else {
                     askClientForAlternativeChoices()
                 }
@@ -125,20 +127,32 @@ class SecureTabletOrderViewModel : ViewModel() {
         order = Order(account.accountID, Date(), foodItems.value!!, orderState).filterOutZeros()
     }
 
-    //    private fun submit(orderArg: Order) {
-//        order = orderArg
-//        FirebaseInstanceId.getInstance().instanceId
-//            .continueWith(getToken)
-//            .continueWithTask { sendOrderToFirestore }
-//            .continueWith { returnToStart() }
-//    }
-//
-//    private val getToken = Continuation<InstanceIdResult, Unit> {
-//        order.deviceToken = it.result.token
-//        it.result
-//    }
-//
-//
+    private fun submit(orderArg: Order) {
+        order = orderArg
+        FirebaseInstanceId.getInstance().instanceId
+            .continueWith(getToken)
+            .continueWithTask {
+                db.collection("orders").document().set(order)
+            }
+            .continueWith { returnToStart() }
+
+    }
+
+//    private val sendOrderToFirestore =
+//        if (order.orderID != null) {
+//            db.collection("orders").document(order.orderID!!)
+//        } else {
+//            db.collection("orders").document()
+//        }.set(order)
+//            .addOnSuccessListener { Log.d("TAG","Set completed successfully.") }
+//            .addOnFailureListener { Log.d("TAG","Set failed: $it") }
+
+    private val getToken = Continuation<InstanceIdResult, Unit> {
+        order.deviceToken = it.result.token
+        it.result
+    }
+
+
     private fun refundPointsFor(foodItem: FoodItem) {
         val categoryOfItem = foodItems.value?.find {
             it.name == foodItem.name
