@@ -32,7 +32,7 @@ class SecureTabletOrderViewModel : ViewModel() {
     private var orderID: String? = null
 
     //    var orderState: MutableLiveData<OrderState> = MutableLiveData(OrderState.NOT_STARTED_YET)
-    val outOfStockItems = MutableLiveData<MutableList<OutOfStockItem>>()
+    val outOfStockItems = MutableLiveData<MutableList<OutOfStockItem>>(mutableListOf<OutOfStockItem>())
     var pleaseWait = MutableLiveData<Boolean>(false)
     var points: Int? = null
     var startupAccountNumber: Int? = null
@@ -69,16 +69,17 @@ class SecureTabletOrderViewModel : ViewModel() {
                     updateFoodItemListUsing(retrievedFoodItems)
                 }
                 Log.d("TAG", "FoodItems updated.")
-//                separateOutOfStockItems()
-//                if (outOfStockItems.value!!.isEmpty()) {
-//                    assembleOrderAs("SUBMITTED")
+                separateOutOfStockItems()
+                if (outOfStockItems.value!!.isEmpty()) {
+                    assembleOrderAs("SUBMITTED")
+                    toast("Order assembled.")
 //                    submit(order)
-//                } else {
-//                    askClientForAlternativeChoices()
-//                }
+                } else {
+                    askClientForAlternativeChoices()
+                }
             }
             .addOnSuccessListener {
-                toast("Inventory updated.")
+//                toast("Out of stock items separated from main list.")
             }
             .addOnFailureListener {
                 toast("Inventory retrieval failed with: $it")
@@ -375,6 +376,11 @@ class SecureTabletOrderViewModel : ViewModel() {
                 else it.result.documents[0].id
                 retrievedAccountID
             }
+            .continueWith {
+                db.collection("accounts").document(it.result)
+                    .update("orderState", "SAVED")
+                it.result
+            }
             .continueWithTask {
                 db.collection("orders")
                     .whereEqualTo("accountID", it.result)
@@ -382,7 +388,7 @@ class SecureTabletOrderViewModel : ViewModel() {
                     .limit(1)
                     .get()
             }.continueWith {
-                if (it.result.isEmpty) throw Exception("No account found for this number.")
+                if (it.result.isEmpty) throw Exception("No order found for this number.")
                 else {
                     db.collection("orders")
                         .document(it.result.documents[0].id)
@@ -396,40 +402,6 @@ class SecureTabletOrderViewModel : ViewModel() {
                 toast("Reset failed: $it")
             }
     }
-
-
-    private val inspectAccountAndIfValidResetToSaved =
-        Continuation<QuerySnapshot, Unit> { task ->
-
-        }
-
-//    private val resetAccountToSaved =
-//        db.collection("accounts").document(account.accountID).update(
-//            "orderState",
-//            "SAVED"
-//        )
-
-
-//    private val retrieveLastOrderForThisAccount = Continuation<Unit, QuerySnapshot> {
-
-    private val retrieveLastOrderForThisAccount =
-        db.collection("orders")
-            .whereEqualTo("accountID", account.accountID)
-            .orderBy("date", Query.Direction.DESCENDING)
-            .limit(1)
-            .get()
-//}
-
-//
-//    private val resetOrder = Continuation<QuerySnapshot, Unit> { task ->
-//        if (task.result.isEmpty) {
-//            val orderID = task.result.documents[0].id
-//            db.collection("orders").document(orderID)
-//                .update("orderState", "SAVED")
-//        }
-//    }
-//
-
 
     private fun toast(string: String) {
         Toast.makeText(view!!.context, string, Toast.LENGTH_LONG).show()
