@@ -21,6 +21,12 @@
         <action
             android:id="@+id/action_secureTabletOrderStartFragment_to_updateInventoryFragment2"
             app:destination="@id/updateInventoryFragment2" />
+        <action
+            android:id="@+id/action_secureTabletOrderStartFragment_to_blankFragment"
+            app:destination="@id/blankFragment" />
+        <action
+            android:id="@+id/action_secureTabletOrderStartFragment_to_outOfStockFragment3"
+            app:destination="@id/outOfStockFragment3" />
     </fragment>
     <fragment
         android:id="@+id/secureTabletOrderSelectionFragment"
@@ -48,8 +54,11 @@
         android:name="com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet.SecureTabletOrderConfirmAndReset"
         android:label="SecureTabletOrderConfirmAndReset" >
         <action
-            android:id="@+id/action_secureTabletOrderConfirmAndReset_to_outOfStockFragment2"
-            app:destination="@id/outOfStockFragment2" />
+            android:id="@+id/action_secureTabletOrderConfirmAndReset_to_outOfStockFragment3"
+            app:destination="@id/outOfStockFragment3" />
+        <action
+            android:id="@+id/action_secureTabletOrderConfirmAndReset_to_blankFragment"
+            app:destination="@id/blankFragment" />
     </fragment>
     <fragment
         android:id="@+id/addEditAccountFragment2"
@@ -68,7 +77,12 @@
         android:name="com.md.williamriesen.hawkeyeharvest.manager.NewFoodItemFragment"
         android:label="CreateNewItemFragment" />
     <fragment
-        android:id="@+id/outOfStockFragment2"
-        android:name="com.md.williamriesen.hawkeyeharvest.orderoffsite.OutOfStockFragment"
+        android:id="@+id/outOfStockFragment3"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet.OutOfStockFragment"
         android:label="OutOfStockFragment" />
+    <fragment
+        android:id="@+id/blankFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet.BlankFragment"
+        android:label="fragment_blank"
+        tools:layout="@layout/fragment_blank" />
 </navigation>

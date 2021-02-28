@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
-import com.google.android.gms.tasks.TaskCompletionSource
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.iid.FirebaseInstanceId
@@ -34,7 +33,7 @@ class SecureTabletOrderViewModel : ViewModel() {
     private var orderID: String? = null
 
     //    var orderState: MutableLiveData<OrderState> = MutableLiveData(OrderState.NOT_STARTED_YET)
-    val outOfStockItems =
+    val outOfStockItems: MutableLiveData<MutableList<OutOfStockItem>> =
         MutableLiveData<MutableList<OutOfStockItem>>(mutableListOf<OutOfStockItem>())
     var pleaseWait = MutableLiveData<Boolean>(false)
     var points: Int? = null
@@ -103,11 +102,23 @@ class SecureTabletOrderViewModel : ViewModel() {
         }
     }
 
-    private fun updateFoodItemListUsing(order: Order) {
-        order.itemList.forEach { orderedFoodItem ->
-            foodItems.value?.find { viewModelFoodItem ->
+    private fun updateFoodItemListUsing(order: Order?) {
+
+        order?.itemList?.forEach { orderedFoodItem ->
+            Log.d("TAG", "orderedFoodItem.name ${orderedFoodItem.name}")
+            val foundInFoodList = foodItems.value?.find { viewModelFoodItem ->
                 viewModelFoodItem.name == orderedFoodItem.name
-            }!!.qtyOrdered = orderedFoodItem.qtyOrdered
+            }
+            if (foundInFoodList != null) {
+                Log.d("TAG", "In stock.")
+                foundInFoodList!!.qtyOrdered = orderedFoodItem.qtyOrdered
+            } else {
+                Log.d("TAG", "Out of stock.")
+                outOfStockItems.value?.add(
+                    OutOfStockItem(orderedFoodItem.name!!, orderedFoodItem.qtyOrdered)
+                )
+                order.itemList.remove(orderedFoodItem)
+            }
         }
     }
 
@@ -164,7 +175,7 @@ class SecureTabletOrderViewModel : ViewModel() {
 
     private fun askClientForAlternativeChoices() {
         Navigation.findNavController(view!!)
-            .navigate(R.id.action_secureTabletOrderConfirmAndReset_to_outOfStockFragment2)
+            .navigate(R.id.action_secureTabletOrderStartFragment_to_outOfStockFragment3)
     }
 
 
@@ -252,29 +263,58 @@ class SecureTabletOrderViewModel : ViewModel() {
                     .orderBy("date", Query.Direction.DESCENDING)
                     .limit(1)
                     .get()
-                 }
-            .continueWith(unpackAndCheckSavedOrder)
-            .continueWith { someItemsAreOutOfStock ->
-                if (someItemsAreOutOfStock.result) {
-                    askClientForAlternativeChoices()
-                } else {
-                    navigateToSelectionFragment()
-                }
             }
+            .continueWith {
+                val retrievedOrder =
+                    if (it.result.isEmpty) null
+                        else it.result.documents[0].toObject<Order>()
+                updateFoodItemListUsing(retrievedOrder)
+                if (outOfStockItems.value.isNullOrEmpty()) {
+                    navigateToSelectionFragment()
+                } else
+                    askClientForAlternativeChoices()
+            }
+//            .continueWith {someItemsAreOutOfStock ->
+//                Log.d("TAG", "Before...")
+//                if (someItemsAreOutOfStock.result == null) {
+//                    Log.d("TAG", "it is null.")
+//                } else {
+//                    Log.d("TAG", "it is not null.")
+//                }
+//                Log.d("TAG", "someItemsAreOutOfStock.result: ${someItemsAreOutOfStock.result}")
+//                Log.d("TAG", "... After: someItemsAreOutOfStock: $someItemsAreOutOfStock")
+//                if (someItemsAreOutOfStock.result) {
+//                    askClientForAlternativeChoices()
+//                } else {
+//                    navigateToSelectionFragment()
+//                }
+//            }
     }
 
     private val unpackAndCheckSavedOrder = Continuation<QuerySnapshot, Boolean> { task ->
         var someItemsAreOutOfStock = false
-        Log.d("TAG","retrievedOrderQuery.isComplete: ${task.isComplete}")
-        Log.d("TAG","retrievedOrderQuery.size: ${task.result.size()}")
+        Log.d("TAG", "retrievedOrderQuery.isComplete: ${task.isComplete}")
+        Log.d("TAG", "retrievedOrderQuery.size: ${task.result.size()}")
         Log.d("TAG", "retrieved orderID: ${task.result.documents[0].id}")
         if (task.result.size() > 0) {
+            Log.d("TAG", "Starting if branch.")
             orderID = task.result.documents[0].id
+            Log.d("TAG", "orderID assigned.")
             val order = task.result.documents[0].toObject<Order>()
+            Log.d("TAG", "toObject method completed.")
+            Log.d("TAG", "order: ${order?.orderID}")
+            Log.d("TAG", "order: ${order?.accountID}")
+            Log.d("TAG", "order: ${order?.orderState}")
+            Log.d("TAG", "order: ${order?.date}")
+            Log.d("TAG", "order: ${order?.itemList}")
             updateFoodItemListUsing(order!!)
-            separateOutOfStockItems()
+            Log.d("TAG", "updateFoodItemListUsing completed.")
+//            separateOutOfStockItems()
+//            Log.d("TAG", "separateOutOfStockItems completed.")
             someItemsAreOutOfStock = !outOfStockItems.value.isNullOrEmpty()
+            Log.d("TAG", "someItemsAreOutOfStock(inside): $someItemsAreOutOfStock")
         }
+        Log.d("TAG", "someItemsAreOutOfStock: $someItemsAreOutOfStock")
         someItemsAreOutOfStock
     }
 
@@ -311,6 +351,11 @@ class SecureTabletOrderViewModel : ViewModel() {
     private fun navigateToSelectionFragment() {
         Navigation.findNavController(view!!)
             .navigate(R.id.action_secureTabletOrderStartFragment_to_secureTabletOrderSelectionFragment)
+    }
+
+    private fun navigateToBlankFragment() {
+        Navigation.findNavController(view!!)
+            .navigate(R.id.action_secureTabletOrderStartFragment_to_blankFragment)
     }
 
     private fun generateHeadings() {
@@ -400,8 +445,9 @@ class SecureTabletOrderViewModel : ViewModel() {
         db.collection("accounts")
             .whereEqualTo("accountNumber", accountNumber).get()
             .continueWith {
-                val retrievedAccountID = if (it.result.isEmpty) "No account found with this number."
-                else it.result.documents[0].id
+                val retrievedAccountID =
+                    if (it.result.isEmpty) "No account found with this number."
+                    else it.result.documents[0].id
                 retrievedAccountID
             }
             .continueWith {

@@ -10,17 +10,13 @@ import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.foodbank.OutOfStockItem
 
 class FoodItemsOutOfStockAdapter(
-    private val itemsOutOfStockList: MutableLiveData<MutableList<OutOfStockItem>>,
+    private val outOfStockItems: MutableLiveData<MutableList<OutOfStockItem>>,
     var viewModel: SecureTabletOrderViewModel
 ) : RecyclerView.Adapter<FoodItemsOutOfStockAdapter.MyViewHolder>() {
 
     inner class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        var textViewItemOutOfStockName: TextView = view.findViewById(R.id.textview_item_out_of_stock_name)
-
-
-        init {
-
-        }
+        var textViewItemOutOfStockName: TextView =
+            view.findViewById(R.id.textview_item_out_of_stock_name)
     }
 
     override fun onCreateViewHolder(
@@ -33,15 +29,13 @@ class FoodItemsOutOfStockAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-
-
-        holder.textViewItemOutOfStockName.text = itemsOutOfStockList.value!![position].name
+        holder.textViewItemOutOfStockName.text = outOfStockItems.value!![position].name
     }
 
     override fun getItemCount(): Int {
         var size = 0
-        if (itemsOutOfStockList.value != null) {
-            size = itemsOutOfStockList.value!!.size
+        if (outOfStockItems.value != null) {
+            size = outOfStockItems.value!!.size
         }
         return size
     }

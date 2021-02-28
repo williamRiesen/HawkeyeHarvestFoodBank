@@ -1,6 +1,7 @@
 package com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,10 +20,10 @@ import com.md.williamriesen.hawkeyeharvest.foodbank.OutOfStockItem
 class OutOfStockFragment : Fragment() {
 
     private lateinit var adapterFood: FoodItemsOutOfStockAdapter
-
-    lateinit var viewModel: SecureTabletOrderViewModel
+    private lateinit var viewModel: SecureTabletOrderViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("TAG", "Starting to create OutOfStockFragment.")
         super.onCreate(savedInstanceState)
         viewModel =
             ViewModelProviders.of(this.requireActivity()).get(SecureTabletOrderViewModel::class.java)
@@ -33,6 +34,7 @@ class OutOfStockFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("TAG", "Starting OutOfStockFragment onCreateView.")
         val outOfStockFragment = inflater.inflate(R.layout.fragment_out_of_stock_notice, container, false)
 
         val recyclerView = outOfStockFragment.findViewById<RecyclerView>(R.id.recyclerView_out_of_stock_names)
@@ -46,7 +48,8 @@ class OutOfStockFragment : Fragment() {
     }
 
     private fun setUpRecyclerView(outOfStockItems: MutableLiveData<MutableList<OutOfStockItem>>, recyclerView: RecyclerView) {
-        FirestoreRecyclerOptions.Builder<String>()
+        Log.d("TAG", "Starting setUpRecyclerView.")
+        FirestoreRecyclerOptions.Builder<OutOfStockItem>()
         adapterFood = FoodItemsOutOfStockAdapter(outOfStockItems, viewModel)
         recyclerView.layoutManager = LinearLayoutManager(this.activity)
         recyclerView.adapter = adapterFood
