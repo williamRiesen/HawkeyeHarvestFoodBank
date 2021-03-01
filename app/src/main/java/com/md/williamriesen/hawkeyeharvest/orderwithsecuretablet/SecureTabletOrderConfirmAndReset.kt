@@ -54,7 +54,8 @@ class SecureTabletOrderConfirmAndReset : Fragment() {
             Log.d("TAG","text entered: ${textView.text}")
             if (textView.text.toString() == pushPassword) {
                 Log.d("TAG","Now submitting...")
-                viewModel.processOrder(requireView())
+                val navigationAction = R.id.action_secureTabletOrderConfirmAndReset_to_outOfStockAtConfirmFragment
+                viewModel.processOrder(requireView(),navigationAction)
             }
             false
 

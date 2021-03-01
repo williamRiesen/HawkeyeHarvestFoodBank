@@ -7,10 +7,10 @@ import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.md.williamriesen.hawkeyeharvest.R
-import com.md.williamriesen.hawkeyeharvest.foodbank.OutOfStockItem
+import com.md.williamriesen.hawkeyeharvest.foodbank.FoodItem
 
 class FoodItemsOutOfStockAdapter(
-    private val outOfStockItems: MutableLiveData<MutableList<OutOfStockItem>>,
+    private val outOfStockItems: MutableLiveData<MutableList<FoodItem>>,
     var viewModel: SecureTabletOrderViewModel
 ) : RecyclerView.Adapter<FoodItemsOutOfStockAdapter.MyViewHolder>() {
 

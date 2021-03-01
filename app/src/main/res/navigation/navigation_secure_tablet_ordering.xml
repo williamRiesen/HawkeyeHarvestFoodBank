@@ -22,9 +22,6 @@
             android:id="@+id/action_secureTabletOrderStartFragment_to_updateInventoryFragment2"
             app:destination="@id/updateInventoryFragment2" />
         <action
-            android:id="@+id/action_secureTabletOrderStartFragment_to_blankFragment"
-            app:destination="@id/blankFragment" />
-        <action
             android:id="@+id/action_secureTabletOrderStartFragment_to_outOfStockFragment3"
             app:destination="@id/outOfStockFragment3" />
     </fragment>
@@ -35,6 +32,9 @@
         <action
             android:id="@+id/action_secureTabletOrderSelectionFragment_to_secureTabletOrderCheckoutFragment"
             app:destination="@id/secureTabletOrderCheckoutFragment" />
+        <action
+            android:id="@+id/action_secureTabletOrderSelectionFragment_to_outOfStockAtConfirmFragment"
+            app:destination="@id/outOfStockAtConfirmFragment" />
     </fragment>
     <fragment
         android:id="@+id/alreadyOrderedMessageFragment"
@@ -54,11 +54,9 @@
         android:name="com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet.SecureTabletOrderConfirmAndReset"
         android:label="SecureTabletOrderConfirmAndReset" >
         <action
-            android:id="@+id/action_secureTabletOrderConfirmAndReset_to_outOfStockFragment3"
-            app:destination="@id/outOfStockFragment3" />
-        <action
-            android:id="@+id/action_secureTabletOrderConfirmAndReset_to_blankFragment"
-            app:destination="@id/blankFragment" />
+            android:id="@+id/action_secureTabletOrderConfirmAndReset_to_outOfStockAtConfirmFragment"
+            app:destination="@id/outOfStockAtConfirmFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/addEditAccountFragment2"
@@ -78,11 +76,18 @@
         android:label="CreateNewItemFragment" />
     <fragment
         android:id="@+id/outOfStockFragment3"
-        android:name="com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet.OutOfStockFragment"
-        android:label="OutOfStockFragment" />
+        android:name="com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet.OutOfStockAtStartFragment"
+        android:label="OutOfStockFragment" >
+        <action
+            android:id="@+id/action_outOfStockFragment3_to_secureTabletOrderSelectionFragment"
+            app:destination="@id/secureTabletOrderSelectionFragment" />
+    </fragment>
     <fragment
-        android:id="@+id/blankFragment"
-        android:name="com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet.BlankFragment"
-        android:label="fragment_blank"
-        tools:layout="@layout/fragment_blank" />
+        android:id="@+id/outOfStockAtConfirmFragment"
+        android:name="com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet.OutOfStockAtConfirmFragment"
+        android:label="OutOfStockAtConfirmFragment" >
+        <action
+            android:id="@+id/action_outOfStockAtConfirmFragment_to_secureTabletOrderSelectionFragment"
+            app:destination="@id/secureTabletOrderSelectionFragment" />
+    </fragment>
 </navigation>

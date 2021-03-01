@@ -13,6 +13,7 @@ class FoodItem() {
     var categoryPointsAllocated: Int = 0
     var categoryPointsUsed: Int = 0
     var packed: Boolean = false
+    var isExpanded = false
 
     constructor(itemID: Int, name: String, category: String, pointValue: Int,
                 limit: Int, numberAvailable: Int, isAvailable: Boolean, categoryId: Int,
@@ -43,4 +44,5 @@ class FoodItem() {
         isAvailable = retrievedItem!!.isAvailable
         numberAvailable = retrievedItem.numberAvailable
     }
+
 }

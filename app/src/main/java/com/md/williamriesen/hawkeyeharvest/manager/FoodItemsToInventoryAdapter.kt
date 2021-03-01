@@ -1,13 +1,12 @@
 package com.md.williamriesen.hawkeyeharvest.manager
 
 import android.graphics.Color
+import android.graphics.Movie
 import android.os.Build
-import android.text.Editable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
@@ -16,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.foodbank.FoodItem
 import java.util.*
-import kotlin.collections.ArrayList
+
 
 class FoodItemsToInventoryAdapter(
     private val itemsToInventoryList: MutableLiveData<MutableList<FoodItem>>,
@@ -29,6 +28,7 @@ class FoodItemsToInventoryAdapter(
             view.findViewById(R.id.textview_item_to_inventory_name)
         var checkBoxIsAvailable: CheckBox = view.findViewById(R.id.checkBoxIsAvailable)
         var editTextNumberAvailable: EditText = view.findViewById(R.id.editTextNumberAvailable)
+        var expansionSection: LinearLayout = view.findViewById(R.id.expansionSection)
 
         init {
             checkBoxIsAvailable.setOnClickListener {
@@ -54,6 +54,7 @@ class FoodItemsToInventoryAdapter(
         val v: View =
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_to_update_inventory, parent, false)
+
         return MyViewHolder(v)
     }
 
@@ -64,6 +65,12 @@ class FoodItemsToInventoryAdapter(
         holder.checkBoxIsAvailable.isChecked =
             viewModel.filteredInventoryList.value!![position].isAvailable!!
 
+        if (viewModel.filteredInventoryList.value!![position].isExpanded) {
+            holder.expansionSection.visibility = View.VISIBLE
+        } else {
+            holder.expansionSection.visibility = View.GONE
+        }
+
         val isCategory =
             viewModel.filteredInventoryList.value!![position].name == viewModel.filteredInventoryList.value!![position].category
         if (isCategory) {
@@ -71,6 +78,11 @@ class FoodItemsToInventoryAdapter(
         } else {
             formatAsItem(holder)
             holder.editTextNumberAvailable.setText(viewModel.filteredInventoryList.value!![position].numberAvailable!!.toString())
+        }
+        holder.itemView.setOnClickListener {
+            viewModel.filteredInventoryList.value!![position].isExpanded =
+                !viewModel.filteredInventoryList.value!![position].isExpanded
+            notifyItemChanged(position)
         }
     }
 

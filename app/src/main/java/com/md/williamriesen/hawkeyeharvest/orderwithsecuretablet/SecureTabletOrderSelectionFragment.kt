@@ -58,4 +58,5 @@ class SecureTabletOrderSelectionFragment : Fragment() {
         super.onPause()
         viewModel.saveOrder(this)
     }
+
 }

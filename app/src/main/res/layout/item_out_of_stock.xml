@@ -14,7 +14,7 @@
         android:background="@color/fragmentBackground"
         android:gravity="right|left|center_vertical"
         android:text="@string/item_name"
-        android:textColor="@color/plainText"
+        android:textColor="@color/colorPrimary"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

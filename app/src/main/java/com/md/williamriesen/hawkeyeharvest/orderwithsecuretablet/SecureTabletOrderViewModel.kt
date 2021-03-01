@@ -31,10 +31,8 @@ class SecureTabletOrderViewModel : ViewModel() {
     val foodItems = MutableLiveData<MutableList<FoodItem>>(mutableListOf())
     var order = Order("", Date(), mutableListOf(FoodItem()), "")
     private var orderID: String? = null
-
-    //    var orderState: MutableLiveData<OrderState> = MutableLiveData(OrderState.NOT_STARTED_YET)
-    val outOfStockItems: MutableLiveData<MutableList<OutOfStockItem>> =
-        MutableLiveData<MutableList<OutOfStockItem>>(mutableListOf<OutOfStockItem>())
+    val outOfStockItems: MutableLiveData<MutableList<FoodItem>> =
+        MutableLiveData<MutableList<FoodItem>>(mutableListOf<FoodItem>())
     var pleaseWait = MutableLiveData<Boolean>(false)
     var points: Int? = null
     var startupAccountNumber: Int? = null
@@ -52,7 +50,7 @@ class SecureTabletOrderViewModel : ViewModel() {
             db.collection("orders").document(orderID!!).set(order)
         }
             .addOnSuccessListener {
-                toast("Order saved.")
+                toast("Order saved under id: $orderID")
             }
             .addOnFailureListener {
                 toast("Save failed with exception: $it")
@@ -60,7 +58,7 @@ class SecureTabletOrderViewModel : ViewModel() {
     }
 
 
-    fun processOrder(viewArg: View) {
+    fun processOrder(viewArg: View, navigationAction: Int) {
         view = viewArg
         retrieveInventory()
             .continueWith { task ->
@@ -76,11 +74,8 @@ class SecureTabletOrderViewModel : ViewModel() {
                     assembleOrderAs("SUBMITTED")
                     submit(order)
                 } else {
-                    askClientForAlternativeChoices()
+                    askClientForAlternativeChoices(navigationAction)
                 }
-            }
-            .addOnSuccessListener {
-//                toast("Out of stock items separated from main list.")
             }
             .addOnFailureListener {
                 toast("Inventory retrieval failed with: $it")
@@ -103,22 +98,25 @@ class SecureTabletOrderViewModel : ViewModel() {
     }
 
     private fun updateFoodItemListUsing(order: Order?) {
-
+        outOfStockItems.value?.clear()
         order?.itemList?.forEach { orderedFoodItem ->
-            Log.d("TAG", "orderedFoodItem.name ${orderedFoodItem.name}")
             val foundInFoodList = foodItems.value?.find { viewModelFoodItem ->
                 viewModelFoodItem.name == orderedFoodItem.name
             }
             if (foundInFoodList != null) {
-                Log.d("TAG", "In stock.")
-                foundInFoodList!!.qtyOrdered = orderedFoodItem.qtyOrdered
+                foundInFoodList.qtyOrdered = orderedFoodItem.qtyOrdered
+                foodItems.value?.find { foodItem ->
+                    foodItem.name == foundInFoodList.category
+                }!!.categoryPointsUsed += foundInFoodList.qtyOrdered
             } else {
-                Log.d("TAG", "Out of stock.")
-                outOfStockItems.value?.add(
-                    OutOfStockItem(orderedFoodItem.name!!, orderedFoodItem.qtyOrdered)
-                )
-                order.itemList.remove(orderedFoodItem)
+                outOfStockItems.value?.add(orderedFoodItem)
             }
+        }
+        order?.itemList?.removeAll { foodItem ->
+            outOfStockItems.value!!.any {
+                it.name == foodItem.name
+            }
+//            outOfStockItems.value?.contains(it) ?: false
         }
     }
 
@@ -126,7 +124,7 @@ class SecureTabletOrderViewModel : ViewModel() {
         outOfStockItems.value?.clear()
         foodItems.value?.forEach {
             if (it.qtyOrdered > 0 && !it.isAvailable!!) {
-                outOfStockItems.value?.add(OutOfStockItem(it.name!!, it.qtyOrdered))
+                outOfStockItems.value?.add(it)
                 refundPointsFor(it)
                 it.qtyOrdered = 0
             }
@@ -173,9 +171,9 @@ class SecureTabletOrderViewModel : ViewModel() {
         }!!.pointsUsed -= foodItem.qtyOrdered
     }
 
-    private fun askClientForAlternativeChoices() {
+    private fun askClientForAlternativeChoices(navigationAction: Int) {
         Navigation.findNavController(view!!)
-            .navigate(R.id.action_secureTabletOrderStartFragment_to_outOfStockFragment3)
+            .navigate(navigationAction)
     }
 
 
@@ -191,10 +189,10 @@ class SecureTabletOrderViewModel : ViewModel() {
                         navigateToAlreadyOrderedMessage()
                     } else {
                         Log.d("TAG", "not ordered already.")
-                        prepareSelections()
+                        prepareSelections(R.id.action_secureTabletOrderStartFragment_to_outOfStockFragment3)
                     }
                 }
-            }.addOnSuccessListener { toast("Go routine completed successfully.") }
+            }
             .addOnFailureListener { toast("Go routine failed: $it") }
     }
 
@@ -250,7 +248,7 @@ class SecureTabletOrderViewModel : ViewModel() {
     }
 
 
-    private fun prepareSelections() {
+    fun prepareSelections(navigationAction: Int) {
         Log.d("TAG", "account.accountID: ${account.accountID}")
         getInventoryFromFirestore
             .continueWith(transcribeInventoryToViewModel)
@@ -267,56 +265,15 @@ class SecureTabletOrderViewModel : ViewModel() {
             .continueWith {
                 val retrievedOrder =
                     if (it.result.isEmpty) null
-                        else it.result.documents[0].toObject<Order>()
+                    else it.result.documents[0].toObject<Order>()
                 updateFoodItemListUsing(retrievedOrder)
                 if (outOfStockItems.value.isNullOrEmpty()) {
                     navigateToSelectionFragment()
                 } else
-                    askClientForAlternativeChoices()
+                    askClientForAlternativeChoices(navigationAction)
             }
-//            .continueWith {someItemsAreOutOfStock ->
-//                Log.d("TAG", "Before...")
-//                if (someItemsAreOutOfStock.result == null) {
-//                    Log.d("TAG", "it is null.")
-//                } else {
-//                    Log.d("TAG", "it is not null.")
-//                }
-//                Log.d("TAG", "someItemsAreOutOfStock.result: ${someItemsAreOutOfStock.result}")
-//                Log.d("TAG", "... After: someItemsAreOutOfStock: $someItemsAreOutOfStock")
-//                if (someItemsAreOutOfStock.result) {
-//                    askClientForAlternativeChoices()
-//                } else {
-//                    navigateToSelectionFragment()
-//                }
-//            }
     }
 
-    private val unpackAndCheckSavedOrder = Continuation<QuerySnapshot, Boolean> { task ->
-        var someItemsAreOutOfStock = false
-        Log.d("TAG", "retrievedOrderQuery.isComplete: ${task.isComplete}")
-        Log.d("TAG", "retrievedOrderQuery.size: ${task.result.size()}")
-        Log.d("TAG", "retrieved orderID: ${task.result.documents[0].id}")
-        if (task.result.size() > 0) {
-            Log.d("TAG", "Starting if branch.")
-            orderID = task.result.documents[0].id
-            Log.d("TAG", "orderID assigned.")
-            val order = task.result.documents[0].toObject<Order>()
-            Log.d("TAG", "toObject method completed.")
-            Log.d("TAG", "order: ${order?.orderID}")
-            Log.d("TAG", "order: ${order?.accountID}")
-            Log.d("TAG", "order: ${order?.orderState}")
-            Log.d("TAG", "order: ${order?.date}")
-            Log.d("TAG", "order: ${order?.itemList}")
-            updateFoodItemListUsing(order!!)
-            Log.d("TAG", "updateFoodItemListUsing completed.")
-//            separateOutOfStockItems()
-//            Log.d("TAG", "separateOutOfStockItems completed.")
-            someItemsAreOutOfStock = !outOfStockItems.value.isNullOrEmpty()
-            Log.d("TAG", "someItemsAreOutOfStock(inside): $someItemsAreOutOfStock")
-        }
-        Log.d("TAG", "someItemsAreOutOfStock: $someItemsAreOutOfStock")
-        someItemsAreOutOfStock
-    }
 
 
     private val getInventoryFromFirestore =
@@ -351,11 +308,6 @@ class SecureTabletOrderViewModel : ViewModel() {
     private fun navigateToSelectionFragment() {
         Navigation.findNavController(view!!)
             .navigate(R.id.action_secureTabletOrderStartFragment_to_secureTabletOrderSelectionFragment)
-    }
-
-    private fun navigateToBlankFragment() {
-        Navigation.findNavController(view!!)
-            .navigate(R.id.action_secureTabletOrderStartFragment_to_blankFragment)
     }
 
     private fun generateHeadings() {
@@ -507,6 +459,8 @@ class SecureTabletOrderViewModel : ViewModel() {
                 toast("Unable to retrieve account: $it")
             }
     }
+
+
 }
 
 

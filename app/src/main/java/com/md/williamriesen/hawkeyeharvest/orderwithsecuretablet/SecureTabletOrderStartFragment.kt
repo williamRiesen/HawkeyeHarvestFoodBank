@@ -1,5 +1,8 @@
 package com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet
 
+import android.app.Activity
+import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,9 +10,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.md.williamriesen.hawkeyeharvest.R
@@ -37,17 +42,18 @@ class SecureTabletOrderStartFragment : Fragment() {
         val editTextAccountNumber = fragment.findViewById<EditText>(R.id.editTextAccountNumber)
         editTextAccountNumber.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                val accountNumber = editTextAccountNumber.text.toString().toIntOrNull()
-                if (accountNumber != null) {
-                    viewModel.go(
-                        accountNumber, requireView()
-                    )
-                } else {
-                    Toast.makeText(
-                        context, "Please provide account number.", Toast.LENGTH_LONG
-                    ).show()
-                    editTextAccountNumber.requestFocus()
-                }
+                hideKeyboard()
+//                val accountNumber = editTextAccountNumber.text.toString().toIntOrNull()
+//                if (accountNumber != null) {
+//                    viewModel.go(
+//                        accountNumber, requireView()
+//                    )
+//                } else {
+//                    Toast.makeText(
+//                        context, "Please provide account number.", Toast.LENGTH_LONG
+//                    ).show()
+//                    editTextAccountNumber.requestFocus()
+//                }
             }
             false
         }
@@ -126,5 +132,17 @@ class SecureTabletOrderStartFragment : Fragment() {
             }
         }
         return fragment
+    }
+    fun Fragment.hideKeyboard() {
+        view?.let { activity?.hideKeyboard(it) }
+    }
+
+    fun Activity.hideKeyboard() {
+        hideKeyboard(currentFocus ?: View(this))
+    }
+
+    fun Context.hideKeyboard(view: View) {
+        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
