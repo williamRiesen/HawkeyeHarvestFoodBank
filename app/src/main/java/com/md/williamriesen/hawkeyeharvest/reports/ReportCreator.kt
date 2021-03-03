@@ -29,7 +29,6 @@ class ReportCreator {
             }
             monthReport.sortWith(
                 compareBy({ it.county }, { it.city })
-
             )
         }
     }
@@ -50,22 +49,22 @@ class ReportCreator {
     }
 
         fun createMonthReport() {
-            val startOfMonth = FoodBank().makeDate(Calendar.JANUARY, 1, 2021)
-            val startOfNextMonth = FoodBank().makeDate(Calendar.FEBRUARY, 1, 2021)
+            val startOfMonth = FoodBank().makeDate(Calendar.FEBRUARY, 1, 2021)
+            val startOfNextMonth = FoodBank().makeDate(Calendar.MARCH, 1, 2021)
             val timeStampStart: Timestamp = Timestamp(startOfMonth)
             val timeStampEnd: Timestamp = Timestamp(startOfNextMonth)
             val ordersRef = db.collection("orders")
             val accountsRef = db.collection("accounts")
             ordersRef.whereGreaterThanOrEqualTo("date", timeStampStart)
                 .whereLessThan("date", timeStampEnd)
-//            .limit(3)
+            .limit(3)
                 .get()
                 .addOnSuccessListener { querySnapshot ->
                     var documentCount = querySnapshot.size()
                     Log.d("TAG", "querySnapshot.size: ${querySnapshot.size()}")
                     val orders = querySnapshot.toObjects(Order().javaClass)
                     orders.forEach { order ->
-                        if (order.orderState != "SAVED") {
+                        if (order.orderState != "SAVED" && order.accountID != null && order.accountID != "") {
                             accountsRef.document(order.accountID!!).get()
                                 .addOnSuccessListener { accountDocSnapshot ->
                                     Log.d(
@@ -85,7 +84,7 @@ class ReportCreator {
                                         totalPersons += persons
 
                                     }
-//                                Log.d("TAG", "documentCount: $documentCount")
+                                Log.d("TAG", "documentCount: $documentCount")
                                     documentCount -= 1
                                     if (documentCount == 0) {
                                         Log.d("TAG", "Final report: $monthReport")

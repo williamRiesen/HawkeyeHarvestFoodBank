@@ -1,9 +1,11 @@
 package com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet
 
 import android.content.Intent
+import android.os.Build
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -20,6 +22,7 @@ import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.foodbank.*
 import java.util.*
 import kotlin.Exception
+import kotlin.collections.ArrayList
 
 
 class SecureTabletOrderViewModel : ViewModel() {
@@ -42,15 +45,16 @@ class SecureTabletOrderViewModel : ViewModel() {
     fun saveOrder(fragment: Fragment) {
         view = fragment.view
         assembleOrderAs("SAVED")
-        if (orderID == null) {
+        if (order.orderID == null) {
             val newOrderDocumentRef = db.collection("orders").document()
-            orderID = newOrderDocumentRef.id
+            order.orderID = newOrderDocumentRef.id
             newOrderDocumentRef.set(order)
         } else {
             db.collection("orders").document(orderID!!).set(order)
         }
             .addOnSuccessListener {
-                toast("Order saved under id: $orderID")
+                toast("Order saved under id: ${order.orderID}")
+                Log.d("TAG", "Order saved under id: ${order.orderID}")
             }
             .addOnFailureListener {
                 toast("Save failed with exception: $it")
@@ -58,27 +62,109 @@ class SecureTabletOrderViewModel : ViewModel() {
     }
 
 
-    fun processOrder(viewArg: View, navigationAction: Int) {
+//    @RequiresApi(Build.VERSION_CODES.N)
+//    fun processOrder(viewArg: View, navigationAction: Int) {
+//        view = viewArg
+//        retrieveInventory()
+//            .continueWith { task ->
+//                val retrievedInventory = task.result.toObject(ObjectCatalog::class.java)
+//                val retrievedFoodItems = retrievedInventory?.foodItemList
+//                Log.d("TAG", "retrievedInventory: $retrievedInventory")
+//                if (retrievedFoodItems != null) {
+//                    updateFoodItemListUsing(retrievedFoodItems)
+//                }
+//                if (outOfStockItems.value.isNullOrEmpty()) {
+//                    assembleOrderAs("SUBMITTED")
+//                    submit(order)
+//                } else {
+//                    askClientForAlternativeChoices(navigationAction)
+//                }
+//            }
+//            .addOnFailureListener {
+//                toast("Inventory retrieval failed with: $it")
+//            }
+//    }
+
+    fun go(accountNumber: Int, viewArg: View) {
         view = viewArg
-        retrieveInventory()
-            .continueWith { task ->
-                val retrievedInventory = task.result.toObject(ObjectCatalog::class.java)
-                val retrievedFoodItems = retrievedInventory?.foodItemList
-                Log.d("TAG", "retrievedInventory: $retrievedInventory")
-                if (retrievedFoodItems != null) {
-                    updateFoodItemListUsing(retrievedFoodItems)
-                }
-                Log.d("TAG", "FoodItems updated.")
-                separateOutOfStockItems()
-                if (outOfStockItems.value!!.isEmpty()) {
-                    assembleOrderAs("SUBMITTED")
-                    submit(order)
-                } else {
-                    askClientForAlternativeChoices(navigationAction)
+        lookUpAccount(accountNumber)
+            .continueWith(validateAccount)
+            .continueWith { isValidAccount ->
+                if (isValidAccount.result) {
+                    Log.d("TAG", "account.lastOrderDate: ${account.lastOrderDate}")
+                    if (orderedAlready()) {
+                        Log.d("TAG", "ordered already.")
+                        navigateToAlreadyOrderedMessage()
+                    } else {
+                        Log.d("TAG", "not ordered already.")
+                        prepareSelections(R.id.action_secureTabletOrderStartFragment_to_outOfStockFragment3)
+                    }
                 }
             }
+            .addOnFailureListener { toast("Go routine failed: $it") }
+    }
+
+    fun prepareSelections(navigationAction: Int) {
+        Log.d("TAG", "account.accountID: ${account.accountID}")
+        getInventoryFromFirestore
+            .continueWith(transcribeInventoryToViewModel)
+            .continueWithTask { getCategoriesFromFireStore }
+            .continueWith(insertCategoriesIntoFoodListAndSort)
+            .continueWithTask {
+                db.collection("orders")
+                    .whereEqualTo("accountID", account.accountID)
+                    .whereEqualTo("orderState", "SAVED")
+                    .orderBy("date", Query.Direction.DESCENDING)
+                    .limit(1)
+                    .get()
+            }
+            .continueWith {
+                Log.d("TAG", "retrieved order query snapshot size: ${it.result.size()}")
+
+                if (!it.result.isEmpty) {
+                    val retrievedOrder = it.result.documents[0].toObject<Order>()
+                    updateFoodItemListUsing(retrievedOrder)
+                    orderID = it.result.documents[0].id
+                }
+                if (outOfStockItems.value.isNullOrEmpty()) {
+                    navigateToSelectionFragment()
+                } else
+                    askClientForAlternativeChoices(navigationAction)
+            }
+    }
+
+    fun processOrder(viewArg: View, navigationAction: Int) {
+        Log.d("TAG", "account.accountID: ${account.accountID}")
+        getInventoryFromFirestore
+            .continueWith(transcribeInventoryToViewModel)
+            .continueWithTask { getCategoriesFromFireStore }
+            .continueWith(insertCategoriesIntoFoodListAndSort)
+            .continueWithTask {
+                db.collection("orders")
+                    .whereEqualTo("accountID", account.accountID)
+                    .whereEqualTo("orderState", "SAVED")
+                    .orderBy("date", Query.Direction.DESCENDING)
+                    .limit(1)
+                    .get()
+            }
+            .continueWith {
+                val retrievedOrder =
+                    if (it.result.isEmpty) null
+                    else it.result.documents[0].toObject<Order>()
+                Log.d("TAG", "retrievedOrder has ID: ${it.result.documents[0].id}")
+                updateFoodItemListUsing(retrievedOrder)
+                Log.d("TAG", "outOfStockItems.value ${outOfStockItems.value}")
+                if (outOfStockItems.value.isNullOrEmpty()) {
+                    submit(retrievedOrder!!)
+                } else
+                    askClientForAlternativeChoices(navigationAction)
+            }
             .addOnFailureListener {
-                toast("Inventory retrieval failed with: $it")
+                toast("Process order failed: $it")
+                Log.d("TAG", "Process order failed: $it")
+            }
+            .addOnSuccessListener {
+                Log.d("TAG", "Process order succeeded")
             }
     }
 
@@ -87,22 +173,35 @@ class SecureTabletOrderViewModel : ViewModel() {
         return db.collection("catalogs").document("objectCatalog").get()
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
+
     private fun updateFoodItemListUsing(retrievedList: MutableList<FoodItem>) {
+        outOfStockItems.value?.clear()
         foodItems.value!!.forEach { foodListItem ->
             if (foodListItem.isFoundIn(retrievedList)) {
                 foodListItem.updateUsing(retrievedList)
             } else {
                 foodListItem.isAvailable = false
+                outOfStockItems.value?.add(foodListItem)
             }
+        }
+        foodItems.value!!.removeAll {
+            !it.isAvailable!!
         }
     }
 
     private fun updateFoodItemListUsing(order: Order?) {
         outOfStockItems.value?.clear()
         order?.itemList?.forEach { orderedFoodItem ->
+            Log.d("TAG", "orderedFoodItem.name: ${orderedFoodItem.name}")
             val foundInFoodList = foodItems.value?.find { viewModelFoodItem ->
                 viewModelFoodItem.name == orderedFoodItem.name
             }
+            Log.d("TAG", "foundInFoodList.name: ${foundInFoodList?.name}")
+            Log.d("TAG", "foundInFoodList.isAvailable: ${foundInFoodList?.isAvailable}")
+            Log.d("TAG", "foundInFoodList.qtyOrdered: ${foundInFoodList?.qtyOrdered}")
+            Log.d("TAG", "foundInFoodList.category: ${foundInFoodList?.category}")
+
             if (foundInFoodList != null) {
                 foundInFoodList.qtyOrdered = orderedFoodItem.qtyOrdered
                 foodItems.value?.find { foodItem ->
@@ -134,15 +233,23 @@ class SecureTabletOrderViewModel : ViewModel() {
     private fun assembleOrderAs(orderState: String) {
         Log.d("TAG", "account.accountID in assembleOrder: ${account.accountID}")
         order = Order(account.accountID, Date(), foodItems.value!!, orderState).filterOutZeros()
+        order.orderID = orderID
     }
 
     private fun submit(orderArg: Order) {
+        Log.d("TAG", "submit method called.")
         order = orderArg
+        order.orderState = "SUBMITTED"
         FirebaseInstanceId.getInstance().instanceId
             .continueWith(getToken)
             .continueWithTask {
-                db.collection("orders").document().set(order)
+                db.collection("orders").document(order.orderID!!).set(order)
             }
+//            .addOnSuccessListener {
+//                Log.d("TAG","Submit order succeeded.") }
+//            .addOnFailureListener {
+//                Log.d("TAG", "Submit order failed: $it")
+//            }
             .continueWith { returnToStart() }
 
     }
@@ -177,24 +284,7 @@ class SecureTabletOrderViewModel : ViewModel() {
     }
 
 
-    fun go(accountNumber: Int, viewArg: View) {
-        view = viewArg
-        lookUpAccount(accountNumber)
-            .continueWith(validateAccount)
-            .continueWith { isValidAccount ->
-                if (isValidAccount.result) {
-                    Log.d("TAG", "account.lastOrderDate: ${account.lastOrderDate}")
-                    if (orderedAlready()) {
-                        Log.d("TAG", "ordered already.")
-                        navigateToAlreadyOrderedMessage()
-                    } else {
-                        Log.d("TAG", "not ordered already.")
-                        prepareSelections(R.id.action_secureTabletOrderStartFragment_to_outOfStockFragment3)
-                    }
-                }
-            }
-            .addOnFailureListener { toast("Go routine failed: $it") }
-    }
+
 
 
     private fun lookUpAccount(accountNumber: Int) =
@@ -248,43 +338,27 @@ class SecureTabletOrderViewModel : ViewModel() {
     }
 
 
-    fun prepareSelections(navigationAction: Int) {
-        Log.d("TAG", "account.accountID: ${account.accountID}")
-        getInventoryFromFirestore
-            .continueWith(transcribeInventoryToViewModel)
-            .continueWithTask { getCategoriesFromFireStore }
-            .continueWith(insertCategoriesIntoFoodListAndSort)
-            .continueWithTask {
-                db.collection("orders")
-                    .whereEqualTo("accountID", account.accountID)
-                    .whereEqualTo("orderState", "SAVED")
-                    .orderBy("date", Query.Direction.DESCENDING)
-                    .limit(1)
-                    .get()
-            }
-            .continueWith {
-                val retrievedOrder =
-                    if (it.result.isEmpty) null
-                    else it.result.documents[0].toObject<Order>()
-                updateFoodItemListUsing(retrievedOrder)
-                if (outOfStockItems.value.isNullOrEmpty()) {
-                    navigateToSelectionFragment()
-                } else
-                    askClientForAlternativeChoices(navigationAction)
-            }
-    }
 
 
 
     private val getInventoryFromFirestore =
-        db.collection("catalogs").document("objectCatalog").get()
+        db.collection("catalogs").document("objectCatalog").get(Source.SERVER)
 
-    private val transcribeInventoryToViewModel = Continuation<DocumentSnapshot, Unit> {
-        val inventory = it.result.toObject<ObjectCatalog>()
+    private val transcribeInventoryToViewModel = Continuation<DocumentSnapshot, Unit> { task ->
+        Log.d("TAG", "inventory retrieval isComplete: ${task.isComplete}")
+        Log.d("TAG","retrieval isFromCache: ${task.result.metadata.isFromCache}")
+        val inventory = task.result.toObject<ObjectCatalog>()
+        inventory?.foodItemList?.forEach {
+            Log.d("TAG", "raw foodItem.name: ${it.name}")
+            Log.d("TAG", "raw foodItem.isAvailable: ${it.isAvailable}")
+        }
         val availableItems = inventory?.foodItemList?.filter { foodItem ->
             foodItem.isAvailable!! && foodItem.numberAvailable!! > 0
         }
         foodItems.value = availableItems as MutableList<FoodItem>
+        foodItems.value!!.forEach {
+            Log.d("TAG", "newly updated foodItems.value.foodItem.name: ${it.name}")
+        }
     }
 
     private val getCategoriesFromFireStore =

@@ -69,7 +69,7 @@ class ManagerActivityViewModel : ViewModel() {
 
                 //replace old with new foodItem within the local catalog
                 catalog?.foodItemList!!.removeIf {
-                    it.name == updatedFoodItem.name
+                    it.itemID == updatedFoodItem.itemID
                 }
                 catalog.foodItemList!!.add(updatedFoodItem)
                 db.collection("catalogs").document("objectCatalog").set(catalog)

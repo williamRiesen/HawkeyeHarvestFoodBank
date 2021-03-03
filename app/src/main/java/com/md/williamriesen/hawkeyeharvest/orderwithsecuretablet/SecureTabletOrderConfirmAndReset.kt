@@ -56,6 +56,7 @@ class SecureTabletOrderConfirmAndReset : Fragment() {
                 Log.d("TAG","Now submitting...")
                 val navigationAction = R.id.action_secureTabletOrderConfirmAndReset_to_outOfStockAtConfirmFragment
                 viewModel.processOrder(requireView(),navigationAction)
+//                viewModel.prepareSelections(navigationAction)
             }
             false
 

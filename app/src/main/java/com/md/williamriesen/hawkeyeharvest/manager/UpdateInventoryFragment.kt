@@ -7,9 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.SearchView
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -50,6 +48,7 @@ class UpdateInventoryFragment : Fragment() {
             if (show) buttonNewItem.visibility = View.VISIBLE
             else buttonNewItem.visibility = View.INVISIBLE
         })
+
         val recyclerView = updateInventoryView.findViewById<RecyclerView>(R.id.recyclerviewInventoryForUpdate)
         setUpRecyclerView(viewModel.itemsToInventoryList, recyclerView)
         val actionButton = updateInventoryView.findViewById<FloatingActionButton>(R.id.floatingActionButton)
