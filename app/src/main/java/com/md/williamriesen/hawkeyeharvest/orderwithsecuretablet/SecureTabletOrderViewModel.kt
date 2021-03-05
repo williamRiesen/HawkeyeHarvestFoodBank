@@ -97,14 +97,14 @@ class SecureTabletOrderViewModel : ViewModel() {
                         navigateToAlreadyOrderedMessage()
                     } else {
                         Log.d("TAG", "not ordered already.")
-                        prepareSelections(R.id.action_secureTabletOrderStartFragment_to_outOfStockFragment3)
+                        prepareSelections(view!!, R.id.action_secureTabletOrderStartFragment_to_outOfStockFragment3)
                     }
                 }
             }
             .addOnFailureListener { toast("Go routine failed: $it") }
     }
 
-    fun prepareSelections(navigationAction: Int) {
+    fun prepareSelections(viewArg: View, navigationAction: Int) {
         Log.d("TAG", "account.accountID: ${account.accountID}")
         getInventoryFromFirestore
             .continueWith(transcribeInventoryToViewModel)
@@ -129,13 +129,13 @@ class SecureTabletOrderViewModel : ViewModel() {
                 if (outOfStockItems.value.isNullOrEmpty()) {
                     navigateToSelectionFragment()
                 } else
-                    askClientForAlternativeChoices(navigationAction)
+                    askClientForAlternativeChoices(viewArg, navigationAction)
             }
     }
 
     fun processOrder(viewArg: View, navigationAction: Int) {
         Log.d("TAG", "account.accountID: ${account.accountID}")
-        getInventoryFromFirestore
+        db.collection("catalogs").document("objectCatalog").get(Source.SERVER)
             .continueWith(transcribeInventoryToViewModel)
             .continueWithTask { getCategoriesFromFireStore }
             .continueWith(insertCategoriesIntoFoodListAndSort)
@@ -157,7 +157,7 @@ class SecureTabletOrderViewModel : ViewModel() {
                 if (outOfStockItems.value.isNullOrEmpty()) {
                     submit(retrievedOrder!!)
                 } else
-                    askClientForAlternativeChoices(navigationAction)
+                    askClientForAlternativeChoices(viewArg, navigationAction)
             }
             .addOnFailureListener {
                 toast("Process order failed: $it")
@@ -278,8 +278,8 @@ class SecureTabletOrderViewModel : ViewModel() {
         }!!.pointsUsed -= foodItem.qtyOrdered
     }
 
-    private fun askClientForAlternativeChoices(navigationAction: Int) {
-        Navigation.findNavController(view!!)
+    private fun askClientForAlternativeChoices(viewArg: View, navigationAction: Int) {
+        Navigation.findNavController(viewArg!!)
             .navigate(navigationAction)
     }
 
@@ -338,8 +338,8 @@ class SecureTabletOrderViewModel : ViewModel() {
     }
 
 
-
-
+    private val recheckInventoryFromFirestore =
+          db.collection("catalogs").document("objectCatalog").get(Source.SERVER)
 
     private val getInventoryFromFirestore =
         db.collection("catalogs").document("objectCatalog").get(Source.SERVER)
