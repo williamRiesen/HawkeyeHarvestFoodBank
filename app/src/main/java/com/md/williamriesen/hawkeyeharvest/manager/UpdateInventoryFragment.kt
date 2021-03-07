@@ -2,7 +2,6 @@ package com.md.williamriesen.hawkeyeharvest.manager
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,8 +18,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.foodbank.FoodItem
-import kotlinx.android.synthetic.main.activity_secure_tablet_order.*
-import kotlinx.android.synthetic.main.fragment_update_inventory.*
 
 
 class UpdateInventoryFragment : Fragment() {
@@ -33,7 +30,7 @@ class UpdateInventoryFragment : Fragment() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this.requireActivity())
             .get(ManagerActivityViewModel::class.java)
-        viewModel.itemsToInventoryList.observe(this, Observer { adapterFood.notifyDataSetChanged() })
+        viewModel.itemsToInventory.observe(this, Observer { adapterFood.notifyDataSetChanged() })
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -50,7 +47,7 @@ class UpdateInventoryFragment : Fragment() {
         })
 
         val recyclerView = updateInventoryView.findViewById<RecyclerView>(R.id.recyclerviewInventoryForUpdate)
-        setUpRecyclerView(viewModel.itemsToInventoryList, recyclerView)
+        setUpRecyclerView(viewModel.itemsToInventory, recyclerView)
         val actionButton = updateInventoryView.findViewById<FloatingActionButton>(R.id.floatingActionButton)
         actionButton.setOnClickListener {
             val foodItem = FoodItem (

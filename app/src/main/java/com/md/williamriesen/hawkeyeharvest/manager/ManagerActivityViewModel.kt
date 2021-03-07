@@ -7,7 +7,6 @@ import android.os.Build
 import android.text.Editable
 import android.util.Log
 import android.view.View
-import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -27,14 +26,13 @@ class ManagerActivityViewModel : ViewModel() {
     var searchString = ""
     var showNewItemButton: MutableLiveData<Boolean> = MutableLiveData(false)
     var pleaseWait = MutableLiveData<Boolean>(false)
-    var itemsToInventoryList = MutableLiveData<MutableList<FoodItem>>()
-    var filteredInventoryList = MutableLiveData<MutableList<FoodItem>>(mutableListOf())
+    var itemsToInventory = MutableLiveData<MutableList<FoodItem>>(mutableListOf())
+//    var filteredInventoryList = MutableLiveData<MutableList<FoodItem>>(mutableListOf())
     var preliminaryItemList = mutableListOf<FoodItem>()
     lateinit var categoriesList: MutableList<Category>
 
-    @RequiresApi(Build.VERSION_CODES.N)
     fun updateNumberAvailable(itemName: String, numberAvailable: Editable?, context: Context) {
-        val myList = itemsToInventoryList.value
+        val myList = itemsToInventory.value
         val thisItem = myList?.find { foodItem ->
             foodItem.name == itemName
         }
@@ -45,9 +43,19 @@ class ManagerActivityViewModel : ViewModel() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
+    fun updateSpecial(itemID: Int, special: Boolean, context: Context){
+        val thisItem = itemsToInventory.value?.find { foodItem ->
+            foodItem.itemID == itemID
+        }
+        if (thisItem != null) {
+            thisItem.special = special
+            updateFoodItem(thisItem, context)
+        }
+    }
+
+
     fun toggleIsAvailableStatus(itemName: String, context: Context) {
-        val myList = itemsToInventoryList.value
+        val myList = itemsToInventory.value
         val thisItem = myList?.find { item ->
             item.name == itemName
         }
@@ -58,7 +66,7 @@ class ManagerActivityViewModel : ViewModel() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
+
     fun updateFoodItem(updatedFoodItem: FoodItem, context: Context) {
         //retrieve latest catalog (may have been updated by others since last read)
         val db = FirebaseFirestore.getInstance()
@@ -80,7 +88,7 @@ class ManagerActivityViewModel : ViewModel() {
     }
 
     private fun getNextFoodItemNumber(): Int {
-        val max = itemsToInventoryList.value?.maxBy { foodItem ->
+        val max = itemsToInventory.value?.maxBy { foodItem ->
             foodItem.itemID!!
         }
         return max!!.itemID!! + 1
@@ -106,8 +114,8 @@ class ManagerActivityViewModel : ViewModel() {
                 preliminaryItemList.sortWith(
                     compareBy<FoodItem> { it.categoryId }.thenBy { it.itemID }
                 )
-                itemsToInventoryList.value = preliminaryItemList
-                filteredInventoryList = itemsToInventoryList
+                itemsToInventory.value = preliminaryItemList
+//                filteredInventoryList = itemsToInventoryList
 
 
                 val progressBar = fragment.view?.findViewById<ProgressBar>(R.id.progressBar2)
@@ -119,7 +127,7 @@ class ManagerActivityViewModel : ViewModel() {
     }
 
     fun submitUpdatedInventory(context: Context) {
-        val foodItemListWithoutHeadings = itemsToInventoryList.value?.filter { foodItem ->
+        val foodItemListWithoutHeadings = itemsToInventory.value?.filter { foodItem ->
             foodItem.name != foodItem.category
         }
         val newObjectCatalog = ObjectCatalog()
@@ -158,7 +166,7 @@ class ManagerActivityViewModel : ViewModel() {
                 0
             )
             Log.d("TAG", "heading: $heading")
-            Log.d("TAG", "itemsToInventory.value: ${itemsToInventoryList.value}")
+            Log.d("TAG", "itemsToInventory.value: ${itemsToInventory.value}")
             preliminaryItemList.add(heading)
 //            itemsToInventoryList.value!!.add(heading)
         }
@@ -251,8 +259,8 @@ class ManagerActivityViewModel : ViewModel() {
                 true,
                 getCategoryId(category)
             )
-            itemsToInventoryList.value!!.add(foodItem)
-            itemsToInventoryList.value!!.sortWith(
+            itemsToInventory.value!!.add(foodItem)
+            itemsToInventory.value!!.sortWith(
                 compareBy<FoodItem> { it.categoryId }.thenBy { it.itemID }
             )
             submitUpdatedInventory(context)

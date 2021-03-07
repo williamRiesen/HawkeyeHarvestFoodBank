@@ -1,45 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
+    android:id="@+id/itemViewLinearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/fragmentBackground">
+    android:foregroundTintMode="add"
+    android:orientation="vertical">
 
-    <CheckBox
-        android:id="@+id/checkBoxIsAvailable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/headerContraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/textview_item_to_inventory_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/fragmentBackground"
-        android:gravity="right|left|center_vertical"
-        android:text="@string/item_name"
-        android:textColor="@color/plainText"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/textview_item_to_inventory_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/fragmentBackground"
+            android:gravity="right|left|center_vertical"
+            android:text="@string/item_name"
+            android:textColor="@color/plainText"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toStartOf="@+id/checkBoxIsAvailable"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <CheckBox
+            android:id="@+id/checkBoxIsAvailable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textview_item_to_inventory_name"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <LinearLayout
         android:id="@+id/expansionSection"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
+        android:visibility="gone">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/expansionConstraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <CheckBox
+                android:id="@+id/checkBoxSpecial"
+                style="?android:attr/starStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="8dp"
+                android:text="Special"
+                android:theme="@style/StarTheme"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/editTextPoints"
+                app:layout_constraintTop_toBottomOf="@+id/editTextEditName" />
 
             <TextView
                 android:id="@+id/textViewLimit"
@@ -49,13 +74,14 @@
                 android:layout_marginTop="8dp"
                 android:text="Limit:"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/editTextLimit" />
+                app:layout_constraintTop_toTopOf="@+id/editTextQtyLimit" />
 
             <EditText
-                android:id="@+id/editTextLimit"
+                android:id="@+id/editTextQtyLimit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:background="@color/fragmentBackground"
                 android:ems="3"
                 android:gravity="center"
                 android:inputType="number"
@@ -86,6 +112,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:background="@color/fragmentBackground"
                 app:layout_constraintStart_toStartOf="@+id/editTextEditName"
                 app:layout_constraintTop_toBottomOf="@+id/editTextEditName" />
 
@@ -94,12 +121,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:background="@color/fragmentBackground"
                 android:ems="3"
                 android:gravity="center"
                 android:inputType="number"
                 android:textColor="@color/plainText"
-                app:layout_constraintStart_toStartOf="@+id/editTextLimit"
-                app:layout_constraintTop_toBottomOf="@+id/editTextLimit" />
+                app:layout_constraintStart_toStartOf="@+id/editTextQtyLimit"
+                app:layout_constraintTop_toBottomOf="@+id/editTextQtyLimit" />
 
             <TextView
                 android:id="@+id/textViewNumberAvail"
@@ -117,7 +145,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
                 android:text="Edit Name:"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/editTextEditName" />
@@ -127,7 +154,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="100dp"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/fragmentBackground"
                 android:ellipsize="end"
                 android:ems="10"
                 android:inputType="textPersonName"
@@ -141,6 +169,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
+                android:background="@color/fragmentBackground"
                 android:ems="3"
                 android:gravity="center"
                 android:inputType="number"
@@ -155,9 +184,11 @@
                 android:text="ItemID"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/spinnerCategory2" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
+</LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+

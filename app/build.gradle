@@ -10,7 +10,7 @@ android {
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.md.williamriesen.hawkeyeharvest"
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion 29
         versionCode 4
         versionName "4"
@@ -38,6 +38,7 @@ android {
         jvmTarget = "1.8"
     }
 }
+
 
 dependencies {
     implementation 'com.firebaseui:firebase-ui-firestore:6.3.0'

@@ -14,10 +14,12 @@ class FoodItem() {
     var categoryPointsUsed: Int = 0
     var packed: Boolean = false
     var isExpanded = false
+    var special = false
 
     constructor(itemID: Int, name: String, category: String, pointValue: Int,
                 limit: Int, numberAvailable: Int, isAvailable: Boolean, categoryId: Int,
-                categoryPointsAllocated: Int =0 , categoryPointsUsed: Int = 0
+                categoryPointsAllocated: Int =0 , categoryPointsUsed: Int = 0,
+                special: Boolean = false
     ) : this() {
         this.itemID = itemID
         this.name = name
@@ -29,6 +31,7 @@ class FoodItem() {
         this.categoryId = categoryId
         this.categoryPointsAllocated = categoryPointsAllocated
         this.categoryPointsUsed = categoryPointsUsed
+        this.special = special
     }
 
     fun isFoundIn(list: List<FoodItem>): Boolean{
