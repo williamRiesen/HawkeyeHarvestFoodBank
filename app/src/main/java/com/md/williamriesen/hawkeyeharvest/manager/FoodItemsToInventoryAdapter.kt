@@ -2,21 +2,18 @@ package com.md.williamriesen.hawkeyeharvest.manager
 
 import android.content.Context
 import android.graphics.Color
-import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.annotation.RequiresApi
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.foodbank.FoodItem
-import kotlinx.android.synthetic.main.fragment_new_food_item.view.*
-import kotlinx.android.synthetic.main.item_to_update_inventory.view.*
 import java.util.*
 
 
@@ -37,11 +34,12 @@ class FoodItemsToInventoryAdapter(
         var editTextLimit: EditText = view.findViewById(R.id.editTextQtyLimit)
         var editTextPoints: EditText = view.findViewById(R.id.editTextPoints)
         var spinnerCategory: Spinner = view.findViewById(R.id.spinnerCategory2)
-
         var textViewItemID: TextView = view.findViewById(R.id.textViewItemID)
         var expansionSection: LinearLayout = view.findViewById(R.id.expansionSection)
         var editTextEditName: EditText = view.findViewById(R.id.editTextEditName)
-        var itemViewLinearLayout: LinearLayout = view.findViewById(R.id.itemViewLinearLayout)
+        var buttonUpdate: Button = view.findViewById(R.id.buttonUpdate)
+        var buttonCancel: Button = view.findViewById(R.id.buttonCancel)
+        var spinListenerHasFiredPreviously = false
 
 
         init {
@@ -50,32 +48,72 @@ class FoodItemsToInventoryAdapter(
                 R.array.categories_array,
                 android.R.layout.simple_spinner_item
             )
+
+
             val editTextInventoryUpdater = View.OnFocusChangeListener { view, hasFocus ->
+                Log.d("TAG", "$view hasFocus $hasFocus isDirty ${view.isDirty}")
                 if (!hasFocus) {
 //                    updateInventory(assembleEditedItem(), view.context)
                 }
             }
+
+
             editTextEditName.onFocusChangeListener = editTextInventoryUpdater
             editTextNumberAvailable.onFocusChangeListener = editTextInventoryUpdater
             editTextLimit.onFocusChangeListener = editTextInventoryUpdater
             editTextPoints.onFocusChangeListener = editTextInventoryUpdater
 
-            val checkBoxInventoryUpdater = CompoundButton.OnCheckedChangeListener { checkBoxView, _ ->
+
+            val checkBoxInventoryUpdater =
+                CompoundButton.OnCheckedChangeListener { checkBoxView, _ ->
 //                updateInventory(assembleEditedItem(), checkBoxView.context)
-            }
+                }
             checkBoxIsAvailable.setOnCheckedChangeListener(checkBoxInventoryUpdater)
             checkBoxSpecial.setOnCheckedChangeListener(checkBoxInventoryUpdater)
 
-            val spinListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-//                    updateInventory(assembleEditedItem(), view!!.context)
-                }
 
-                override fun onNothingSelected(parent: AdapterView<*>?) {
+
+
+            itemView.setOnFocusChangeListener { view, hasFocus ->
+                Log.d("TAG", "itemView onFocusChange fired.  hasFocus: $hasFocus")
+            }
+        }
+
+        val spinListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                if (spinListenerHasFiredPreviously) {
+                    showUpdateCancelButtons(position)
+
+                } else {
+                    spinListenerHasFiredPreviously = true
                 }
             }
-            spinnerCategory.onItemSelectedListener = spinListener
 
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        }
+
+        fun showUpdateCancelButtons(position: Int) {
+            buttonUpdate.visibility = View.VISIBLE
+            buttonUpdate.setOnClickListener {
+                updateInventory(assembleEditedItem(), it.context)
+            }
+            buttonCancel.visibility = View.VISIBLE
+            buttonCancel.setOnClickListener {
+                collapseWithoutSaving(position)
+            }
+        }
+
+        private fun collapseWithoutSaving(position: Int) {
+            buttonUpdate.visibility = View.INVISIBLE
+            buttonCancel.visibility = View.INVISIBLE
+            viewModel.itemsToInventory.value!![position].isExpanded = false
+            notifyItemChanged(position)
         }
 
         fun assembleEditedItem(): FoodItem {
@@ -98,7 +136,7 @@ class FoodItemsToInventoryAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val v = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_to_update_inventory, parent, false)
+            .inflate(R.layout.item_to_update_inventory, parent, false)
 
 
         return MyViewHolder(v)
@@ -106,47 +144,70 @@ class FoodItemsToInventoryAdapter(
 
 
     private fun updateInventory(foodItem: FoodItem, context: Context) {
+
         viewModel.itemsToInventory.value?.removeIf {
             foodItem.itemID == it.itemID
         }
         viewModel.itemsToInventory.value!!.add(foodItem)
+        viewModel.itemsToInventory.value!!.sortWith(
+            compareBy<FoodItem> { it.categoryId }.thenBy { it.itemID }
+        )
         viewModel.submitUpdatedInventory(context)
     }
+
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
         holder.textViewItemToInventoryName.setOnClickListener {
-            Log.d("TAG","onClickListener fired. Position: $position")
-            Log.d("TAG","initial expanded status: ${viewModel.itemsToInventory.value!![position].isExpanded}")
-//        holder.itemView.setOnClickListener {
             viewModel.itemsToInventory.value!![position].isExpanded =
                 !viewModel.itemsToInventory.value!![position].isExpanded
-            Log.d("TAG","final expanded status: ${viewModel.itemsToInventory.value!![position].isExpanded}")
             notifyItemChanged(position)
         }
-        if (viewModel.itemsToInventory.value!![position].isExpanded) {
-            holder.expansionSection.visibility = View.VISIBLE
-        } else {
-            holder.expansionSection.visibility = View.GONE
-        }
-
-        holder.textViewItemID.text =
-            viewModel.itemsToInventory.value!![position].itemID.toString()
 
         holder.textViewItemToInventoryName.text =
             viewModel.itemsToInventory.value!![position].name
 
-
-
-        holder.editTextEditName.setText(viewModel.itemsToInventory.value!![position].name!!.toString())
-        holder.editTextNumberAvailable.setText(viewModel.itemsToInventory.value!![position].numberAvailable!!.toString())
-        holder.editTextLimit.setText(viewModel.itemsToInventory.value!![position].limit!!.toString())
-        holder.editTextPoints.setText(viewModel.itemsToInventory.value!![position].pointValue!!.toString())
         holder.checkBoxIsAvailable.isChecked =
             viewModel.itemsToInventory.value!![position].isAvailable!!
-        holder.checkBoxSpecial.isChecked =
-            viewModel.itemsToInventory.value!![position].special
-        holder.spinnerCategory.setSelection( viewModel.itemsToInventory.value!![position].categoryId - 1)
+
+        if (viewModel.itemsToInventory.value!![position].isExpanded) {
+            holder.expansionSection.visibility = View.VISIBLE
+
+            holder.editTextEditName.setText(viewModel.itemsToInventory.value!![position].name!!.toString())
+            holder.editTextEditName.addTextChangedListener { holder.showUpdateCancelButtons(position) }
+
+            holder.editTextNumberAvailable.setText(viewModel.itemsToInventory.value!![position].numberAvailable!!.toString())
+            holder.editTextNumberAvailable.addTextChangedListener {
+                holder.showUpdateCancelButtons(
+                    position
+                )
+            }
+
+            holder.editTextLimit.setText(viewModel.itemsToInventory.value!![position].limit!!.toString())
+            holder.editTextLimit.addTextChangedListener { holder.showUpdateCancelButtons(position) }
+
+            holder.editTextPoints.setText(viewModel.itemsToInventory.value!![position].pointValue!!.toString())
+            holder.editTextPoints.addTextChangedListener { holder.showUpdateCancelButtons(position) }
+
+            holder.textViewItemID.text =
+                viewModel.itemsToInventory.value!![position].itemID.toString()
+
+            holder.checkBoxSpecial.isChecked =
+                viewModel.itemsToInventory.value!![position].special
+            holder.checkBoxSpecial.setOnCheckedChangeListener { _, _ ->
+                holder.showUpdateCancelButtons(
+                    position
+                )
+            }
+
+            holder.spinnerCategory.setSelection(viewModel.itemsToInventory.value!![position].categoryId - 1)
+            holder.spinnerCategory.onItemSelectedListener = holder.spinListener
+
+
+        } else {
+            holder.expansionSection.visibility = View.GONE
+        }
+
 
         val isCategory =
             viewModel.itemsToInventory.value!![position].name ==

@@ -18,6 +18,7 @@
             android:id="@+id/textview_item_to_inventory_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:background="@color/fragmentBackground"
             android:gravity="right|left|center_vertical"
             android:text="@string/item_name"
@@ -45,13 +46,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/expansionConstraintLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp">
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/custom_gray_box"
+            android:paddingBottom="8dp">
+
+            <Button
+                android:id="@+id/buttonUpdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#4461FF"
+                android:text="Update"
+                android:textColor="@color/largeNumbersForeground"
+                android:textSize="11sp"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/buttonCancel"
+                app:layout_constraintTop_toTopOf="@+id/buttonCancel" />
 
             <CheckBox
                 android:id="@+id/checkBoxSpecial"
@@ -61,17 +80,16 @@
                 android:paddingEnd="8dp"
                 android:text="Special"
                 android:theme="@style/StarTheme"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.29"
                 app:layout_constraintStart_toEndOf="@+id/editTextPoints"
-                app:layout_constraintTop_toBottomOf="@+id/editTextEditName" />
+                app:layout_constraintTop_toTopOf="@+id/editTextPoints" />
 
             <TextView
                 android:id="@+id/textViewLimit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
                 android:text="Limit:"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/editTextQtyLimit" />
@@ -93,7 +111,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
                 android:text="Points:"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/editTextPoints" />
@@ -131,12 +148,10 @@
 
             <TextView
                 android:id="@+id/textViewNumberAvail"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="59dp"
+                android:layout_height="39dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
                 android:text="Number Avail:"
-                app:layout_constraintEnd_toStartOf="@+id/editTextNumberAvailable"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/editTextNumberAvailable" />
 
@@ -167,13 +182,12 @@
                 android:id="@+id/editTextPoints"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:background="@color/fragmentBackground"
                 android:ems="3"
                 android:gravity="center"
                 android:inputType="number"
-                app:layout_constraintStart_toStartOf="@+id/spinnerCategory2"
+                app:layout_constraintStart_toStartOf="@+id/editTextEditName"
                 app:layout_constraintTop_toBottomOf="@+id/spinnerCategory2" />
 
             <TextView
@@ -184,6 +198,20 @@
                 android:text="ItemID"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/spinnerCategory2" />
+
+            <Button
+                android:id="@+id/buttonCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Cancel"
+                android:textSize="11sp"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toStartOf="@+id/buttonUpdate"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@+id/editTextNumberAvailable"
+                app:layout_constraintTop_toTopOf="@+id/editTextQtyLimit" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

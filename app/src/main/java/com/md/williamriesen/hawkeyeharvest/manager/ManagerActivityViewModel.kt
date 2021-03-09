@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
+import com.google.gson.Gson
 import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.foodbank.*
 import com.md.williamriesen.hawkeyeharvest.orderwithsecuretablet.SecureTabletOrderActivity
@@ -132,11 +133,12 @@ class ManagerActivityViewModel : ViewModel() {
         }
         val newObjectCatalog = ObjectCatalog()
         newObjectCatalog.foodItemList = foodItemListWithoutHeadings as MutableList<FoodItem>?
-        val db = FirebaseFirestore.getInstance()
-        db.collection("catalogs").document("objectCatalog").set(newObjectCatalog)
-            .addOnSuccessListener {
-                Toast.makeText(context, "Inventory Updated.", Toast.LENGTH_LONG).show()
-            }
+        Log.d("TAG", "updated foodItem: ${Gson().toJson(newObjectCatalog.foodItemList)}")
+//        val db = FirebaseFirestore.getInstance()
+//        db.collection("catalogs").document("objectCatalog").set(newObjectCatalog)
+//            .addOnSuccessListener {
+//                Toast.makeText(context, "Inventory Updated.", Toast.LENGTH_LONG).show()
+//            }
     }
 
     fun retrieveCategoriesFromFireStore(fragment: UpdateInventoryFragment) {
