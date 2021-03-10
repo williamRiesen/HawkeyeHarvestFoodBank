@@ -15,6 +15,7 @@ class FoodItem() {
     var packed: Boolean = false
     var isExpanded = false
     var special = false
+    var edited = false
 
     constructor(itemID: Int, name: String, category: String, pointValue: Int,
                 limit: Int, numberAvailable: Int, isAvailable: Boolean, categoryId: Int,

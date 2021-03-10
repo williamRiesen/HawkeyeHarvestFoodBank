@@ -87,7 +87,8 @@ class FoodItemsToInventoryAdapter(
                 id: Long
             ) {
                 if (spinListenerHasFiredPreviously) {
-                    showUpdateCancelButtons(position)
+                    buttonCancel.visibility = View.VISIBLE
+                    buttonUpdate.visibility = View.VISIBLE
 
                 } else {
                     spinListenerHasFiredPreviously = true
@@ -98,23 +99,23 @@ class FoodItemsToInventoryAdapter(
             }
         }
 
-        fun showUpdateCancelButtons(position: Int) {
-            buttonUpdate.visibility = View.VISIBLE
-            buttonUpdate.setOnClickListener {
-                updateInventory(assembleEditedItem(), it.context)
-            }
-            buttonCancel.visibility = View.VISIBLE
-            buttonCancel.setOnClickListener {
-                collapseWithoutSaving(position)
-            }
-        }
+//        fun showUpdateCancelButtons(position: Int) {
+//            viewModel.itemsToInventory.value!![position].edited = true
+//            buttonUpdate.setOnClickListener {
+//                updateInventory(assembleEditedItem(), it.context)
+//            }
+//            buttonCancel.setOnClickListener {
+//                collapseWithoutSaving(position)
+//            }
+//            notifyItemChanged(position)
+//        }
 
-        private fun collapseWithoutSaving(position: Int) {
-            buttonUpdate.visibility = View.INVISIBLE
-            buttonCancel.visibility = View.INVISIBLE
-            viewModel.itemsToInventory.value!![position].isExpanded = false
-            notifyItemChanged(position)
-        }
+//        fun collapseWithoutSaving(position: Int) {
+////            viewModel.itemsToInventory.value!![position].edited = false
+//            viewModel.itemsToInventory.value!![position].isExpanded = false
+//            spinListenerHasFiredPreviously = false
+//            notifyItemChanged(position)
+//        }
 
         fun assembleEditedItem(): FoodItem {
             return FoodItem(
@@ -158,6 +159,7 @@ class FoodItemsToInventoryAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
+
         holder.textViewItemToInventoryName.setOnClickListener {
             viewModel.itemsToInventory.value!![position].isExpanded =
                 !viewModel.itemsToInventory.value!![position].isExpanded
@@ -173,35 +175,63 @@ class FoodItemsToInventoryAdapter(
         if (viewModel.itemsToInventory.value!![position].isExpanded) {
             holder.expansionSection.visibility = View.VISIBLE
 
+
             holder.editTextEditName.setText(viewModel.itemsToInventory.value!![position].name!!.toString())
-            holder.editTextEditName.addTextChangedListener { holder.showUpdateCancelButtons(position) }
+            holder.editTextEditName.addTextChangedListener {
+                holder.buttonCancel.visibility = View.VISIBLE
+                holder.buttonUpdate.visibility = View.VISIBLE
+            }
 
             holder.editTextNumberAvailable.setText(viewModel.itemsToInventory.value!![position].numberAvailable!!.toString())
             holder.editTextNumberAvailable.addTextChangedListener {
-                holder.showUpdateCancelButtons(
-                    position
-                )
+                holder.buttonCancel.visibility = View.VISIBLE
+                holder.buttonUpdate.visibility = View.VISIBLE
             }
 
             holder.editTextLimit.setText(viewModel.itemsToInventory.value!![position].limit!!.toString())
-            holder.editTextLimit.addTextChangedListener { holder.showUpdateCancelButtons(position) }
+            holder.editTextLimit.addTextChangedListener {
+                holder.buttonCancel.visibility = View.VISIBLE
+                holder.buttonUpdate.visibility = View.VISIBLE
+            }
 
             holder.editTextPoints.setText(viewModel.itemsToInventory.value!![position].pointValue!!.toString())
-            holder.editTextPoints.addTextChangedListener { holder.showUpdateCancelButtons(position) }
+            holder.editTextPoints.addTextChangedListener {
+                holder.buttonCancel.visibility = View.VISIBLE
+                holder.buttonUpdate.visibility = View.VISIBLE
+            }
 
             holder.textViewItemID.text =
                 viewModel.itemsToInventory.value!![position].itemID.toString()
 
             holder.checkBoxSpecial.isChecked =
                 viewModel.itemsToInventory.value!![position].special
+
+
             holder.checkBoxSpecial.setOnCheckedChangeListener { _, _ ->
-                holder.showUpdateCancelButtons(
-                    position
-                )
+                holder.buttonCancel.visibility = View.VISIBLE
+                holder.buttonUpdate.visibility = View.VISIBLE
+            }
+
+            holder.buttonCancel.setOnClickListener {
+                holder.buttonUpdate.visibility = View.INVISIBLE
+                holder.buttonCancel.visibility = View.INVISIBLE
+                viewModel.itemsToInventory.value!![position].isExpanded = false
+                holder.spinListenerHasFiredPreviously = false
+                notifyItemChanged(position)
+            }
+
+            holder.buttonUpdate.setOnClickListener {
+                updateInventory(holder.assembleEditedItem(), it.context)
+                viewModel.itemsToInventory.value!![position].isExpanded = false
+                holder.spinListenerHasFiredPreviously = false
+                notifyItemChanged(position)
             }
 
             holder.spinnerCategory.setSelection(viewModel.itemsToInventory.value!![position].categoryId - 1)
             holder.spinnerCategory.onItemSelectedListener = holder.spinListener
+
+            holder.buttonUpdate.visibility = View.INVISIBLE
+            holder.buttonCancel.visibility = View.INVISIBLE
 
 
         } else {
