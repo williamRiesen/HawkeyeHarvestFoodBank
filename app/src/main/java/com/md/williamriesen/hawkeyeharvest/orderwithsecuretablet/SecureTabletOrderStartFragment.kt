@@ -59,6 +59,7 @@ class SecureTabletOrderStartFragment : Fragment() {
         }
 
         buttonGo.setOnClickListener {
+            hideKeyboard()
             val accountNumber = editTextAccountNumber.text.toString().toIntOrNull()
             if (accountNumber != null) {
                 viewModel.go(
