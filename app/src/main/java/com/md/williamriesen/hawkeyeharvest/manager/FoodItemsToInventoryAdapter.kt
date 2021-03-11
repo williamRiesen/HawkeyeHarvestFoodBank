@@ -64,12 +64,16 @@ class FoodItemsToInventoryAdapter(
             editTextPoints.onFocusChangeListener = editTextInventoryUpdater
 
 
-            val checkBoxInventoryUpdater =
-                CompoundButton.OnCheckedChangeListener { checkBoxView, _ ->
-//                updateInventory(assembleEditedItem(), checkBoxView.context)
-                }
-            checkBoxIsAvailable.setOnCheckedChangeListener(checkBoxInventoryUpdater)
-            checkBoxSpecial.setOnCheckedChangeListener(checkBoxInventoryUpdater)
+//            val checkBoxInventoryUpdater =
+//                CompoundButton.OnCheckedChangeListener { checkBoxView, _ ->
+////                updateInventory(assembleEditedItem(), checkBoxView.context)
+//                }
+            checkBoxIsAvailable.setOnCheckedChangeListener { checkBoxView, isChecked ->
+
+            }
+
+//            (checkBoxInventoryUpdater)
+//            checkBoxSpecial.setOnCheckedChangeListener(checkBoxInventoryUpdater)
 
 
 

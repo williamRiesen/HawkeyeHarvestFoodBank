@@ -122,5 +122,26 @@
         app:layout_constraintStart_toEndOf="@+id/textViewPointsUsed"
         app:layout_constraintTop_toBottomOf="@+id/textView_count" />
 
+    <ImageView
+        android:id="@+id/imageViewSpecialStar"
+        android:layout_width="41dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButtonRemove"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageButtonRemove"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_baseline_star_24" />
+
+    <TextView
+        android:id="@+id/textViewBonus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BONUS!"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_count"
+        app:layout_constraintEnd_toStartOf="@+id/imageButtonRemove"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toEndOf="@+id/imageViewSpecialStar"
+        app:layout_constraintTop_toBottomOf="@+id/textview_item_name" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

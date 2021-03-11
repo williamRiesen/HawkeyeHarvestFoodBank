@@ -60,22 +60,18 @@
         android:id="@+id/textViewPrompt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:text="To start the ordering process, enter client account number:"
+        android:layout_marginStart="28dp"
+        android:text="Account number:"
         android:textColor="@color/plainText"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewLogoVolunteer" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextAccountNumber" />
 
     <EditText
         android:id="@+id/editTextAccountNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:gravity="right"
         android:inputType="number"
         android:maxLength="4"
@@ -84,7 +80,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.18"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPrompt" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewLogoVolunteer" />
 
     <Button
         android:id="@+id/buttonGo"
@@ -99,57 +95,29 @@
         android:id="@+id/buttonNewAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="New Account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.204"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAccountNumber" />
-
-    <TextView
-        android:id="@+id/textViewInventoryLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:text="Functions below for TRAINED PERSONNEL ONLY"
-        android:textColor="@color/plainText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.473"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonNewAccount" />
+        app:layout_constraintTop_toTopOf="@+id/buttonInventory" />
 
     <Button
         android:id="@+id/buttonInventory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:text="Inventory"
-        app:layout_constraintEnd_toStartOf="@+id/buttonEditAccount"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewInventoryLabel" />
-
-    <Button
-        android:id="@+id/buttonCreateMonthReport"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Create Report"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buttonEditAccount"
-        app:layout_constraintTop_toTopOf="@+id/buttonInventory" />
+        app:layout_constraintStart_toStartOf="@+id/buttonEditAccount"
+        app:layout_constraintTop_toBottomOf="@+id/buttonEditAccount" />
 
     <Button
         android:id="@+id/buttonEditAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Edit Account"
-        app:layout_constraintEnd_toStartOf="@+id/buttonCreateMonthReport"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buttonInventory"
-        app:layout_constraintTop_toTopOf="@+id/buttonInventory" />
+        app:layout_constraintStart_toStartOf="@+id/buttonReset"
+        app:layout_constraintTop_toBottomOf="@+id/buttonReset" />
 
     <Button
         android:id="@+id/buttonReset"
@@ -170,4 +138,14 @@
         app:layout_constraintEnd_toEndOf="@+id/buttonGo"
         app:layout_constraintStart_toStartOf="@+id/buttonGo"
         app:layout_constraintTop_toBottomOf="@+id/buttonGo" />
+
+    <Button
+        android:id="@+id/buttonCreateMonthReport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonRunNumberUpdate" />
 </androidx.constraintlayout.widget.ConstraintLayout>

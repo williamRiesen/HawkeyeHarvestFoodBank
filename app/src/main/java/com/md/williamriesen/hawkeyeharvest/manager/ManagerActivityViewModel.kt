@@ -134,11 +134,11 @@ class ManagerActivityViewModel : ViewModel() {
         val newObjectCatalog = ObjectCatalog()
         newObjectCatalog.foodItemList = foodItemListWithoutHeadings as MutableList<FoodItem>?
         Log.d("TAG", "updated foodItem: ${Gson().toJson(newObjectCatalog.foodItemList)}")
-//        val db = FirebaseFirestore.getInstance()
-//        db.collection("catalogs").document("objectCatalog").set(newObjectCatalog)
-//            .addOnSuccessListener {
-//                Toast.makeText(context, "Inventory Updated.", Toast.LENGTH_LONG).show()
-//            }
+        val db = FirebaseFirestore.getInstance()
+        db.collection("catalogs").document("objectCatalog").set(newObjectCatalog)
+            .addOnSuccessListener {
+                Toast.makeText(context, "Inventory Updated.", Toast.LENGTH_LONG).show()
+            }
     }
 
     fun retrieveCategoriesFromFireStore(fragment: UpdateInventoryFragment) {

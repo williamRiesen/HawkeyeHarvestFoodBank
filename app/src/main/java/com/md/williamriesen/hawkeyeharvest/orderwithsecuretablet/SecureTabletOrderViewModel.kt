@@ -106,7 +106,7 @@ class SecureTabletOrderViewModel : ViewModel() {
 
     fun prepareSelections(viewArg: View, navigationAction: Int) {
         Log.d("TAG", "account.accountID: ${account.accountID}")
-        getInventoryFromFirestore
+        db.collection("catalogs").document("objectCatalog").get(Source.SERVER)
             .continueWith(transcribeInventoryToViewModel)
             .continueWithTask { getCategoriesFromFireStore }
             .continueWith(insertCategoriesIntoFoodListAndSort)
@@ -270,12 +270,14 @@ class SecureTabletOrderViewModel : ViewModel() {
 
 
     private fun refundPointsFor(foodItem: FoodItem) {
-        val categoryOfItem = foodItems.value?.find {
-            it.name == foodItem.name
-        }?.category
-        categories.value?.find { category ->
-            categoryOfItem == category.name
-        }!!.pointsUsed -= foodItem.qtyOrdered
+        if (!foodItem.special) {
+            val categoryOfItem = foodItems.value?.find {
+                it.name == foodItem.name
+            }?.category
+            categories.value?.find { category ->
+                categoryOfItem == category.name
+            }!!.pointsUsed -= foodItem.qtyOrdered
+        }
     }
 
     private fun askClientForAlternativeChoices(viewArg: View, navigationAction: Int) {
@@ -351,6 +353,7 @@ class SecureTabletOrderViewModel : ViewModel() {
         inventory?.foodItemList?.forEach {
             Log.d("TAG", "raw foodItem.name: ${it.name}")
             Log.d("TAG", "raw foodItem.isAvailable: ${it.isAvailable}")
+            Log.d("TAG", "raw foodItem.special: ${it.special}")
         }
         val availableItems = inventory?.foodItemList?.filter { foodItem ->
             foodItem.isAvailable!! && foodItem.numberAvailable!! > 0

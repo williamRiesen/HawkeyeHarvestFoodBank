@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
@@ -28,6 +29,8 @@ class SecureTabletOrderItemListAdapter(
         var textViewSelectedOf: TextView = view.findViewById(id.textViewSelectedOf)
         var textViewPointsUsed: TextView = view.findViewById(id.textViewPointsUsed)
         var textViewPointsAllocated: TextView = view.findViewById(id.textViewPointsAllocated)
+        var imageViewSpecialStar: ImageView = view.findViewById(id.imageViewSpecialStar)
+        var textViewBonus: TextView = view.findViewById(id.textViewBonus)
 
         init {
             imageButtonAdd.setOnClickListener {
@@ -43,26 +46,9 @@ class SecureTabletOrderItemListAdapter(
         val myList = foodItemList.value
         myList!![position].qtyOrdered = myList[position].qtyOrdered + 1
         foodItemList.value = myList
-        viewModel.points = viewModel.points?.minus(1)
-        val selectedCategory = myList[position].category
-        val viewModelCategory = viewModel.categories.value!!.find {
-            it.name == selectedCategory
-        }
-        viewModelCategory!!.pointsUsed =
-            viewModelCategory.pointsUsed + myList[position].pointValue!!
-        val categoryHeading = myList.find {
-            it.name == selectedCategory
-        }
-        categoryHeading!!.categoryPointsUsed =
-            categoryHeading.categoryPointsUsed + myList[position].pointValue!!
-    }
+        if (!foodItemList.value!![position].special) {
+            viewModel.points = viewModel.points?.minus(1)
 
-    fun decrementCountOfItem(position: Int) {
-        val myList = foodItemList.value
-        if (myList?.get(position)?.qtyOrdered!! > 0) {
-            myList[position].qtyOrdered = myList[position].qtyOrdered - 1
-            foodItemList.value = myList
-            viewModel.points = viewModel.points?.plus(1)
             val selectedCategory = myList[position].category
             val viewModelCategory = viewModel.categories.value!!.find {
                 it.name == selectedCategory
@@ -73,7 +59,29 @@ class SecureTabletOrderItemListAdapter(
                 it.name == selectedCategory
             }
             categoryHeading!!.categoryPointsUsed =
-                categoryHeading.categoryPointsUsed - myList[position].pointValue!!
+                categoryHeading.categoryPointsUsed + myList[position].pointValue!!
+        }
+    }
+
+    fun decrementCountOfItem(position: Int) {
+        val myList = foodItemList.value
+        if (myList?.get(position)?.qtyOrdered!! > 0) {
+            myList[position].qtyOrdered = myList[position].qtyOrdered - 1
+            foodItemList.value = myList
+            if (!foodItemList.value!![position].special) {
+                viewModel.points = viewModel.points?.plus(1)
+                val selectedCategory = myList[position].category
+                val viewModelCategory = viewModel.categories.value!!.find {
+                    it.name == selectedCategory
+                }
+                viewModelCategory!!.pointsUsed =
+                    viewModelCategory.pointsUsed + myList[position].pointValue!!
+                val categoryHeading = myList.find {
+                    it.name == selectedCategory
+                }
+                categoryHeading!!.categoryPointsUsed =
+                    categoryHeading.categoryPointsUsed - myList[position].pointValue!!
+            }
         }
     }
 
@@ -92,7 +100,8 @@ class SecureTabletOrderItemListAdapter(
         }!!.categoryPointsAllocated
         val pointsAvailable = pointsAllocated - pointsUsed
         val enoughPoints = (pointsAvailable >= pointsNeeded)
-        return enoughPoints && !atLimit
+        val special = foodItemList.value!![position].special
+        return (special || enoughPoints) && !atLimit
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -129,6 +138,11 @@ class SecureTabletOrderItemListAdapter(
                 } else {
                     holder.imageButtonRemove.visibility = View.VISIBLE
                 }
+                if (foodItemList.value?.get(position)!!.special){
+                    markAsSpecial(holder)
+                } else {
+                    markAsNotSpecial(holder)
+                }
                 holder.textViewItemName.text = foodItemList.value!![position].name
                 holder.textViewCount.text = foodItemList.value!![position].qtyOrdered.toString()
 
@@ -143,6 +157,8 @@ class SecureTabletOrderItemListAdapter(
 
 
     private fun formatAsCategory(holder: MyViewHolder) {
+        holder.imageViewSpecialStar.visibility = View.GONE
+        holder.textViewBonus.visibility = View.GONE
         holder.imageButtonRemove.visibility = View.GONE
         holder.imageButtonAdd.visibility = View.GONE
         holder.textViewCount.visibility = View.GONE
@@ -152,8 +168,28 @@ class SecureTabletOrderItemListAdapter(
         holder.textViewPointsAllocated.visibility = View.VISIBLE
         holder.textViewItemName.visibility = View.VISIBLE
         holder.textViewItemName.textSize = 32F
-        holder.textViewItemName.setTextColor(ContextCompat.getColor(holder.view.context, R.color.logoLimeGreen))
-        holder.textViewItemName.setBackgroundColor(ContextCompat.getColor(holder.view.context, R.color.colorAccent))
+        holder.textViewItemName.setTextColor(
+            ContextCompat.getColor(
+                holder.view.context,
+                R.color.logoLimeGreen
+            )
+        )
+        holder.textViewItemName.setBackgroundColor(
+            ContextCompat.getColor(
+                holder.view.context,
+                R.color.colorAccent
+            )
+        )
+    }
+
+    private fun markAsSpecial(holder: MyViewHolder){
+        holder.imageViewSpecialStar.visibility = View.VISIBLE
+        holder.textViewBonus.visibility = View.VISIBLE
+    }
+
+    private fun markAsNotSpecial(holder: MyViewHolder){
+        holder.imageViewSpecialStar.visibility = View.INVISIBLE
+        holder.textViewBonus.visibility = View.INVISIBLE
     }
 
     private fun formatAsItem(holder: MyViewHolder) {
@@ -168,6 +204,8 @@ class SecureTabletOrderItemListAdapter(
     }
 
     private fun formatAsBottomBar(holder: MyViewHolder) {
+        holder.imageViewSpecialStar.visibility = View.GONE
+        holder.textViewBonus.visibility = View.GONE
         holder.imageButtonRemove.visibility = View.GONE
         holder.imageButtonAdd.visibility = View.GONE
         holder.textViewCount.visibility = View.GONE
