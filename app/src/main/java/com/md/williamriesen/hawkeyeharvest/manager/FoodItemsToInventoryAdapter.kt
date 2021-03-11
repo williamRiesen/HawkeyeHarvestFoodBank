@@ -64,16 +64,7 @@ class FoodItemsToInventoryAdapter(
             editTextPoints.onFocusChangeListener = editTextInventoryUpdater
 
 
-//            val checkBoxInventoryUpdater =
-//                CompoundButton.OnCheckedChangeListener { checkBoxView, _ ->
-////                updateInventory(assembleEditedItem(), checkBoxView.context)
-//                }
-            checkBoxIsAvailable.setOnCheckedChangeListener { checkBoxView, isChecked ->
 
-            }
-
-//            (checkBoxInventoryUpdater)
-//            checkBoxSpecial.setOnCheckedChangeListener(checkBoxInventoryUpdater)
 
 
 
@@ -176,6 +167,14 @@ class FoodItemsToInventoryAdapter(
         holder.checkBoxIsAvailable.isChecked =
             viewModel.itemsToInventory.value!![position].isAvailable!!
 
+        holder.checkBoxIsAvailable.setOnClickListener {
+            viewModel.toggleIsAvailableStatus(
+                holder.textViewItemToInventoryName.text.toString(),
+                it.context
+            )
+        }
+
+
         if (viewModel.itemsToInventory.value!![position].isExpanded) {
             holder.expansionSection.visibility = View.VISIBLE
 
@@ -228,7 +227,8 @@ class FoodItemsToInventoryAdapter(
                 updateInventory(holder.assembleEditedItem(), it.context)
                 viewModel.itemsToInventory.value!![position].isExpanded = false
                 holder.spinListenerHasFiredPreviously = false
-                notifyItemChanged(position)
+                notifyDataSetChanged()
+//                notifyItemChanged(position)
             }
 
             holder.spinnerCategory.setSelection(viewModel.itemsToInventory.value!![position].categoryId - 1)
