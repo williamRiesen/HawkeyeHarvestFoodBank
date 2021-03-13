@@ -11,9 +11,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.Source
+import com.google.firebase.firestore.ktx.toObject
 import com.google.gson.Gson
 import com.md.williamriesen.hawkeyeharvest.R
 import com.md.williamriesen.hawkeyeharvest.foodbank.FoodItem
+import com.md.williamriesen.hawkeyeharvest.foodbank.Order
 import java.util.*
 
 
@@ -139,17 +143,6 @@ class FoodItemsToInventoryAdapter(
     }
 
 
-    private fun updateInventory(foodItem: FoodItem, context: Context) {
-
-        viewModel.itemsToInventory.value?.removeIf {
-            foodItem.itemID == it.itemID
-        }
-        viewModel.itemsToInventory.value!!.add(foodItem)
-        viewModel.itemsToInventory.value!!.sortWith(
-            compareBy<FoodItem> { it.categoryId }.thenBy { it.itemID }
-        )
-        viewModel.submitUpdatedInventory(context)
-    }
 
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
@@ -224,7 +217,7 @@ class FoodItemsToInventoryAdapter(
             }
 
             holder.buttonUpdate.setOnClickListener {
-                updateInventory(holder.assembleEditedItem(), it.context)
+                viewModel.updateFoodItem(holder.assembleEditedItem(), it.context)
                 viewModel.itemsToInventory.value!![position].isExpanded = false
                 holder.spinListenerHasFiredPreviously = false
                 notifyDataSetChanged()
@@ -281,8 +274,8 @@ class FoodItemsToInventoryAdapter(
                         if (row.name!!.toLowerCase(Locale.ROOT)
                                 .contains(charSearch.toLowerCase(Locale.ROOT))
                         ) {
-                            Log.d("TAG", "row: ${row.name}")
-                            Log.d("TAG", "resultList: ${resultList.value}")
+//                            Log.d("TAG", "row: ${row.name}")
+//                            Log.d("TAG", "resultList: ${resultList.value}")
                             resultList.value!!.add(row)
                         }
                     }

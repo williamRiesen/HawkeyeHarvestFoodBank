@@ -12,10 +12,14 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.observe
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.ktx.toObject
 import com.google.gson.Gson
 import com.md.williamriesen.hawkeyeharvest.R
@@ -28,9 +32,52 @@ class ManagerActivityViewModel : ViewModel() {
     var showNewItemButton: MutableLiveData<Boolean> = MutableLiveData(false)
     var pleaseWait = MutableLiveData<Boolean>(false)
     var itemsToInventory = MutableLiveData<MutableList<FoodItem>>(mutableListOf())
-//    var filteredInventoryList = MutableLiveData<MutableList<FoodItem>>(mutableListOf())
+
+    //    var filteredInventoryList = MutableLiveData<MutableList<FoodItem>>(mutableListOf())
     var preliminaryItemList = mutableListOf<FoodItem>()
     lateinit var categoriesList: MutableList<Category>
+    val turnip: LiveData<String> by lazy {
+        MutableLiveData<String>()
+    }
+
+    fun updateFoodItem(updatedFoodItem: FoodItem, context: Context) {
+        //retrieve latest catalog (may have been updated by others since last read)
+        pleaseWait.value = true
+        val db = FirebaseFirestore.getInstance()
+        db.collection("catalogs").document("objectCatalog")
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                val catalog = documentSnapshot.toObject(ObjectCatalog::class.java)
+
+                //replace old with new foodItem within the local catalog
+                catalog?.foodItemList!!.removeIf {
+                    it.itemID == updatedFoodItem.itemID
+                }
+                catalog.foodItemList!!.add(updatedFoodItem)
+
+                if (catalog.foodItemList.size > 50) {
+                    db.collection("catalogs").document("objectCatalog").set(catalog)
+                        .addOnSuccessListener {
+                            Toast.makeText(context, "Inventory Updated.", Toast.LENGTH_LONG).show()
+                            retrieveCategoriesFromFireStore()
+                        }
+                } else {
+                    Log.d("TAG", "Save intercepted: too few items suggesting faulty data.")
+                }
+            }
+    }
+
+    fun updateInventory(foodItem: FoodItem, context: Context) {
+        itemsToInventory.value?.removeIf {
+            foodItem.itemID == it.itemID
+        }
+        itemsToInventory.value!!.add(foodItem)
+        itemsToInventory.value!!.sortWith(
+            compareBy<FoodItem> { it.categoryId }.thenBy { it.itemID }
+        )
+        submitUpdatedInventory(context)
+    }
+
 
     fun updateNumberAvailable(itemName: String, numberAvailable: Editable?, context: Context) {
         val myList = itemsToInventory.value
@@ -44,7 +91,7 @@ class ManagerActivityViewModel : ViewModel() {
         }
     }
 
-    fun updateSpecial(itemID: Int, special: Boolean, context: Context){
+    fun updateSpecial(itemID: Int, special: Boolean, context: Context) {
         val thisItem = itemsToInventory.value?.find { foodItem ->
             foodItem.itemID == itemID
         }
@@ -68,32 +115,16 @@ class ManagerActivityViewModel : ViewModel() {
     }
 
 
-    fun updateFoodItem(updatedFoodItem: FoodItem, context: Context) {
-        //retrieve latest catalog (may have been updated by others since last read)
-        val db = FirebaseFirestore.getInstance()
-        db.collection("catalogs").document("objectCatalog")
-            .get()
-            .addOnSuccessListener { documentSnapshot ->
-                val catalog = documentSnapshot.toObject(ObjectCatalog::class.java)
 
-                //replace old with new foodItem within the local catalog
-                catalog?.foodItemList!!.removeIf {
-                    it.itemID == updatedFoodItem.itemID
-                }
-                catalog.foodItemList!!.add(updatedFoodItem)
-                db.collection("catalogs").document("objectCatalog").set(catalog)
-                    .addOnSuccessListener {
-                        Toast.makeText(context,"Inventory Updated.",Toast.LENGTH_LONG).show()
-                    }
-            }
-    }
+
 
     private fun getNextFoodItemNumber(): Int {
-        val max = itemsToInventory.value?.maxBy { foodItem ->
-            foodItem.itemID!!
-        }
-        return max!!.itemID!! + 1
+        val max: FoodItem = itemsToInventory.value?.maxBy { foodItem ->
+            foodItem.itemID ?: 0
+        }!!
+        return max.itemID!! + 1
     }
+
 
     private fun getCategoryId(categoryName: String): Int {
         val thisCategory = categoriesList.find { category ->
@@ -102,7 +133,7 @@ class ManagerActivityViewModel : ViewModel() {
         return thisCategory!!.id
     }
 
-    private fun getInventoryFromFirestore(fragment: UpdateInventoryFragment) {
+    private fun getInventoryFromFirestore() {
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection("catalogs").document("objectCatalog")
         docRef.get()
@@ -110,20 +141,12 @@ class ManagerActivityViewModel : ViewModel() {
                 val myObjectCatalog = documentSnapshot.toObject<ObjectCatalog>()
                 myObjectCatalog?.foodItemList?.forEach { foodItem ->
                     preliminaryItemList.add(foodItem)
-//                    itemsToInventoryList.value?.add(foodItem)
                 }
                 preliminaryItemList.sortWith(
                     compareBy<FoodItem> { it.categoryId }.thenBy { it.itemID }
                 )
                 itemsToInventory.value = preliminaryItemList
-//                filteredInventoryList = itemsToInventoryList
-
-
-                val progressBar = fragment.view?.findViewById<ProgressBar>(R.id.progressBar2)
-                progressBar?.visibility = View.INVISIBLE
-                val buttonAddFoodItem =
-                    fragment.view?.findViewById<FloatingActionButton>(R.id.floatingActionButtonAddItem)
-//                buttonAddFoodItem?.visibility = View.VISIBLE
+                pleaseWait.value = false
             }
     }
 
@@ -131,17 +154,28 @@ class ManagerActivityViewModel : ViewModel() {
         val foodItemListWithoutHeadings = itemsToInventory.value?.filter { foodItem ->
             foodItem.name != foodItem.category
         }
-        val newObjectCatalog = ObjectCatalog()
-        newObjectCatalog.foodItemList = foodItemListWithoutHeadings as MutableList<FoodItem>?
+        val newObjectCatalog =
+            ObjectCatalog(foodItemListWithoutHeadings as MutableList<FoodItem>)
         Log.d("TAG", "updated foodItem: ${Gson().toJson(newObjectCatalog.foodItemList)}")
-        val db = FirebaseFirestore.getInstance()
-        db.collection("catalogs").document("objectCatalog").set(newObjectCatalog)
-            .addOnSuccessListener {
-                Toast.makeText(context, "Inventory Updated.", Toast.LENGTH_LONG).show()
-            }
+        if (newObjectCatalog.foodItemList.size < 50) {
+            Log.d("TAG", "Save intercepted due to suspected incomplete food list.")
+            Toast.makeText(
+                context,
+                "Save interrupted: suspect bug caused incomplete food list to be submitted. Please contact Dr. Riesen",
+                Toast.LENGTH_LONG
+            )
+        } else {
+            Log.d("TAG", "Food list OK:  has over 50 items.")
+            val db = FirebaseFirestore.getInstance()
+            db.collection("catalogs").document("objectCatalog").set(newObjectCatalog)
+                .addOnSuccessListener {
+                    Toast.makeText(context, "Inventory Updated.", Toast.LENGTH_LONG).show()
+                }
+        }
     }
 
-    fun retrieveCategoriesFromFireStore(fragment: UpdateInventoryFragment) {
+    fun retrieveCategoriesFromFireStore() {
+        pleaseWait.value= true
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection("categories").document("categories")
         docRef.get()
@@ -149,7 +183,7 @@ class ManagerActivityViewModel : ViewModel() {
                 val categoriesListing = documentSnapshot.toObject<CategoriesListing>()
                 categoriesList = categoriesListing?.categories as MutableList<Category>
                 generateHeadings(categoriesList)
-                getInventoryFromFirestore(fragment)
+                getInventoryFromFirestore()
             }
     }
 
@@ -193,7 +227,8 @@ class ManagerActivityViewModel : ViewModel() {
                     val intent = Intent(activity, SecureTabletOrderActivity::class.java)
                     intent.putExtra("accountNumber", accountNumber);
                     ContextCompat.startActivity(activity, intent, null)
-                    Toast.makeText(context, "Account $accountID updated.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Account $accountID updated.", Toast.LENGTH_LONG)
+                        .show()
                 }
                 .addOnFailureListener {
                     Toast.makeText(context, "Update failed with error $it", Toast.LENGTH_LONG)
@@ -239,6 +274,7 @@ class ManagerActivityViewModel : ViewModel() {
         limit: String,
         context: Context
     ) {
+        Log.d("TAG", "submitNewFoodItem() begins...")
         if (isValidFoodItem(name, category, pointValue, limit, context)) {
             val parentheticalPhrase = if (pointValue != "1" && limit != "100") {
                 " ($pointValue pts, Limit $limit)"

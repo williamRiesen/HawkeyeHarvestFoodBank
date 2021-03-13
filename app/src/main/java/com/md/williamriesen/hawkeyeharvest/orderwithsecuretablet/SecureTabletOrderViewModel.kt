@@ -53,7 +53,7 @@ class SecureTabletOrderViewModel : ViewModel() {
             db.collection("orders").document(orderID!!).set(order)
         }
             .addOnSuccessListener {
-                toast("Order saved under id: ${order.orderID}")
+                toast("Order saved.")
                 Log.d("TAG", "Order saved under id: ${order.orderID}")
             }
             .addOnFailureListener {
