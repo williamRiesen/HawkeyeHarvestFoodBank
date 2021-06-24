@@ -32,6 +32,14 @@ class OnSiteOrderingViewModel : ViewModel() {
     private val needToStartNewOrder: Boolean
         get() = orderState.value == OrderState.PACKED && (!isOpen.value!! || whenOrdered != "TODAY")
 
+    // Logic review
+    // val placedBeforeToday = whenOrdered != "TODAY"
+    // val closed = !isOpen.value
+    // val notSureWhat = placedBeforeToday || closed
+    // val notTodayOrIsClosed = !isOpen.value!! || notToday
+    // val packed = orderState.value == OrderState.PACKED
+    // needToStartNewOrder = packed && notTodayOrIsClosed
+
     fun shop(view: View) {
         Navigation.findNavController(view)
             .navigate(R.id.action_clientStartFragment_to_instructionsFragment)

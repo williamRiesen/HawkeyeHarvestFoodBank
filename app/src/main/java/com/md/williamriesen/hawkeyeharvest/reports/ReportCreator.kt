@@ -49,15 +49,15 @@ class ReportCreator {
     }
 
         fun createMonthReport() {
-            val startOfMonth = FoodBank().makeDate(Calendar.FEBRUARY, 1, 2021)
-            val startOfNextMonth = FoodBank().makeDate(Calendar.MARCH, 1, 2021)
+            val startOfMonth = FoodBank().makeDate(Calendar.APRIL, 1, 2021)
+            val startOfNextMonth = FoodBank().makeDate(Calendar.MAY, 1, 2021)
             val timeStampStart: Timestamp = Timestamp(startOfMonth)
             val timeStampEnd: Timestamp = Timestamp(startOfNextMonth)
             val ordersRef = db.collection("orders")
             val accountsRef = db.collection("accounts")
             ordersRef.whereGreaterThanOrEqualTo("date", timeStampStart)
                 .whereLessThan("date", timeStampEnd)
-            .limit(3)
+//            .limit(3)
                 .get()
                 .addOnSuccessListener { querySnapshot ->
                     var documentCount = querySnapshot.size()
